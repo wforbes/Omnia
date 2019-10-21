@@ -2,6 +2,7 @@ package net.wforbes;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
@@ -19,6 +20,11 @@ public class Game extends Canvas implements Runnable{
     private Thread thread;
     public boolean running = false;
     public int tickCount = 0;
+
+    private BufferedImage image =
+            new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+    private int[] pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
+    private int[] colors = new int[6 * 6 * 6];
 
     private Game()
     {
@@ -67,13 +73,12 @@ public class Game extends Canvas implements Runnable{
         int ticks = 0;
         int frames = 0;
         long lastTimer = System.currentTimeMillis(); //a time to reset the data
-
+        boolean shouldRender = true;
         init();
         while(running){
             long now = System.nanoTime();//the current time to check against lastTime
             delta += (now - lastTime) / nsPerTick;
             lastTime = now;
-            boolean shouldRender = true;
 
             //once delta has gone over or is equal to 1,
             while(delta >= 1 ){
@@ -95,7 +100,7 @@ public class Game extends Canvas implements Runnable{
             if(shouldRender)
             {
                 frames++;
-                //render();
+                render();
             }
 
             if(System.currentTimeMillis() - lastTimer >= 1000 )
@@ -105,13 +110,15 @@ public class Game extends Canvas implements Runnable{
                 frames = 0;
                 ticks = 0;
             }
+            shouldRender = false;
         }//end while(running)
     }
 
     public void init()
     {
-        /*
+
         initColors();
+        /*
         screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
         input = new InputHandler(this);
         level = new Level("/levels/water_test_level.png");
@@ -122,7 +129,19 @@ public class Game extends Canvas implements Runnable{
         */
     }
 
-
+    private void initColors(){
+        int i = 0;
+        for(int r = 0; r < 6; r++){
+            for(int g = 0; g < 6; g++){
+                for(int b = 0; b < 6; b++){
+                    int rr = ( r * 255 / 5);
+                    int gg = ( g * 255 / 5);
+                    int bb = ( b * 255 / 5);
+                    colors[i++] = rr << 16 | gg << 8 | bb;
+                }
+            }
+        }
+    }
 
     public void tick()
     {
@@ -130,6 +149,41 @@ public class Game extends Canvas implements Runnable{
         //level.tick();
     }
 
+    public void render()
+    {
+        BufferStrategy bs = getBufferStrategy();
+        if(bs == null)
+        {
+            createBufferStrategy(3); //3 means triple buffering -
+            //                         reduces image tearing, reduces cross image pixelation
+            requestFocus();
+            return;
+        }
+        /*
+        int xOffset = player.x - (screen.width/2);
+        int yOffset = player.y - (screen.height/2);
+
+        level.renderTiles(screen, xOffset, yOffset);
+        level.renderEntities(screen);
+
+        //version ground print
+        String msg = "Hello";
+        Font.render(msg, screen, 0, 0, Colors.get(-1, -1, -1, 000), 1);
+
+        for(int y = 0; y < screen.height; y++){
+            for(int x = 0; x < screen.width; x++){
+                int colorCode = screen.pixels[x + y * screen.width];
+                if (colorCode < 255) pixels[ x + y * WIDTH] = colors[colorCode];
+            }
+        }
+        */
+
+        Graphics g = bs.getDrawGraphics();
+        g.fillRect(0, 0, getWidth(), getHeight() );
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+        g.dispose();
+        bs.show();
+    }
 
 
     public static void main(String[] args)
