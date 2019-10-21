@@ -25,7 +25,11 @@ public class Game extends Canvas implements Runnable{
         setMinimumSize(DIMENSIONS);
         setMaximumSize(DIMENSIONS);
         setPreferredSize(DIMENSIONS);
+        setupFrame();
+    }
 
+    private void setupFrame()
+    {
         frame = new JFrame(GAME_FRAME_NAME);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
