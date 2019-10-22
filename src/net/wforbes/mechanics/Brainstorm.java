@@ -5,12 +5,23 @@ import java.util.UUID;
 
 public class Brainstorm {
 
-
-
     //vitals
+    public class Vital{
+        //health
+        //endurance
+        //mana
+        //focus
+    }
+
     //statistics
     public class Statistic{
-
+        //strength
+        //stamina
+        //agility
+        //dexerity
+        //intellect
+        //wisdom
+        //charisma
     }
 
     //skills
@@ -28,6 +39,29 @@ public class Brainstorm {
         //wizard
         //mage
         //bard
+        //druid
+        //cleric
+
+    }
+
+    public class Player{
+        public UUID uuid;
+        public User user;
+        public String name;
+    }
+
+    public class User{
+        public UUID uuid;
+        public String userName;
+        public String emailAddress;
+        public Account account;
+    }
+
+    public class Account{
+        public UUID uuid;
+        public int accountNumber;
+        public String accountName;
+        public Person person;
     }
 
     public class Person{
@@ -54,25 +88,4 @@ public class Brainstorm {
         public String state;
         public int postalCode;
     }
-
-    public class User{
-        public UUID uuid;
-        public String userName;
-        public String emailAddress;
-        public Person person;
-        public Account account;
-    }
-
-    public class Account{
-        public UUID uuid;
-        public int accountNumber;
-        public String accountName;
-    }
-
-    public class Player{
-        public UUID uuid;
-        public User user;
-        public String name;
-    }
-
 }
