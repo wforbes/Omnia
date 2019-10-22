@@ -1,4 +1,4 @@
-package net.wforbes;
+package net.wforbes.game;
 
 import javax.swing.*;
 import java.awt.*;
