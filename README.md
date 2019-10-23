@@ -4,7 +4,7 @@ This is a Role Playing Game made so that I can practice Java, experiment with id
 
 (Last updated: 10/23/2019)
 
-##Project Thesis:
+## Project Thesis:
 
 **TLDR**: The goal of Omnia is to focus heavily on the mechanics/systems, story-lines/universe, and underlying 
 foundations of what makes the game work. This way, no matter the device used to play it or the era it's being played 
@@ -78,13 +78,13 @@ ___
 ---
 
 
-##Omnia Software License
+## Omnia Software License
 I'm not a license expert so please DM me with corrections but I think it's fair that, if you're going to use this code and work on this game 
 on your own and turn it into something of your own (which you're free to do); I should get some credit for contributing to it. That's 
 the idea behind using the BSD 4-Clause license for this work. I expect the type of license used on this project will change as the project 
 continues and may at some point become proprietary, but this won't happen soon. If there's anything I can do to help your work in expanding 
 your version of this work, please DM me. Thanks!
-####BSD 4-Clause
+#### BSD 4-Clause
 Copyright (c) 2020 William Forbes c/o Submodern Studios, LLC. All rights reserved.
 
 This software was developed by William Forbes at Submodern Studios, LLC.
