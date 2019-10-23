@@ -1,12 +1,13 @@
-package net.wforbes.mechanics;
+package net.wforbes;
 
 import java.util.Date;
 import java.util.UUID;
 
 public class Brainstorm {
-
+    
     //vitals
     public class Vital{
+        public UUID uuid;
         //health
         //endurance
         //mana
@@ -53,6 +54,7 @@ public class Brainstorm {
     public class User{
         public UUID uuid;
         public String userName;
+        public String passhash;
         public String emailAddress;
         public Account account;
     }
