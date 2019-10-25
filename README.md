@@ -59,16 +59,16 @@ story-line and set of dialogue that reads like the back of a foreign cereal box 
 ___
 ---
 ### Todo List
-*[X] Resurrect [an old game engine](https://www.youtube.com/watch?v=DIMeRYfil7c&list=PLRjjchumlJl2LIs1esk_C9RPvlEf2GOLb) I worked on in 2013 based loosely on two very old tutorials:
-    *[X] Find code from following [Java 2D Game Development](https://www.youtube.com/watch?v=VE7ezYCTPe4&list=PL8CAB66181A502179) by vanZeben
-    *[X] Find code from following [Java 2D Game Programming Platformer Tutorial](https://www.youtube.com/watch?v=9dzhgsVaiSo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv) by ForeignGuyMike
+* [x] Resurrect [an old game engine](https://www.youtube.com/watch?v=DIMeRYfil7c&list=PLRjjchumlJl2LIs1esk_C9RPvlEf2GOLb) I worked on in 2013 based loosely on two very old tutorials:
+    * [x] Find my code based on [Java 2D Game Development](https://www.youtube.com/watch?v=VE7ezYCTPe4&list=PL8CAB66181A502179) by vanZeben
+    * [x] Find my code based on [Java 2D Game Programming Platformer Tutorial](https://www.youtube.com/watch?v=9dzhgsVaiSo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv) by ForeignGuyMike
     
-*[ ] **Begin a Game Design Document**
-    *[ ] Brainstorm on the following topics:
-        *[ ] **Define Prototype Complete**: What should the user be able to do on the game for the 'prototype' status
-        to be completel and 'alpha' status to begin.
-        *[ ] **Define Full Scope**: Outline the full scope of the project to be ready for production (3 year timeframe)
-        *[ ] **Mechanics**: Get a full list of how the mechanics of the game will work and their purpose
+* [ ] **Begin a Game Design Document**
+    * [ ] Brainstorm on the following topics:
+        * [ ] **Define Prototype Complete**: What should the user be able to do on the game for the 'prototype' status
+        to be complete and 'alpha' status to begin.
+        * [ ] **Define Full Scope**: Outline the full scope of the project to be ready for production (3 year timeframe)
+        * [ ] **Mechanics**: Get a full list of how the mechanics of the game will work and their purpose
 
 (more information to come soon...)
 <br>
