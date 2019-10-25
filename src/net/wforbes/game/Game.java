@@ -11,7 +11,7 @@ public class Game extends Canvas implements Runnable{
     public static final long serialVersionUID = 1L;
 
     public static JFrame frame;
-    public static final String GAME_FRAME_NAME = "Omnia <0.0.1>";//Av = Alpha Version
+    public static final String GAME_FRAME_NAME = "Omnia <0.0.1>";
     public static final int WIDTH = 160;
     public static final int HEIGHT = 160;
     public static final int SCALE = 3; //To easily change the size of the window by increments
