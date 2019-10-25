@@ -7,51 +7,23 @@ This is a Role Playing Game made so that I can practice Java, experiment with id
 ## Project Thesis:
 
 **TLDR**: The goal of Omnia is to focus heavily on the mechanics/systems, story-lines/universe, and underlying 
-foundations of what makes the game work. This way, no matter the device used to play it or the era it's being played 
-in - it can provide a unique and captivating experience to the player.
-
-*The Problem*<br>
-So often I've played great games that look amazing, have many awesome features, and really play well... but I feel they 
-lack a depth of **mechanics** and **story-line**.
-
-In these games much of the effort is put toward making the graphics shine, use all the popular play paradigms 
-(battle-royale, loot farming, level grinding, etc.) yet meanwhile the experience is still limited by a shallow item 
-system, a cookie cutter stats system, and a rather boring predictable level/skill progression. Not to mention a 
-story-line and set of dialogue that reads like the back of a foreign cereal box from 1972.
-
-*Items Systems*<br>
- Throughout most role-playing games you collect items. Many of these items are armor or gear you wear, weapons or 
- powerful implements you hold or store in your inventory. As interesting as the names or lore behind them may be; 
- they're usually color-coded (green, blue, purple, orange, gold, etc.), which equate to the quality of the item, 
- the item's power. You don't ever need to even know the exact stats on the item... you just know it's good because 
- of the color. This classification system is over a decade old now. The truth is, much of the time you will trash or 
- sell anything that isn't the highest possible quality. The rarity or set random chance of obtaining a high quality 
- item is simply just a dice roll, where you have XX percent chance of obtaining it and so you just mindlessly farm 
- what drops it until you get it. You just do the quest enough times and you'll achieve your legendary rare orange 
- quality sword of swordiness... and then what? Just more farming for a better one.
+foundations of what makes the game work on a foundational level. This way, no matter the device used to play it 
+or the era it's being played in - it can provide a unique and captivating experience to the player.
  
- *Stats Systems*<br>
- So often, in games like these, the values of your stats, health, mana, level, etc. all increase as you move through 
- the game - only to reach a huge number that doesn't really change the game experience very much. Often the only 
- difference between level 1 and level 100 is that you got a bunch of 'legendary' items, extra skills, and encounters 
- may take longer or involve more steps.<br>
- *What did you learn along the way? What can you take with you and use in other areas in your life?*
+I envision a type of game where your character reacts, and by extension the player must react, to situations in 
+a nuanced way. You enter into combat and you're given more interesting and dynamic ways on how to react than other 
+games. When your character progresses, so do you as a person. You learn things from the game that shape how you 
+develop as a person. You may even learn useful job skills from it that help you in life. Part educational, part 
+introspective, part dynamically inter-related. Your sword is powerful because it adjusts your characters mind and 
+body in deeper ways than just raising your Strength statistic by 5. When you fight you see openings and opportunities 
+to strike because of what you've learned from the game. You create items successfully when performing a tradeskill 
+because you let the blade temper just right and swung the anvil hammer differently that time, using a new ingredient 
+which chemically altered the blade.
  
- *Level/Skills Systems*<br>
- ..(in progress)
+It's a lofty vision, not yet defined in concrete ways which I personally quest for while writing this software.
  
- I envision a type of game where your character reacts to situations in a nuanced way. You enter into combat and you're 
- given more interesting and dynamic ways on how to react. When your character progresses, so do you as a person. You 
- learn things from the game that shape how you develop as a person and you may even learn useful job skills from it 
- that help you in life. Part educational, part introspective, part dynamically inter-related. Your sword is powerful 
- because it adjusts your characters mind and body in deeper ways that just raising your Strength statistic by 5. 
- When you fight you see openings and opportunities to strike because of what you've learned from the game. You create 
- items successfully when performing a tradeskill because you let the blade temper and swung the hammer differently that 
- time, using a new ingredient which chemically altered the blade.
- 
- It's a lofty vision, not yet defined in concrete ways which I personally quest for while writing this software.
- 
- My main goal is to help provide real **value** to the player of the game.  
+My main goal is to help provide real **value** to the player of the game, not just a shiny cardboard cutout with 
+good graphics.   
 
 (more information to come soon...)
 <br>
@@ -68,7 +40,9 @@ ___
         * [ ] **Define Prototype Complete**: What should the user be able to do on the game for the 'prototype' status
         to be complete and 'alpha' status to begin.
         * [ ] **Define Full Scope**: Outline the full scope of the project to be ready for production (3 year timeframe)
-        * [ ] **Mechanics**: Get a full list of how the mechanics of the game will work and their purpose
+        * [ ] **Mechanics**: Start a list of how the mechanics of the prototype game will work and their purpose.
+        * [ ] **Storyline**: Define the characters and setting, the journey they go on, the problems they need to solve
+        * [ ] **Education**: Pull together some basic things that the game should teach in it's educational content
 
 (more information to come soon...)
 <br>
