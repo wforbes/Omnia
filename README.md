@@ -2,7 +2,7 @@
 
 This is a Role Playing Game made so that I can practice Java, experiment with ideas, and have fun.
 
-(Last updated: 10/23/2019)
+(Last updated: 10/25/2019)
 
 ## Project Thesis:
 
