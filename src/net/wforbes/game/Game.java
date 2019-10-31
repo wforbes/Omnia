@@ -1,5 +1,8 @@
 package net.wforbes.game;
 
+import net.wforbes.graphics.Screen;
+import net.wforbes.graphics.SpriteSheet;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -25,6 +28,8 @@ public class Game extends Canvas implements Runnable{
             new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     private int[] pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
     private int[] colors = new int[6 * 6 * 6];
+
+    private Screen screen;
 
     private Game()
     {
@@ -118,8 +123,9 @@ public class Game extends Canvas implements Runnable{
     {
 
         initColors();
-        /*
+
         screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
+        /*
         input = new InputHandler(this);
         level = new Level("/levels/water_test_level.png");
         player = new Player(level, 32, 32, input, "");
