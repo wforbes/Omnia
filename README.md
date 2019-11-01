@@ -2,39 +2,27 @@
 
 This is a Role Playing Game made so that I can practice Java, experiment with ideas, and have fun.
 
-(Last updated: 10/25/2019)
-
-## Project Thesis:
-
-**TLDR**: The goal of Omnia is to focus heavily on the mechanics/systems, story-lines/universe, and underlying 
-foundations of what makes the game work on a foundational level. This way, no matter the device used to play it 
-or the era it's being played in - it can provide a unique and captivating experience to the player.
- 
-I envision a type of game where your character reacts, and by extension the player must react, to situations in 
-a nuanced way. You enter into combat and you're given more interesting and dynamic ways on how to react than other 
-games. When your character progresses, so do you as a person. You learn things from the game that shape how you 
-develop as a person. You may even learn useful job skills from it that help you in life. Part educational, part 
-introspective, part dynamically inter-related. Your sword is powerful because it adjusts your characters mind and 
-body in deeper ways than just raising your Strength statistic by 5. When you fight you see openings and opportunities 
-to strike because of what you've learned from the game. You create items successfully when performing a tradeskill 
-because you let the blade temper just right and swung the anvil hammer differently that time, using a new ingredient 
-which chemically altered the blade.
- 
-It's a lofty vision, not yet defined in concrete ways which I personally quest for while writing this software.
- 
-My main goal is to help provide real **value** to the player of the game, not just a shiny cardboard cutout with 
-good graphics.   
-
-(more information to come soon...)
-<br>
-
+(Last updated: 11/1/2019)
 ___
 ---
 ### Todo List
 * [x] Resurrect [an old game engine](https://www.youtube.com/watch?v=DIMeRYfil7c&list=PLRjjchumlJl2LIs1esk_C9RPvlEf2GOLb) I worked on in 2013 based loosely on two very old tutorials:
     * [x] Find my code based on [Java 2D Game Development](https://www.youtube.com/watch?v=VE7ezYCTPe4&list=PL8CAB66181A502179) by vanZeben
     * [x] Find my code based on [Java 2D Game Programming Platformer Tutorial](https://www.youtube.com/watch?v=9dzhgsVaiSo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv) by ForeignGuyMike
-    
+    * [ ] Combine the two engine's code and improve switching between the two at runtime
+        * [ ] Copy over useful code from vanZeben's tutorial, study it and optimize/make improvements
+            * [X] Get the Game class with the game loop running and updating tps/fps.
+            * [X] Add Screen class and SpriteSheet class, successfully compile while accessing the sheet image.
+            * [X] Add InputHandler class, Level class, and Tile classes. Render a small level on the Screen.
+            * [ ] Add Entity, Player, Mob, Monster classes. Successfully move the Player around a large level.
+            * [ ] Add the networking classes and successfully network two game clients on two different PCs.
+            * [ ] Scour over the code endlessly and experiment with adjustments in it's methods and structure. 
+        * [ ] Copy over useful code from ForeignGuyMikes's tutorial, study it and optimize/make improvements
+        * [ ] Develop an optimized game loop that both the engines can use successfully and handles switching between them seamlessly
+        * [ ] Develop a menu system that will save a simple game state in both top-down and platformer
+        * [ ] Successfully network two clients both running the game with both engines on two different PCs
+    * [ ] Research and experiment with porting the game to Android 
+
 * [ ] **Begin a Game Design Document**
     * [ ] Brainstorm on the following topics:
         * [ ] **Define Prototype Complete**: What should the user be able to do on the game for the 'prototype' status
