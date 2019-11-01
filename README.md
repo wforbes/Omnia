@@ -7,16 +7,18 @@ ___
 ---
 ### Todo List
 * [x] Resurrect [an old game engine](https://www.youtube.com/watch?v=DIMeRYfil7c&list=PLRjjchumlJl2LIs1esk_C9RPvlEf2GOLb) I worked on in 2013 based loosely on two very old tutorials:
-    * [x] Find my code based on [Java 2D Game Development](https://www.youtube.com/watch?v=VE7ezYCTPe4&list=PL8CAB66181A502179) by vanZeben
-    * [x] Find my code based on [Java 2D Game Programming Platformer Tutorial](https://www.youtube.com/watch?v=9dzhgsVaiSo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv) by ForeignGuyMike
-    * [ ] Combine the two engine's code and improve switching between the two at runtime
-        * [ ] Copy over useful code from vanZeben's tutorial, study it and optimize/make improvements
-            * [X] Get the Game class with the game loop running and updating tps/fps.
-            * [X] Add Screen class and SpriteSheet class, successfully compile while accessing the sheet image.
-            * [X] Add InputHandler class, Level class, and Tile classes. Render a small level on the Screen.
-            * [ ] Add Entity, Player, Mob, Monster classes. Successfully move the Player around a large level.
-            * [ ] Add the networking classes and successfully network two game clients on two different PCs.
-            * [ ] Scour over the code endlessly and experiment with adjustments in it's methods and structure. 
+    * [x] **Top-Down Tutorial**: Find my code based on [Java 2D Game Development](https://www.youtube.com/watch?v=VE7ezYCTPe4&list=PL8CAB66181A502179) by vanZeben
+    * [x] **Platformer Tutorial**: Find my code based on [Java 2D Game Programming Platformer Tutorial](https://www.youtube.com/watch?v=9dzhgsVaiSo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv) by ForeignGuyMike
+    * [ ] **Playable Prototype**: Combine the two engine's code and improve switching between the two at runtime
+        * [ ] **Top-Down Code**: Copy over useful code from vanZeben's tutorial, study it and optimize/make improvements
+            * [X] **Game Loop & JFrame**: Get the Game class with the game loop running and updating tps/fps.
+            * [X] **Screen & SpriteSheet**: Add Screen class and SpriteSheet class, successfully compile while accessing the sheet image.
+            * [X] **Level & Tile**: Add InputHandler class, Level class, and Tile classes. Render a small level on the Screen.
+            * [ ] **Player & Movement**: Add Entity, Player, Mob, Monster classes. Successfully move the Player around a large level.
+            * [ ] **Networking**: Add the networking classes and successfully network two game clients on two different PCs.
+            * [ ] **Optimize**: Scour over the code endlessly and experiment with adjustments in it's methods and structure.
+                * [ ] Would it be better to use JavaFX?
+                * [ ] Are the methods rendering pixels and other foundations the best way to do that? 
         * [ ] Copy over useful code from ForeignGuyMikes's tutorial, study it and optimize/make improvements
         * [ ] Develop an optimized game loop that both the engines can use successfully and handles switching between them seamlessly
         * [ ] Develop a menu system that will save a simple game state in both top-down and platformer
