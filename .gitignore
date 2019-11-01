@@ -1,3 +1,4 @@
 
 *.class
 *.kotlin_module
+out/production/Omnia/sprite_sheet.png
