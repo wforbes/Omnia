@@ -20,10 +20,12 @@ ___
                 * [ ] Would it be better to use JavaFX?
                 * [ ] Are the methods rendering pixels and other foundations the best way to do that? 
         * [ ] Copy over useful code from ForeignGuyMikes's tutorial, study it and optimize/make improvements
+            * [ ] (To-do list for Platformer engine coming soon...)
         * [ ] Develop an optimized game loop that both the engines can use successfully and handles switching between them seamlessly
         * [ ] Develop a menu system that will save a simple game state in both top-down and platformer
         * [ ] Successfully network two clients both running the game with both engines on two different PCs
-    * [ ] Research and experiment with porting the game to Android 
+    * [ ] Research and experiment with porting the game to Android
+    * [ ] Research and experiment with game engines like [LWJGL](https://lwjgl.org)
 
 * [ ] **Begin a Game Design Document**
     * [ ] Brainstorm on the following topics:
