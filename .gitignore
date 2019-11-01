@@ -2,3 +2,5 @@
 *.class
 *.kotlin_module
 out/production/Omnia/sprite_sheet.png
+out/production/Omnia/levels/small_test_level.png
+out/production/Omnia/small_test_level.png

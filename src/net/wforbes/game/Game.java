@@ -2,6 +2,7 @@ package net.wforbes.game;
 
 import net.wforbes.graphics.Screen;
 import net.wforbes.graphics.SpriteSheet;
+import net.wforbes.level.Level;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +32,7 @@ public class Game extends Canvas implements Runnable{
 
     private Screen screen;
     private InputHandler input;
+    private Level level;
 
     private Game()
     {
@@ -126,8 +128,8 @@ public class Game extends Canvas implements Runnable{
         initColors();
         screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
         input = new InputHandler(this);
+        level = new Level("/levels/small_test_level.png");
         /*
-        level = new Level("/levels/water_test_level.png");
         player = new Player(level, 32, 32, input, "");
         monster1 = new Monster(level, 32, 32);
         level.addEntity(player);
@@ -175,14 +177,15 @@ public class Game extends Canvas implements Runnable{
         //version ground print
         String msg = "Hello";
         Font.render(msg, screen, 0, 0, Colors.get(-1, -1, -1, 000), 1);
-
-        for(int y = 0; y < screen.height; y++){
-            for(int x = 0; x < screen.width; x++){
-                int colorCode = screen.pixels[x + y * screen.width];
+        */
+        level.renderTiles(screen, 0, 0);//testing level
+        for(int y = 0; y < screen.getHeight(); y++){
+            for(int x = 0; x < screen.getWidth(); x++){
+                int colorCode = screen.getPixels()[x + y * screen.getWidth()];
                 if (colorCode < 255) pixels[ x + y * WIDTH] = colors[colorCode];
             }
         }
-        */
+
 
         Graphics g = bs.getDrawGraphics();
         g.fillRect(0, 0, getWidth(), getHeight() );
