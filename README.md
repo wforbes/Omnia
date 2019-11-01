@@ -43,11 +43,11 @@ ___
 
 
 ## Omnia Software License
-I'm not a license expert so please DM me with corrections but I think it's fair that, if you're going to use this code and work on this game 
-on your own and turn it into something of your own (which you're free to do); I should get some credit for contributing to it. That's 
-the idea behind using the BSD 4-Clause license for this work. I expect the type of license used on this project will change as the project 
-continues and may at some point become proprietary, but this won't happen soon. If there's anything I can do to help your work in expanding 
-your version of this work, please DM me. Thanks!
+I'm not a license expert so please DM me with corrections. I think it's fair that if you're going to use this code and 
+work on this game on your own, especially with plans to turn it into something of your own (which you're free to do) 
+then I should get some credit for my work. That's the idea behind using the BSD 4-Clause license for this work. I expect
+the type of license used on this project will change as the project continues and may at some point become proprietary, 
+but this won't happen soon. If there's anything I can do to help your work, please DM me. Thanks!
 #### BSD 4-Clause
 Copyright (c) 2020 William Forbes c/o Submodern Studios, LLC. All rights reserved.
 
