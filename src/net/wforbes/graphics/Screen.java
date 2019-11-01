@@ -23,6 +23,15 @@ public class Screen {
         this.xOffset = xOffset;
         this.yOffset = yOffset;
     }
+    public int getWidth(){
+        return this.width;
+    }
+    public int getHeight(){
+        return this.height;
+    }
+    public int[] getPixels(){
+        return this.pixels;
+    }
 
     //TODO: add formula(s) to calculate correct values if tile is not 8x8, removing literals
     public void render(int xPos, int yPos, int tile, int color, int mirrorDir, int scale){
