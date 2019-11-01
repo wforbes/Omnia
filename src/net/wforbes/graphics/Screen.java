@@ -54,7 +54,7 @@ public class Screen {
                 int xSheet = x;
                 //check for mirror
                 if(mirrorX)
-                    xSheet = 7 - y;
+                    xSheet = 7 - x;
                 //get pixel
                 int xPixel = x + xPos + (x * scaleMap) - ((scaleMap << 3)/ 2);
 
