@@ -30,6 +30,7 @@ public class Game extends Canvas implements Runnable{
     private int[] colors = new int[6 * 6 * 6];
 
     private Screen screen;
+    private InputHandler input;
 
     private Game()
     {
@@ -123,10 +124,9 @@ public class Game extends Canvas implements Runnable{
     {
 
         initColors();
-
         screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
-        /*
         input = new InputHandler(this);
+        /*
         level = new Level("/levels/water_test_level.png");
         player = new Player(level, 32, 32, input, "");
         monster1 = new Monster(level, 32, 32);
