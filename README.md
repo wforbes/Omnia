@@ -1,6 +1,6 @@
 # Omnia
 
-This is a Role Playing Game made so that I can practice Java, experiment with ideas, and have fun.
+This is an RPG made so that I can practice Java, experiment with ideas, and have fun.
 
 (Last updated: 11/1/2019)
 ___
