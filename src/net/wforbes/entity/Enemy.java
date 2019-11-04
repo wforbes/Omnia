@@ -21,20 +21,66 @@ public class Enemy extends Mob{
         int tickCount = 0;
     }
 
+    private int[] getRandomMove(){
+        int a = Math.abs(gen.nextInt()) % 8;
+        int nxa = xa, nya = ya;
+        if(a == 0)nya--;
+        if(a == 1)nya++;
+        if(a == 2)nxa--;
+        if(a == 3)nxa++;
+        if(a == 4){nxa--; nya--;}
+        if(a == 5){nxa++; nya--;}
+        if(a == 6){nxa--; nya++;}
+        if(a == 7){ nxa++; nya++;}
+        return new int[]{nxa, nya, a};
+    }
+
+    private boolean isInIntArray(int[] arr, int a){
+        for(int el : arr){
+            if(el == a){
+                return true;
+            }
+        }
+        return false;
+    }
+    //TODO: add consideration for isCollided to turn
+    //  an accessible direction for a few movements
+    //  to get away from the obstruction
+    private int[] redirectMovement(int[] xya){
+        int[] cardinals = new int[]{0, 1, 2, 3};
+        int[] diagonals = new int[]{4, 5, 6, 7};
+        //if cardinal, check it's opposite direction
+        if(isInIntArray(cardinals, xya[2])){
+            //find opposite direction
+            if(xya[2] == 0 || xya[2] == 2){
+                int opposite = xya[2]++;
+            }
+            //if(!hasCollided(opposite)){
+
+            //}
+        }
+        //  if its not colliding, go the opposite direction
+        //  if it is colliding, check a perpendicular direction (0/1..2/3)
+        //      if perpendicular is colliding, check it's opposite
+        //          if opposite perpendicular is colliding, check
+
+        //if diagonal, check it's component directions
+        //  if one is colliding, go the opposite direction of it
+        //  if both are colliding, go the opposite direction of the diagonal
+        //
+        return new int[0];
+    }
+
     //TODO: add interpolation for a smooth walking motion
-    //TODO: add consideration for isCollided to turn the opposite direction for a few movements
+
     private void randomMovement(){
         if(waitCount == 20 || waitCount == 0){
-            int a = Math.abs(gen.nextInt()) % 8;
-            if(a == 0)ya--;
-            if(a == 1)ya++;
-            if(a == 2)xa--;
-            if(a == 3)xa++;
-            if(a == 4){xa--; ya--;}
-            if(a == 5){xa++; ya--;}
-            if(a == 6){xa--; ya++;}
-            if(a == 7){ xa++; ya++;}
-            move(xa, ya);
+            int[] xya = getRandomMove();
+            /*
+            if(this.hasCollided(xya[0], xya[1])){
+                xya = redirectMovement(xya);
+            }*/
+            move(xya[0], xya[1]);
             isMoving = true;
             waitCount = 1;
         }else{
