@@ -14,7 +14,7 @@ ___
             * [X] **Game Loop & JFrame**: Get the Game class with the game loop running and updating tps/fps.
             * [X] **Screen & SpriteSheet**: Add Screen class and SpriteSheet class, successfully compile while accessing the sheet image.
             * [X] **Level & Tile**: Add InputHandler class, Level class, and Tile classes. Render a small level on the Screen.
-            * [ ] **Player & Movement**: Add Entity, Player, Mob, Monster classes. Successfully move the Player around a large level.
+            * [X] **Player & Movement**: Add Entity, Player, Mob, Monster classes. Successfully move the Player around a large level.
             * [ ] **Networking**: Add the networking classes and successfully network two game clients on two different PCs.
             * [ ] **Optimize**: Scour over the code endlessly and experiment with adjustments in it's methods and structure.
                 * [ ] Would it be better to use JavaFX?

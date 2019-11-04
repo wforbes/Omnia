@@ -2,9 +2,11 @@ package net.wforbes.game;
 
 import net.wforbes.entity.Enemy;
 import net.wforbes.entity.Player;
+import net.wforbes.graphics.Colors;
 import net.wforbes.graphics.Screen;
 import net.wforbes.graphics.SpriteSheet;
 import net.wforbes.level.Level;
+import net.wforbes.gui.Font;
 
 import javax.swing.*;
 import java.awt.*;
@@ -179,11 +181,11 @@ public class Game extends Canvas implements Runnable{
         level.renderTiles(screen, xOffset, yOffset);
         level.renderEntities(screen);
 
-        /*
+
         //version ground print
-        String msg = "Hello";
+        String msg = "github.com/wforbes/omnia";
         Font.render(msg, screen, 0, 0, Colors.get(-1, -1, -1, 000), 1);
-        */
+
 
         for(int y = 0; y < screen.getHeight(); y++){
             for(int x = 0; x < screen.getWidth(); x++){
