@@ -34,7 +34,6 @@ public class Player extends Mob{
             ya--;
         }
         if( input.down.isPressed() ){
-            System.out.println("down is pressed");
             ya++;
         }
         if( input.left.isPressed() ){
