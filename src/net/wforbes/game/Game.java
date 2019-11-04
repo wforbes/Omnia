@@ -1,5 +1,6 @@
 package net.wforbes.game;
 
+import net.wforbes.entity.Enemy;
 import net.wforbes.entity.Player;
 import net.wforbes.graphics.Screen;
 import net.wforbes.graphics.SpriteSheet;
@@ -35,6 +36,7 @@ public class Game extends Canvas implements Runnable{
     private InputHandler input;
     private Level level;
     private Player player;
+    private Enemy enemy;
 
     private Game()
     {
@@ -135,11 +137,9 @@ public class Game extends Canvas implements Runnable{
         player = new Player(level, 32, 32, input, "");
         level.addEntity(player);
 
-        /*
-        monster1 = new Monster(level, 32, 32);
-        level.addEntity(player);
-        level.addEntity(monster1);
-        */
+        enemy = new Enemy(level, 32, 32);
+        level.addEntity(enemy);
+
     }
 
     private void initColors(){
