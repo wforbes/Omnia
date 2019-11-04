@@ -1,5 +1,6 @@
 package net.wforbes.game;
 
+import net.wforbes.entity.Player;
 import net.wforbes.graphics.Screen;
 import net.wforbes.graphics.SpriteSheet;
 import net.wforbes.level.Level;
@@ -33,6 +34,7 @@ public class Game extends Canvas implements Runnable{
     private Screen screen;
     private InputHandler input;
     private Level level;
+    private Player player;
 
     private Game()
     {
@@ -128,9 +130,12 @@ public class Game extends Canvas implements Runnable{
         initColors();
         screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
         input = new InputHandler(this);
-        level = new Level("/levels/small_test_level.png");
-        /*
+        level = new Level("/test_level.png");
+
         player = new Player(level, 32, 32, input, "");
+        level.addEntity(player);
+
+        /*
         monster1 = new Monster(level, 32, 32);
         level.addEntity(player);
         level.addEntity(monster1);
@@ -154,7 +159,7 @@ public class Game extends Canvas implements Runnable{
     public void tick()
     {
         tickCount++;
-        //level.tick();
+        level.tick();
     }
 
     public void render()
@@ -167,18 +172,19 @@ public class Game extends Canvas implements Runnable{
             requestFocus();
             return;
         }
-        /*
-        int xOffset = player.x - (screen.width/2);
-        int yOffset = player.y - (screen.height/2);
+
+        int xOffset = player.x - (screen.getWidth()/2);
+        int yOffset = player.y - (screen.getHeight()/2);
 
         level.renderTiles(screen, xOffset, yOffset);
         level.renderEntities(screen);
 
+        /*
         //version ground print
         String msg = "Hello";
         Font.render(msg, screen, 0, 0, Colors.get(-1, -1, -1, 000), 1);
         */
-        level.renderTiles(screen, 0, 0);//testing level
+
         for(int y = 0; y < screen.getHeight(); y++){
             for(int x = 0; x < screen.getWidth(); x++){
                 int colorCode = screen.getPixels()[x + y * screen.getWidth()];

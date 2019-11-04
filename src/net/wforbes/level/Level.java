@@ -116,6 +116,11 @@ public class Level {
         return Tile.tiles[tiles[ x + y * width]];
     }
 
+    public void addEntity(Entity entity)
+    {
+        this.entities.add(entity);
+    }
+
     public void renderEntities(Screen screen)
     {
         for(Entity e : entities)
