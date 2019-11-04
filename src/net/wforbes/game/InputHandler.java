@@ -50,16 +50,18 @@ public class InputHandler implements KeyListener
         }
     }
 
+
+
     @Override
-    public void keyTyped(KeyEvent e) {
+    public void keyPressed(KeyEvent e) {
         this.toggleKey(e.getKeyCode(), true);
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyReleased(KeyEvent e) {
         this.toggleKey(e.getKeyCode(), false);
     }
 
     @Override
-    public void keyReleased(KeyEvent keyEvent) {}
+    public void keyTyped(KeyEvent e) { }
 }
