@@ -11,26 +11,32 @@ public class Enemy extends Mob{
     private int color = Colors.get(-1, 111, 400, 444);
     private int scale = 1;
     protected boolean isSwimming = false;
+    private long waitCount = 0;
     private int tickCount = 0;
     Random gen = new Random();
     int a, xa, ya;
 
-    public Enemy(Level level, String name, int x, int y) {
+    public Enemy(Level level, int x, int y) {
         super(level, "Enemy", x, y, 1);
+        int tickCount = 0;
     }
 
+    //TODO: add interpolation for a smooth walking motion
+    //TODO: add consideration for isCollided to turn the opposite direction for a few movements
     private void randomMovement(){
-        if(a == 0)ya--;
-        if(a == 1)ya++;
-        if(a == 2)xa--;
-        if(a == 3)xa++;
-        if(a == 4){xa--; ya--;}
-        if(a == 5){xa++; ya--;}
-        if(a == 6){xa--; ya++;}
-        if(a == 7){ xa++; ya++;}
-        if(xa != 0 || ya != 0){
+        if(waitCount == 20 || waitCount == 0){
+            int a = Math.abs(gen.nextInt()) % 8;
+            if(a == 0)ya--;
+            if(a == 1)ya++;
+            if(a == 2)xa--;
+            if(a == 3)xa++;
+            if(a == 4){xa--; ya--;}
+            if(a == 5){xa++; ya--;}
+            if(a == 6){xa--; ya++;}
+            if(a == 7){ xa++; ya++;}
             move(xa, ya);
             isMoving = true;
+            waitCount = 1;
         }else{
             isMoving = false;
         }
@@ -41,11 +47,12 @@ public class Enemy extends Mob{
         if(isSwimming && level.getTile(this.x >> 3, this.y >> 3).getId() != 3){
             isSwimming = false;
         }
+        waitCount++;
     }
 
     @Override
     public void tick() {
-
+        randomMovement();
     }
 
     //TODO: This is copy/pasted from Player, find a solution without code duplication
