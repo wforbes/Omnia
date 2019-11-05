@@ -58,15 +58,18 @@ public class Enemy extends Mob{
             //if(!hasCollided(opposite)){
 
             //}
-        }
+
         //  if its not colliding, go the opposite direction
         //  if it is colliding, check a perpendicular direction (0/1..2/3)
         //      if perpendicular is colliding, check it's opposite
         //          if opposite perpendicular is colliding, check
+        }else{
+            //if diagonal, check it's component directions
+            //  if one is colliding, go the opposite direction of it
+            //  if both are colliding, go the opposite direction of the diagonal
+            
+        }
 
-        //if diagonal, check it's component directions
-        //  if one is colliding, go the opposite direction of it
-        //  if both are colliding, go the opposite direction of the diagonal
         //
         return new int[0];
     }
