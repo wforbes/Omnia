@@ -134,7 +134,7 @@ public class Game extends Canvas implements Runnable{
         initColors();
         screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
         input = new InputHandler(this);
-        level = new Level("/test_level.png");
+        level = new Level("/small_test_level.png");
 
         player = new Player(level, 32, 32, input, "");
         level.addEntity(player);
@@ -183,7 +183,7 @@ public class Game extends Canvas implements Runnable{
 
 
         //version ground print
-        String msg = "github.com/wforbes/omnia";
+        String msg = "@wforbes87";
         Font.render(msg, screen, 0, 0, Colors.get(-1, -1, -1, 000), 1);
 
 
