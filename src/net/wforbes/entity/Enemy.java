@@ -15,6 +15,7 @@ public class Enemy extends Mob{
     private int tickCount = 0;
     Random gen = new Random();
     int a, xa, ya;
+    int[] xya = new int[0];
 
     public Enemy(Level level, int x, int y) {
         super(level, "Enemy", x, y, 1);
@@ -35,6 +36,18 @@ public class Enemy extends Mob{
         return new int[]{nxa, nya, a};
     }
 
+    private int[] getContinuousMove(int[] xya){
+        if(xya[2] == 0)xya[1]--;
+        if(xya[2] == 1)xya[1]++;
+        if(xya[2] == 2)xya[0]--;
+        if(xya[2] == 3)xya[0]++;
+        if(xya[2] == 4){xya[0]--; xya[1]--;}
+        if(xya[2] == 5){xya[0]++; xya[1]--;}
+        if(xya[2] == 6){xya[0]--; xya[1]++;}
+        if(xya[2] == 7){ xya[0]++; xya[1]++;}
+        return xya;
+    }
+
     private boolean isInIntArray(int[] arr, int a){
         for(int el : arr){
             if(el == a){
@@ -49,40 +62,131 @@ public class Enemy extends Mob{
     private int[] redirectMovement(int[] xya){
         int[] cardinals = new int[]{0, 1, 2, 3};
         int[] diagonals = new int[]{4, 5, 6, 7};
-        //if cardinal, check it's opposite direction
-        if(isInIntArray(cardinals, xya[2])){
-            //find opposite direction
-            if(xya[2] == 0 || xya[2] == 2){
-                int opposite = xya[2]++;
-            }
-            //if(!hasCollided(opposite)){
 
-            //}
+        int a = xya[2];
+        int[] testxya;
+        if(a == 0 || a == 2){
+            int opposite = a + 1;
+            testxya = new int[]{xya[0], xya[1], a};
+            testxya = getContinuousMove(xya);
+            if(this.hasCollided(testxya[0], testxya[1])){
+                if(opposite == 1) {
+                    testxya[2] = 3;
+                }else{
+                    testxya[2] = 1;
+                }
+                testxya = getContinuousMove(testxya);
+                if(this.hasCollided(testxya[0], testxya[1])){
+                    testxya[2] = 3;//int perpendicular = 1;
+                    return getContinuousMove(testxya);
+                }
+            }
+        }else if(a==1 || a ==3) {
+            int opposite = a - 1;
+            testxya = new int[]{xya[0], xya[1], a};
+            testxya = getContinuousMove(xya);
+            if(this.hasCollided(testxya[0], testxya[1])){
+                if(opposite == 0){
+                    testxya[2] = 2;
+                }else{
+                    testxya[2] = 0;
+                }
+                testxya[2] = 1;//int perpendicular = 1;
+                testxya = getContinuousMove(testxya);
+                if(this.hasCollided(testxya[0], testxya[1])){
+                    testxya[2] = 3;//int perpendicular = 1;
+                    return getContinuousMove(testxya);
+                }
+            }
+        }else{
+            testxya = new int[]{xya[0], xya[1], a};
+            //if 4, check 0 and 2
+            if(a == 4){
+                int perp = 0;
+                testxya = new int[]{xya[0], xya[1], perp};
+                testxya = getContinuousMove(xya);
+                if(this.hasCollided(testxya[0], testxya[1])){
+                    testxya[2] = 2;
+                    testxya = getContinuousMove(xya);
+                }
+            }
+            //if 5, check 0 and 3
+            if(a == 5){
+                int perp = 0;
+                testxya = new int[]{xya[0], xya[1], perp};
+                testxya = getContinuousMove(xya);
+                if(this.hasCollided(testxya[0], testxya[1])){
+                    testxya[2] = 3;
+                    testxya = getContinuousMove(xya);
+                }
+            }
+            //if 6, check 1 and 2
+            if(a == 6){
+                int perp = 1;
+                testxya = new int[]{xya[0], xya[1], perp};
+                testxya = getContinuousMove(xya);
+                if(this.hasCollided(testxya[0], testxya[1])){
+                    testxya[2] = 2;
+                    testxya = getContinuousMove(xya);
+                }
+            }
+            //if 7, check 1 and 3
+            if(a == 7){
+                int perp = 1;
+                testxya = new int[]{xya[0], xya[1], perp};
+                testxya = getContinuousMove(xya);
+                if(this.hasCollided(testxya[0], testxya[1])){
+                    testxya[2] = 3;
+                    testxya = getContinuousMove(xya);
+                }
+            }
+        }
+
+        //if cardinal, check it's opposite direction
+
 
         //  if its not colliding, go the opposite direction
         //  if it is colliding, check a perpendicular direction (0/1..2/3)
         //      if perpendicular is colliding, check it's opposite
         //          if opposite perpendicular is colliding, check
-        }else{
+
             //if diagonal, check it's component directions
             //  if one is colliding, go the opposite direction of it
             //  if both are colliding, go the opposite direction of the diagonal
-            
-        }
 
-        //
-        return new int[0];
+        return testxya;
     }
 
     //TODO: add interpolation for a smooth walking motion
 
+    private void wanderingMovement(){
+
+        if(waitCount == 0 || waitCount == 60){
+            this.xya = getRandomMove();
+            waitCount = 1;
+        }else if(waitCount % 8 == 0 && waitCount != 60){
+            this.xya = getContinuousMove(xya);
+        }
+
+        if(this.hasCollided(xya[0], xya[1])){
+            xya = redirectMovement(xya);
+        }
+        move(xya[0], xya[1]);
+        isMoving = true;
+
+        if(level.getTile(this.x >>3, this.y >>3).getId() == 3){
+            isSwimming = true;
+        }
+        if(isSwimming && level.getTile(this.x >> 3, this.y >> 3).getId() != 3){
+            isSwimming = false;
+        }
+
+        waitCount++;
+    }
+
     private void randomMovement(){
         if(waitCount == 20 || waitCount == 0){
             int[] xya = getRandomMove();
-            /*
-            if(this.hasCollided(xya[0], xya[1])){
-                xya = redirectMovement(xya);
-            }*/
             move(xya[0], xya[1]);
             isMoving = true;
             waitCount = 1;
@@ -101,7 +205,8 @@ public class Enemy extends Mob{
 
     @Override
     public void tick() {
-        randomMovement();
+        //randomMovement();
+        wanderingMovement();
     }
 
     //TODO: This is copy/pasted from Player, find a solution without code duplication
