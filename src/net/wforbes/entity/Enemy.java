@@ -58,7 +58,10 @@ public class Enemy extends Mob{
     }
     //TODO: add consideration for isCollided to turn
     //  an accessible direction for a few movements
-    //  to get away from the obstruction
+    //  to get away from the obstruction (in progress)
+    //TODO: instead of calling a new move function again when redirecting,
+    //  keep track of the position right before this tick's movement and redirection
+    //  to then revert to the initial position and redirect/move then.
     private int[] redirectMovement(int[] xya){
         int[] cardinals = new int[]{0, 1, 2, 3};
         int[] diagonals = new int[]{4, 5, 6, 7};
@@ -161,18 +164,22 @@ public class Enemy extends Mob{
 
     private void wanderingMovement(){
 
-        if(waitCount == 0 || waitCount == 60){
+        if(waitCount == 0 || waitCount == 160){
             this.xya = getRandomMove();
             waitCount = 1;
-        }else if(waitCount % 8 == 0 && waitCount != 60){
+        }else if(waitCount % 13 == 0 ){
             this.xya = getContinuousMove(xya);
         }
 
         if(this.hasCollided(xya[0], xya[1])){
             xya = redirectMovement(xya);
         }
-        move(xya[0], xya[1]);
-        isMoving = true;
+
+        if(waitCount % 13 == 0){
+            move(xya[0], xya[1]);
+            isMoving = true;
+        }
+
 
         if(level.getTile(this.x >>3, this.y >>3).getId() == 3){
             isSwimming = true;
