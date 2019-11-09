@@ -20,9 +20,11 @@ public class Game extends Canvas implements Runnable{
 
     public static JFrame frame;
     public static final String GAME_FRAME_NAME = "Omnia <0.0.1>";
-    public static final int WIDTH = 160;
-    public static final int HEIGHT = 160;
-    public static final int SCALE = 3; //To easily change the size of the window by increments
+    //public static final int WIDTH = 160;
+    //public static final int HEIGHT = 160;
+    public static final int WIDTH = 320;
+    public static final int HEIGHT = 240;
+    public static final int SCALE = 2; //To easily change the size of the window by increments
     public static final Dimension DIMENSIONS = new Dimension(WIDTH*SCALE, HEIGHT*SCALE);
 
     private Thread thread;
