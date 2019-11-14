@@ -1,6 +1,6 @@
 package net.wforbes.entity;
 
-import net.wforbes.game.InputHandler;
+import net.wforbes.input.InputHandler;
 import net.wforbes.graphics.Colors;
 import net.wforbes.graphics.Screen;
 import net.wforbes.level.Level;

@@ -1,4 +1,6 @@
-package net.wforbes.game;
+package net.wforbes.input;
+
+import net.wforbes.game.Game;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

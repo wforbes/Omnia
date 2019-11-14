@@ -5,6 +5,7 @@ import net.wforbes.entity.Player;
 import net.wforbes.graphics.Colors;
 import net.wforbes.graphics.Screen;
 import net.wforbes.graphics.SpriteSheet;
+import net.wforbes.input.InputHandler;
 import net.wforbes.level.Level;
 import net.wforbes.gui.Font;
 
