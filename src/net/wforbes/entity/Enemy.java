@@ -65,82 +65,81 @@ public class Enemy extends Mob{
     private int[] redirectMovement(int[] xya){
         int[] cardinals = new int[]{0, 1, 2, 3};
         int[] diagonals = new int[]{4, 5, 6, 7};
-
-        int a = xya[2];
-        int[] testxya;
+        int a = xya[2];//get the direction from the movement set
+        int[] new_xya;//an array for a new movement, so we don't change the current one
         if(a == 0 || a == 2){
             int opposite = a + 1;
-            testxya = new int[]{xya[0], xya[1], a};
-            testxya = getContinuousMove(xya);
-            if(this.hasCollided(testxya[0], testxya[1])){
+            new_xya = new int[]{xya[0], xya[1], a};
+            new_xya = getContinuousMove(xya);
+            if(this.hasCollided(new_xya[0], new_xya[1])){
                 if(opposite == 1) {
-                    testxya[2] = 3;
+                    new_xya[2] = 3;
                 }else{
-                    testxya[2] = 1;
+                    new_xya[2] = 1;
                 }
-                testxya = getContinuousMove(testxya);
-                if(this.hasCollided(testxya[0], testxya[1])){
-                    testxya[2] = 3;//int perpendicular = 1;
-                    return getContinuousMove(testxya);
+                new_xya = getContinuousMove(new_xya);
+                if(this.hasCollided(new_xya[0], new_xya[1])){
+                    new_xya[2] = 3;//int perpendicular = 1;
+                    return getContinuousMove(new_xya);
                 }
             }
         }else if(a==1 || a ==3) {
             int opposite = a - 1;
-            testxya = new int[]{xya[0], xya[1], a};
-            testxya = getContinuousMove(xya);
-            if(this.hasCollided(testxya[0], testxya[1])){
+            new_xya = new int[]{xya[0], xya[1], a};
+            new_xya = getContinuousMove(xya);
+            if(this.hasCollided(new_xya[0], new_xya[1])){
                 if(opposite == 0){
-                    testxya[2] = 2;
+                    new_xya[2] = 2;
                 }else{
-                    testxya[2] = 0;
+                    new_xya[2] = 0;
                 }
-                testxya[2] = 1;//int perpendicular = 1;
-                testxya = getContinuousMove(testxya);
-                if(this.hasCollided(testxya[0], testxya[1])){
-                    testxya[2] = 3;//int perpendicular = 1;
-                    return getContinuousMove(testxya);
+                new_xya[2] = 1;//int perpendicular = 1;
+                new_xya = getContinuousMove(new_xya);
+                if(this.hasCollided(new_xya[0], new_xya[1])){
+                    new_xya[2] = 3;//int perpendicular = 1;
+                    return getContinuousMove(new_xya);
                 }
             }
         }else{
-            testxya = new int[]{xya[0], xya[1], a};
+            new_xya = new int[]{xya[0], xya[1], a};
             //if 4, check 0 and 2
             if(a == 4){
                 int perp = 0;
-                testxya = new int[]{xya[0], xya[1], perp};
-                testxya = getContinuousMove(xya);
-                if(this.hasCollided(testxya[0], testxya[1])){
-                    testxya[2] = 2;
-                    testxya = getContinuousMove(xya);
+                new_xya = new int[]{xya[0], xya[1], perp};
+                new_xya = getContinuousMove(xya);
+                if(this.hasCollided(new_xya[0], new_xya[1])){
+                    new_xya[2] = 2;
+                    new_xya = getContinuousMove(xya);
                 }
             }
             //if 5, check 0 and 3
             if(a == 5){
                 int perp = 0;
-                testxya = new int[]{xya[0], xya[1], perp};
-                testxya = getContinuousMove(xya);
-                if(this.hasCollided(testxya[0], testxya[1])){
-                    testxya[2] = 3;
-                    testxya = getContinuousMove(xya);
+                new_xya = new int[]{xya[0], xya[1], perp};
+                new_xya = getContinuousMove(xya);
+                if(this.hasCollided(new_xya[0], new_xya[1])){
+                    new_xya[2] = 3;
+                    new_xya = getContinuousMove(xya);
                 }
             }
             //if 6, check 1 and 2
             if(a == 6){
                 int perp = 1;
-                testxya = new int[]{xya[0], xya[1], perp};
-                testxya = getContinuousMove(xya);
-                if(this.hasCollided(testxya[0], testxya[1])){
-                    testxya[2] = 2;
-                    testxya = getContinuousMove(xya);
+                new_xya = new int[]{xya[0], xya[1], perp};
+                new_xya = getContinuousMove(xya);
+                if(this.hasCollided(new_xya[0], new_xya[1])){
+                    new_xya[2] = 2;
+                    new_xya = getContinuousMove(xya);
                 }
             }
             //if 7, check 1 and 3
             if(a == 7){
                 int perp = 1;
-                testxya = new int[]{xya[0], xya[1], perp};
-                testxya = getContinuousMove(xya);
-                if(this.hasCollided(testxya[0], testxya[1])){
-                    testxya[2] = 3;
-                    testxya = getContinuousMove(xya);
+                new_xya = new int[]{xya[0], xya[1], perp};
+                new_xya = getContinuousMove(xya);
+                if(this.hasCollided(new_xya[0], new_xya[1])){
+                    new_xya[2] = 3;
+                    new_xya = getContinuousMove(xya);
                 }
             }
         }
@@ -157,11 +156,10 @@ public class Enemy extends Mob{
             //  if one is colliding, go the opposite direction of it
             //  if both are colliding, go the opposite direction of the diagonal
 
-        return testxya;
+        return new_xya;
     }
 
     //TODO: add interpolation for a smooth walking motion
-
     private void wanderingMovement(){
 
         if(waitCount == 0 || waitCount == 160){
