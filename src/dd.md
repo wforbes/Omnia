@@ -1,6 +1,6 @@
 Omnia Design Document
 
-Sci-Fi, futuristic, fantasy role-playing video game for PC and Mac.   
+Sci-Fi, futuristic, fantasy role-playing video game for PC and Mac.
 
 Developed using the Java programming language in a desktop client interacting realtime with a web server, enabling both 
 single and multi-player game play with considerations for future web and mobile client interaction. 

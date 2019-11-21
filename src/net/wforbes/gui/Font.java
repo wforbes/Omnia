@@ -6,7 +6,7 @@ public class Font {
     private static String chars = "" +
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ      "+
             "abcdefghijklmnopqrstuvwxyz      "+
-            "0123456789.,:;'\"!?$%()-=+/      " ;
+            "0123456789.,:;'\"!?$%()-=+/      ";
 
     public static void render(String msg, Screen screen, int x, int y, int color, int scale)
     {
