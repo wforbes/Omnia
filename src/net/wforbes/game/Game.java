@@ -186,7 +186,7 @@ public class Game extends Canvas implements Runnable{
 
 
         //version ground print
-        String msg = "wforbes87";
+        String msg = "Omnia (v0.0.1) @wforbes87";
         Font.render(msg, screen, 0, 0, Colors.get(-1, -1, -1, 000), 1);
 
         for(int y = 0; y < screen.getHeight(); y++){
