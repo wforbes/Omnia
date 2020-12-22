@@ -16,22 +16,27 @@ public abstract class Tile {
             (3, new int[][] {{0, 5}, {1, 5}, {2, 5}, {1, 5}}, Colors.get(-1, 004, 115, -1), 0xFF0000FF, 500);
 
     protected byte id;
+    protected int tileId;
     protected boolean solid;
+    protected boolean water;
     protected boolean emitter;
     private int levelColor;
 
-    public Tile( int id, boolean isSolid, boolean isEmitter, int levelColor)
+    public Tile(int id, boolean isSolid, boolean isEmitter, int levelColor)
     {
         this.id = (byte) id;
         if(tiles[id] != null)
             throw new RuntimeException("Duplicate tile id on " + id);
         this.solid = isSolid;
+        this.water = (id == 3);
         this.emitter = isEmitter;
         this.levelColor = levelColor;
         tiles[id] = this;
     }
     public byte getId(){ return id;}
+    public int getTileId(){ return tileId; }
     public boolean isSolid(){ return solid;}
+    public boolean isWater() { return water; }
     public boolean isEmitter(){ return emitter; }
     public int getLevelColor(){ return levelColor; }
 

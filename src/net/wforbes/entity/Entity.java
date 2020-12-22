@@ -6,7 +6,7 @@ import net.wforbes.level.Level;
 public abstract class Entity {
 
     public int x, y;
-    protected Level level;
+    public Level level;
 
     public Entity(Level level)
     {
@@ -20,4 +20,5 @@ public abstract class Entity {
 
     public abstract void tick();
     public abstract void render(Screen screen);
+    public abstract String getName();
 }

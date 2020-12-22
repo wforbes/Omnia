@@ -5,7 +5,7 @@ import net.wforbes.level.Level;
 
 public class BasicTile extends Tile {
 
-    protected int tileId;
+    //protected int tileId;
     protected int tileColor;
 
     public BasicTile(int id, int x, int y, int tileColor, int levelColor)

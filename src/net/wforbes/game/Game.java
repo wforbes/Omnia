@@ -25,7 +25,7 @@ public class Game extends Canvas implements Runnable{
     //public static final int HEIGHT = 160;
     public static final int WIDTH = 320;
     public static final int HEIGHT = 240;
-    public static final int SCALE = 2; //To easily change the size of the window by increments
+    public static final int SCALE = 4; //To easily change the size of the window by increments
     public static final Dimension DIMENSIONS = new Dimension(WIDTH*SCALE, HEIGHT*SCALE);
 
     private Thread thread;
@@ -139,10 +139,10 @@ public class Game extends Canvas implements Runnable{
         input = new InputHandler(this);
         level = new Level("/test_level.png");
 
-        player = new Player(level, 32, 32, input, "");
+        player = new Player(level, 10, 10, input, "ghosty");
         level.addEntity(player);
 
-        enemy = new Enemy(level, 32, 32);
+        enemy = new Enemy(level, 32, 32, "skele");
         level.addEntity(enemy);
 
     }
@@ -186,9 +186,8 @@ public class Game extends Canvas implements Runnable{
 
 
         //version ground print
-        String msg = "@wforbes87";
+        String msg = "wforbes87";
         Font.render(msg, screen, 0, 0, Colors.get(-1, -1, -1, 000), 1);
-
 
         for(int y = 0; y < screen.getHeight(); y++){
             for(int x = 0; x < screen.getWidth(); x++){

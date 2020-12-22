@@ -1,5 +1,6 @@
 package net.wforbes.entity;
 
+import net.wforbes.gui.Font;
 import net.wforbes.input.InputHandler;
 import net.wforbes.graphics.Colors;
 import net.wforbes.graphics.Screen;
@@ -14,15 +15,20 @@ public class Player extends Mob{
     private int tickCount = 0;
 
     public Player(Level level, int x, int y, InputHandler input, String username) {
-        super(level, "Player", x, y, 1);
+        super(level, username, x, y, 1);
         this.input = input;
         this.username = username;
+        this.canSwim = false;
     }
 
     @Override
     public void tick() {
         checkMovement();
         tickCount++;
+    }
+
+    public String getName(){
+        return this.username;
     }
 
     private void checkMovement() {
@@ -123,7 +129,11 @@ public class Player extends Mob{
         //username!
         if(username != null){
             //full white colored username 10 pixels above the player
-            //Font.render(username, screen, xOffset - ((username.length() -1 ) /2 * 8), yOffset - 10, Colors.get(-1, -1, -1, 555), 1);
+            int xl = username.length() * 8;
+            int unl = username.length();
+            int unlr = (username.length() % 2 == 0) ? 0 : 1;
+            //(username.length() /2) + username.length()+6
+            Font.render(username, screen, xOffset - (xl - (xl/2) - unl - unlr), yOffset - 10, Colors.get(-1, -1, -1, 555), 1);
         }
     }
 }

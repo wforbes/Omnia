@@ -2,50 +2,26 @@ package net.wforbes.entity;
 
 import net.wforbes.graphics.Colors;
 import net.wforbes.graphics.Screen;
+import net.wforbes.gui.Font;
 import net.wforbes.level.Level;
-
-import java.util.Random;
 
 public class Enemy extends Mob{
 
     private int color = Colors.get(-1, 111, 400, 444);
     private int scale = 1;
-    protected boolean isSwimming = false;
-    private long waitCount = 0;
     private int tickCount = 0;
-    Random gen = new Random();
-    int a, xa, ya;
-    int[] xya = new int[0];
 
-    public Enemy(Level level, int x, int y) {
-        super(level, "Enemy", x, y, 1);
+
+    public Enemy(Level level, int x, int y, String name) {
+        super(level, name, x, y, 1);
         int tickCount = 0;
+        this.canSwim = false;
     }
 
-    private int[] getRandomMove(){
-        int a = Math.abs(gen.nextInt()) % 8;
-        int nxa = xa, nya = ya;
-        if(a == 0)nya--;
-        if(a == 1)nya++;
-        if(a == 2)nxa--;
-        if(a == 3)nxa++;
-        if(a == 4){nxa--; nya--;}
-        if(a == 5){nxa++; nya--;}
-        if(a == 6){nxa--; nya++;}
-        if(a == 7){ nxa++; nya++;}
-        return new int[]{nxa, nya, a};
-    }
-
-    private int[] getContinuousMove(int[] xya){
-        if(xya[2] == 0)xya[1]--;
-        if(xya[2] == 1)xya[1]++;
-        if(xya[2] == 2)xya[0]--;
-        if(xya[2] == 3)xya[0]++;
-        if(xya[2] == 4){xya[0]--; xya[1]--;}
-        if(xya[2] == 5){xya[0]++; xya[1]--;}
-        if(xya[2] == 6){xya[0]--; xya[1]++;}
-        if(xya[2] == 7){ xya[0]++; xya[1]++;}
-        return xya;
+    @Override
+    public void tick() {
+        this.movementController.tick();
+        this.getMovingDir();
     }
 
     private boolean isInIntArray(int[] arr, int a){
@@ -55,163 +31,6 @@ public class Enemy extends Mob{
             }
         }
         return false;
-    }
-    //TODO: add consideration for isCollided to turn
-    //  an accessible direction for a few movements
-    //  to get away from the obstruction (in progress)
-    //TODO: instead of calling a new move function again when redirecting,
-    //  keep track of the position right before this tick's movement and redirection
-    //  to then revert to the initial position and redirect/move then.
-    private int[] redirectMovement(int[] xya){
-        int[] cardinals = new int[]{0, 1, 2, 3};
-        int[] diagonals = new int[]{4, 5, 6, 7};
-        int a = xya[2];//get the direction from the movement set
-        int[] new_xya;//an array for a new movement, so we don't change the current one
-        if(a == 0 || a == 2){
-            int opposite = a + 1;
-            new_xya = new int[]{xya[0], xya[1], a};
-            new_xya = getContinuousMove(xya);
-            if(this.hasCollided(new_xya[0], new_xya[1])){
-                if(opposite == 1) {
-                    new_xya[2] = 3;
-                }else{
-                    new_xya[2] = 1;
-                }
-                new_xya = getContinuousMove(new_xya);
-                if(this.hasCollided(new_xya[0], new_xya[1])){
-                    new_xya[2] = 3;//int perpendicular = 1;
-                    return getContinuousMove(new_xya);
-                }
-            }
-        }else if(a==1 || a ==3) {
-            int opposite = a - 1;
-            new_xya = new int[]{xya[0], xya[1], a};
-            new_xya = getContinuousMove(xya);
-            if(this.hasCollided(new_xya[0], new_xya[1])){
-                if(opposite == 0){
-                    new_xya[2] = 2;
-                }else{
-                    new_xya[2] = 0;
-                }
-                new_xya[2] = 1;//int perpendicular = 1;
-                new_xya = getContinuousMove(new_xya);
-                if(this.hasCollided(new_xya[0], new_xya[1])){
-                    new_xya[2] = 3;//int perpendicular = 1;
-                    return getContinuousMove(new_xya);
-                }
-            }
-        }else{
-            new_xya = new int[]{xya[0], xya[1], a};
-            //if 4, check 0 and 2
-            if(a == 4){
-                int perp = 0;
-                new_xya = new int[]{xya[0], xya[1], perp};
-                new_xya = getContinuousMove(xya);
-                if(this.hasCollided(new_xya[0], new_xya[1])){
-                    new_xya[2] = 2;
-                    new_xya = getContinuousMove(xya);
-                }
-            }
-            //if 5, check 0 and 3
-            if(a == 5){
-                int perp = 0;
-                new_xya = new int[]{xya[0], xya[1], perp};
-                new_xya = getContinuousMove(xya);
-                if(this.hasCollided(new_xya[0], new_xya[1])){
-                    new_xya[2] = 3;
-                    new_xya = getContinuousMove(xya);
-                }
-            }
-            //if 6, check 1 and 2
-            if(a == 6){
-                int perp = 1;
-                new_xya = new int[]{xya[0], xya[1], perp};
-                new_xya = getContinuousMove(xya);
-                if(this.hasCollided(new_xya[0], new_xya[1])){
-                    new_xya[2] = 2;
-                    new_xya = getContinuousMove(xya);
-                }
-            }
-            //if 7, check 1 and 3
-            if(a == 7){
-                int perp = 1;
-                new_xya = new int[]{xya[0], xya[1], perp};
-                new_xya = getContinuousMove(xya);
-                if(this.hasCollided(new_xya[0], new_xya[1])){
-                    new_xya[2] = 3;
-                    new_xya = getContinuousMove(xya);
-                }
-            }
-        }
-
-        //if cardinal, check it's opposite direction
-
-
-        //  if its not colliding, go the opposite direction
-        //  if it is colliding, check a perpendicular direction (0/1..2/3)
-        //      if perpendicular is colliding, check it's opposite
-        //          if opposite perpendicular is colliding, check
-
-            //if diagonal, check it's component directions
-            //  if one is colliding, go the opposite direction of it
-            //  if both are colliding, go the opposite direction of the diagonal
-
-        return new_xya;
-    }
-
-    //TODO: add interpolation for a smooth walking motion
-    private void wanderingMovement(){
-
-        if(waitCount == 0 || waitCount == 160){
-            this.xya = getRandomMove();
-            waitCount = 1;
-        }else if(waitCount % 13 == 0 ){
-            this.xya = getContinuousMove(xya);
-        }
-
-        if(this.hasCollided(xya[0], xya[1])){
-            xya = redirectMovement(xya);
-        }
-
-        if(waitCount % 13 == 0){
-            move(xya[0], xya[1]);
-            isMoving = true;
-        }
-
-
-        if(level.getTile(this.x >>3, this.y >>3).getId() == 3){
-            isSwimming = true;
-        }
-        if(isSwimming && level.getTile(this.x >> 3, this.y >> 3).getId() != 3){
-            isSwimming = false;
-        }
-
-        waitCount++;
-    }
-
-    private void randomMovement(){
-        if(waitCount == 20 || waitCount == 0){
-            int[] xya = getRandomMove();
-            move(xya[0], xya[1]);
-            isMoving = true;
-            waitCount = 1;
-        }else{
-            isMoving = false;
-        }
-
-        if(level.getTile(this.x >>3, this.y >>3).getId() == 3){
-            isSwimming = true;
-        }
-        if(isSwimming && level.getTile(this.x >> 3, this.y >> 3).getId() != 3){
-            isSwimming = false;
-        }
-        waitCount++;
-    }
-
-    @Override
-    public void tick() {
-        //randomMovement();
-        wanderingMovement();
     }
 
     //TODO: This is copy/pasted from Player, find a solution without code duplication
@@ -278,6 +97,17 @@ public class Enemy extends Mob{
                     xTile + (yTile + 1) * 32, color, flipBottom, scale); //q3
             screen.render(xOffset + modifier - (modifier * flipBottom), yOffset + modifier,
                     (1+ xTile) + (1 +yTile) * 32, color, flipBottom, scale); //q4
+        }
+
+        //username!
+        if(this.name != null){
+
+            int xl = name.length() * 8;
+            int nl = name.length();
+            int nlr = (name.length() % 2 == 0) ? 0 : 1; //
+
+            //full white colored name 10 pixels above the enemy
+            Font.render(name, screen, xOffset - (xl - (xl/2) - nl - nlr), yOffset - 10, Colors.get(-1, -1, -1, 300), 1);
         }
     }
 }
