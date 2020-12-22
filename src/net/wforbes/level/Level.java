@@ -123,10 +123,23 @@ public class Level {
 
     public void renderEntities(Screen screen)
     {
+        this.sortEntitiesByYPos();
         for(Entity e : entities)
         {
             e.render(screen);
         }
+    }
+
+    private void sortEntitiesByYPos() {
+        entities.sort((e1, e2) -> {
+            if (e1.y == e2.y) {
+                return 0;
+            } else if (e1.y > e2.y) {
+                return 1;
+            } else {
+                return -1;
+            }
+        });
     }
 
     /** For future use **/
