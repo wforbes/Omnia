@@ -5,11 +5,9 @@ import java.awt.*;
 public class MenuState extends GameState {
 
     private GameStateManager gsm;
-    private int pressWaitMod = 20;
-    private int keyPressTicks = 0;
+    private int lastPressTick = 0;
     private int tickCount = 0;
     private int currentChoice = 0;
-    private boolean pauseInput;
     private String[] options = {
             "Top-Down",
             "Platformer",
@@ -52,18 +50,17 @@ public class MenuState extends GameState {
     @Override
     public void tick() {
         //bg.update();
-        this.checkKeyInput();
+        if (keyInputReady()) this.checkKeyInput();
         tickCount++;
     }
 
     private boolean keyInputReady() {
-        return keyPressTicks % pressWaitMod == 0;
+        int waitTicks = 20;
+        return tickCount - lastPressTick > waitTicks || lastPressTick == 0;
     }
 
     private void checkKeyInput() {
-        if (keyPressTicks > 0 && tickCount % pressWaitMod == 0) {
-            keyPressTicks = 0;
-        }
+
         if(this.gsm.inputHandler.enter.isPressed() && keyInputReady()){
             select();
         }
@@ -73,7 +70,7 @@ public class MenuState extends GameState {
             if(currentChoice == -1){
                 currentChoice = options.length - 1;
             }
-            keyPressTicks++;
+            lastPressTick = tickCount;
         }
 
         if(this.gsm.inputHandler.down.isPressed() && keyInputReady()){
@@ -81,7 +78,7 @@ public class MenuState extends GameState {
             if(currentChoice == options.length){
                 currentChoice = 0;
             }
-            keyPressTicks++;
+            lastPressTick = tickCount;
         }
 
     }
