@@ -2,6 +2,7 @@ package net.wforbes.game;
 
 import net.wforbes.entity.Enemy;
 import net.wforbes.entity.Player;
+import net.wforbes.gameState.GameStateManager;
 import net.wforbes.graphics.Colors;
 import net.wforbes.graphics.Screen;
 import net.wforbes.graphics.SpriteSheet;
@@ -32,16 +33,24 @@ public class Game extends Canvas implements Runnable{
     public boolean running = false;
     public int tickCount = 0;
 
-    private BufferedImage image =
-            new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-    private int[] pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
-    private int[] colors = new int[6 * 6 * 6];
+    private BufferStrategy bufferStrategy;
+    private Graphics graphics;
+    private Graphics2D graphics2D;
+    private BufferedImage image;
+    private int[] pixels;
+    private int[] colors;
 
+    private GameStateManager gsm;
     private Screen screen;
     private InputHandler input;
     private Level level;
     private Player player;
     private Enemy enemy;
+
+    public static void main(String[] args)
+    {
+        new Game().start();
+    }
 
     private Game()
     {
@@ -57,8 +66,8 @@ public class Game extends Canvas implements Runnable{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.add(this, BorderLayout.CENTER);
-        frame.pack();
         frame.setResizable(false);
+        frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -73,7 +82,6 @@ public class Game extends Canvas implements Runnable{
     public synchronized void stop()
     {
         running = false;
-
         try{
             thread.join();
         }catch (InterruptedException e){
@@ -91,7 +99,7 @@ public class Game extends Canvas implements Runnable{
         int frames = 0;
         long lastTimer = System.currentTimeMillis(); //a time to reset the data
         boolean shouldRender = true;
-        init();
+        this.init();
         while(running){
             long now = System.nanoTime();//the current time to check against lastTime
             delta += (now - lastTime) / nsPerTick;
@@ -133,9 +141,17 @@ public class Game extends Canvas implements Runnable{
 
     public void init()
     {
+        this.image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        this.pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        this.colors = new int[6 * 6 * 6];
+        this.initColors();
+        this.graphics2D = (Graphics2D) image.getGraphics();
+        gsm = new GameStateManager();
 
-        initColors();
         screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
+
+        //TODO: Move these to TopDownState
+        /*
         input = new InputHandler(this);
         level = new Level("/test_level.png");
 
@@ -144,10 +160,11 @@ public class Game extends Canvas implements Runnable{
 
         enemy = new Enemy(level, 32, 32, "skele");
         level.addEntity(enemy);
-
+        */
     }
 
-    private void initColors(){
+    private void initColors()
+    {
         int i = 0;
         for(int r = 0; r < 6; r++){
             for(int g = 0; g < 6; g++){
@@ -164,50 +181,70 @@ public class Game extends Canvas implements Runnable{
     public void tick()
     {
         tickCount++;
-        level.tick();
+        this.gsm.tick();
+        //level.tick();
     }
 
     public void render()
     {
-        BufferStrategy bs = getBufferStrategy();
-        if(bs == null)
+        if(!this.setBufferStrategy()) {
+            return;
+        }
+
+        this.gsm.render(graphics2D);
+        //TODO: Move to TopDownState
+        /*
+        this.renderTiles();
+        level.renderEntities(screen);
+        this.renderVersionText();
+         */
+
+        this.setPixelColorsFromScreen();
+        this.drawToScreen();
+    }
+
+    private boolean setBufferStrategy()
+    {
+        this.bufferStrategy = getBufferStrategy();
+        if(this.bufferStrategy == null)
         {
             createBufferStrategy(3); //3 means triple buffering -
             //                         reduces image tearing, reduces cross image pixelation
             requestFocus();
-            return;
+            return false;
         }
+        return true;
+    }
 
+    private void renderTiles()
+    {
         int xOffset = player.x - (screen.getWidth()/2);
         int yOffset = player.y - (screen.getHeight()/2);
-
         level.renderTiles(screen, xOffset, yOffset);
-        level.renderEntities(screen);
+    }
 
-
-        //version ground print
+    private void renderVersionText()
+    {
         String msg = "Omnia (v0.0.1) @wforbes87";
         Font.render(msg, screen, 0, 0, Colors.get(-1, -1, -1, 000), 1);
+    }
 
+    private void setPixelColorsFromScreen()
+    {
         for(int y = 0; y < screen.getHeight(); y++){
             for(int x = 0; x < screen.getWidth(); x++){
                 int colorCode = screen.getPixels()[x + y * screen.getWidth()];
-                if (colorCode < 255) pixels[ x + y * WIDTH] = colors[colorCode];
+                //if (colorCode < 255) pixels[ x + y * WIDTH] = colors[colorCode];
             }
         }
-
-
-        Graphics g = bs.getDrawGraphics();
-        g.fillRect(0, 0, getWidth(), getHeight() );
-        g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
-        g.dispose();
-        bs.show();
     }
 
-
-    public static void main(String[] args)
+    private void drawToScreen()
     {
-        new Game().start();
-
+        this.graphics = bufferStrategy.getDrawGraphics();
+        this.graphics.fillRect(0, 0, getWidth(), getHeight() );
+        this.graphics.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+        this.graphics.dispose();
+        this.bufferStrategy.show();
     }
 }

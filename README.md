@@ -1,30 +1,32 @@
 # Omnia
 
-This is an RPG made so that I can practice Java, experiment with ideas, and have fun.
+This is an RPG engine made so that I can practice Java, experiment with ideas, and have fun.
 
-(Last updated: 11/1/2019)
+(Last updated: 12/22/2020)
 ___
 ---
 ### Todo List
 * [x] Resurrect [an old game engine](https://www.youtube.com/watch?v=DIMeRYfil7c&list=PLRjjchumlJl2LIs1esk_C9RPvlEf2GOLb) I worked on in 2013 based loosely on two very old tutorials:
     * [x] **Top-Down Tutorial**: Find my code based on [Java 2D Game Development](https://www.youtube.com/watch?v=VE7ezYCTPe4&list=PL8CAB66181A502179) by vanZeben
     * [x] **Platformer Tutorial**: Find my code based on [Java 2D Game Programming Platformer Tutorial](https://www.youtube.com/watch?v=9dzhgsVaiSo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv) by ForeignGuyMike
-    * [ ] **Playable Prototype**: Combine the two engine's code and improve switching between the two at runtime
-        * [ ] **Top-Down Code**: Copy over useful code from vanZeben's tutorial, study it and optimize/make improvements
-            * [X] **Game Loop & JFrame**: Get the Game class with the game loop running and updating tps/fps.
-            * [X] **Screen & SpriteSheet**: Add Screen class and SpriteSheet class, successfully compile while accessing the sheet image.
-            * [X] **Level & Tile**: Add InputHandler class, Level class, and Tile classes. Render a small level on the Screen.
-            * [X] **Player & Movement**: Add Entity, Player, Mob, Monster classes. Successfully move the Player around a large level.
-            * [ ] **Networking**: Add the networking classes and successfully network two game clients on two different PCs.
-            * [ ] **Optimize**: Scour over the code endlessly and experiment with adjustments in it's methods and structure.
-                * [ ] Would it be better to use JavaFX?
-                * [ ] Are the methods rendering pixels and other foundations the best way to do that? 
-        * [ ] Copy over useful code from ForeignGuyMikes's tutorial, study it and optimize/make improvements
-            * [ ] (To-do list for Platformer engine coming soon...)
-        * [ ] Develop an optimized game loop that both the engines can use successfully and handles switching between them seamlessly
-        * [ ] Develop a menu system that will save a simple game state in both top-down and platformer
-        * [ ] Successfully network two clients both running the game with both engines on two different PCs
+* [ ] **Playable Prototype**: Combine the two engine's code, improve it where possible and add logic for switching between the two at runtime
+    * [X] **Top-Down: Game Loop & JFrame**: Get the Game class with the game loop running and updating tps/fps.
+    * [X] **Top-Down: Screen & SpriteSheet**: Add Screen class and SpriteSheet class, successfully compile while accessing the sheet image.
+    * [X] **Top-Down: Level & Tile**: Add InputHandler class, Level class, and Tile classes. Render a small level on the Screen.
+    * [X] **Top-Down: Player & Movement**: Add Entity, Player, Mob, Enemy classes. Successfully move the Player around a large level.
+    * [X] **Top-Down: Environment Collision**: Add collision logic between the player and solid or water tiles
+    * [X] **Top-Down: Mob to Mob Collision**: Add collision logic between mobs so they can't pass through each other.
+    * [ ] **Game States**: Add logic that allows for running the Top-Down, Platformer, or other game states
+        * [ ] Develop a menu system that can open either Top-Down or Platformer game states
+    * [ ] **Game Pause**: Add logic that allows for pausing game play
+    * [ ] **Game State Swapping**: Add logic that allows for swapping between the Top-Down and Platformer game states at runtime.
+    * [ ] **Console Text Box UI**: Add the GUI for a text box which accepts user input and displays game messages into it
+    * [ ] **Text Command System**: Develop a system of text commands that can be run to modify or view game information.
+    * [ ] **Networking**: Add the networking classes and successfully network two game clients on two different PCs.
+    * [ ] Successfully network two clients both running the game with both engines on two different PCs
+    * [ ] **Optimize**: Scour over the code and experiment with adjustments in it's methods and structure with the goal of reducing memory and cpu usage
     * [ ] Research and experiment with porting the game to Android
+    * [ ] Research and experiment with porting the game to JavaScript for the browser
     * [ ] Research and experiment with game engines like [LWJGL](https://lwjgl.org)
 
 * [ ] **Begin a Game Design Document**
@@ -54,10 +56,6 @@ but this won't happen soon. If there's anything I can do to help your work, plea
 Copyright (c) 2020 William Forbes c/o Submodern Studios, LLC. All rights reserved.
 
 This software was developed by William Forbes at Submodern Studios, LLC.
-
-All advertising materials mentioning features or use of this software
-must display the following acknowledgement: This product includes
-software developed by William Alexander Forbes, Submodern Studios.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
