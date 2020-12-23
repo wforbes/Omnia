@@ -1,6 +1,7 @@
 package net.wforbes.input;
 
 import net.wforbes.game.Game;
+import net.wforbes.gameState.GameStateManager;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -11,9 +12,16 @@ public class InputHandler implements KeyListener
     public Key down = new Key();
     public Key left = new Key();
     public Key right = new Key();
+    public Key enter = new Key();
+    public Key w = new Key();
+    public Key a = new Key();
+    public Key s = new Key();
+    public Key d = new Key();
+    public Key q = new Key();
+    public Key e = new Key();
 
-    public InputHandler(Game game)
-    {
+
+    public InputHandler(Game game) {
         game.addKeyListener(this);
         game.requestFocus();
     }
@@ -34,36 +42,52 @@ public class InputHandler implements KeyListener
                 numTimesPressed++;
         }
     }
-
-    //TODO: move the keyevent settings into a config file
     public void toggleKey(int keyCode, boolean isPressed)
     {
-        if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP){
+        if(keyCode == KeyEvent.VK_UP){
             up.toggle(isPressed);
         }
-        if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN){
+        if(keyCode == KeyEvent.VK_DOWN){
             down.toggle(isPressed);
         }
-        if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT){
+        if(keyCode == KeyEvent.VK_RIGHT){
             right.toggle(isPressed);
         }
-        if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT){
+        if(keyCode == KeyEvent.VK_LEFT){
             left.toggle(isPressed);
+        }
+        if(keyCode == KeyEvent.VK_ENTER) {
+            enter.toggle(isPressed);
+        }
+        if(keyCode == KeyEvent.VK_W) {
+            w.toggle(isPressed);
+        }
+        if(keyCode == KeyEvent.VK_A) {
+            a.toggle(isPressed);
+        }
+        if(keyCode == KeyEvent.VK_S) {
+            s.toggle(isPressed);
+        }
+        if(keyCode == KeyEvent.VK_D) {
+            d.toggle(isPressed);
+        }
+        if(keyCode == KeyEvent.VK_Q) {
+            q.toggle(isPressed);
+        }
+        if(keyCode == KeyEvent.VK_E) {
+            e.toggle(isPressed);
         }
     }
 
-
-
-    @Override
     public void keyPressed(KeyEvent e) {
         this.toggleKey(e.getKeyCode(), true);
     }
 
-    @Override
     public void keyReleased(KeyEvent e) {
         this.toggleKey(e.getKeyCode(), false);
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) { }
+    public void keyTyped(KeyEvent e) {
+        //this.toggleKey(e.getKeyCode(), true);
+    }
 }

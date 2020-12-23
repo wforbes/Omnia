@@ -1,12 +1,15 @@
 package net.wforbes.gameState;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 public class MenuState extends GameState {
 
     private GameStateManager gsm;
+    private int pressWaitMod = 20;
+    private int keyPressTicks = 0;
+    private int tickCount = 0;
     private int currentChoice = 0;
+    private boolean pauseInput;
     private String[] options = {
             "Top-Down",
             "Platformer",
@@ -18,6 +21,7 @@ public class MenuState extends GameState {
 
     public MenuState(GameStateManager gsm) {
         this.gsm = gsm;
+
         try{//load the background resource .gif file
             //bg = new Background("/Backgrounds/menubg.gif", 1);
             //bg.setVector(-0.1, 0);//move to the left at .1 pixels
@@ -48,6 +52,38 @@ public class MenuState extends GameState {
     @Override
     public void tick() {
         //bg.update();
+        this.checkKeyInput();
+        tickCount++;
+    }
+
+    private boolean keyInputReady() {
+        return keyPressTicks % pressWaitMod == 0;
+    }
+
+    private void checkKeyInput() {
+        if (keyPressTicks > 0 && tickCount % pressWaitMod == 0) {
+            keyPressTicks = 0;
+        }
+        if(this.gsm.inputHandler.enter.isPressed() && keyInputReady()){
+            select();
+        }
+
+        if(this.gsm.inputHandler.up.isPressed() && keyInputReady()){
+            currentChoice--;
+            if(currentChoice == -1){
+                currentChoice = options.length - 1;
+            }
+            keyPressTicks++;
+        }
+
+        if(this.gsm.inputHandler.down.isPressed() && keyInputReady()){
+            currentChoice++;
+            if(currentChoice == options.length){
+                currentChoice = 0;
+            }
+            keyPressTicks++;
+        }
+
     }
 
     @Override
@@ -88,36 +124,5 @@ public class MenuState extends GameState {
         if(currentChoice == 3){
             System.exit(0);
         }
-    }
-
-    @Override
-    public void keyPressed(int k) {
-        if(k == KeyEvent.VK_ENTER){
-            select();
-        }
-
-        if(k == KeyEvent.VK_LEFT){
-            currentChoice--;
-            if(currentChoice == -1){
-                currentChoice = options.length - 1;
-            }
-        }
-
-        if(k == KeyEvent.VK_RIGHT){
-            currentChoice++;
-            if(currentChoice == options.length){
-                currentChoice = 0;
-            }
-        }
-    }
-
-    @Override
-    public void keyReleased(int k) {
-
-    }
-
-    @Override
-    public void keyTyped(int k) {
-
     }
 }

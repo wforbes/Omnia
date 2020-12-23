@@ -1,22 +1,23 @@
 package net.wforbes.entity;
 
+import net.wforbes.gameState.TopDownState;
 import net.wforbes.gui.Font;
-import net.wforbes.input.InputHandler;
 import net.wforbes.graphics.Colors;
 import net.wforbes.graphics.Screen;
+import net.wforbes.input.InputHandler;
 import net.wforbes.level.Level;
 
 public class Player extends Mob{
-    private InputHandler input;
+    private InputHandler inputHandler;
     private String username;
     private int color = Colors.get(-1, 100, 555, 543);
     private int scale = 1;
     protected boolean isSwimming = false;
     private int tickCount = 0;
 
-    public Player(Level level, int x, int y, InputHandler input, String username) {
+    public Player(Level level, int x, int y, String username, TopDownState gameState) {
         super(level, username, x, y, 1);
-        this.input = input;
+        this.inputHandler = gameState.gsm.inputHandler;
         this.username = username;
         this.canSwim = false;
     }
@@ -36,16 +37,16 @@ public class Player extends Mob{
         int xa = 0;
         int ya = 0;
 
-        if( input.up.isPressed() ){
+        if (inputHandler.up.isPressed() || inputHandler.w.isPressed()){
             ya--;
         }
-        if( input.down.isPressed() ){
+        if (inputHandler.down.isPressed() || inputHandler.s.isPressed()){
             ya++;
         }
-        if( input.left.isPressed() ){
+        if (inputHandler.left.isPressed() || inputHandler.a.isPressed()){
             xa--;
         }
-        if( input.right.isPressed() ){
+        if (inputHandler.right.isPressed() || inputHandler.d.isPressed()){
             xa++;
         }
         if(xa != 0 || ya != 0){

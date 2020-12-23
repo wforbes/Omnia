@@ -5,8 +5,6 @@ import net.wforbes.entity.Player;
 import net.wforbes.gameState.GameStateManager;
 import net.wforbes.graphics.Colors;
 import net.wforbes.graphics.Screen;
-import net.wforbes.graphics.SpriteSheet;
-import net.wforbes.input.InputHandler;
 import net.wforbes.level.Level;
 import net.wforbes.gui.Font;
 
@@ -14,16 +12,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 
-public class Game extends Canvas implements Runnable{
+public class Game extends Canvas implements Runnable {
 
     public static final long serialVersionUID = 1L;
 
     public static JFrame frame;
     public static final String GAME_FRAME_NAME = "Omnia <0.0.1>";
-    //public static final int WIDTH = 160;
-    //public static final int HEIGHT = 160;
     public static final int WIDTH = 320;
     public static final int HEIGHT = 240;
     public static final int SCALE = 4; //To easily change the size of the window by increments
@@ -42,7 +37,6 @@ public class Game extends Canvas implements Runnable{
 
     private GameStateManager gsm;
     private Screen screen;
-    private InputHandler input;
     private Level level;
     private Player player;
     private Enemy enemy;
@@ -142,17 +136,16 @@ public class Game extends Canvas implements Runnable{
     public void init()
     {
         this.image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-        this.pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
-        this.colors = new int[6 * 6 * 6];
-        this.initColors();
+        //this.pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        //this.colors = new int[6 * 6 * 6];
+        //this.initColors();
         this.graphics2D = (Graphics2D) image.getGraphics();
-        gsm = new GameStateManager();
-
-        screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
+        //screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
+        gsm = new GameStateManager(this);
+        //input = new InputHandler(this, gsm);
 
         //TODO: Move these to TopDownState
         /*
-        input = new InputHandler(this);
         level = new Level("/test_level.png");
 
         player = new Player(level, 10, 10, input, "ghosty");
@@ -161,21 +154,6 @@ public class Game extends Canvas implements Runnable{
         enemy = new Enemy(level, 32, 32, "skele");
         level.addEntity(enemy);
         */
-    }
-
-    private void initColors()
-    {
-        int i = 0;
-        for(int r = 0; r < 6; r++){
-            for(int g = 0; g < 6; g++){
-                for(int b = 0; b < 6; b++){
-                    int rr = ( r * 255 / 5);
-                    int gg = ( g * 255 / 5);
-                    int bb = ( b * 255 / 5);
-                    colors[i++] = rr << 16 | gg << 8 | bb;
-                }
-            }
-        }
     }
 
     public void tick()
@@ -199,7 +177,7 @@ public class Game extends Canvas implements Runnable{
         this.renderVersionText();
          */
 
-        this.setPixelColorsFromScreen();
+        //this.setPixelColorsFromScreen();
         this.drawToScreen();
     }
 
@@ -216,6 +194,7 @@ public class Game extends Canvas implements Runnable{
         return true;
     }
 
+    /*
     private void renderTiles()
     {
         int xOffset = player.x - (screen.getWidth()/2);
@@ -238,13 +217,14 @@ public class Game extends Canvas implements Runnable{
             }
         }
     }
-
+    */
     private void drawToScreen()
     {
-        this.graphics = bufferStrategy.getDrawGraphics();
+        this.graphics = this.bufferStrategy.getDrawGraphics();
         this.graphics.fillRect(0, 0, getWidth(), getHeight() );
         this.graphics.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         this.graphics.dispose();
         this.bufferStrategy.show();
     }
+
 }
