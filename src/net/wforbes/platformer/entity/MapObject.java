@@ -57,17 +57,23 @@ public abstract class MapObject {
 		return new Rectangle( (int) x - cwidth, (int)y - cheight, cwidth, cheight);
 	}
 	
-	public void calculateCorners(double x, double y){
+	public boolean calculateCorners(double x, double y){
 		
 		int leftTile = (int)(x - cwidth / 2) / tileSize;
 		int rightTile = (int)(x + cwidth / 2 - 1) / tileSize;
-		int topTile =(int)(y - cheight / 2) / tileSize;
+		int topTile = (int)(y - cheight / 2) / tileSize;
 		int bottomTile = (int)(y + cheight / 2 - 1) / tileSize;
 
-		System.out.println(topTile);
-		System.out.println(leftTile);
-		System.out.println(rightTile);
-		System.out.println(bottomTile);
+
+		//System.out.println("leftTile: " + leftTile);
+		//System.out.println("rightTile: " + rightTile);
+		//System.out.println("topTile: " + topTile);
+		//System.out.println("bottomTile: " + bottomTile);
+		//System.out.println("Row Upper: " + tileMap.getMapRowUpperBound());
+		//check if object fell out of bounds downward
+		if (bottomTile > tileMap.getMapRowUpperBound() - 1) {
+			return false;
+		}
 
 		int tl = tileMap.getType(topTile, leftTile);
 		int tr = tileMap.getType(topTile, rightTile);
@@ -78,9 +84,10 @@ public abstract class MapObject {
 		topRight = tr == Tile.BLOCKED;
 		bottomLeft = bl == Tile.BLOCKED;
 		bottomRight = br == Tile.BLOCKED;
+		return true;
 	}
 	
-	public void checkTileMapCollision(){
+	public char checkTileMapCollision(){
 		
 		currCol = (int)x / tileSize;
 		currRow = (int)y / tileSize;
@@ -91,7 +98,9 @@ public abstract class MapObject {
 		xtemp = x;
 		ytemp = y;
 		
-		calculateCorners(x, ydest);
+		if(!calculateCorners(x, ydest)) {
+			return 'y';
+		}
 		
 		//NOTE 1: Break each of these 'if(){if(){}}' type expressions into helper methods called
 		//		checkCollisionSide() or something, they all use: dx/dy; top/bottomRight/Left,
@@ -123,7 +132,9 @@ public abstract class MapObject {
 		}//end if dy is greater than zero
 		
 		
-		calculateCorners(xdest, y);
+		if(!calculateCorners(xdest, y)) {
+			return 'x';
+		}
 		//see NOTE 1
 		if(dx < 0){
 			if(topLeft || bottomLeft){
@@ -151,6 +162,7 @@ public abstract class MapObject {
 				falling = true;
 			}
 		}
+		return '_';
 	}
 	
 	public int getx(){ return (int)x; }

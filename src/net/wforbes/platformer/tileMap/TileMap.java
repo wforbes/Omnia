@@ -123,6 +123,12 @@ public class TileMap {
 		int c = rc % numTilesAcross;
 		return tiles[r][c].getType();
 	}
+	public int getMapRowUpperBound() {
+		return map.length;
+	}
+	public int getMapColUpperBound(int row) {
+		return map[row].length;
+	}
 	public void setTween(double tween){
 		this.tween = tween;
 	}

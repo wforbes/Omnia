@@ -11,6 +11,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static java.lang.System.exit;
+
 public class Player extends MapObject{
 
 	private PlatformerState gs;
@@ -208,7 +210,9 @@ public class Player extends MapObject{
 		this.checkKeyInput();
 		//update position
 		getNextPosition();
-		checkTileMapCollision();
+		if(checkTileMapCollision() == 'y') {
+			exit(0);
+		}
 		setPosition(xtemp, ytemp);
 
 		//stop scratching if scratching animation has played once
