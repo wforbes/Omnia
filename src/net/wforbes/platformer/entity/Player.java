@@ -11,8 +11,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static java.lang.System.exit;
-
 public class Player extends MapObject{
 
 	private PlatformerState gs;
@@ -23,7 +21,7 @@ public class Player extends MapObject{
 	private int maxHealth;
 	private int fire;
 	private int maxFire;
-	private boolean dead;
+	public boolean isDead;
 	private boolean flinching;
 	private int flinchTimer;
 
@@ -93,6 +91,7 @@ public class Player extends MapObject{
 		jumpStart = -4.8;
 		stopJumpSpeed = 0.3;
 
+		isDead = false;
 		facingRight = true;// (apparently this isnt important ...)
 		health = maxHealth = 5;
 		//fire (spells)
@@ -211,7 +210,8 @@ public class Player extends MapObject{
 		//update position
 		getNextPosition();
 		if(checkTileMapCollision() == 'y') {
-			exit(0);
+			this.isDead = true;
+			return;
 		}
 		setPosition(xtemp, ytemp);
 

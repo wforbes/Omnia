@@ -10,7 +10,7 @@ public class GameStateManager {
     public InputHandler inputHandler;
     private ArrayList<GameState> gameStates;
     private int currentState;
-    protected static final int MENUSTATE = 0;
+    public static final int MENUSTATE = 0;
     public static final int TOPDOWNSTATE = 1;
     public static final int PLATFORMERSTATE = 2;
     public static final int INFOSTATE = 3;
@@ -27,6 +27,9 @@ public class GameStateManager {
     public void setState(int state) {
         this.currentState = state;
         this.gameStates.get(currentState).init();
+    }
+    public void resetState(int state) {
+        this.gameStates.get(state).reset();
     }
 
     public void tick(){

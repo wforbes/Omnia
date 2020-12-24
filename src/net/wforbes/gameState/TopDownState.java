@@ -105,4 +105,6 @@ public class TopDownState extends GameState{
             }
         }
     }
+
+    public void reset() {}
 }

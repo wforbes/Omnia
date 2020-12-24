@@ -1,13 +1,15 @@
 package net.wforbes.gameState;
 
+import net.wforbes.platformer.tileMap.Background;
+
 import java.awt.*;
 
 public class MenuState extends GameState {
 
     private GameStateManager gsm;
-    private int lastPressTick = 0;
-    private int tickCount = 0;
-    private int currentChoice = 0;
+    private int lastPressTick;
+    private int tickCount;
+    private int currentChoice;
     private String[] options = {
             "Top-Down",
             "Platformer",
@@ -15,14 +17,14 @@ public class MenuState extends GameState {
             "Quit"
     };
     private Font titleFont, subTitleFont, subTitleFont2, font;
-    //private Background bg;
+    private Background bg;
 
     public MenuState(GameStateManager gsm) {
         this.gsm = gsm;
 
         try{//load the background resource .gif file
-            //bg = new Background("/Backgrounds/menubg.gif", 1);
-            //bg.setVector(-0.1, 0);//move to the left at .1 pixels
+            bg = new Background("/Backgrounds/menubg.gif", 1);
+            bg.setVector(-0.1, 0);//move to the left at .1 pixels
 
             //font for Naturalist Engine title
             titleFont = new Font("Century Gothic", Font.PLAIN, 25);
@@ -44,12 +46,14 @@ public class MenuState extends GameState {
 
     @Override
     public void init() {
-
+        this.lastPressTick = 0;
+        this.tickCount = 0;
+        this.currentChoice = 0;
     }
 
     @Override
     public void tick() {
-        //bg.update();
+        bg.update();
         if (keyInputReady()) this.checkKeyInput();
         tickCount++;
     }
@@ -85,15 +89,12 @@ public class MenuState extends GameState {
 
     @Override
     public void render(Graphics2D graphics2D) {
-        graphics2D.setColor(Color.WHITE);
+        bg.draw(graphics2D);
+        graphics2D.setColor(Color.BLACK);
         graphics2D.setFont(subTitleFont2);
         graphics2D.drawString("subModern studios presents:", 30, 60);
-
-        graphics2D.setColor(Color.WHITE);
         graphics2D.setFont(titleFont);
         graphics2D.drawString("Omnia Game Engine", 30, 85);
-
-        graphics2D.setColor(Color.WHITE);
         graphics2D.setFont(subTitleFont);
         graphics2D.drawString("alpha version 0.0.1", 225, 100);
 
@@ -122,4 +123,5 @@ public class MenuState extends GameState {
             System.exit(0);
         }
     }
+    public void reset() {}
 }
