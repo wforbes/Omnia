@@ -1,12 +1,10 @@
 package net.wforbes.game;
 
-import net.wforbes.entity.Enemy;
-import net.wforbes.entity.Player;
 import net.wforbes.gameState.GameStateManager;
-import net.wforbes.graphics.Colors;
-import net.wforbes.graphics.Screen;
-import net.wforbes.level.Level;
-import net.wforbes.gui.Font;
+import net.wforbes.topDown.entity.Enemy;
+import net.wforbes.topDown.entity.Player;
+import net.wforbes.topDown.graphics.Screen;
+import net.wforbes.topDown.level.Level;
 
 import javax.swing.*;
 import java.awt.*;

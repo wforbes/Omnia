@@ -6,6 +6,14 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/res/levels" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/res/backgrounds" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/res/hud" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/res/maps" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/res/music" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/res/sfx" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/res/splash" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/res/sprites" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/res/tilesets" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

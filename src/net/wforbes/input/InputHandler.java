@@ -1,13 +1,14 @@
 package net.wforbes.input;
 
 import net.wforbes.game.Game;
-import net.wforbes.gameState.GameStateManager;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class InputHandler implements KeyListener
 {
+    public Key space = new Key();
+    public Key shift = new Key();
     public Key up = new Key();
     public Key down = new Key();
     public Key left = new Key();
@@ -19,6 +20,7 @@ public class InputHandler implements KeyListener
     public Key d = new Key();
     public Key q = new Key();
     public Key e = new Key();
+    public Key m = new Key();
 
 
     public InputHandler(Game game) {
@@ -30,20 +32,29 @@ public class InputHandler implements KeyListener
     {
         private int numTimesPressed = 0;
         private boolean pressed = false;
+        private boolean released = false;
 
         public int getNumTimesPressed(){ return numTimesPressed; }
 
         public boolean isPressed(){ return pressed; }
+        public boolean isReleased() { return released; }
 
         public void toggle(boolean isPressed)
         {
             pressed = isPressed;
+            released = !pressed;
             if(isPressed)
                 numTimesPressed++;
         }
     }
     public void toggleKey(int keyCode, boolean isPressed)
     {
+        if(keyCode == KeyEvent.VK_SPACE) {
+            space.toggle(isPressed);
+        }
+        if(keyCode == KeyEvent.VK_SHIFT) {
+            shift.toggle(isPressed);
+        }
         if(keyCode == KeyEvent.VK_UP){
             up.toggle(isPressed);
         }
@@ -76,6 +87,9 @@ public class InputHandler implements KeyListener
         }
         if(keyCode == KeyEvent.VK_E) {
             e.toggle(isPressed);
+        }
+        if(keyCode == KeyEvent.VK_M) {
+            m.toggle(isPressed);
         }
     }
 
