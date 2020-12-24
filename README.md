@@ -16,8 +16,9 @@ ___
     * [X] **Top-Down: Player & Movement**: Add Entity, Player, Mob, Enemy classes. Successfully move the Player around a large level.
     * [X] **Top-Down: Environment Collision**: Add collision logic between the player and solid or water tiles
     * [X] **Top-Down: Mob to Mob Collision**: Add collision logic between mobs so they can't pass through each other.
-    * [ ] **Game States**: Add logic that allows for running the Top-Down, Platformer, or other game states
-        * [ ] Develop a menu system that can open either Top-Down or Platformer game states
+    * [X] **Game States**: Add logic that allows for running the Top-Down, Platformer, or other game states
+        * [X] Develop a menu system that can open either Top-Down or Platformer game states
+    * [X] **Platformer: Add Code**: Add all existing code to run the Platformer game engine and ensure it works
     * [ ] **Game Pause**: Add logic that allows for pausing game play
     * [ ] **Game State Swapping**: Add logic that allows for swapping between the Top-Down and Platformer game states at runtime.
     * [ ] **Console Text Box UI**: Add the GUI for a text box which accepts user input and displays game messages into it
