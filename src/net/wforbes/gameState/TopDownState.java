@@ -1,12 +1,14 @@
 package net.wforbes.gameState;
 
-import net.wforbes.entity.Enemy;
-import net.wforbes.entity.Player;
-import net.wforbes.graphics.Colors;
-import net.wforbes.graphics.Screen;
-import net.wforbes.graphics.SpriteSheet;
-import net.wforbes.gui.Font;
-import net.wforbes.level.Level;
+import net.wforbes.game.Game;
+import net.wforbes.topDown.entity.Enemy;
+import net.wforbes.topDown.entity.Player;
+import net.wforbes.topDown.graphics.Colors;
+import net.wforbes.topDown.graphics.Screen;
+import net.wforbes.topDown.graphics.SpriteSheet;
+import net.wforbes.topDown.gui.Font;
+import net.wforbes.topDown.gui.GUI;
+import net.wforbes.topDown.level.Level;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,8 +18,6 @@ public class TopDownState extends GameState{
 
     private BufferedImage image;
     private Graphics2D graphics2D;
-    public static final int WIDTH = 320;
-    public static final int HEIGHT = 240;
     private Screen screen;
     private int[] pixels;
     private int[] colors;
@@ -25,6 +25,7 @@ public class TopDownState extends GameState{
     private Level level;
     private Player player;
     private Enemy enemy;
+    private GUI gui;
 
 
     public TopDownState(GameStateManager gsm)
@@ -36,12 +37,12 @@ public class TopDownState extends GameState{
     @Override
     public void init()
     {
-        this.image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        this.image = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_RGB);
         this.pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
         this.colors = new int[6 * 6 * 6];
         this.initColors();
-        //this.graphics2D = (Graphics2D) image.getGraphics();
-        this.screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
+
+        this.screen = new Screen(Game.WIDTH, Game.HEIGHT, new SpriteSheet("/sprite_sheet.png"));
         level = new Level("/test_level.png");
 
         player = new Player(level, 10, 10, "ghosty", this);
@@ -49,6 +50,8 @@ public class TopDownState extends GameState{
 
         enemy = new Enemy(level, 32, 32, "skele");
         level.addEntity(enemy);
+
+        gui = new GUI();
     }
 
     private void initColors()
@@ -73,12 +76,11 @@ public class TopDownState extends GameState{
 
     @Override
     public void render(Graphics2D graphics2D) {
-        //graphics2D = this.graphics2D;
         this.renderTiles();
         level.renderEntities(screen);
         this.renderVersionText();
         this.setPixelColorsFromScreen();
-        graphics2D.drawImage(this.image, 0, 0, WIDTH, HEIGHT, null);
+        graphics2D.drawImage(this.image, 0, 0, Game.WIDTH, Game.HEIGHT, null);
     }
 
     private void renderTiles()

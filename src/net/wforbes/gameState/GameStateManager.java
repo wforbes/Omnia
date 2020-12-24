@@ -7,6 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class GameStateManager {
+    public InputHandler inputHandler;
     private ArrayList<GameState> gameStates;
     private int currentState;
     protected static final int MENUSTATE = 0;
@@ -14,13 +15,12 @@ public class GameStateManager {
     public static final int PLATFORMERSTATE = 2;
     public static final int INFOSTATE = 3;
 
-    public InputHandler inputHandler;
-
     public GameStateManager(Game game) {
         this.inputHandler = new InputHandler(game);
         gameStates = new ArrayList<>();
         gameStates.add(new MenuState(this));
         gameStates.add(new TopDownState(this));
+        gameStates.add(new PlatformerState(this));
         this.setState(MENUSTATE);
     }
 
