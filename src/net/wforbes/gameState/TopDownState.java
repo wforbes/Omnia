@@ -8,6 +8,7 @@ import net.wforbes.topDown.graphics.Screen;
 import net.wforbes.topDown.graphics.SpriteSheet;
 import net.wforbes.topDown.gui.Font;
 import net.wforbes.topDown.gui.GUI;
+import net.wforbes.topDown.gui.PauseMenu;
 import net.wforbes.topDown.level.Level;
 
 import java.awt.*;
@@ -22,21 +23,31 @@ public class TopDownState extends GameState{
     private int[] pixels;
     private int[] colors;
     public GameStateManager gsm;
+    public int tickCount = 0;
     private Level level;
     private Player player;
     private Enemy enemy;
     private GUI gui;
+    private boolean isPaused;
+    private PauseMenu pauseMenu;
+    public int lastUnpauseTick = 0;
 
 
     public TopDownState(GameStateManager gsm)
     {
+        System.out.println(gsm);
         this.gsm = gsm;
         this.init();
+    }
+
+    public GameStateManager getGsm() {
+        return gsm;
     }
 
     @Override
     public void init()
     {
+        this.isPaused = false;
         this.image = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_RGB);
         this.pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
         this.colors = new int[6 * 6 * 6];
@@ -51,7 +62,8 @@ public class TopDownState extends GameState{
         enemy = new Enemy(level, 32, 32, "skele");
         level.addEntity(enemy);
 
-        gui = new GUI();
+        gui = new GUI(player, level, screen);
+        pauseMenu = new PauseMenu(this);
     }
 
     private void initColors()
@@ -71,16 +83,38 @@ public class TopDownState extends GameState{
 
     @Override
     public void tick() {
+        if(isPaused) {
+            if (!pauseMenu.isVisible()) {
+                this.pauseMenu.show();
+            }
+            pauseMenu.tick();
+            return;
+        }
         level.tick();
+        tickCount++;
     }
 
     @Override
     public void render(Graphics2D graphics2D) {
         this.renderTiles();
-        level.renderEntities(screen);
+        this.level.renderEntities(screen);
+        this.gui.render(screen);
         this.renderVersionText();
         this.setPixelColorsFromScreen();
         graphics2D.drawImage(this.image, 0, 0, Game.WIDTH, Game.HEIGHT, null);
+        if (pauseMenu.isVisible()) {
+            pauseMenu.render(graphics2D);
+        }
+    }
+
+    public void pause() {
+        this.isPaused = true;
+        this.pauseMenu.show();
+    }
+    public void unPause() {
+        this.isPaused = false;
+        this.lastUnpauseTick = this.tickCount;
+        this.pauseMenu.hide();
     }
 
     private void renderTiles()

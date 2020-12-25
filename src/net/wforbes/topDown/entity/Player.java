@@ -8,32 +8,46 @@ import net.wforbes.topDown.gui.Font;
 import net.wforbes.topDown.level.Level;
 
 public class Player extends Mob{
+    private TopDownState gameState;
     private InputHandler inputHandler;
     private String username;
     private int color = Colors.get(-1, 100, 555, 543);
     private int scale = 1;
+    public int xOffset;
+    public int yOffset;
     protected boolean isSwimming = false;
     private int tickCount = 0;
 
     public Player(Level level, int x, int y, String username, TopDownState gameState) {
         super(level, username, x, y, 1);
+        this.gameState = gameState;
         this.inputHandler = gameState.gsm.inputHandler;
         this.username = username;
-        this.canSwim = false;
-    }
-
-    @Override
-    public void tick() {
-        checkMovement();
-        tickCount++;
+        this.canSwim = true;
     }
 
     public String getName(){
         return this.username;
     }
 
-    private void checkMovement() {
+    @Override
+    public void tick() {
+        checkCommands();
+        checkMovement();
+        tickCount++;
+    }
 
+    private void checkCommands() {
+        if(inputHandler.esc.isPressed() && pauseIsReady()) {
+            inputHandler.resetKeys();
+            gameState.pause();
+        }
+    }
+    private boolean pauseIsReady() {
+        return gameState.tickCount - gameState.lastUnpauseTick > 20;
+    }
+
+    private void checkMovement() {
         int xa = 0;
         int ya = 0;
 
@@ -90,8 +104,8 @@ public class Player extends Mob{
         }
 
         int modifier = 8 * scale;
-        int xOffset = x - modifier/2;
-        int yOffset = y - modifier/2 - 4;
+        xOffset = x - modifier/2;
+        yOffset = y - modifier/2 - 4;
 
         if(isSwimming){
             int waterColor = 0;

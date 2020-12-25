@@ -124,4 +124,5 @@ public class MenuState extends GameState {
         }
     }
     public void reset() {}
+    public void pause() {}
 }

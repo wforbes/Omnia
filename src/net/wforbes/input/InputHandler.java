@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 
 public class InputHandler implements KeyListener
 {
+    public Key esc = new Key("esc");
     public Key space = new Key("space");
     public Key shift = new Key("shift");
     public Key up = new Key("up");
@@ -59,6 +60,7 @@ public class InputHandler implements KeyListener
         }
     }
     public void resetKeys() {
+        esc.reset();
         space.reset();
         shift.reset();
         up.reset();
@@ -77,6 +79,9 @@ public class InputHandler implements KeyListener
 
     public void toggleKey(int keyCode, boolean isPressed)
     {
+        if(keyCode == KeyEvent.VK_ESCAPE) {
+            esc.toggle(isPressed);
+        }
         if(keyCode == KeyEvent.VK_SPACE) {
             space.toggle(isPressed);
         }

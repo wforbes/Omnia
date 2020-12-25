@@ -6,8 +6,8 @@ public class Screen {
     private int height;
     private SpriteSheet sheet;
     private int[] pixels;
-    private int xOffset;
-    private int yOffset;
+    public int xOffset;
+    public int yOffset;
     private static final byte BIT_MIRROR_X = 0x01;
     private static final byte BIT_MIRROR_Y = 0x02;
 

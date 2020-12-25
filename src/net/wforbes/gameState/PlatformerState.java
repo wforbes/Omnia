@@ -50,7 +50,7 @@ public class PlatformerState extends GameState {
         enemies.add(s);
 
         hud = new HUD(player);
-        deathMenu = new DeathMenu(this.gsm);
+        deathMenu = new DeathMenu(this);
         //bgMusic = new AudioPlayer("/Music/bgMusic1.mp3");
         //bgMusic.play();
     }
@@ -62,7 +62,7 @@ public class PlatformerState extends GameState {
         player.update();
         if (player.isDead) {
             if (!deathMenu.isVisible()) {
-                displayDeathMenu();
+                this.deathMenu.show();
             } else {
                 deathMenu.tick();
             }
@@ -96,10 +96,6 @@ public class PlatformerState extends GameState {
         if(gsm.inputHandler.e.isPressed()) player.setFiring();
         if(gsm.inputHandler.shift.isPressed()) player.setPhasing(true);
         if(gsm.inputHandler.m.isPressed()) spawnEnemy();
-    }
-
-    private void displayDeathMenu() {
-        this.deathMenu.show();
     }
 
     @Override
@@ -144,5 +140,10 @@ public class PlatformerState extends GameState {
 
     public void reset() {
         this.init();
+    }
+
+    @Override
+    public void pause() {
+        //TODO: implement expanded abstract menu and add pause feature
     }
 }

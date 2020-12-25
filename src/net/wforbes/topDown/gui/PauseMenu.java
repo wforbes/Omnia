@@ -1,33 +1,37 @@
-package net.wforbes.platformer.ui;
+package net.wforbes.topDown.gui;
 
 import net.wforbes.game.Game;
 import net.wforbes.gameState.GameStateManager;
-import net.wforbes.gameState.PlatformerState;
+import net.wforbes.gameState.TopDownState;
 
+import java.awt.Font;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 
-public class DeathMenu {
+public class PauseMenu {
 
     private boolean visible;
-    private Font headingFont;
+    private java.awt.Font headingFont;
     private String heading;
     private Font optionsFont;
     private String[] options;
-    private PlatformerState gameState;
+    private TopDownState gameState;
     private int lastPressTick = 0;
     private int tickCount = 0;
     private int currentChoice = 0;
 
-
-    public DeathMenu(PlatformerState gameState) {
+    public PauseMenu(TopDownState gameState) {
         this.gameState = gameState;
         visible = false;
         headingFont = new Font("Century Gothic", Font.PLAIN, 20);
-        heading = "You died!";
+        heading = "Pause Menu";
 
         optionsFont = new Font("Century Gothic", Font.PLAIN, 14);
-        options = new String[]{"Try Again", "Return to Menu", "Quit Game"};
+        options = new String[]{"Resume", "Return to Menu", "Quit Game"};
+    }
+
+    public int getTickCount() {
+        return tickCount;
     }
 
     public boolean isVisible() {
@@ -47,12 +51,16 @@ public class DeathMenu {
         tickCount++;
     }
 
-    private boolean keyInputReady() {
+    public boolean keyInputReady() {
         int waitTicks = 20;
         return tickCount - lastPressTick > waitTicks || lastPressTick == 0;
     }
 
     private void checkKeyInput() {
+        if(gameState.gsm.inputHandler.esc.isPressed() && keyInputReady()){
+            gameState.unPause();
+        }
+
         if(gameState.gsm.inputHandler.enter.isPressed() && keyInputReady()){
             select();
             lastPressTick = tickCount;
@@ -79,7 +87,7 @@ public class DeathMenu {
     private void select() {
         gameState.gsm.inputHandler.resetKeys(); //To avoid double presses
         if(currentChoice == 0){
-            gameState.gsm.resetState(GameStateManager.PLATFORMERSTATE);
+            gameState.unPause();
         }
         if(currentChoice == 1){
             gameState.gsm.setState(GameStateManager.MENUSTATE);
@@ -87,6 +95,12 @@ public class DeathMenu {
         if(currentChoice == 2){
             System.exit(0);
         }
+    }
+
+    private void reset() {
+        lastPressTick = 0;
+        tickCount = 0;
+        currentChoice = 0;
     }
 
     public void render(Graphics2D g) {
