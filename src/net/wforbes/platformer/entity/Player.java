@@ -92,10 +92,10 @@ public class Player extends MapObject{
 		stopJumpSpeed = 0.3;
 
 		isDead = false;
-		facingRight = true;// (apparently this isnt important ...)
+		facingRight = true;//TODO:apparently this isn't important ...
 		health = maxHealth = 5;
 		//fire (spells)
-		fire = maxFire = 2500;
+		fire = maxFire = 25000;
 		fireCost = 200;
 		fireBallDamage = 5;
 		fireBalls = new ArrayList<FireBall>();
@@ -202,7 +202,7 @@ public class Player extends MapObject{
 	}
 
 	private void regenResources(){
-		fire += 5;
+		fire += 50;
 	}
 
 	public void update(){
