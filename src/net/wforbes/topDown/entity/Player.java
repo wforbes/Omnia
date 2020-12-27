@@ -17,6 +17,8 @@ public class Player extends Mob{
     public int yOffset;
     protected boolean isSwimming = false;
     private int tickCount = 0;
+    private int lastInputCommandTick = 0;
+    private boolean chatInputIsOpen = false;
 
     public Player(Level level, int x, int y, String username, TopDownState gameState) {
         super(level, username, x, y, 1);
@@ -42,9 +44,19 @@ public class Player extends Mob{
             inputHandler.resetKeys();
             gameState.pause();
         }
+
+        if(inputHandler.enter.isPressed() && keyInputIsReady()) {
+            this.lastInputCommandTick = this.tickCount;
+            this.chatInputIsOpen = true;
+            gameState.openChatInput();
+        }
     }
     private boolean pauseIsReady() {
         return gameState.tickCount - gameState.lastUnpauseTick > 20;
+    }
+
+    private boolean keyInputIsReady() {
+        return gameState.tickCount - this.lastInputCommandTick > 20;
     }
 
     private void checkMovement() {
