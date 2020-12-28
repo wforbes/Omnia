@@ -5,6 +5,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class Renderer {
 
@@ -66,19 +70,26 @@ public class Renderer {
         if(fps == 0) {
             secondCount++;
         }
-        context.fillText("Second Count: " + secondCount + "." + (System.currentTimeMillis() - lastTimer), 5, 255);
+        context.fillText("Exact second Count: " + secondCount + "." + (System.currentTimeMillis() - lastTimer), 5, 255);
+
+        Date date = new Date();
+        date.setTime(lastTimer);
+        context.fillText("date.toString(): " + date.toString(), 5, 275);
+
+        //String formattedDate = DateFormat.getDateInstance(DateFormat.FULL, Locale.ENGLISH).format(lastTimer);
+        //context.fillText("formattedDate: " + formattedDate, 5, 295);
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa");
+        String formattedDate = dateFormat.format(lastTimer);
+        context.fillText("formattedDate: " + formattedDate, 5, 295);
+
+
 
 
         shouldRender = false;
-
-        //context.fillText("sslf*npt: " + (secondsSinceLastFrame*nsPerTick), 5, 255);
-
-
-
-        //context.strokeText("This is a stroked Text with Max Width 300 px", 10, 100, 300);
         // Draw a filled Text
-        //context.fillText(("tickCount: " + tickCount), 10, 50);
-        //context.fillText("This is a filled Text with Max Width 400 px", 10, 200, 400);
+        //context.fillText(("tickCount: " + tickCount), 50, 50);
+        //Can use stroke text to embolden text
+        //context.strokeText("tickCount: " + tickCount, 50, 50);
 
 
         /*
