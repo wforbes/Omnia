@@ -4,3 +4,4 @@
 out/production/*
 .idea
 *.iml
+target/
