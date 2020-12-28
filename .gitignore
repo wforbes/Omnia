@@ -1,7 +1,7 @@
 
 *.class
 *.kotlin_module
-out/production/*
+out/
 .idea
 *.iml
 target/
