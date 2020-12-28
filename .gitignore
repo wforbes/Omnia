@@ -1,8 +1,11 @@
 
 *.class
 *.kotlin_module
+out/production/*
+.idea/*
 out/production/Omnia/sprite_sheet.png
 out/production/Omnia/levels/small_test_level.png
 out/production/Omnia/small_test_level.png
 out/production/Omnia/levels/test_level.png
 out/production/Omnia/test_level.png
+
