@@ -16,9 +16,6 @@ This is truly a passion project. Instead of using a sophisticated game engine li
 I thought I would get the most out of developing the engine myself by reading/watching game tutorials/devlogs, getting 
 inspiration from game libraries, and inventing systems myself. 
 
-Back in 2013 I completed two Java game development tutorials from YouTube which have served as the backbone of getting 
-the game started. One was a Top-Down
-
 ### Goals
 My core goals are focused on:
   * Developing a homegrown game engine that's enjoyable to code in and expandable to the limits of imagination.
@@ -26,12 +23,25 @@ My core goals are focused on:
   immersive/dynamic NPC interactions, and fun online interactions with other players. 
   * Designing a game world that's visually and interactively interesting, weird, exciting, and enjoyable to play within.
   * Writing a game story that feels like you're going on an exciting journey that will not only save the world but the 
-  entire space-time continuum of your own universe but all other parallel universes.
+  entire space-time continuum of your own universe and all other parallel universes.
 
 ## Story
 Some of the first concepts of the world can be found here: [wforbes.net/omnia-story-notes](https://wforbes.net/omnia-story-notes)
 
-___
+---
+
+**Project History:** 
+Back in 2013 I completed two Java game development tutorials from YouTube which have served as the backbone of getting 
+the game started. One was a Top-Down game engine by [vanZeben](https://github.com/vanZeben) that mimicks the style of 
+the old gameboy pokemon games and other old RPGs like Final Fantasy. The other was a Platformer game engine by 
+[foreignguymike](https://github.com/foreignguymike). I planned to combine these engines and begin to build my own game 
+out of them while I finished my degree. Shortly after starting that endeavor I was lucky enough to be hired at my first 
+tech job working on a huge C# based web app, so my focus shifted to that style of programming. It's been 7 years now and 
+I've learned a lot about software development after working for 3 other companies. Now that I'm in a position where I 
+work from home and I'm enrolled at [WGU](https://wgu.edu) to finish my bachelor's degree; I'm dusting off this old 
+project and starting to work on it again with the hopes of being able to use it as my Senior Capstone project for 
+school.
+
 ---
 ### Starter Todo List
 * [X] ~~Resurrect [my old game engine](https://www.youtube.com/watch?v=DIMeRYfil7c&list=PLRjjchumlJl2LIs1esk_C9RPvlEf2GOLb) I worked on in 2013 based loosely on two very old tutorials:~~
@@ -72,13 +82,13 @@ more precise (float, double) figures for game logic.
     movement stops. That's ok if you're moving perpendicular to the surface, but not if you're moving diagonally against
     it. Logic should be added that checks for this diagonal movement and only restricts the perpendicular vector. The
     goal is to allow the player to slide against the colliding tile/entity in the parallel direction.
-* [ ] **Improve tile graphics**: Right now, there are only basic low resolution tiles for grass and water. These 
-tiles, and perhaps the tile system itself, needs to be improved to allow for more detailed and varied ground tiles.
-This should include a few different grass tiles, dirt tiles, grass/dirt border tiles, grass/water border tiles,   
-* [ ] **Add level structures**: Right now, there are only blank solid tiles. Tiles that show graphics for buildings,
-cliffs, caves, and other solid topography need to be added.
-* [ ] **Add platformer entrance doors**: On level structures like caves or ruins, add doors that when the player 
-collides with them the game state changes to Platformer and opens the appropriate Platformer level.
+    * [ ] **Improve tile graphics**: Right now, there are only basic low resolution tiles for grass and water. These 
+    tiles, and perhaps the tile system itself, needs to be improved to allow for more detailed and varied ground tiles.
+    This should include a few different grass tiles, dirt tiles, grass/dirt border tiles, grass/water border tiles,   
+    * [ ] **Add level structures**: Right now, there are only blank solid tiles. Tiles that show graphics for buildings,
+    cliffs, caves, and other solid topography need to be added.
+        * [ ] **Add platformer entrance doors**: On level structures like caves or ruins, add doors that when the player 
+        collides with them the game state changes to Platformer and opens the appropriate Platformer level.
     * [ ] **Implement Chat/Dialog UI Window**: Add a text box UI component that accepts typed text input from the user 
     and displays the result in the text box after typing Enter or clicking a Send button. The chat/dialog should be 
     semi-transparent so as to not block view of the level. 
@@ -89,7 +99,9 @@ collides with them the game state changes to Platformer and opens the appropriat
         time. "/setTime game (day) (hour) (minute)" should adjust the time of day to the specified day/hour/minute, if 
         hour or minute aren't provided then the beginning of the day or hour should be used. Brainstorm more useful ideas.
         * [ ] **Experiment with Chat Commands**: Experiment with different chat commands like "/say (message)" or 
-        "/shout (message)" that show up in different colors in the Chat window. "/tell (EntityName) (message)" should d 
+        "/shout (message)" that show up in different colors in the Chat window. "/tell (EntityName) (message)" should 
+        display purple text in the window and allow for direct conversation with the Entity specified in the first 
+        argument. 
     * [ ] **Experiment with chat bubbles**: Test ideas on adding a chat bubble above the player when they "/say" something
     * [ ] **Add non-combat NPC entities**: Add a couple different non-combat entities that allow for some conversation 
     and other interaction. Ideas: Quest giver, Quest participant, Merchant, Friend, Stranger, etc.
