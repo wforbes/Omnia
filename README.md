@@ -1,35 +1,162 @@
 # Omnia
+Retro 2D Role-Playing Video Game that blends the Fantasy, Sci-Fi, and Steam-Punk genres. 
 
-This is an RPG engine made so that I can practice Java, experiment with ideas, and have fun.
+For the PC, Mac, Linux, and Android platforms. Written using Java and JavaFX. 
 
-(Last updated: 12/22/2020)
+(Readme last updated: 12/27/2020)
+
+## Project
+Omnia is a 2D 'Retro' Role-Playing Game written in Java. I'm working on it so that I can practice programming in Java, 
+experiment with ideas, and have fun. My girlfriend is an author and creative writing teacher so I'll also be collaborating 
+with her for writing the game script and storyline.
+
+This is truly a passion project. Instead of using a sophisticated game engine like Unreal, Unity, Godot, or GameMaker 
+I thought I would get the most out of developing the engine myself by reading/watching game tutorials/devlogs, getting 
+inspiration from game libraries, and inventing systems myself. 
+
+Back in 2013 I completed two Java game development tutorials from YouTube which have served as the backbone of getting 
+the game started. One was a Top-Down
+
+### Goals
+My core goals are focused on:
+  * Developing a homegrown game engine that's enjoyable to code in and expandable to the limits of imagination.
+  * Building an enjoyable experience for the player that uses multiple 2D engine styles, rewarding quest experiences, 
+  immersive/dynamic NPC interactions, and fun online interactions with other players. 
+  * Designing a game world that's visually and interactively interesting, weird, exciting, and enjoyable to play within.
+  * Writing a game story that feels like you're going on an exciting journey that will not only save the world but the 
+  entire space-time continuum of your own universe but all other parallel universes.
+
+## Story
+Some of the first concepts of the world can be found here: [wforbes.net/omnia-story-notes](https://wforbes.net/omnia-story-notes)
+
 ___
 ---
-### Todo List
-* [x] Resurrect [an old game engine](https://www.youtube.com/watch?v=DIMeRYfil7c&list=PLRjjchumlJl2LIs1esk_C9RPvlEf2GOLb) I worked on in 2013 based loosely on two very old tutorials:
-    * [x] **Top-Down Tutorial**: Find my code based on [Java 2D Game Development](https://www.youtube.com/watch?v=VE7ezYCTPe4&list=PL8CAB66181A502179) by vanZeben
-    * [x] **Platformer Tutorial**: Find my code based on [Java 2D Game Programming Platformer Tutorial](https://www.youtube.com/watch?v=9dzhgsVaiSo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv) by ForeignGuyMike
-* [ ] **Playable Prototype**: Combine the two engine's code, improve it where possible and add logic for switching between the two at runtime
-    * [X] **Top-Down: Game Loop & JFrame**: Get the Game class with the game loop running and updating tps/fps.
-    * [X] **Top-Down: Screen & SpriteSheet**: Add Screen class and SpriteSheet class, successfully compile while accessing the sheet image.
-    * [X] **Top-Down: Level & Tile**: Add InputHandler class, Level class, and Tile classes. Render a small level on the Screen.
-    * [X] **Top-Down: Player & Movement**: Add Entity, Player, Mob, Enemy classes. Successfully move the Player around a large level.
-    * [X] **Top-Down: Environment Collision**: Add collision logic between the player and solid or water tiles
-    * [X] **Top-Down: Mob to Mob Collision**: Add collision logic between mobs so they can't pass through each other.
-    * [X] **Game States**: Add logic that allows for running the Top-Down, Platformer, or other game states
-        * [X] Develop a menu system that can open either Top-Down or Platformer game states
-    * [X] **Platformer: Add Code**: Add all existing code to run the Platformer game engine and ensure it works
-    * [ ] **Game Pause**: Add logic that allows for pausing game play
-    * [ ] **Game State Swapping**: Add logic that allows for swapping between the Top-Down and Platformer game states at runtime.
-    * [ ] **Console Text Box UI**: Add the GUI for a text box which accepts user input and displays game messages into it
-    * [ ] **Text Command System**: Develop a system of text commands that can be run to modify or view game information.
-    * [ ] **Networking**: Add the networking classes and successfully network two game clients on two different PCs.
-    * [ ] Successfully network two clients both running the game with both engines on two different PCs
-    * [ ] **Optimize**: Scour over the code and experiment with adjustments in it's methods and structure with the goal of reducing memory and cpu usage
-    * [ ] Research and experiment with porting the game to Android
-    * [ ] Research and experiment with porting the game to JavaScript for the browser
-    * [ ] Research and experiment with game engines like [LWJGL](https://lwjgl.org)
+### Starter Todo List
+* [X] ~~Resurrect [my old game engine](https://www.youtube.com/watch?v=DIMeRYfil7c&list=PLRjjchumlJl2LIs1esk_C9RPvlEf2GOLb) I worked on in 2013 based loosely on two very old tutorials:~~
+    * [X] ~~**Top-Down Tutorial**: Find my code based on [Java 2D Game Development](https://www.youtube.com/watch?v=VE7ezYCTPe4&list=PL8CAB66181A502179) by vanZeben~~
+    * [X] ~~**Platformer Tutorial**: Find my code based on [Java 2D Game Programming Platformer Tutorial](https://www.youtube.com/watch?v=9dzhgsVaiSo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv) by ForeignGuyMike~~
+* [X] ~~**Get the Top-Down engine running**: Ensure it works as expected and experiment with some ideas to add to it.~~ 
+    * [X] ~~**Top-Down: JFrame & Game Loop**: Get the Game class with the game loop running and updating tps/fps to the 
+    window.~~
+    * [X] ~~**Top-Down: Screen & SpriteSheet**: Add Screen class and SpriteSheet class, successfully compile while accessing
+     the sheet image.~~
+    * [X] ~~**Top-Down: Level & Tile**: Add InputHandler class, Level class, and Tile classes. Render a small level on the
+     Screen.~~
+    * [X] ~~**Top-Down: Player & Movement**: Add Entity, Player, Mob, Enemy classes. Successfully move the Player around a
+     large level.~~
+    * [X] ~~**Top-Down: Environment Collision**: Add collision logic between the player and solid or water tiles~~
+    * [X] ~~**Top-Down: Mob to Mob Collision**: Add collision logic between mobs so they can't pass through each other.~~
+* [X] ~~**Get the Platformer engine running**: Ensure it works as expected and experiment with some ideas to add to it.~~
+    * [X] ~~**Platformer: GamePanel & Game Loop**: Get the GamePanel running the Game Loop and updating/rendering.~~ 
+    * [X] ~~**Platformer: Main Menu**: Get the MenuState running the main menu when the game first launches.~~
+    * [X] ~~**Platformer: Level 1**: Get the Level1State running with the level's TileMap, player/enemy Entity, and Hud.~~
+* [X] ~~**Playable Prototype**: Combine the two engine's code. Use the GameStates for Menu, Top-Down and Platformer.~~
+    * [X] ~~**Top-Down: Pause Menu**: Add a pause menu that allows the player to go back to the Main Menu or resume gameplay.~~
+    * [X] ~~**Platformer: Death Menu**: Add a menu that appears upon player death that allows them to return to the Main 
+    Menu or try the level again.~~
+* [ ] **Implement JavaFX**(1/4): Add a JavaFX implementation of the core Game running classes to enable UI development and 
+more precise (float, double) figures for game logic.
+    * [X] ~~**Game Loop with AnimationTimer**: Test and implement the JavaFX.AnimationTimer for use with the game loop.~~
+    * [ ] **JavaFX graphics rendering**: Test and implement JavaFX graphics classes (GraphicsContext, Image, PixelReader, 
+    PixelWriter, etc.) to recreate, combine and improve on the graphics algorithms for Top-Down and Platformer namespaces
+    * [ ] **Implement game logic**: Enable all existing game logic; updating levels and entities, taking key input and
+    all other existing features.
+    * [ ] **Implement new UI for menus**: Use JavaFX features to build a simple UI for the MainMenu, PauseMenu, and 
+    DeathMenu.
+    
+## Game Development Todo Lists
+* [ ] **Top-Down GameState Tasks**:
+    * [ ] **Improve collision logic (wall sliding)**: Right now, when you collide with a solid tile or entity your 
+    movement stops. That's ok if you're moving perpendicular to the surface, but not if you're moving diagonally against
+    it. Logic should be added that checks for this diagonal movement and only restricts the perpendicular vector. The
+    goal is to allow the player to slide against the colliding tile/entity in the parallel direction.
+* [ ] **Improve tile graphics**: Right now, there are only basic low resolution tiles for grass and water. These 
+tiles, and perhaps the tile system itself, needs to be improved to allow for more detailed and varied ground tiles.
+This should include a few different grass tiles, dirt tiles, grass/dirt border tiles, grass/water border tiles,   
+* [ ] **Add level structures**: Right now, there are only blank solid tiles. Tiles that show graphics for buildings,
+cliffs, caves, and other solid topography need to be added.
+* [ ] **Add platformer entrance doors**: On level structures like caves or ruins, add doors that when the player 
+collides with them the game state changes to Platformer and opens the appropriate Platformer level.
+    * [ ] **Implement Chat/Dialog UI Window**: Add a text box UI component that accepts typed text input from the user 
+    and displays the result in the text box after typing Enter or clicking a Send button. The chat/dialog should be 
+    semi-transparent so as to not block view of the level. 
+        * [ ] **Experiment with Game Commands**: Experiment with some basic commands which will return some game 
+        information or modify the game state. These commands should be prefaced with a identifying character like '/' 
+        or ';', and accept parameters. Example: typing "/getLocation" should display the player's current X/Y coordinates. 
+        "/getTime real" should display the current real-life time, while "/getTime game" should display the current game world 
+        time. "/setTime game (day) (hour) (minute)" should adjust the time of day to the specified day/hour/minute, if 
+        hour or minute aren't provided then the beginning of the day or hour should be used. Brainstorm more useful ideas.
+        * [ ] **Experiment with Chat Commands**: Experiment with different chat commands like "/say (message)" or 
+        "/shout (message)" that show up in different colors in the Chat window. "/tell (EntityName) (message)" should d 
+    * [ ] **Experiment with chat bubbles**: Test ideas on adding a chat bubble above the player when they "/say" something
+    * [ ] **Add non-combat NPC entities**: Add a couple different non-combat entities that allow for some conversation 
+    and other interaction. Ideas: Quest giver, Quest participant, Merchant, Friend, Stranger, etc.
+        * [ ] **NPC time of day location change**: Depending on the game time, static NPCs should appear in a different 
+        static location. If they are pacing/wandering they should move to a different location and pace/wander there.
+        * [ ] **Implement NPC chat conversation**: When you approach an NPC and hail them, they should respond with text 
+        in the chat window. This chat should include trigger phrases that, when the user repeats back to them, continues
+        the conversation. Inspiration: Everquest quest dialogs.
+            * [ ] **NPC behavior change with chat**: Test trigger phrases changing the NPCs behavior.
+                * [ ] **Phases cause NPC movement changes**: Trigger phrases should be able to cause NPCs movement to 
+                change (stop wandering, wander in a different pattern, follow the Player, )
+                * [ ] **Finishing conversations open new ones**: Finishing a conversation should cause them to start a 
+                different conversation the next time they are hailed.
+                * [ ] **NPC conversations change with game time**: Depending on the game time, the NPC should react to 
+                chat conversation differently.
+        * [ ] **Implement NPC party system**: (TODO)
+        * [ ] **Add Currency system**: Add a simple inventory window that displays the amount of money the player has.
+        * [ ] **Implement Quest System**: Implement a system that allows the user to get a quest from an NPC, track the 
+        quest in a UI window, fulfill the quest's requirements (test something simple like going to a specified location
+        and talking to a different NPC), and then returning to the quest giver with the quest completed to receive a 
+        reward.
+        * [ ] **Quest Reward: Currency**: When the user finishes a quest, reward them with some money and add it to 
+        their inventory.
+        * [ ] **Implement Merchant System**: Add a system that allows the user to buy items from and sell items to 
+        Merchant NPCs by deducting or adding currency in exchange for items in the player's inventory.
+    * [ ] **Implement Player inventory UI**: (todo)
+    * [ ] **Add health/damage system**: (todo)
+    * [ ] **Implement Player Vitals Status UI**: (todo)
+    * [ ] **Implement basic combat**: (todo)
+    * [ ] **Add top-down entrance/exit doors**: On level structures like houses, stores, buildings, and castles; add 
+    outer doors that when the player collides with them the top-down level changes to the appropriate level for that 
+    structure and the player is spawned at their inner enterance/exit door.
+        * [ ] **Create house levels**: Create a few small levels that correspond to houses and buildings.
+        * [ ] **Create castle levels**: Create a few larger levels that correspond to castles and contain multiple 
+        doors to move from room levels in the castle.
+        * [ ] **Create NPCs for houses and castles**: Create some friendly NPCs to interact with in each of the house, 
+        store, building, and castle levels.
+* [ ] **Platformer GameState Tasks**: (todo)
+    * [ ] **Add friendly NPC entities**: (todo)
+    * [ ] **Implement Dialog UI**: (todo)
+    * [ ] **Add player/entity collision**: (todo)
+    * [ ] **Add health/damage system**: (todo)
+    * [ ] **Implement Player Vitals Status UI**: (todo)
+* [ ] **UI/Game-Wide Tasks**: (todo)
+    * [ ] **Implement Player Leveling/Experience System**: (todo)
+    * [ ] **Implement Player Statistics System**: (todo)
+    * [ ] **Implement Skills System**: (todo)
+    * [ ] **Implement Spells System**: (todo)
+    * [ ] **Implement Class System**: (todo)
+## Experimental / Research
 
+### Other Engines
+* [ ] **Turn-Based Game State**: Experiment with a game state that provides turn-based combat, like old Final Fantasy 
+and Pokemon games.
+
+### Networking
+* [ ] **Client-to-Client Networking**: Add the networking classes from vanZeben's tutorials and successfully network two
+game clients on two different PCs over LAN and WAN. Experiment with different configurations and implementations.
+* [ ] **Client-to-Server Networking**: Set up a simple Node.js web server on the Google Cloud and experiment with running 
+sockets between game clients and the server, updating server logic and coordinating online play. 
+* [ ] **In App Web Browser**: Explore the web browser capability provided by JavaFX.
+
+### Game Ports and Libraries
+* [ ] **Research Android Port**: Research and experiment with porting the game to Android
+* [ ] **Research browser port or JavaScript rewrite**: Research and experiment with porting/rewriting the game to JavaScript for the browser
+* [ ] **Research Java game libraries**: Research and experiment with game libraries like [FXGL](http://almasb.github.io/FXGL/), [LWJGL](https://lwjgl.org), 
+and others.
+
+## Documentation
 * [ ] **Begin a Game Design Document**
     * [ ] Brainstorm on the following topics:
         * [ ] **Define Prototype Complete**: What should the user be able to do on the game for the 'prototype' status
@@ -39,7 +166,6 @@ ___
         * [ ] **Storyline**: Define the characters and setting, the journey they go on, the problems they need to solve
         * [ ] **Education**: Pull together some basic things that the game should teach in it's educational content
 
-(more information to come soon...)
 <br>
 <br>
 <br>
