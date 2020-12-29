@@ -5,6 +5,8 @@ For the PC, Mac, Linux, and Android platforms. Written using Java and JavaFX.
 
 (Readme last updated: 12/27/2020)
 
+![Screenshots of Omnia version 0.0.1](https://wforbes.net/wp-content/uploads/2020/12/screens_v0-0-1-1024x762.png)
+
 ## Project
 Omnia is a 2D 'Retro' Role-Playing Game written in Java. I'm working on it so that I can practice programming in Java, 
 experiment with ideas, and have fun. My girlfriend is an author and creative writing teacher so I'll also be collaborating 
