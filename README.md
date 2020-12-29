@@ -14,7 +14,7 @@ with her for writing the game script and storyline.
 
 This is truly a passion project. Instead of using a sophisticated game engine like Unreal, Unity, Godot, or GameMaker 
 I thought I would get the most out of developing the engine myself by reading/watching game tutorials/devlogs, getting 
-inspiration from game libraries, and inventing systems myself. 
+inspiration from game libraries, and inventing the systems myself. 
 
 ### Goals
 My core goals are focused on:
@@ -26,24 +26,11 @@ My core goals are focused on:
   entire space-time continuum of your own universe and all other parallel universes.
 
 ## Story
+
 Some of the first concepts of the world can be found here: [wforbes.net/omnia-story-notes](https://wforbes.net/omnia-story-notes)
 
 ---
-
-**Project History:** 
-Back in 2013 I completed two Java game development tutorials from YouTube which have served as the backbone of getting 
-the game started. One was a Top-Down game engine by [vanZeben](https://github.com/vanZeben) that mimicks the style of 
-the old gameboy pokemon games and other old RPGs like Final Fantasy. The other was a Platformer game engine by 
-[foreignguymike](https://github.com/foreignguymike). I planned to combine these engines and begin to build my own game 
-out of them while I finished my degree. Shortly after starting that endeavor I was lucky enough to be hired at my first 
-tech job working on a huge C# based web app, so my focus shifted to that style of programming. It's been 7 years now and 
-I've learned a lot about software development after working for 3 other companies. Now that I'm in a position where I 
-work from home and I'm enrolled at [WGU](https://wgu.edu) to finish my bachelor's degree; I'm dusting off this old 
-project and starting to work on it again with the hopes of being able to use it as my Senior Capstone project for 
-school.
-
----
-### Starter Todo List
+## Starter Todo List
 * [X] ~~Resurrect [my old game engine](https://www.youtube.com/watch?v=DIMeRYfil7c&list=PLRjjchumlJl2LIs1esk_C9RPvlEf2GOLb) I worked on in 2013 based loosely on two very old tutorials:~~
     * [X] ~~**Top-Down Tutorial**: Find my code based on [Java 2D Game Development](https://www.youtube.com/watch?v=VE7ezYCTPe4&list=PL8CAB66181A502179) by vanZeben~~
     * [X] ~~**Platformer Tutorial**: Find my code based on [Java 2D Game Programming Platformer Tutorial](https://www.youtube.com/watch?v=9dzhgsVaiSo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv) by ForeignGuyMike~~
@@ -75,7 +62,7 @@ more precise (float, double) figures for game logic.
     all other existing features.
     * [ ] **Implement new UI for menus**: Use JavaFX features to build a simple UI for the MainMenu, PauseMenu, and 
     DeathMenu.
-    
+---
 ## Game Development Todo Lists
 * [ ] **Top-Down GameState Tasks**:
     * [ ] **Improve collision logic (wall sliding)**: Right now, when you collide with a solid tile or entity your 
@@ -151,6 +138,7 @@ more precise (float, double) figures for game logic.
     * [ ] **Implement Skills System**: (todo)
     * [ ] **Implement Spells System**: (todo)
     * [ ] **Implement Class System**: (todo)
+---
 ## Experimental / Research
 
 ### Other Engines
@@ -169,7 +157,7 @@ sockets between game clients and the server, updating server logic and coordinat
 * [ ] **Research browser port or JavaScript rewrite**: Research and experiment with porting/rewriting the game to JavaScript for the browser
 * [ ] **Research Java game libraries**: Research and experiment with game libraries like [FXGL](http://almasb.github.io/FXGL/), [LWJGL](https://lwjgl.org), 
 and others.
-
+---
 ## Documentation
 * [ ] **Begin a Game Design Document**
     * [ ] Brainstorm on the following topics:
@@ -180,9 +168,20 @@ and others.
         * [ ] **Storyline**: Define the characters and setting, the journey they go on, the problems they need to solve
         * [ ] **Education**: Pull together some basic things that the game should teach in it's educational content
 
-<br>
-<br>
-<br>
+---
+---
+
+**Project History:** 
+Back in 2013 I completed two Java game development tutorials from YouTube which have served as the backbone of getting 
+the game started. One was a Top-Down game engine by [vanZeben](https://github.com/vanZeben) that mimicks the style of 
+the old gameboy pokemon games and other old RPGs like Final Fantasy. The other was a Platformer game engine by 
+[foreignguymike](https://github.com/foreignguymike). I planned to combine these engines and begin to build my own game 
+out of them while I finished my degree. Shortly after starting that endeavor I was lucky enough to be hired at my first 
+tech job working on a huge C# based web app, so my focus shifted to that style of programming. It's been 7 years now and 
+I've learned a lot about software development after working for 3 other companies. Now that I'm in a position where I 
+work from home and I'm enrolled at [WGU](https://wgu.edu) to finish my bachelor's degree; I'm dusting off this old 
+project and starting to work on it again with the hopes of being able to use it as my Senior Capstone project for 
+school.
 
 ---
 
