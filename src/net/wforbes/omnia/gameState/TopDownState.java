@@ -1,5 +1,6 @@
 package net.wforbes.omnia.gameState;
 
+import javafx.scene.canvas.GraphicsContext;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.topDown.level.Level;
 import net.wforbes.omnia.topDown.entity.Enemy;
@@ -93,6 +94,14 @@ public class TopDownState extends GameState{
         level.tick();
         tickCount++;
     }
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void render(GraphicsContext gc) {}
 
     @Override
     public void render(Graphics2D graphics2D) {

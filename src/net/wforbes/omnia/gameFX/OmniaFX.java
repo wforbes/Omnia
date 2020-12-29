@@ -9,11 +9,12 @@ import javafx.stage.Stage;
 import net.wforbes.omnia.gameFX.controls.KeyPolling;
 
 public class OmniaFX extends Application {
-
+//For implementing window size change listener:
+//  https://stackoverflow.com/questions/44159794/get-single-stage-resize-event-when-user-releases-left-mouse-button
     private static Stage stage;
-    private static final int WIDTH = 640;
-    private static final int HEIGHT = 480;
-    private static final int SCALE = 2;
+    private static final int WIDTH = 320;
+    private static final int HEIGHT = 240;
+    private static final int SCALE = 4;
 
     public static void main(String[] args) { launch(args); }
 
@@ -35,7 +36,8 @@ public class OmniaFX extends Application {
 
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/icons/windowIcon.png")));
 
-        primaryStage.setScene(scene);
+
+        primaryStage.sizeToScene();
         primaryStage.show();
     }
 
@@ -43,7 +45,23 @@ public class OmniaFX extends Application {
         return stage;
     }
 
-    public void setStageTitle(String title) {
-        stage.setTitle(title);
+    public static int getScaledWidth() {
+        return WIDTH * SCALE;
+    }
+
+    public static int getScaledHeight() {
+        return HEIGHT * SCALE;
+    }
+
+    public static int getWidth() {
+        return WIDTH;
+    }
+
+    public static int getHeight() {
+        return HEIGHT;
+    }
+
+    public static int getScale() {
+        return SCALE;
     }
 }

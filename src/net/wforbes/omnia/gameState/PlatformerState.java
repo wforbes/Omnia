@@ -1,5 +1,6 @@
 package net.wforbes.omnia.gameState;
 
+import javafx.scene.canvas.GraphicsContext;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.platformer.entity.Enemy;
 import net.wforbes.omnia.platformer.entity.Player;
@@ -87,6 +88,11 @@ public class PlatformerState extends GameState {
         }
     }
 
+    @Override
+    public void update() {
+
+    }
+
     private void checkKeyInput() {
         if(gsm.inputHandler.a.isPressed()) player.setLeft(true);
         if(gsm.inputHandler.d.isPressed()) player.setRight(true);
@@ -97,6 +103,9 @@ public class PlatformerState extends GameState {
         if(gsm.inputHandler.shift.isPressed()) player.setPhasing(true);
         if(gsm.inputHandler.m.isPressed()) spawnEnemy();
     }
+
+    @Override
+    public void render(GraphicsContext gc) {}
 
     @Override
     public void render(Graphics2D g) {

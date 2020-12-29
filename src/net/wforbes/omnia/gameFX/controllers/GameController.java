@@ -8,7 +8,6 @@ import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameFX.animation.GameLoopTimer;
@@ -25,6 +24,7 @@ public class GameController implements Initializable {
     public AnchorPane gameAnchor;
     public KeyPolling keys  = KeyPolling.getInstance();
 
+    private double time;
     private int shouldRenderCount = 0;
     private double delta = 0;
     private long lastTime = System.nanoTime();
@@ -38,7 +38,7 @@ public class GameController implements Initializable {
     public int tickCount = 1;
 
     public GameStateManager gsm;
-    public Renderer testRenderer;
+    public Renderer renderer;
     public GraphicsContext gc;
     public Image img;
 
@@ -48,10 +48,12 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeCanvas();
         stage = OmniaFX.getPrimaryStage();
+        System.out.println(stage.getWidth());
+        System.out.println(stage.getHeight());
         stage.setTitle("Omnia - Testing JavaFX framework");
-        //this.gsm = new GameStateManager(this);
-        this.testRenderer = new Renderer(this.gameCanvas);
-        this.gc = testRenderer.getContext();
+        this.gsm = new GameStateManager(this);
+        this.renderer = new Renderer(this.gameCanvas);
+        this.gc = renderer.getContext();
 
         // player, level, gui, etc. construct their Image spritesheet
         try {
@@ -69,11 +71,16 @@ public class GameController implements Initializable {
         int h = (int)img.getHeight();
         int[] pixels = new int[w * h];
         pixelReader.getPixels(0, 0, w, h, PixelFormat.getIntArgbInstance(), pixels, 0, w);
+
+        for(int i = 0; i < pixels.length; i++) {
+            pixels[i] = (pixels[i] &0xff) / 64;
+        }
+        /*
         for(int x = 0; x < w; x++) {
-            System.out.println(pixels[x]);
+            System.out.println(pixels[2 * x]);
             //Left off here 12/28 2am - reading pixels from spritesheet
             // need to test to make sure these pixels read like Screen class from tiles on sheet
-        }
+        }*/
 
         //int[] pixels = pixelReader.getPixels()
 
@@ -87,19 +94,18 @@ public class GameController implements Initializable {
             @Override
             public void tick(float secondsSinceLastFrame) {
                 //testRenderer.prepare();
-                gc.setFill( new Color(0, 0, 0, 1.0) );
-                gc.fillRect(0,0, gameCanvas.getWidth(), gameCanvas.getHeight());
 
-                gc.save();
-                //gsm.update();
-                //gsm.render(gc);
-                //testing manual pixel render
+                //gc.setFill( new Color(0, 0, 0, 1.0) );
+                //gc.fillRect(0,0, gameCanvas.getWidth(), gameCanvas.getHeight());
+                time += 0.016;
+                if(time >= 0.032) {
+                    renderer.prepare();
+                    gc.save();
+                    gsm.update();
+                    gsm.render(gc);
+                    gc.restore();
+                }
 
-
-
-
-
-                gc.restore();
                 //manual fps and render threshold logic
                 /*
                 long n = System.nanoTime();
@@ -109,7 +115,7 @@ public class GameController implements Initializable {
                 while (delta >= 1) {
                     tickCount++;
                     //update();
-
+                    gsm.update();
                     shouldRenderCount++;
                     delta -= 1;
                     shouldRender = true;
@@ -119,6 +125,7 @@ public class GameController implements Initializable {
 
                 if (shouldRender) {
                     fps++;
+                    gsm.render(gc);
                     //render();
                 }
 
@@ -139,7 +146,7 @@ public class GameController implements Initializable {
                 }
                 //render here..
                 shouldRender = false;
-                */
+                gc.restore();*/
                 //System.out.println("Tick: " + tickCount);
 
                 //
