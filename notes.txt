@@ -1,0 +1,24 @@
+Image - https://docs.oracle.com/javase/8/javafx/api/javafx/scene/image/Image.html
+GraphicsContext - https://docs.oracle.com/javase/8/javafx/api/javafx/scene/canvas/GraphicsContext.html
+https://docs.oracle.com/javase/8/javafx/api/javafx/scene/image/PixelWriter.html
+https://docs.oracle.com/javase/8/javafx/api/javafx/scene/image/PixelFormat.html
+https://docs.oracle.com/javafx/2/api/javafx/scene/image/WritableImage.html
+https://docs.oracle.com/javafx/2/api/javafx/scene/image/PixelReader.html
+
+https://examples.javacodegeeks.com/desktop-java/javafx/javafx-canvas-example/#draw_pixel
+https://skrb.hatenablog.com/entry/2013/01/07/171901
+https://stackoverflow.com/questions/46378920/using-pixelwriter-setargb
+https://stackoverflow.com/questions/38190790/int-argb-color-output-strange-value
+
+old classes
+https://docs.oracle.com/javase/7/docs/api/java/awt/image/BufferedImage.html
+
+
+Game Loop, AnimationTimer
+https://stackoverflow.com/questions/30146560/how-to-change-animationtimer-speed
+
+
+
+
+Old project with networking...
+https://github.com/wforbes/rpgGame/blob/master/src/net/wforbes/rpgGame
