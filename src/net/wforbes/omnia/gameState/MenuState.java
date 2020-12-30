@@ -1,6 +1,7 @@
 package net.wforbes.omnia.gameState;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import net.wforbes.omnia.gameFX.OmniaFX;
@@ -11,6 +12,7 @@ import java.awt.*;
 public class MenuState extends GameState {
 
     private GameStateManager gsm;
+    private int fxScale;
     private int lastPressTick;
     private int tickCount;
     private int currentChoice;
@@ -53,22 +55,23 @@ public class MenuState extends GameState {
             return;
 
         this.gsm = gsm;
+        this.fxScale = OmniaFX.getScale();
 
         try {//load the background resource .gif file
             bg = new Background("/Backgrounds/menubg.gif", 1, "fx");
             bg.setVector(-0.1 * OmniaFX.getScale(), 0);//move to the left at .1 pixels
 
             //font for Naturalist Engine title
-            fxTitleFont = new Font("Century Gothic", 25);
+            fxTitleFont = new Font("Century Gothic", 25 * fxScale);
 
             //font for version number
-            fxSubTitleFont = new Font("Century Gothic", 10);
+            fxSubTitleFont = new Font("Century Gothic", 10 * fxScale);
 
             //font for subModern presents
-            fxSubTitleFont2 = new Font("Century Gothic", 10);
+            fxSubTitleFont2 = new Font("Century Gothic", 10 * fxScale);
 
             //font info for everything else
-            fxFont = new Font("Arial", 12);
+            fxFont = new Font("Arial", 12 * fxScale);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -91,8 +94,8 @@ public class MenuState extends GameState {
     @Override
     public void update() {
         bg.update();
-        //if (keyInputReady()) this.checkKeyInput();
-        //tickCount++;
+        if (keyInputReady()) this.checkKeyInput();
+        tickCount++;
     }
 
     private boolean keyInputReady() {
@@ -101,27 +104,47 @@ public class MenuState extends GameState {
     }
 
     private void checkKeyInput() {
-
-        if(this.gsm.inputHandler.enter.isPressed() && keyInputReady()){
-            select();
-        }
-
-        if(this.gsm.inputHandler.up.isPressed() && keyInputReady()){
-            currentChoice--;
-            if(currentChoice == -1){
-                currentChoice = options.length - 1;
+        if (this.gsm.usingFx) {
+            if(this.gsm.isKeyDown(KeyCode.ENTER) && keyInputReady()){
+                select();
             }
-            lastPressTick = tickCount;
-        }
 
-        if(this.gsm.inputHandler.down.isPressed() && keyInputReady()){
-            currentChoice++;
-            if(currentChoice == options.length){
-                currentChoice = 0;
+            if(this.gsm.isKeyDown(KeyCode.UP) && keyInputReady()){
+                currentChoice--;
+                if(currentChoice == -1){
+                    currentChoice = options.length - 1;
+                }
+                lastPressTick = tickCount;
             }
-            lastPressTick = tickCount;
-        }
 
+            if(this.gsm.isKeyDown(KeyCode.DOWN) && keyInputReady()){
+                currentChoice++;
+                if(currentChoice == options.length){
+                    currentChoice = 0;
+                }
+                lastPressTick = tickCount;
+            }
+        } else {
+            if(this.gsm.inputHandler.enter.isPressed() && keyInputReady()){
+                select();
+            }
+
+            if(this.gsm.inputHandler.up.isPressed() && keyInputReady()){
+                currentChoice--;
+                if(currentChoice == -1){
+                    currentChoice = options.length - 1;
+                }
+                lastPressTick = tickCount;
+            }
+
+            if(this.gsm.inputHandler.down.isPressed() && keyInputReady()){
+                currentChoice++;
+                if(currentChoice == options.length){
+                    currentChoice = 0;
+                }
+                lastPressTick = tickCount;
+            }
+        }
     }
 
     @Override
@@ -129,11 +152,11 @@ public class MenuState extends GameState {
         bg.render(gc);
         gc.setFill(Color.BLACK);
         gc.setFont(fxSubTitleFont2);
-        gc.fillText("subModern studios presents:", 30, 60);
+        gc.fillText("subModern studios presents:", 30 * fxScale, 60 * fxScale);
         gc.setFont(fxTitleFont);
-        gc.fillText("Omnia Game Engine", 30, 85);
+        gc.fillText("Omnia Game Engine", 30 * fxScale, 85 * fxScale);
         gc.setFont(fxSubTitleFont);
-        gc.fillText("alpha version 0.0.1", 225, 100);
+        gc.fillText("alpha version 0.0.1", 225 * fxScale, 100 * fxScale);
 
         gc.setFont(fxFont);
         for(int i = 0; i < options.length; i++){
@@ -142,7 +165,7 @@ public class MenuState extends GameState {
             }else{
                 gc.setFill(Color.WHITE);
             }
-            gc.fillText(options[i], 30, 135 + (20 * i));
+            gc.fillText(options[i], 30 * fxScale, (135 * fxScale) + (20 * fxScale * i) );
         }
     }
 

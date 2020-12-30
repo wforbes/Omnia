@@ -1,6 +1,7 @@
 package net.wforbes.omnia.gameState;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.controllers.GameController;
 import net.wforbes.omnia.input.InputHandler;
@@ -9,7 +10,9 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class GameStateManager {
+    public boolean usingFx;
     public InputHandler inputHandler;
+    public GameController gameController;
     private ArrayList<GameState> gameStates;
     private int currentState;
     public static final int MENUSTATE = 0;
@@ -28,11 +31,16 @@ public class GameStateManager {
 
     public GameStateManager(GameController gameController) {
         //this.inputHandler = new InputHandler(gameController);
+        this.usingFx = true;
+        this.gameController = gameController;
         gameStates = new ArrayList<>();
         gameStates.add(new MenuState(this, "fx"));
         gameStates.add(new TopDownState(this));
         gameStates.add(new PlatformerState(this));
         this.setState(MENUSTATE);
+    }
+    public boolean isKeyDown(KeyCode keyCode) {
+        return this.gameController.keys.isDown(keyCode);
     }
 
     public void setState(int state) {
