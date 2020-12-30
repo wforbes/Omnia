@@ -25,6 +25,7 @@ public class Game extends Canvas implements Runnable {
     private Thread thread;
     public boolean running = false;
     public int tickCount = 0;
+    public boolean useHighFPS = true;
 
     private BufferStrategy bufferStrategy;
     private Graphics graphics;
@@ -86,7 +87,9 @@ public class Game extends Canvas implements Runnable {
     {
         long lastTime = System.nanoTime();
         double nsPerTick = 1000000000D/60D; //how many nano seconds are in one tick
-        double delta = 0;//how many nano seconds have elapsed
+        double nsPerRender = 1000000000D/240D; //how many nano seconds are in one render (on high FPS)
+        double delta = 0;//how many nano seconds have elapsed since last tick
+        double rDelta = 0; //how many nano seconds have elapsed since last render (on high FPS)
         int ticks = 0;
         int frames = 0;
         long lastTimer = System.currentTimeMillis(); //a time to reset the data
@@ -95,8 +98,8 @@ public class Game extends Canvas implements Runnable {
         while(running){
             long now = System.nanoTime();//the current time to check against lastTime
             delta += (now - lastTime) / nsPerTick;
+            if(useHighFPS) rDelta += (now - lastTime) / nsPerRender;
             lastTime = now;
-
             //once delta has gone over or is equal to 1,
             while(delta >= 1 ){
                 ticks++;
@@ -104,22 +107,24 @@ public class Game extends Canvas implements Runnable {
                 delta -= 1;
                 shouldRender = true;
             }
-
             //sleep the thread to regulate frame rate
             try{
                 Thread.sleep(2);
-            }catch (InterruptedException e)
-            {
+            }catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            //if it should render the game, update the frame count and call render
-            if(shouldRender)
-            {
-                frames++;
-                render();
+            if(shouldRender) {
+                if(useHighFPS) {
+                    while (rDelta >= 1) {
+                        frames++;
+                        render();
+                        rDelta -= 1;
+                    }
+                } else {
+                    frames++;
+                    render();
+                }
             }
-
             if(System.currentTimeMillis() - lastTimer >= 1000 )
             {
                 lastTimer += 1000;//update another second
