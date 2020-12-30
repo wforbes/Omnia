@@ -93,19 +93,17 @@ public class GameController implements Initializable {
         GameLoopTimer timer = new GameLoopTimer() {
             @Override
             public void tick(float secondsSinceLastFrame) {
-                //testRenderer.prepare();
-
-                //gc.setFill( new Color(0, 0, 0, 1.0) );
-                //gc.fillRect(0,0, gameCanvas.getWidth(), gameCanvas.getHeight());
-                time += 0.016;
-                if(time >= 0.032) {
+                time += 0.017;
+                if (time >= 0.017) {
                     renderer.prepare();
                     gc.save();
                     gsm.update();
                     gsm.render(gc);
                     gc.restore();
                 }
-
+            }
+        };
+        timer.start();
                 //manual fps and render threshold logic
                 /*
                 long n = System.nanoTime();
@@ -152,9 +150,9 @@ public class GameController implements Initializable {
                 //
                 //updatePlayerMovement(secondsSinceLastFrame);
                 //renderer.render();
-            }
-        };
-        timer.start();
+            //}//end tick
+        //};//end gamelooptimer construct
+        //timer.start();
     }
 
     public void initializeCanvas() {
