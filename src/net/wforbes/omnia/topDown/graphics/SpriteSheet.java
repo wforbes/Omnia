@@ -45,7 +45,7 @@ public class SpriteSheet {
 
         Image img = null;
         try {
-            img = new Image(getClass().getResourceAsStream("/sprite_sheet.png"));
+            img = new Image(getClass().getResourceAsStream(path));
         } catch(Exception e) {
             e.printStackTrace();
         }

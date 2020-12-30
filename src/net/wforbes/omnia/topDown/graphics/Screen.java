@@ -37,54 +37,35 @@ public class Screen {
     public void render(int xPos, int yPos, int tile, int color, int mirrorDir, int scale){
         yPos -= yOffset;
         xPos -= xOffset;
-        //sets if tile should be mirrored
-        boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
-        boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
-        //scale map - (future use.. to modify for larger resolutions)
-        int scaleMap = scale - 1;
-        //xtile - the x coordinate of the tile sheet
-        int xTile = tile % 32;
-        //ytile - the y coordinate of the tile sheet
-        int yTile = tile / 32;
+        boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;//sets if tile should be mirrored in the Y
+        boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;//sets if the tile should be mirrored in the X
+        int scaleMap = scale - 1; //scale map - (future use.. to modify for larger resolutions)
+        int xTile = tile % 32; //xtile - the x coordinate of the tile sheet
+        int yTile = tile / 32; //ytile - the y coordinate of the tile sheet
         //tileoffset - offset on the sheet to reach further tiles, bitshift 3 because 8x8 pixels so 2^3 = 8
         int tileOffset = (xTile << 3) + (yTile << 3) * this.sheet.getWidth();
-
-        //loop for every y pixel on the tile
-        for(int y = 0; y < 8; y++){
+        for(int y = 0; y < 8; y++){//loop for every y pixel on the tile
             int ySheet = y;
-            //check for mirror
-            if(mirrorY)
+            if(mirrorY) //check for mirror
                 ySheet = 7 - y;
-            //get pixel
-            int yPixel = y + yPos + (y * scaleMap) - ((scaleMap << 3)/ 2);
-
-            //loop for every x pixel on the tile
-            for(int x = 0; x < 8; x++){
+            int yPixel = y + yPos + (y * scaleMap) - ((scaleMap << 3)/ 2);//get pixel
+            for(int x = 0; x < 8; x++){ //loop for every x pixel on the tile
                 int xSheet = x;
-                //check for mirror
-                if(mirrorX)
+                if(mirrorX) //check for mirror
                     xSheet = 7 - x;
-                //get pixel
-                int xPixel = x + xPos + (x * scaleMap) - ((scaleMap << 3)/ 2);
-
-                //get color from the sheet
-                int pixelPos = xSheet + ySheet * this.sheet.getWidth() + tileOffset;
+                int xPixel = x + xPos + (x * scaleMap) - ((scaleMap << 3)/ 2);//get pixel
+                int pixelPos = xSheet + ySheet * this.sheet.getWidth() + tileOffset;//get color from the sheet
                 int col = (color >> (this.sheet.pixels[pixelPos] * 8) & 255);
-                //check that the color isnt transparent (255)
-                if(col < 255){
+                if(col < 255){ //check that the color isnt transparent (255)
                     //use the scale to apply this color to each pixel evenly
                     //loop between 0 and yScale
                     for(int yScale = 0; yScale < scale; yScale++){
-                        //if rendering to scale would go off screen, ignore
-                        if(yPixel + yScale < 0 || yPixel + yScale >= height)
+                        if(yPixel + yScale < 0 || yPixel + yScale >= height)//if rendering to scale would go off screen, ignore
                             continue;
-                        //loop between 0 and xScale
-                        for(int xScale = 0; xScale < scale; xScale++) {
-                            //if rendering to scale would go off screen, ignore
-                            if(xPixel + xScale < 0 || xPixel + xScale >= width)
+                        for(int xScale = 0; xScale < scale; xScale++) {//loop between 0 and xScale
+                            if(xPixel + xScale < 0 || xPixel + xScale >= width) //if rendering to scale would go off screen, ignore
                                 continue;
-                            //apply color to the appropriate screen pixel
-                            this.pixels[(xPixel + xScale) + (yPixel + yScale) * width] = col;
+                            this.pixels[(xPixel + xScale) + (yPixel + yScale) * width] = col;//apply color to the appropriate screen pixel
                         }
                     }
                 }

@@ -48,7 +48,7 @@ public class Player extends Mob{
         if(inputHandler.enter.isPressed() && keyInputIsReady()) {
             this.lastInputCommandTick = this.tickCount;
             this.chatInputIsOpen = true;
-            gameState.openChatInput();
+            //gameState.openChatInput();
         }
     }
     private boolean pauseIsReady() {

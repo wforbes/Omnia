@@ -1,13 +1,12 @@
 package net.wforbes.omnia.topDown.level;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelFormat;
+import javafx.scene.image.PixelReader;
 import net.wforbes.omnia.topDown.entity.Entity;
 import net.wforbes.omnia.topDown.graphics.Screen;
 import net.wforbes.omnia.topDown.level.tile.Tile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,8 @@ public class Level {
     public int height;
     public List<Entity> entities = new ArrayList<>();
     private String imagePath;
-    private BufferedImage image;
+    //private BufferedImage image; //TODO: reimplement
+    private Image image;
 
     public Level(String imagePath){
         if(imagePath != null){
@@ -47,6 +47,17 @@ public class Level {
     }
 
     public void loadLevelFromFile(){
+        try {
+            image = new Image(getClass().getResourceAsStream(this.imagePath));
+            this.width = (int)image.getWidth();
+            this.height = (int)image.getHeight();
+            this.tiles = new byte[width * height];
+            this.loadTiles();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        /* //TODO: reimplement
         try{
             this.image = ImageIO.read(Level.class.getResourceAsStream(this.imagePath));
             this.width = image.getWidth();
@@ -55,10 +66,24 @@ public class Level {
             this.loadTiles();
         }catch(Exception e){
             e.printStackTrace();
-        }
+        }*/
     }
 
     private void loadTiles(){
+        PixelReader pixelReader = this.image.getPixelReader();
+        int[] tileColors = new int[width * height];
+        pixelReader.getPixels(0, 0, this.width, this.height, PixelFormat.getIntArgbInstance(), tileColors, 0, this.width);
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                tileCheck: for(Tile t : Tile.tiles) {
+                    if (t != null && t.getLevelColor() == tileColors[x + y * width]) {
+                        this.tiles[x + y * width] = t.getId();
+                        break tileCheck;
+                    }
+                }
+            }
+        }
+        /* //TODO: reimplement
         //get the color information from the level file
         int[] tileColors = this.image.getRGB(0, 0, width, height, null, 0, width);
         //for each pixel in the level file
@@ -73,7 +98,7 @@ public class Level {
                     }
                 }
             }
-        }
+        } */
     }
 
     public void tick(){
@@ -93,6 +118,7 @@ public class Level {
 
     public void renderTiles(Screen screen, int xOffset, int yOffset)
     {
+        //System.out.println("L renderTiles()");
         int f = 3;
 
         if(xOffset < 0) xOffset = 0;
@@ -144,16 +170,18 @@ public class Level {
 
     /** For future use **/
     private void saveLevelToFile(){
+        /*
         try{
             ImageIO.write
                     (image, "png", new File(Level.class.getResource(this.imagePath).getFile()));
         }catch(IOException e){
             e.printStackTrace();
         }
+         */
     }
     /** For future use **/
     public void alterTile(int x, int y, Tile newTile){
         this.tiles[x +y * width] = newTile.getId();
-        image.setRGB(x, y, newTile.getLevelColor());
+        //image.setRGB(x, y, newTile.getLevelColor());
     }
 }

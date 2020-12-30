@@ -4,9 +4,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelFormat;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import net.wforbes.omnia.gameFX.OmniaFX;
@@ -48,13 +45,11 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeCanvas();
         stage = OmniaFX.getPrimaryStage();
-        System.out.println(stage.getWidth());
-        System.out.println(stage.getHeight());
         stage.setTitle("Omnia - Testing JavaFX framework");
         this.gsm = new GameStateManager(this);
         this.renderer = new Renderer(this.gameCanvas);
         this.gc = renderer.getContext();
-
+/*
         // player, level, gui, etc. construct their Image spritesheet
         try {
             //this.testSpritesheet = ImageIO.read(getClass().getResourceAsStream("/Sprites/Player/testPlayer.png"));
@@ -75,6 +70,8 @@ public class GameController implements Initializable {
         for(int i = 0; i < pixels.length; i++) {
             pixels[i] = (pixels[i] &0xff) / 64;
         }
+        *
+ */
         /*
         for(int x = 0; x < w; x++) {
             System.out.println(pixels[2 * x]);
@@ -89,7 +86,7 @@ public class GameController implements Initializable {
         //player.setScale(1.5f);
         //renderer.addEntity(player);
         //renderer.setBackground(new Image(getClass().getResourceAsStream("/img/SpaceBackground.jpg")));
-
+        int i = 0;
         GameLoopTimer timer = new GameLoopTimer() {
             @Override
             public void tick(float secondsSinceLastFrame) {
@@ -98,6 +95,7 @@ public class GameController implements Initializable {
                     renderer.prepare();
                     gc.save();
                     gsm.update();
+                    //System.out.println("gameloop " + i);
                     gsm.render(gc);
                     gc.restore();
                 }
