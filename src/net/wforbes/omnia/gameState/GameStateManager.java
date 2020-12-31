@@ -35,7 +35,7 @@ public class GameStateManager {
         this.gameController = gameController;
         gameStates = new ArrayList<>();
         gameStates.add(new MenuState(this, "fx"));
-        gameStates.add(new TopDownState(this, "fx"));
+        gameStates.add(new TopDownState(this));
         gameStates.add(new PlatformerState(this));
         this.setState(MENUSTATE);
     }

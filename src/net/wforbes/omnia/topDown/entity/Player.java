@@ -1,11 +1,12 @@
 package net.wforbes.omnia.topDown.entity;
 
+import javafx.scene.input.KeyCode;
 import net.wforbes.omnia.gameState.TopDownState;
 import net.wforbes.omnia.input.InputHandler;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.graphics.Screen;
-import net.wforbes.omnia.topDown.level.Level;
 import net.wforbes.omnia.topDown.gui.Font;
+import net.wforbes.omnia.topDown.level.Level;
 
 public class Player extends Mob{
     private TopDownState gameState;
@@ -34,21 +35,27 @@ public class Player extends Mob{
 
     @Override
     public void tick() {
-        //checkCommands();
-        //checkMovement();
+        checkCommands();
+        checkMovement();
         tickCount++;
     }
 
     private void checkCommands() {
-        if(inputHandler.esc.isPressed() && pauseIsReady()) {
-            inputHandler.resetKeys();
-            gameState.pause();
-        }
+        if (gameState.gsm.usingFx) {
+            if(gameState.gsm.isKeyDown(KeyCode.ESCAPE) && pauseIsReady()) {
+                gameState.pause();
+            }
+        } else {
+            if (inputHandler.esc.isPressed() && pauseIsReady()) {
+                inputHandler.resetKeys();
+                gameState.pause();
+            }
 
-        if(inputHandler.enter.isPressed() && keyInputIsReady()) {
-            this.lastInputCommandTick = this.tickCount;
-            this.chatInputIsOpen = true;
-            //gameState.openChatInput();
+            if (inputHandler.enter.isPressed() && keyInputIsReady()) {
+                //this.lastInputCommandTick = this.tickCount;
+                //this.chatInputIsOpen = true;
+                //gameState.openChatInput();
+            }
         }
     }
     private boolean pauseIsReady() {
@@ -62,18 +69,32 @@ public class Player extends Mob{
     private void checkMovement() {
         int xa = 0;
         int ya = 0;
-
-        if (inputHandler.up.isPressed() || inputHandler.w.isPressed()){
-            ya--;
-        }
-        if (inputHandler.down.isPressed() || inputHandler.s.isPressed()){
-            ya++;
-        }
-        if (inputHandler.left.isPressed() || inputHandler.a.isPressed()){
-            xa--;
-        }
-        if (inputHandler.right.isPressed() || inputHandler.d.isPressed()){
-            xa++;
+        if (gameState.gsm.usingFx) {
+            if (gameState.gsm.isKeyDown(KeyCode.UP) || gameState.gsm.isKeyDown(KeyCode.W)) {
+                ya--;
+            }
+            if (gameState.gsm.isKeyDown(KeyCode.DOWN) || gameState.gsm.isKeyDown(KeyCode.S)) {
+                ya++;
+            }
+            if (gameState.gsm.isKeyDown(KeyCode.LEFT) || gameState.gsm.isKeyDown(KeyCode.A)) {
+                xa--;
+            }
+            if (gameState.gsm.isKeyDown(KeyCode.RIGHT) || gameState.gsm.isKeyDown(KeyCode.D)) {
+                xa++;
+            }
+        } else {
+            if (inputHandler.up.isPressed() || inputHandler.w.isPressed()) {
+                ya--;
+            }
+            if (inputHandler.down.isPressed() || inputHandler.s.isPressed()) {
+                ya++;
+            }
+            if (inputHandler.left.isPressed() || inputHandler.a.isPressed()) {
+                xa--;
+            }
+            if (inputHandler.right.isPressed() || inputHandler.d.isPressed()) {
+                xa++;
+            }
         }
         if(xa != 0 || ya != 0){
             move(xa, ya);

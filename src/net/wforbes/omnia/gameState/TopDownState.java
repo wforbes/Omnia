@@ -38,32 +38,11 @@ public class TopDownState extends GameState{
     public TopDownState(GameStateManager gsm)
     {
         this.gsm = gsm;
-        this.init();
-    }
-
-    public TopDownState(GameStateManager gsm, String type) {
-        if (!type.equals("fx"))
-            return;
-
-        this.gsm = gsm;
-        this.fxInit();
+        //this.init();
     }
 
     public GameStateManager getGsm() {
         return gsm;
-    }
-
-    public void fxInit() {
-        this.isPaused = false;
-        this.fxGraphics2D = null;
-        this.image = new BufferedImage(OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(), BufferedImage.TYPE_INT_RGB);
-        this.pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
-        this.colors = new int[6 * 6 * 6];
-        this.initColors();
-        this.screen = new Screen(OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(), new SpriteSheet("/sprite_sheet.png"));
-        this.level = new Level("/test_level.png");
-        this.player = new Player(level, 10, 10, "ghosty", this);
-
     }
 
     private void setPixelColorsFromScreen()
@@ -83,14 +62,12 @@ public class TopDownState extends GameState{
         }
         this.renderTiles();
         this.level.renderEntities(screen);
-        this.gui.render(screen);
         this.renderVersionText();
-        /*
-        if (pauseMenu.isVisible()) {
-            pauseMenu.render(graphics2D);
-        }*/
         this.setPixelColorsFromScreen();
         fxGraphics2D.drawImage(this.image, 0, 0, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(), null);
+        if (pauseMenu.isVisible()) {
+            pauseMenu.render(fxGraphics2D);
+        }
     }
 
     @Override
@@ -109,13 +86,20 @@ public class TopDownState extends GameState{
     @Override
     public void init()
     {
+        if(gsm.usingFx){
+            this.image = new BufferedImage(OmniaFX.getWidth(), OmniaFX.getHeight(), BufferedImage.TYPE_INT_RGB);
+            this.screen = new Screen(OmniaFX.getWidth(), OmniaFX.getHeight(), new SpriteSheet("/sprite_sheet.png"));
+            this.pauseMenu = new PauseMenu(this, "fx");
+        } else {
+            this.image = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_RGB);
+            this.screen = new Screen(Game.WIDTH, Game.HEIGHT, new SpriteSheet("/sprite_sheet.png"));
+            this.pauseMenu = new PauseMenu(this);
+        }
+
         this.isPaused = false;
-        this.image = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_RGB);
         this.pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
         this.colors = new int[6 * 6 * 6];
         this.initColors();
-
-        this.screen = new Screen(Game.WIDTH, Game.HEIGHT, new SpriteSheet("/sprite_sheet.png"));
         level = new Level("/test_level.png");
 
         player = new Player(level, 10, 10, "ghosty", this);
@@ -123,9 +107,6 @@ public class TopDownState extends GameState{
 
         enemy = new Enemy(level, 32, 32, "skele");
         level.addEntity(enemy);
-
-        gui = new GUI(screen);
-        pauseMenu = new PauseMenu(this);
     }
 
     private void initColors()
@@ -160,14 +141,12 @@ public class TopDownState extends GameState{
     public void render(Graphics2D graphics2D) {
         this.renderTiles();
         this.level.renderEntities(screen);
-        this.gui.render(screen);
         this.renderVersionText();
+        this.setPixelColorsFromScreen();
+        graphics2D.drawImage(this.image, 0, 0, Game.WIDTH, Game.HEIGHT, null);
         if (pauseMenu.isVisible()) {
             pauseMenu.render(graphics2D);
         }
-        this.setPixelColorsFromScreen();
-        graphics2D.drawImage(this.image, 0, 0, Game.WIDTH, Game.HEIGHT, null);
-
     }
 
     public void pause() {

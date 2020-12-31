@@ -1,10 +1,14 @@
 package net.wforbes.omnia.topDown.gui;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import net.wforbes.omnia.game.Game;
+import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.GameStateManager;
 import net.wforbes.omnia.gameState.TopDownState;
+import org.jfree.fx.FXGraphics2D;
 
-import java.awt.Font;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 
@@ -12,8 +16,9 @@ public class PauseMenu {
 
     private boolean visible;
     private java.awt.Font headingFont;
+    private Font fxHeadingFont;
     private String heading;
-    private Font optionsFont;
+    private java.awt.Font optionsFont;
     private String[] options;
     private TopDownState gameState;
     private int lastPressTick = 0;
@@ -23,10 +28,24 @@ public class PauseMenu {
     public PauseMenu(TopDownState gameState) {
         this.gameState = gameState;
         visible = false;
-        headingFont = new Font("Century Gothic", Font.PLAIN, 20);
+        headingFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 20);
         heading = "Pause Menu";
 
-        optionsFont = new Font("Century Gothic", Font.PLAIN, 14);
+        optionsFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 14);
+        options = new String[]{"Resume", "Return to Menu", "Quit Game"};
+    }
+
+    public PauseMenu(TopDownState gameState, String type) {
+        if(!type.equals("fx"))
+            return;
+
+        this.gameState = gameState;
+        visible = false;
+
+        headingFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, (20 * OmniaFX.getScale()));
+        heading = "Pause Menu";
+
+        optionsFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, (14 * OmniaFX.getScale()));
         options = new String[]{"Resume", "Return to Menu", "Quit Game"};
     }
 
@@ -57,35 +76,57 @@ public class PauseMenu {
     }
 
     private void checkKeyInput() {
-        if(gameState.gsm.inputHandler.esc.isPressed() && keyInputReady()){
-            gameState.unPause();
-        }
-
-        if(gameState.gsm.inputHandler.enter.isPressed() && keyInputReady()){
-            select();
-            lastPressTick = tickCount;
-        }
-
-        if(gameState.gsm.inputHandler.up.isPressed() && keyInputReady()){
-            currentChoice--;
-            if(currentChoice == -1){
-                currentChoice = options.length - 1;
+        if (gameState.gsm.usingFx) {
+            if(gameState.gsm.isKeyDown(KeyCode.ESCAPE) && keyInputReady()){
+                gameState.unPause();
+                lastPressTick = tickCount;
             }
-            lastPressTick = tickCount;
-        }
 
-        if(gameState.gsm.inputHandler.down.isPressed() && keyInputReady()){
-            currentChoice++;
-            if(currentChoice == options.length){
-                currentChoice = 0;
+            if(gameState.gsm.isKeyDown(KeyCode.ENTER) && keyInputReady()){
+                select();
+                lastPressTick = tickCount;
             }
-            lastPressTick = tickCount;
-        }
 
+            if(gameState.gsm.isKeyDown(KeyCode.UP) && keyInputReady()){
+                currentChoice--;
+                if(currentChoice == -1){
+                    currentChoice = options.length - 1;
+                }
+                lastPressTick = tickCount;
+            }
+
+            if(gameState.gsm.isKeyDown(KeyCode.DOWN) && keyInputReady()){
+                currentChoice++;
+                if(currentChoice == options.length){
+                    currentChoice = 0;
+                }
+                lastPressTick = tickCount;
+            }
+        } else {
+            if(gameState.gsm.inputHandler.enter.isPressed() && keyInputReady()){
+                select();
+                lastPressTick = tickCount;
+            }
+
+            if(gameState.gsm.inputHandler.up.isPressed() && keyInputReady()){
+                currentChoice--;
+                if(currentChoice == -1){
+                    currentChoice = options.length - 1;
+                }
+                lastPressTick = tickCount;
+            }
+
+            if(gameState.gsm.inputHandler.down.isPressed() && keyInputReady()){
+                currentChoice++;
+                if(currentChoice == options.length){
+                    currentChoice = 0;
+                }
+                lastPressTick = tickCount;
+            }
+        }
     }
 
     private void select() {
-        gameState.gsm.inputHandler.resetKeys(); //To avoid double presses
         if(currentChoice == 0){
             gameState.unPause();
         }
@@ -103,11 +144,51 @@ public class PauseMenu {
         currentChoice = 0;
     }
 
+    public void render(FXGraphics2D g) {
+
+        FontRenderContext context = g.getFontRenderContext();
+
+        //g.setFont(headingFont);
+        g.setFont(new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 20 * OmniaFX.getScale()));
+        g.setColor(java.awt.Color.WHITE);
+        int headingXPos = OmniaFX.getScaledWidth() / 2 - (int)headingFont.getStringBounds(heading, context).getWidth() / 2;
+        int headingYPos = OmniaFX.getScaledHeight() / 2 - (int)headingFont.getStringBounds(heading, context).getHeight() / 2;
+        g.drawString(heading, headingXPos, headingYPos);
+
+        g.setFont(optionsFont);
+        int optionsXPos = OmniaFX.getScaledWidth() / 2 - (int)headingFont.getStringBounds(heading, context).getWidth() / 2;
+        int optionsPadding = (int)optionsFont.getStringBounds(options[0], context).getHeight();
+        int optionsYPosStart = headingYPos + (int)optionsFont.getStringBounds(options[0], context).getHeight();
+        int padSum = 0;
+        for (int i = 0; i < options.length; i++) {
+            if(i == currentChoice){
+                g.setColor(java.awt.Color.YELLOW);
+            }else{
+                g.setColor(java.awt.Color.WHITE);
+            }
+            g.drawString(options[i], optionsXPos, optionsYPosStart + padSum);
+            padSum = optionsPadding + ( optionsPadding * i+1);
+        }
+    }
+    private double computeTextWidth(Font font, String text, double wrappingWidth) {
+        Text helper = new Text();
+        helper.setFont(font);
+        helper.setText(text);
+        // Note that the wrapping width needs to be set to zero before
+        // getting the text's real preferred width.
+        helper.setWrappingWidth(0);
+        helper.setLineSpacing(0);
+        double w = Math.min(helper.prefWidth(-1), wrappingWidth);
+        helper.setWrappingWidth((int)Math.ceil(w));
+        double textWidth = Math.ceil(helper.getLayoutBounds().getWidth());
+        return textWidth;
+    }
+
     public void render(Graphics2D g) {
         FontRenderContext context = g.getFontRenderContext();
 
         g.setFont(headingFont);
-        g.setColor(Color.WHITE);
+        g.setColor(java.awt.Color.WHITE);
         int headingXPos = Game.WIDTH / 2 - (int)headingFont.getStringBounds(heading, context).getWidth() / 2;
         int headingYPos = Game.HEIGHT / 2 - (int)headingFont.getStringBounds(heading, context).getHeight() / 2;
         g.drawString(heading, headingXPos, headingYPos);
@@ -119,9 +200,9 @@ public class PauseMenu {
         int padSum = 0;
         for (int i = 0; i < options.length; i++) {
             if(i == currentChoice){
-                g.setColor(Color.YELLOW);
+                g.setColor(java.awt.Color.YELLOW);
             }else{
-                g.setColor(Color.WHITE);
+                g.setColor(java.awt.Color.WHITE);
             }
             g.drawString(options[i], optionsXPos, optionsYPosStart + padSum);
             padSum = optionsPadding + ( optionsPadding * i+1);
