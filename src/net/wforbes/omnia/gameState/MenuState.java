@@ -13,6 +13,7 @@ public class MenuState extends GameState {
 
     private GameStateManager gsm;
     private int fxScale;
+    private int waitTicks = 20;
     private int lastPressTick;
     private int tickCount;
     private int currentChoice;
@@ -79,7 +80,7 @@ public class MenuState extends GameState {
 
     @Override
     public void init() {
-        this.lastPressTick = 0;
+        this.lastPressTick = waitTicks;
         this.tickCount = 0;
         this.currentChoice = 0;
     }
@@ -99,7 +100,7 @@ public class MenuState extends GameState {
     }
 
     private boolean keyInputReady() {
-        int waitTicks = 20;
+
         return tickCount - lastPressTick > waitTicks || lastPressTick == 0;
     }
 

@@ -21,7 +21,8 @@ public class PauseMenu {
     private java.awt.Font optionsFont;
     private String[] options;
     private TopDownState gameState;
-    private int lastPressTick = 0;
+    private int waitTicks = 20;
+    private int lastPressTick = waitTicks;
     private int tickCount = 0;
     private int currentChoice = 0;
 
