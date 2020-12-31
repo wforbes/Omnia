@@ -24,7 +24,7 @@ public class PlatformerState extends GameState {
 
     public PlatformerState(GameStateManager gsm) {
         this.gsm = gsm;
-        init();
+        //init();
     }
 
     public Player getPlayer(){ return player; }
@@ -33,7 +33,11 @@ public class PlatformerState extends GameState {
 
     @Override
     public void init() {
-        bg = new Background("/Backgrounds/level1bg.gif", 0.1);
+        if (this.gsm.usingFx) {
+            bg = new Background("/Backgrounds/level1bg.gif", 0.1, "fx");
+        } else {
+            bg = new Background("/Backgrounds/level1bg.gif", 0.1);
+        }
 
         tileMap = new TileMap(30);
         tileMap.loadTiles("/Tilesets/blahgrasstileset.gif");
@@ -90,7 +94,9 @@ public class PlatformerState extends GameState {
 
     @Override
     public void update() {
-
+        System.out.println("platformer update");
+        //set background
+        bg.setPosition(tileMap.getx(), tileMap.gety());
     }
 
     private void checkKeyInput() {
@@ -105,7 +111,11 @@ public class PlatformerState extends GameState {
     }
 
     @Override
-    public void render(GraphicsContext gc) {}
+    public void render(GraphicsContext gc) {
+        System.out.println("platformer render");
+        bg.render(gc);
+        //tileMap.draw()
+    }
 
     @Override
     public void render(Graphics2D g) {

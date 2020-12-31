@@ -44,7 +44,7 @@ public class Background {
             return;
 
         try{
-            image = new Image("/Backgrounds/menubg.gif", OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(), false, false);
+            image = new Image(path, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(), false, false);
             this.width = image.getWidth();
             this.height = image.getHeight();
             moveScale = ms;
