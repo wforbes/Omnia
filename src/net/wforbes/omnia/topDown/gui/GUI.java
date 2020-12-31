@@ -51,7 +51,7 @@ public class GUI {
             renderChatInput(screen);
         }
 
-        screen.render(screen.xOffset, screen.yOffset + Game.HEIGHT-1, (0+23*32), Colors.get(-1, 100, 555, 543), 0, 1);
+        //screen.render(screen.xOffset, screen.yOffset + Game.HEIGHT-1, (0+23*32), Colors.get(-1, 100, 555, 543), 0, 1);
     }
 
     private void renderChatInput(Screen screen) {
@@ -107,7 +107,7 @@ public class GUI {
             screen.render(
                     screen.xOffset + boxXOffset + tileSize * (boxWidth - 1),
                     screen.yOffset + Game.HEIGHT - boxYOffset + tileSize + (tileSize * i),
-                    sideEdgeTile, Colors.get(-1, 100, 555, 543), 1, 1
+                    sideEdgeTile, color, 1, 1
             );
         }
 
@@ -115,7 +115,7 @@ public class GUI {
         screen.render(
                 screen.xOffset + boxXOffset,
                 screen.yOffset + Game.HEIGHT - boxYOffset + (tileSize * (boxHeight - 1)),
-                bottomCornerTile, Colors.get(-1, 100, 555, 543), 0, 1
+                bottomCornerTile, color, 0, 1
         );
 
         //bottom edge

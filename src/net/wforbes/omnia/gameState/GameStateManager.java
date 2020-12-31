@@ -60,7 +60,6 @@ public class GameStateManager {
     }
 
     public void render(GraphicsContext gc) {
-        //System.out.println("gsm currentState: " + this.currentState);
         gameStates.get(currentState).render(gc);
     }
 

@@ -34,8 +34,8 @@ public class Player extends Mob{
 
     @Override
     public void tick() {
-        checkCommands();
-        checkMovement();
+        //checkCommands();
+        //checkMovement();
         tickCount++;
     }
 

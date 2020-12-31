@@ -73,6 +73,7 @@ public class Level {
         PixelReader pixelReader = this.image.getPixelReader();
         int[] tileColors = new int[width * height];
         pixelReader.getPixels(0, 0, this.width, this.height, PixelFormat.getIntArgbInstance(), tileColors, 0, this.width);
+
         for(int y = 0; y < height; y++){
             for(int x = 0; x < width; x++){
                 tileCheck: for(Tile t : Tile.tiles) {

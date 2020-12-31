@@ -13,7 +13,7 @@ public class Renderer {
 
     public Renderer(Canvas canvas) {
         this.canvas = canvas;
-        //canvas.getGraphicsContext2D().setImageSmoothing(false); //Need JavaFx 12?
+        canvas.getGraphicsContext2D().setImageSmoothing(false);
         this.gc = canvas.getGraphicsContext2D();
     }
     public GraphicsContext getContext() {

@@ -141,7 +141,6 @@ public class Game extends Canvas implements Runnable {
         this.image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         //this.pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
         //this.colors = new int[6 * 6 * 6];
-        //this.initColors();
         this.graphics2D = (Graphics2D) image.getGraphics();
         //screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/sprite_sheet.png"));
         gsm = new GameStateManager(this);
@@ -173,6 +172,7 @@ public class Game extends Canvas implements Runnable {
         }
 
         this.gsm.render(graphics2D);
+
         //TODO: Move to TopDownState
         /*
         this.renderTiles();

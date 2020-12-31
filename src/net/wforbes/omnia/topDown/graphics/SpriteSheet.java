@@ -33,7 +33,7 @@ public class SpriteSheet {
 
         this.pixels = img.getRGB(0, 0, width, height, null, 0, width);
 
-        for(int i = 0; i < this.pixels.length; i++){
+        for(int i = 0; i < this.pixels.length; i++) {
             this.pixels[i] = (pixels[i] & 0xff) / 64;
         }
     }
