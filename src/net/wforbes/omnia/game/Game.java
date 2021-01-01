@@ -87,7 +87,7 @@ public class Game extends Canvas implements Runnable {
     {
         long lastTime = System.nanoTime();
         double nsPerTick = 1000000000D/60D; //how many nano seconds are in one tick
-        double nsPerRender = 1000000000D/240D; //how many nano seconds are in one render (on high FPS)
+        double nsPerRender = 1000000000D/320D; //how many nano seconds are in one render (on high FPS)
         double delta = 0;//how many nano seconds have elapsed since last tick
         double rDelta = 0; //how many nano seconds have elapsed since last render (on high FPS)
         int ticks = 0;
