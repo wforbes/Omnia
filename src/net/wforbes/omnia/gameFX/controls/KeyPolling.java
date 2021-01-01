@@ -3,12 +3,21 @@ package net.wforbes.omnia.gameFX.controls;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class KeyPolling {
     private static Scene scene;
     private static final Set<KeyCode> keysCurrentlyDown = new HashSet<>();
+    private static final Map<KeyCode, Boolean> keyboard = new HashMap<>() {{
+        put(KeyCode.UP, false); put(KeyCode.DOWN, false); put(KeyCode.LEFT, false); put(KeyCode.RIGHT, false);
+        put(KeyCode.ENTER, false); put(KeyCode.SHIFT, false); put(KeyCode.SPACE, false);
+        put(KeyCode.Q, false); put(KeyCode.W, false); put(KeyCode.E, false);
+        put(KeyCode.A, false); put(KeyCode.S, false); put(KeyCode.D, false);
+        put(KeyCode.M, false);
+    }};
 
     private KeyPolling() {}
 
@@ -35,16 +44,22 @@ public class KeyPolling {
         KeyPolling.scene = scene;
         KeyPolling.scene.setOnKeyPressed((keyEvent -> {
             keysCurrentlyDown.add(keyEvent.getCode());
+            keyboard.put(keyEvent.getCode(), true);
         }));
         KeyPolling.scene.setOnKeyReleased((keyEvent -> {
             keysCurrentlyDown.remove(keyEvent.getCode());
+            keyboard.put(keyEvent.getCode(), false);
         }));
     }
 
     public boolean isDown(KeyCode keyCode) {
         return keysCurrentlyDown.contains(keyCode);
     }
-
+    /*
+    public boolean isDown(KeyCode keyCode) {
+        return keyboard.get(keyCode);
+    }
+    */
     @Override
     public String toString() {
         StringBuilder keysDown = new StringBuilder("KeyPolling on scene (").append(scene).append(")");
