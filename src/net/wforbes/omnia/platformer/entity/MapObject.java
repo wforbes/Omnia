@@ -1,8 +1,10 @@
 package net.wforbes.omnia.platformer.entity;
 
 import net.wforbes.omnia.game.Game;
+import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.platformer.tileMap.Tile;
 import net.wforbes.omnia.platformer.tileMap.TileMap;
+import org.jfree.fx.FXGraphics2D;
 
 import java.awt.*;
 
@@ -204,15 +206,32 @@ public abstract class MapObject {
 				y + ymap + height < 0 ||
 				y + ymap - height > Game.HEIGHT;
 	}
-	
+
+	public boolean onScreen(){
+		return x + xmap + width > 0 ||
+				x + xmap - width < OmniaFX.getWidth() ||
+				y + ymap + height > 0 ||
+				y + ymap - height < OmniaFX.getHeight();
+	}
+
+	public void draw(FXGraphics2D fxg){
+		if(!notOnScreen()){
+			if(facingRight){
+				fxg.drawImage(animation.getImage(), (int)(x + xmap - width / 2), (int)(y + ymap - height / 2), null );
+			}else{
+				fxg.drawImage(animation.getImage(), (int)(x + xmap - width / 2 + width), (int)(y + ymap - height / 2), -width, height, null );
+			}
+		}
+	}
+
 	public void draw(Graphics2D g){
 		if(!notOnScreen()){
-		if(facingRight){
-			g.drawImage( animation.getImage(), (int)(x + xmap - width / 2), (int)(y + ymap - height / 2), null ); 
-		}else{
-			g.drawImage(animation.getImage(), (int)(x + xmap - width / 2 + width), (int)(y + ymap - height / 2), -width, height, null );
-		}//if facing right, else left
-	}//end if not not on screen lawl
+			if(facingRight){
+				g.drawImage(animation.getImage(), (int)(x + xmap - width / 2), (int)(y + ymap - height / 2), null );
+			}else{
+				g.drawImage(animation.getImage(), (int)(x + xmap - width / 2 + width), (int)(y + ymap - height / 2), -width, height, null );
+			}//if facing right, else left
+		}//end if not not on screen (lol)
 	}//end draw method
 }
 

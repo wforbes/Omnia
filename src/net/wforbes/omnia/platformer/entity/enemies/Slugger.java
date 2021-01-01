@@ -3,6 +3,7 @@ package net.wforbes.omnia.platformer.entity.enemies;
 import net.wforbes.omnia.platformer.entity.Animation;
 import net.wforbes.omnia.platformer.entity.Enemy;
 import net.wforbes.omnia.platformer.tileMap.TileMap;
+import org.jfree.fx.FXGraphics2D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -103,7 +104,13 @@ public class Slugger extends Enemy{
 		animation.update();
 		
 	}
-	
+
+	public void draw(FXGraphics2D fxg){
+		if(notOnScreen()) return; //if they arent in the camera view, don't render them
+		setMapPosition();
+		super.draw(fxg);
+	}
+
 	public void draw(Graphics2D g){
 		if(notOnScreen()) return; //if they arent in the camera view, don't render them
 		setMapPosition();

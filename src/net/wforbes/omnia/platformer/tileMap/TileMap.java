@@ -1,6 +1,8 @@
 package net.wforbes.omnia.platformer.tileMap;
 
 import net.wforbes.omnia.game.Game;
+import net.wforbes.omnia.gameFX.OmniaFX;
+import org.jfree.fx.FXGraphics2D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -43,18 +45,30 @@ public class TileMap {
 	private int numRowsToDraw;
 	private int numColsToDraw;
 
+	private boolean usingFx = false;
+
 	public TileMap(int tileSize){
 		this.tileSize = tileSize;
-		//since the game is 240 height and tile is 30 
+		//since the game is 240 height and tile is 30
 		numRowsToDraw = Game.HEIGHT / tileSize + 2;
 		numColsToDraw = Game.WIDTH / tileSize + 2;
 		tween = 0.07;
 	}
 
-	public void loadTiles(String s){
-		try{
+	public TileMap(int tileSize, String type){
+		if(!type.equals("fx"))
+			return;
+		this.usingFx = true;
+		this.tileSize = tileSize;
+		numRowsToDraw = OmniaFX.getHeight() / tileSize + 2;
+		numColsToDraw = OmniaFX.getWidth() / tileSize + 2;
+		tween = 0.07;
+	}
+
+	public void loadTiles(String path){
+		try {
 			//get the tileMap image
-			tileset = ImageIO.read( getClass().getResourceAsStream(s));
+			tileset = ImageIO.read( getClass().getResourceAsStream(path));
 			//get the number of tiles across - 20 tiles across
 			numTilesAcross = tileset.getWidth() / tileSize;
 			//this is a representation of the tileset
@@ -69,7 +83,7 @@ public class TileMap {
 				subimage = tileset.getSubimage(col * tileSize, tileSize, tileSize, tileSize);
 				tiles[1][col] = new Tile(subimage, Tile.BLOCKED);
 			}
-		}catch(Exception e){
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -92,9 +106,9 @@ public class TileMap {
 			width = numCols * tileSize;
 			height = numRows * tileSize;
 			
-			xmin = Game.WIDTH - width;
+			xmin = (this.usingFx?OmniaFX.getWidth():Game.WIDTH) - width;
 			xmax = 0;
-			ymin = Game.HEIGHT - height;
+			ymin = (this.usingFx?OmniaFX.getHeight():Game.HEIGHT) - height;
 			ymax = 0;
 
 			String delims = "\\s+"; //this represents white space, so.. the space
@@ -142,7 +156,6 @@ public class TileMap {
 		
 		colOffset = (int) -(this.x) / tileSize;
 		rowOffset = (int) -(this.y) / tileSize;
-	
 	}
 	
 	//helper method, explain later
@@ -152,25 +165,45 @@ public class TileMap {
 		if(x > xmax) x = xmax;
 		if(y > ymax) y = ymax;
 	}
-	
+
+	public void draw(FXGraphics2D fxg) {
+		TileDraw td  = (int r, int c, int col, int row) -> {
+			fxg.drawImage(tiles[r][c].getImage(), (int)x + col * tileSize,
+					(int)y + row * tileSize,
+					tileSize, tileSize, null);
+		};
+		this.draw(td);
+	}
+
 	public void draw(Graphics2D g){
-		for( int row = rowOffset; row < rowOffset + numRowsToDraw; row++){
-			
-			if( row >= numRows) break; //nothing else to draw, so break it
-			
-			for( int col = colOffset; col < colOffset + numColsToDraw; col++){
-				
-				if(col >= numCols) break; //nothing else to draw break!
-				if(map[row][col] == 0) continue; //index tile is left blank. Just because swag.
-				
+		TileDraw td  = (int r, int c, int col, int row) -> {
+			g.drawImage(tiles[r][c].getImage(), (int)x + col * tileSize, (int)y+ row * tileSize, null);
+		};
+
+		this.draw(td);
+	}
+
+	private void draw(TileDraw td) {
+		for(int row = rowOffset; row < (rowOffset + numRowsToDraw); row++) {
+
+			if (row >= numRows) break; //nothing else to draw, so break it
+
+			for (int col = colOffset; col < (colOffset + numColsToDraw); col++) {
+
+				if (col >= numCols) break; //nothing else to draw break!
+				if (map[row][col] == 0) continue; //index tile is left blank. Just because swag.
+
 				int rc = map[row][col];//find which tile to draw
-				int r = rc / numTilesAcross; 
+				int r = rc / numTilesAcross;
 				int c = rc % numTilesAcross;
-				
-				g.drawImage( tiles[r][c].getImage(), (int)x + col * tileSize, (int)y+ row * tileSize, null);
+
+				td.drawTile(r, c, col, row);
 			}
 		}
-		
 	}
-	
+
+	interface TileDraw {
+		void drawTile(int r, int c, int col, int row);
+	}
 }
+

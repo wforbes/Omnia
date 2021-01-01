@@ -1,9 +1,9 @@
 package net.wforbes.omnia.platformer.tileMap;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.gameState.GameState;
+import org.jfree.fx.FXGraphics2D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -11,7 +11,8 @@ import java.awt.image.BufferedImage;
 
 public class Background {
     private BufferedImage bufferedImage;
-    private Image image;
+    private FXGraphics2D fxg;
+
     private double width;
     private double height;
     private double x;
@@ -27,27 +28,12 @@ public class Background {
     //		effect
     private double moveScale;
 
-    public Background(String path, double ms){
-        //import Background resource file referenced by String s into game
+    public Background(GameState state, String path, double ms){
+        moveScale = ms;
         try{
             bufferedImage = ImageIO.read(getClass().getResourceAsStream(path));
             this.width = bufferedImage.getWidth();
             this.height = bufferedImage.getHeight();
-            moveScale = ms;
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public Background(String path, double ms, String type) {
-        if(!type.equals("fx"))
-            return;
-
-        try{
-            image = new Image(path, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(), false, false);
-            this.width = image.getWidth();
-            this.height = image.getHeight();
-            moveScale = ms;
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -65,7 +51,6 @@ public class Background {
         while(x >= +width) x += width;
         while(y <= -height) y += height;
         while(y >= +height) y -= height;
-
     }
 
 
@@ -80,18 +65,26 @@ public class Background {
         y += dy;
     }
 
+    /*
     public void render(GraphicsContext gc) {
-        gc.drawImage(image, x, y, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight());
+        if(fxg == null)
+            fxg = new FXGraphics2D(gc);
 
-        if (x < 0) {
-            //TODO: fix bug that causes background to only cycle twice
-            //System.out.println(x + " ("+ (x + OmniaFX.getScaledWidth() ) + ")");
-            gc.drawImage(image, x + OmniaFX.getScaledWidth(), y);
-        }
-        if (x > 0) {
-            System.out.println("x greater than 0");
-            gc.drawImage(image, x - OmniaFX.getScaledWidth(), y);
-        }
+        fxg.drawImage(bufferedImage, (int)x, (int)y, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(), null);
+        if (x < 0)
+            fxg.drawImage(bufferedImage, (int)x + OmniaFX.getScaledWidth(), (int)y, null);
+
+        if (x > 0)
+            fxg.drawImage(bufferedImage, (int)x - OmniaFX.getScaledWidth(), (int)y, null);
+    }*/
+
+    public void draw(FXGraphics2D fxg) {
+        fxg.drawImage(bufferedImage, (int)x, (int)y, OmniaFX.getWidth(), OmniaFX.getHeight(),null);
+        if(x < 0)
+            fxg.drawImage(bufferedImage, (int)x + OmniaFX.getWidth(), (int) y, OmniaFX.getWidth(), OmniaFX.getHeight(), null);
+
+        if(x > 0)
+            fxg.drawImage(bufferedImage, (int)x - OmniaFX.getHeight(), (int)y,null);
     }
 
     public void draw(Graphics2D g){
@@ -109,7 +102,6 @@ public class Background {
             g.drawImage(bufferedImage, (int)x - Game.WIDTH, (int)y, null);
             //STOPPED at 5:23AM at 30:06 of:
             //			http://www.youtube.com/watch?v=9dzhgsVaiSo
-
         }
     }
 }

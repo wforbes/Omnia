@@ -2,6 +2,7 @@ package net.wforbes.omnia.gameState;
 
 import javafx.scene.canvas.GraphicsContext;
 import net.wforbes.omnia.game.Game;
+import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.platformer.entity.Enemy;
 import net.wforbes.omnia.platformer.entity.Player;
 import net.wforbes.omnia.platformer.entity.enemies.Slugger;
@@ -9,12 +10,14 @@ import net.wforbes.omnia.platformer.tileMap.Background;
 import net.wforbes.omnia.platformer.tileMap.TileMap;
 import net.wforbes.omnia.platformer.ui.DeathMenu;
 import net.wforbes.omnia.platformer.ui.HUD;
+import org.jfree.fx.FXGraphics2D;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class PlatformerState extends GameState {
     public GameStateManager gsm;
+    private FXGraphics2D fxg;
     private TileMap tileMap;
     private Background bg;
     private Player player;
@@ -24,7 +27,6 @@ public class PlatformerState extends GameState {
 
     public PlatformerState(GameStateManager gsm) {
         this.gsm = gsm;
-        //init();
     }
 
     public Player getPlayer(){ return player; }
@@ -33,12 +35,7 @@ public class PlatformerState extends GameState {
 
     @Override
     public void init() {
-        if (this.gsm.usingFx) {
-            bg = new Background("/Backgrounds/level1bg.gif", 0.1, "fx");
-        } else {
-            bg = new Background("/Backgrounds/level1bg.gif", 0.1);
-        }
-
+        bg = new Background(this,"/Backgrounds/level1bg.gif", 0.1);
         tileMap = new TileMap(30);
         tileMap.loadTiles("/Tilesets/blahgrasstileset.gif");
         tileMap.loadMap("/Maps/level1-1.map");
@@ -46,15 +43,24 @@ public class PlatformerState extends GameState {
         tileMap.setTween(0.06);
 
         player = new Player(tileMap, this);
-        //set starting position
-        player.setPosition(100,100);//set starting position
+        if(gsm.usingFx)
+            player.setPosition(100,100);//set starting position
+        else
+            player.setPosition(100,100);//set starting position
 
         enemies = new ArrayList<Enemy>();
         Slugger s = new Slugger(tileMap);
-        s.setPosition(200, 100);
+        if(gsm.usingFx)
+            s.setPosition(200, 100);
+        else
+            s.setPosition(200, 100);
         enemies.add(s);
 
-        hud = new HUD(player);
+        if(gsm.usingFx) {
+            hud = new HUD(player, "fx");
+        } else {
+            hud = new HUD(player);
+        }
         deathMenu = new DeathMenu(this);
         //bgMusic = new AudioPlayer("/Music/bgMusic1.mp3");
         //bgMusic.play();
@@ -92,13 +98,6 @@ public class PlatformerState extends GameState {
         }
     }
 
-    @Override
-    public void update() {
-        System.out.println("platformer update");
-        //set background
-        bg.setPosition(tileMap.getx(), tileMap.gety());
-    }
-
     private void checkKeyInput() {
         if(gsm.inputHandler.a.isPressed()) player.setLeft(true);
         if(gsm.inputHandler.d.isPressed()) player.setRight(true);
@@ -111,10 +110,50 @@ public class PlatformerState extends GameState {
     }
 
     @Override
+    public void update() {
+        //check Key Input
+        player.update();
+        if (player.isDead) {
+            if (!deathMenu.isVisible()) {
+                this.deathMenu.show();
+            } else {
+                deathMenu.tick();
+            }
+        }
+        tileMap.setPosition( OmniaFX.getWidth() / 2 - player.getx(), OmniaFX.getHeight() / 2 - player.gety() );
+
+        //set background
+        bg.setPosition(tileMap.getx(), tileMap.gety());
+
+        //attack enemies
+        player.checkAttack(enemies);
+
+        //update enemies
+        for(int i = 0; i < enemies.size(); i++){
+            enemies.get(i).update();
+            if(enemies.get(i).isDead()){
+                enemies.remove(i);
+                player.increaseKillCount();
+                i--;
+            }
+        }
+    }
+
+    @Override
     public void render(GraphicsContext gc) {
-        System.out.println("platformer render");
-        bg.render(gc);
-        //tileMap.draw()
+        if (fxg == null) {
+            fxg = new FXGraphics2D(gc);
+        }
+        bg.draw(fxg);
+        tileMap.draw(fxg);
+        player.draw(fxg);
+        for(int i = 0; i < enemies.size(); i++){
+            enemies.get(i).draw(fxg);
+        }
+        hud.draw(fxg);
+        if(deathMenu.isVisible()) {
+            deathMenu.render(fxg);
+        }
     }
 
     @Override

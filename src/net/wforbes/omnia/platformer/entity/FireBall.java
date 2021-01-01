@@ -1,6 +1,7 @@
 package net.wforbes.omnia.platformer.entity;
 
 import net.wforbes.omnia.platformer.tileMap.TileMap;
+import org.jfree.fx.FXGraphics2D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -80,7 +81,12 @@ public class FireBall extends MapObject{
 		
 		
 	}
-	
+
+	public void draw(FXGraphics2D fxg){
+		setMapPosition();
+		super.draw(fxg);
+	}
+
 	public void draw(Graphics2D g){
 		setMapPosition();
 		super.draw(g);
