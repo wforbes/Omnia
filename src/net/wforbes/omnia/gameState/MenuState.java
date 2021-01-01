@@ -1,17 +1,14 @@
 package net.wforbes.omnia.gameState;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.menu.MainMenu;
 import net.wforbes.omnia.platformer.tileMap.Background;
 
 import java.awt.*;
 
 public class MenuState extends GameState {
+    private MainMenu menu;
 
-    private GameStateManager gsm;
     private int fxScale;
     private int waitTicks = 20;
     private int lastPressTick;
@@ -24,65 +21,58 @@ public class MenuState extends GameState {
             "Quit"
     };
     private java.awt.Font titleFont, subTitleFont, subTitleFont2, font;
-    private Font fxTitleFont, fxSubTitleFont, fxSubTitleFont2, fxFont;
+
     private Background bg;
 
     public MenuState(GameStateManager gsm) {
         this.gsm = gsm;
-
-        try {//load the background resource .gif file
-            bg = new Background("/Backgrounds/menubg.gif", 1);
-            bg.setVector(-0.1, 0);//move to the left at .1 pixels
-
-            //font for Naturalist Engine title
-            titleFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 25);
-
-            //font for version number
-            subTitleFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 10);
-
-            //font for subModern presents
-            subTitleFont2 = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 10);
-
-            //font info for everything else
-            font = new java.awt.Font("Arial", java.awt.Font.PLAIN, 12);
-
-        } catch(Exception e) {
-            e.printStackTrace();
+        if (this.gsm.usingFx) {
+            this.menu = new MainMenu(this);
+        } else {
+            this.setup();
         }
     }
 
-    public MenuState(GameStateManager gsm, String type) {
-        if (!type.equals("fx"))
-            return;
-
-        this.gsm = gsm;
-        this.fxScale = OmniaFX.getScale();
-
+    private void setup() {
         try {//load the background resource .gif file
-            bg = new Background("/Backgrounds/menubg.gif", 1, "fx");
-            bg.setVector(-0.1 * OmniaFX.getScale(), 0);//move to the left at .1 pixels
-
-            //font for Naturalist Engine title
-            fxTitleFont = new Font("Century Gothic", 25 * fxScale);
-
-            //font for version number
-            fxSubTitleFont = new Font("Century Gothic", 10 * fxScale);
-
-            //font for subModern presents
-            fxSubTitleFont2 = new Font("Century Gothic", 10 * fxScale);
-
-            //font info for everything else
-            fxFont = new Font("Arial", 12 * fxScale);
+            bg = new Background(this, "/Backgrounds/menubg.gif", 1);
         } catch(Exception e) {
             e.printStackTrace();
         }
+        bg.setVector(-0.1, 0);//move to the left at .1 pixels
+
+        //font for Naturalist Engine title
+        titleFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 25);
+
+        //font for version number
+        subTitleFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 10);
+
+        //font for subModern presents
+        subTitleFont2 = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 10);
+
+        //font info for everything else
+        font = new java.awt.Font("Arial", java.awt.Font.PLAIN, 12);
     }
 
     @Override
     public void init() {
-        this.lastPressTick = waitTicks;
-        this.tickCount = 0;
-        this.currentChoice = 0;
+        if (this.gsm.usingFx) {
+            this.menu.init();
+        } else {
+            this.lastPressTick = waitTicks;
+            this.tickCount = 0;
+            this.currentChoice = 0;
+        }
+    }
+
+    @Override
+    public void update() {
+        this.menu.update();
+    }
+
+    @Override
+    public void render(GraphicsContext gc) {
+        this.menu.render(gc);
     }
 
     @Override
@@ -92,39 +82,13 @@ public class MenuState extends GameState {
         tickCount++;
     }
 
-    @Override
-    public void update() {
-        bg.update();
-        if (keyInputReady()) this.checkKeyInput();
-        tickCount++;
-    }
-
     private boolean keyInputReady() {
-
         return tickCount - lastPressTick > waitTicks || lastPressTick == 0;
     }
 
     private void checkKeyInput() {
         if (this.gsm.usingFx) {
-            if(this.gsm.isKeyDown(KeyCode.ENTER) && keyInputReady()){
-                select();
-            }
 
-            if(this.gsm.isKeyDown(KeyCode.UP) && keyInputReady()){
-                currentChoice--;
-                if(currentChoice == -1){
-                    currentChoice = options.length - 1;
-                }
-                lastPressTick = tickCount;
-            }
-
-            if(this.gsm.isKeyDown(KeyCode.DOWN) && keyInputReady()){
-                currentChoice++;
-                if(currentChoice == options.length){
-                    currentChoice = 0;
-                }
-                lastPressTick = tickCount;
-            }
         } else {
             if(this.gsm.inputHandler.enter.isPressed() && keyInputReady()){
                 select();
@@ -148,27 +112,7 @@ public class MenuState extends GameState {
         }
     }
 
-    @Override
-    public void render(GraphicsContext gc) {
-        bg.render(gc);
-        gc.setFill(Color.BLACK);
-        gc.setFont(fxSubTitleFont2);
-        gc.fillText("subModern studios presents:", 30 * fxScale, 60 * fxScale);
-        gc.setFont(fxTitleFont);
-        gc.fillText("Omnia Game Engine", 30 * fxScale, 85 * fxScale);
-        gc.setFont(fxSubTitleFont);
-        gc.fillText("alpha version 0.0.1", 225 * fxScale, 100 * fxScale);
 
-        gc.setFont(fxFont);
-        for(int i = 0; i < options.length; i++){
-            if(i == currentChoice){
-                gc.setFill(Color.YELLOW);
-            }else{
-                gc.setFill(Color.WHITE);
-            }
-            gc.fillText(options[i], 30 * fxScale, (135 * fxScale) + (20 * fxScale * i) );
-        }
-    }
 
     @Override
     public void render(Graphics2D graphics2D) {

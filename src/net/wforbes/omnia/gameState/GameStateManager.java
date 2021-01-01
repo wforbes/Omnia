@@ -30,11 +30,10 @@ public class GameStateManager {
     }
 
     public GameStateManager(GameController gameController) {
-        //this.inputHandler = new InputHandler(gameController);
         this.usingFx = true;
         this.gameController = gameController;
         gameStates = new ArrayList<>();
-        gameStates.add(new MenuState(this, "fx"));
+        gameStates.add(new MenuState(this));
         gameStates.add(new TopDownState(this));
         gameStates.add(new PlatformerState(this));
         this.setState(MENUSTATE);
@@ -51,18 +50,22 @@ public class GameStateManager {
         this.gameStates.get(state).reset();
     }
 
+    //Used for Game.java logic updates
     public void tick(){
         gameStates.get(currentState).tick();
     }
 
+    //Used for GameFX.java logic updates
     public void update() {
         gameStates.get(currentState).update();
     }
 
+    //Used for GameFX.java renders
     public void render(GraphicsContext gc) {
         gameStates.get(currentState).render(gc);
     }
 
+    //Used for Game.java renders
     public void render(Graphics2D g2D){
         gameStates.get(currentState).render(g2D);
     }
