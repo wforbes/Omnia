@@ -38,7 +38,8 @@ public class TopDownState extends GameState{
     public TopDownState(GameStateManager gsm)
     {
         this.gsm = gsm;
-        //this.init();
+        this.gui = new GUI(gsm.gameController);
+
     }
 
     public GameStateManager getGsm() {
@@ -107,6 +108,8 @@ public class TopDownState extends GameState{
 
         enemy = new Enemy(level, 32, 32, "skele");
         level.addEntity(enemy);
+
+        this.openChatInput();
     }
 
     private void initColors()

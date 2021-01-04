@@ -1,6 +1,13 @@
 package net.wforbes.omnia.topDown.gui;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import net.wforbes.omnia.game.Game;
+import net.wforbes.omnia.gameFX.controllers.GameController;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.level.Level;
 import net.wforbes.omnia.topDown.entity.Player;
@@ -10,28 +17,19 @@ public class GUI {
 
     private Player player;
     private Level level;
-    private Screen screen;
+    private GameController gameController;
 
     //chatbox
-    private int color = Colors.get(-1, 100, 555, 543);
-    private int xOffsetTiles = 2;
-    private int tileSize = 8;
-    private int boxXOffset = tileSize * xOffsetTiles;
-    private int yOffsetTiles = 10;
-    private int boxYOffset = tileSize * yOffsetTiles;
-    private int boxHeight = 10;
-    private int boxWidth = 20;
-    private int topCornerTile = (0 + 22 * 32);
-    private int topEdgeTile = (1 + 22 * 32);
-    private int sideEdgeTile = (3 + 22 * 32); //TODO: remove right corner sprite tile
-    private int centerTile = (4 + 22 * 32);
-    private int bottomCornerTile = (5 + 22 * 32);
-    private int bottomEdgeTile = (6 + 22 * 32);
+    private StringBuilder chatBuilder;
+    private Button chatSendBtn;
+    private TextField chatField;
+    private TextArea chatArea;
+
 
     private boolean chatInputIsOpen = false;
 
-    public GUI (Screen screen) {
-        this.screen = screen;
+    public GUI (GameController gameController) {
+        this.gameController = gameController;
     }
 
     public void tick() {
@@ -40,13 +38,65 @@ public class GUI {
 
     public void openChatInput() {
         this.chatInputIsOpen = true;
+        chatBuilder = new StringBuilder("");
+        chatArea = new TextArea();
+        chatArea.setOpacity(0.75);
+        chatArea.setPrefSize(200, 200);
+        chatArea.getStyleClass().add("chatArea");
+        chatArea.setDisable(true);
+
+        chatField = new TextField();
+        chatField.setPrefSize(1168, 50);
+        chatField.setFont(new Font("Century Gothic", 20));
+        chatField.setFocusTraversable(false);
+        chatField.setPromptText("Enter Chat or Commands Here..");
+        chatField.setOnAction(event -> {
+            this.parseChatField();
+        });
+
+        chatSendBtn = new Button("Send");
+        chatSendBtn.setPrefSize(113, 58);
+        chatSendBtn.setFont(new Font("Franklin Gothic Medium", 20));
+        chatSendBtn.setFocusTraversable(false);
+        chatSendBtn.setOnMouseClicked(event -> {
+            this.parseChatField();
+        });
+
+        HBox hBox = new HBox();
+        hBox.setPrefSize(1280, 34);
+        hBox.getChildren().addAll(chatField, chatSendBtn);
+
+        VBox vBox = new VBox();
+        vBox.setPrefSize(1280, 240);
+        vBox.getChildren().addAll(chatArea, hBox);
+
+        this.gameController.gameBorder.setBottom(vBox);
+    }
+
+    private void parseChatField() {
+        String chatMsg = this.chatField.getText();
+        System.out.println(chatMsg);
+        if (chatMsg.equals("")) return;
+        if(chatMsg.startsWith("/")) {
+            if (chatMsg.startsWith("/say ")) {
+                chatBuilder.append("You say, '").append(chatMsg.substring(5)).append("'\n");
+            }
+
+            if (chatMsg.startsWith("/shout ")) {
+                chatBuilder.append("You shout, '").append(chatMsg.substring(6)).append("'\n");
+            }
+        } else {
+            chatBuilder.append("You say, '").append(chatMsg).append("'\n");
+        }
+
+        chatArea.setText(chatBuilder.toString());
+        chatField.setText("");
     }
 
     public void render(Screen screen) {
         //System.out.println(screen.xOffset + " " + screen.yOffset);
         //System.out.println(player.yOffset);
 
-        renderChatBox(screen);
         if (chatInputIsOpen) {
             renderChatInput(screen);
         }
@@ -57,81 +107,5 @@ public class GUI {
     private void renderChatInput(Screen screen) {
 
         //screen.render();
-    }
-
-    private void renderChatBox(Screen screen) {
-        //top left corner
-        screen.render(
-                screen.xOffset + boxXOffset,
-                screen.yOffset + Game.HEIGHT - boxYOffset,
-                topCornerTile, color, 0, 1
-        );
-
-        //top edge
-        for (int i = 0; i < boxWidth - 2; i++) {
-            screen.render(
-                    screen.xOffset + boxXOffset + tileSize + (tileSize * i),
-                    screen.yOffset + Game.HEIGHT - boxYOffset,
-                    topEdgeTile, color, 0, 1
-            );
-        }
-
-        //top right corner
-        screen.render(
-                screen.xOffset + boxXOffset + ((boxWidth - 1) * tileSize),
-                screen.yOffset + Game.HEIGHT - boxYOffset,
-                topCornerTile, color, 1, 1
-        );
-
-        //left edge
-        for (int i = 0; i < boxHeight - 2; i++) {
-            screen.render(
-                    screen.xOffset + boxXOffset,
-                    screen.yOffset + Game.HEIGHT - boxYOffset + tileSize + (tileSize * i),
-                    sideEdgeTile, Colors.get(-1, 100, 555, 543), 0, 1);
-        }
-
-        //center
-        for (int i = 0; i < boxHeight - 2; i++) {
-            for (int j = 0; j < boxWidth - 2; j++) {
-                screen.render(
-                        screen.xOffset + boxXOffset + tileSize + (tileSize * j),
-                        screen.yOffset + Game.HEIGHT - boxYOffset + tileSize + (tileSize * i),
-                        centerTile, color, 0, 1
-                );
-            }
-        }
-
-        //right edge
-        for (int i = 0; i < boxHeight - 2; i++) {
-            screen.render(
-                    screen.xOffset + boxXOffset + tileSize * (boxWidth - 1),
-                    screen.yOffset + Game.HEIGHT - boxYOffset + tileSize + (tileSize * i),
-                    sideEdgeTile, color, 1, 1
-            );
-        }
-
-        //bottom left corner
-        screen.render(
-                screen.xOffset + boxXOffset,
-                screen.yOffset + Game.HEIGHT - boxYOffset + (tileSize * (boxHeight - 1)),
-                bottomCornerTile, color, 0, 1
-        );
-
-        //bottom edge
-        for (int i = 0; i < boxWidth - 2; i++) {
-            screen.render(
-                    screen.xOffset + boxXOffset + tileSize + (tileSize * i),
-                    screen.yOffset + Game.HEIGHT - boxYOffset + (tileSize * (boxHeight -1)),
-                    bottomEdgeTile, color, 0, 1
-            );
-        }
-
-        //bottom right corner
-        screen.render(
-                screen.xOffset + boxXOffset + ((boxWidth - 1) * tileSize),
-                screen.yOffset + Game.HEIGHT - boxYOffset + (tileSize * (boxHeight - 1)),
-                bottomCornerTile, Colors.get(-1, 100, 555, 543), 1, 1
-        );
     }
 }
