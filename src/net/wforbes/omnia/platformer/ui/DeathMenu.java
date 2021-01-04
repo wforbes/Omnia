@@ -20,8 +20,10 @@ public class DeathMenu {
     private boolean visible;
     private int fxScale;
     private Font headingFont;
+    private java.awt.Font awtHeadingFont;
     private String heading;
     private Font optionsFont;
+    private java.awt.Font awtOptionsFont;
     private String[] options;
     private PlatformerState gameState;
     private int lastPressTick = 0;
@@ -33,9 +35,11 @@ public class DeathMenu {
         this.gameState = gameState;
         visible = false;
         this.fxScale = OmniaFX.getScale();
-        headingFont = new javafx.scene.text.Font("Century Gothic", 20 * fxScale);
+        headingFont = new Font("Century Gothic", 20 * fxScale);
+        awtHeadingFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 20);
         heading = "You died!";
         optionsFont = new Font("Century Gothic", 14 * fxScale);
+        awtOptionsFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 14);
         options = new String[]{"Try Again", "Return to Menu", "Quit Game"};
     }
 
@@ -135,7 +139,7 @@ public class DeathMenu {
         double padSum = 0;
         for (int i = 0; i < options.length; i++) {
             _width = computeTextWidth(optionsFont, options[i], OmniaFX.getScaledWidth());
-            
+
             if(i == currentChoice){
                 g.setFill(Color.YELLOW);
             }else{
@@ -144,30 +148,6 @@ public class DeathMenu {
             g.fillText(options[i], OmniaFX.getScaledWidth() / 2 - _width / 2, optionsYPosStart + padSum);
             padSum = optionsPadding + ( optionsPadding * i+1);
         }
-        /*
-        FontRenderContext context = g.getFontRenderContext();
-
-        g.setFont(headingFont);
-        g.setFont(new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 20 * fxScale));
-        g.setColor(java.awt.Color.WHITE);
-        int headingXPos = OmniaFX.getWidth() / 2 - (int)headingFont.getStringBounds(heading, context).getWidth() / 2;
-        int headingYPos = OmniaFX.getHeight() / 2 - (int)headingFont.getStringBounds(heading, context).getHeight() / 2;
-        g.drawString(heading, headingXPos, headingYPos);
-
-        g.setFont(optionsFont);
-        int optionsXPos = OmniaFX.getWidth() / 2 - (int)headingFont.getStringBounds(heading, context).getWidth() / 2;
-        int optionsPadding = (int)optionsFont.getStringBounds(options[0], context).getHeight();
-        int optionsYPosStart = headingYPos + (int)optionsFont.getStringBounds(options[0], context).getHeight();
-        int padSum = 0;
-        for (int i = 0; i < options.length; i++) {
-            if(i == currentChoice){
-                g.setColor(java.awt.Color.YELLOW);
-            }else{
-                g.setColor(java.awt.Color.WHITE);
-            }
-            g.drawString(options[i], optionsXPos, optionsYPosStart + padSum);
-            padSum = optionsPadding + ( optionsPadding * i+1);
-        }*/
     }
 
     private double computeTextWidth(Font font, String text, double wrappingWidth) {
@@ -185,29 +165,29 @@ public class DeathMenu {
     }
 
     public void render(Graphics2D g) {
-        /*
+
         FontRenderContext context = g.getFontRenderContext();
 
-        g.setFont(headingFont);
-        g.setColor(Color.WHITE);
-        int headingXPos = Game.WIDTH / 2 - (int)headingFont.getStringBounds(heading, context).getWidth() / 2;
-        int headingYPos = Game.HEIGHT / 2 - (int)headingFont.getStringBounds(heading, context).getHeight() / 2;
+        g.setFont(awtHeadingFont);
+        g.setColor(java.awt.Color.WHITE);
+        int headingXPos = Game.WIDTH / 2 - (int)awtHeadingFont.getStringBounds(heading, context).getWidth() / 2;
+        int headingYPos = Game.HEIGHT / 2 - (int)awtHeadingFont.getStringBounds(heading, context).getHeight() / 2;
         g.drawString(heading, headingXPos, headingYPos);
 
-        g.setFont(optionsFont);
-        int optionsXPos = Game.WIDTH / 2 - (int)headingFont.getStringBounds(heading, context).getWidth() / 2;
-        int optionsPadding = (int)optionsFont.getStringBounds(options[0], context).getHeight();
-        int optionsYPosStart = headingYPos + (int)optionsFont.getStringBounds(options[0], context).getHeight();
+        g.setFont(awtOptionsFont);
+        int optionsXPos = Game.WIDTH / 2 - (int)awtHeadingFont.getStringBounds(heading, context).getWidth() / 2;
+        int optionsPadding = (int)awtOptionsFont.getStringBounds(options[0], context).getHeight();
+        int optionsYPosStart = headingYPos + (int)awtOptionsFont.getStringBounds(options[0], context).getHeight();
         int padSum = 0;
         for (int i = 0; i < options.length; i++) {
             if(i == currentChoice){
-                g.setColor(Color.YELLOW);
+                g.setColor(java.awt.Color.YELLOW);
             }else{
-                g.setColor(Color.WHITE);
+                g.setColor(java.awt.Color.WHITE);
             }
             g.drawString(options[i], optionsXPos, optionsYPosStart + padSum);
             padSum = optionsPadding + ( optionsPadding * i+1);
         }
-         */
+
     }
 }
