@@ -57,6 +57,7 @@ public class PlatformerState extends GameState {
         enemies.add(s);
 
         if(gsm.usingFx) {
+            System.out.println("usingfx hud");
             hud = new HUD(player, "fx");
         } else {
             hud = new HUD(player);
@@ -150,7 +151,7 @@ public class PlatformerState extends GameState {
         for(int i = 0; i < enemies.size(); i++){
             enemies.get(i).draw(fxg);
         }
-        hud.draw(fxg);
+        hud.draw(gc);
         if(deathMenu.isVisible()) {
             deathMenu.render(fxg);
         }

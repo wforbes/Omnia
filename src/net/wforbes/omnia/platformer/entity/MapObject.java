@@ -201,10 +201,11 @@ public abstract class MapObject {
 		
 	
 	public boolean notOnScreen(){
+
 		return x + xmap + width < 0 ||
-				x + xmap - width > Game.WIDTH ||
+				x + xmap - width > OmniaFX.getScaledWidth() ||
 				y + ymap + height < 0 ||
-				y + ymap - height > Game.HEIGHT;
+				y + ymap - height > OmniaFX.getScaledHeight();
 	}
 
 	public boolean onScreen(){
@@ -217,9 +218,9 @@ public abstract class MapObject {
 	public void draw(FXGraphics2D fxg){
 		if(!notOnScreen()){
 			if(facingRight){
-				fxg.drawImage(animation.getImage(), (int)(x + xmap - width / 2), (int)(y + ymap - height / 2), null );
+				fxg.drawImage(animation.getImage(), (int)(x + xmap - width / 2)*OmniaFX.getScale(), (int)(y + ymap - height / 2)*OmniaFX.getScale(), width*OmniaFX.getScale(), height*OmniaFX.getScale(), null );
 			}else{
-				fxg.drawImage(animation.getImage(), (int)(x + xmap - width / 2 + width), (int)(y + ymap - height / 2), -width, height, null );
+				fxg.drawImage(animation.getImage(), (int)(x + xmap - width / 2 + width)*OmniaFX.getScale(), (int)(y + ymap - height / 2)*OmniaFX.getScale(), -width*OmniaFX.getScale(), height*OmniaFX.getScale(), null );
 			}
 		}
 	}

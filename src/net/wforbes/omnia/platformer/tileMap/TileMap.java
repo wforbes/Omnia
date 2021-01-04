@@ -166,11 +166,12 @@ public class TileMap {
 		if(y > ymax) y = ymax;
 	}
 
+	//TODO: Scaled - 1/3
 	public void draw(FXGraphics2D fxg) {
 		TileDraw td  = (int r, int c, int col, int row) -> {
-			fxg.drawImage(tiles[r][c].getImage(), (int)x + col * tileSize,
-					(int)y + row * tileSize,
-					tileSize, tileSize, null);
+			fxg.drawImage(tiles[r][c].getImage(), (int)(x + col * tileSize) * OmniaFX.getScale(),
+					(int)(y + row * tileSize) * OmniaFX.getScale(),
+					tileSize * OmniaFX.getScale(), tileSize * OmniaFX.getScale(), null);
 		};
 		this.draw(td);
 	}

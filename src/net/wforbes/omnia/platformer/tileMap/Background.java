@@ -79,12 +79,12 @@ public class Background {
     }*/
 
     public void draw(FXGraphics2D fxg) {
-        fxg.drawImage(bufferedImage, (int)x, (int)y, OmniaFX.getWidth(), OmniaFX.getHeight(),null);
+        fxg.drawImage(bufferedImage, (int)x, (int)y, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(),null);
         if(x < 0)
-            fxg.drawImage(bufferedImage, (int)x + OmniaFX.getWidth(), (int) y, OmniaFX.getWidth(), OmniaFX.getHeight(), null);
+            fxg.drawImage(bufferedImage, (int)x + OmniaFX.getScaledWidth(), (int) y, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(), null);
 
         if(x > 0)
-            fxg.drawImage(bufferedImage, (int)x - OmniaFX.getHeight(), (int)y,null);
+            fxg.drawImage(bufferedImage, (int)x - OmniaFX.getScaledWidth(), (int)y, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(), null);
     }
 
     public void draw(Graphics2D g){
