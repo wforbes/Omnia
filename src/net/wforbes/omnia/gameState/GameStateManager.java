@@ -2,6 +2,7 @@ package net.wforbes.omnia.gameState;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.controllers.GameController;
 import net.wforbes.omnia.input.InputHandler;

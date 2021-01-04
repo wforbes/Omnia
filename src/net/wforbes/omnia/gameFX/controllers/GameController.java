@@ -4,6 +4,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameFX.animation.GameLoopTimer;
@@ -18,6 +20,8 @@ public class GameController implements Initializable {
     public Stage stage;
     public Canvas gameCanvas;
     public AnchorPane gameAnchor;
+    public StackPane gameStack;
+    public BorderPane gameBorder;
     public KeyPolling keys  = KeyPolling.getInstance();
     private double time;
 
@@ -29,7 +33,7 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeCanvas();
         stage = OmniaFX.getPrimaryStage();
-        stage.setTitle("Omnia - Testing JavaFX framework");
+        stage.setTitle("Omnia");
         this.gsm = new GameStateManager(this);
         this.renderer = new Renderer(this.gameCanvas);
         this.gc = renderer.getContext();

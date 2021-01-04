@@ -1,7 +1,15 @@
 package net.wforbes.omnia.menu;
 
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import net.wforbes.omnia.gameFX.OmniaFX;
@@ -48,15 +56,77 @@ public class MainMenu extends Menu {
     }
 
     public void init() {
+        this.setButtons();
+        /*
         this.lastPressTick = waitTicks;
         this.tickCount = 0;
         this.currentChoice = 0;
+         */
+    }
+
+    private void setButtons() {
+
+        Button topDownBtn = new Button("Top-Down");
+        topDownBtn.getStyleClass().add("main-button");
+        topDownBtn.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            topDownBtn.requestFocus();
+        });
+        topDownBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            state.gsm.gameController.gameBorder.setLeft(null);
+            state.gsm.setState(GameStateManager.TOPDOWNSTATE);
+        });
+        topDownBtn.setOnAction(event -> {
+            state.gsm.gameController.gameBorder.setLeft(null);
+            state.gsm.setState(GameStateManager.TOPDOWNSTATE);
+        });
+
+        Button platformerBtn = new Button("Platformer");
+        platformerBtn.getStyleClass().add("main-button");
+        platformerBtn.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            platformerBtn.requestFocus();
+        });
+        platformerBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            state.gsm.gameController.gameBorder.setLeft(null);
+            state.gsm.setState(GameStateManager.PLATFORMERSTATE);
+        });
+        platformerBtn.setOnAction(event -> {
+            state.gsm.gameController.gameBorder.setLeft(null);
+            state.gsm.setState(GameStateManager.PLATFORMERSTATE);
+        });
+
+        Button infoBtn = new Button("Info");
+        infoBtn.getStyleClass().add("main-button");
+        infoBtn.addEventHandler(MouseEvent.MOUSE_ENTERED,event -> {
+            infoBtn.requestFocus();
+        });
+        infoBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {});
+        infoBtn.setOnAction(event -> {});
+
+        Button quitBtn = new Button("Quit");
+        quitBtn.getStyleClass().add("main-button");
+        quitBtn.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            quitBtn.requestFocus();
+        });
+        quitBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            System.exit(0);
+        });
+        quitBtn.setOnAction(event -> {
+            System.exit(0);
+        });
+
+        VBox vbox = new VBox(18);
+        vbox.setPadding(new Insets((123 * fxScale), 0,0,28*fxScale));
+        vbox.getChildren().addAll(topDownBtn, platformerBtn, infoBtn, quitBtn);
+        state.gsm.gameController.gameBorder.setLeft(vbox);
     }
 
     public void update() {
         bg.update();
+        /*
         if (keyInputReady()) this.checkKeyInput();
         tickCount++;
+
+         */
     }
 
     @Override
@@ -84,7 +154,6 @@ public class MainMenu extends Menu {
 
     void select() {
         if(currentChoice == 0){
-
             state.gsm.setState(GameStateManager.TOPDOWNSTATE);
         }
         if(currentChoice == 1){
@@ -107,7 +176,7 @@ public class MainMenu extends Menu {
         gc.fillText("Omnia Game Engine", 30 * fxScale, 85 * fxScale);
         gc.setFont(subTitleFont);
         gc.fillText("alpha version 0.0.1", 225 * fxScale, 100 * fxScale);
-
+/*
         gc.setFont(font);
         for(int i = 0; i < options.length; i++){
             if(i == currentChoice){
@@ -117,5 +186,7 @@ public class MainMenu extends Menu {
             }
             gc.fillText(options[i], 30 * fxScale, (135 * fxScale) + (20 * fxScale * i) );
         }
+
+ */
     }
 }

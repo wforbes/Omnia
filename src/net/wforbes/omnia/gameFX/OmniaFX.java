@@ -23,6 +23,7 @@ public class OmniaFX extends Application {
         stage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainView.fxml"));
         Scene scene = new Scene(root, WIDTH * SCALE, HEIGHT * SCALE);
+        this.initStyles(scene);
 
         KeyPolling.getInstance().pollScene(scene);
 
@@ -39,6 +40,11 @@ public class OmniaFX extends Application {
 
         primaryStage.sizeToScene();
         primaryStage.show();
+    }
+
+    private void initStyles(Scene scene) {
+        String mainMenuStyles = getClass().getResource("/css/main-menu.css").toExternalForm();
+        scene.getStylesheets().add(mainMenuStyles);
     }
 
     public static Stage getPrimaryStage() {
