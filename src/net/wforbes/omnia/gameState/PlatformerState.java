@@ -153,7 +153,7 @@ public class PlatformerState extends GameState {
         }
         hud.draw(gc);
         if(deathMenu.isVisible()) {
-            deathMenu.render(fxg);
+            deathMenu.render(gc);
         }
     }
 

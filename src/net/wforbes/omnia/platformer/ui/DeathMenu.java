@@ -1,11 +1,16 @@
 package net.wforbes.omnia.platformer.ui;
 
+import javafx.scene.paint.Color;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.text.Font;
 import javafx.scene.input.KeyCode;
+import javafx.scene.text.Text;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.GameStateManager;
 import net.wforbes.omnia.gameState.PlatformerState;
 import org.jfree.fx.FXGraphics2D;
+
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -13,6 +18,7 @@ import java.awt.font.FontRenderContext;
 public class DeathMenu {
 
     private boolean visible;
+    private int fxScale;
     private Font headingFont;
     private String heading;
     private Font optionsFont;
@@ -26,10 +32,10 @@ public class DeathMenu {
     public DeathMenu(PlatformerState gameState) {
         this.gameState = gameState;
         visible = false;
-        headingFont = new Font("Century Gothic", Font.PLAIN, 20);
+        this.fxScale = OmniaFX.getScale();
+        headingFont = new javafx.scene.text.Font("Century Gothic", 20 * fxScale);
         heading = "You died!";
-
-        optionsFont = new Font("Century Gothic", Font.PLAIN, 14);
+        optionsFont = new Font("Century Gothic", 14 * fxScale);
         options = new String[]{"Try Again", "Return to Menu", "Quit Game"};
     }
 
@@ -115,12 +121,34 @@ public class DeathMenu {
         }
     }
 
-    public void render(FXGraphics2D g) {
+    public void render(GraphicsContext g) {
 
+        g.setFont(headingFont);
+        g.setFill(Color.WHITE);
+        double _width = computeTextWidth(headingFont, heading, OmniaFX.getScaledWidth());
+        g.fillText(heading, OmniaFX.getScaledWidth() / 2 - _width/2, OmniaFX.getScaledHeight() / 2);
+
+        g.setFont(optionsFont);
+        double optionsYPosStart = OmniaFX.getScaledHeight() / 2 + headingFont.getSize();
+        double optionsPadding = optionsFont.getSize();
+
+        double padSum = 0;
+        for (int i = 0; i < options.length; i++) {
+            _width = computeTextWidth(optionsFont, options[i], OmniaFX.getScaledWidth());
+            
+            if(i == currentChoice){
+                g.setFill(Color.YELLOW);
+            }else{
+                g.setFill(Color.WHITE);
+            }
+            g.fillText(options[i], OmniaFX.getScaledWidth() / 2 - _width / 2, optionsYPosStart + padSum);
+            padSum = optionsPadding + ( optionsPadding * i+1);
+        }
+        /*
         FontRenderContext context = g.getFontRenderContext();
 
         g.setFont(headingFont);
-        g.setFont(new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 20));
+        g.setFont(new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 20 * fxScale));
         g.setColor(java.awt.Color.WHITE);
         int headingXPos = OmniaFX.getWidth() / 2 - (int)headingFont.getStringBounds(heading, context).getWidth() / 2;
         int headingYPos = OmniaFX.getHeight() / 2 - (int)headingFont.getStringBounds(heading, context).getHeight() / 2;
@@ -139,10 +167,25 @@ public class DeathMenu {
             }
             g.drawString(options[i], optionsXPos, optionsYPosStart + padSum);
             padSum = optionsPadding + ( optionsPadding * i+1);
-        }
+        }*/
+    }
+
+    private double computeTextWidth(Font font, String text, double wrappingWidth) {
+        Text helper = new Text();
+        helper.setFont(font);
+        helper.setText(text);
+        // Note that the wrapping width needs to be set to zero before
+        // getting the text's real preferred width.
+        helper.setWrappingWidth(0);
+        helper.setLineSpacing(0);
+        double w = Math.min(helper.prefWidth(-1), wrappingWidth);
+        helper.setWrappingWidth((int)Math.ceil(w));
+        double textWidth = Math.ceil(helper.getLayoutBounds().getWidth());
+        return textWidth;
     }
 
     public void render(Graphics2D g) {
+        /*
         FontRenderContext context = g.getFontRenderContext();
 
         g.setFont(headingFont);
@@ -165,5 +208,6 @@ public class DeathMenu {
             g.drawString(options[i], optionsXPos, optionsYPosStart + padSum);
             padSum = optionsPadding + ( optionsPadding * i+1);
         }
+         */
     }
 }
