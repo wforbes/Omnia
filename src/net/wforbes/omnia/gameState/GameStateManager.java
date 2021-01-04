@@ -42,9 +42,13 @@ public class GameStateManager {
     public boolean isKeyDown(KeyCode keyCode) {
         return this.gameController.keys.isDown(keyCode);
     }
+    public void clearKeys() {
+        this.gameController.keys.clearKeys();
+    }
 
     public void setState(int state) {
         this.currentState = state;
+        this.clearKeys();
         this.gameStates.get(currentState).init();
     }
     public void resetState(int state) {

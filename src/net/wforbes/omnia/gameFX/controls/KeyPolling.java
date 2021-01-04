@@ -8,9 +8,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-//TODO: Bug found when moving from Main Menu with button ui, to platformer, then dying.. the death menu registers
-//  and Enter press immediately and restarts the level if the user doesnt press enter during the platformer level
-//  This happens with an enter key press in the main menu OR mouse click.
 public class KeyPolling {
     private static Scene scene;
     private static final Set<KeyCode> keysCurrentlyDown = new HashSet<>();
@@ -34,7 +31,7 @@ public class KeyPolling {
         setScene(scene);
     }
 
-    private void clearKeys() { keysCurrentlyDown.clear(); }
+    public void clearKeys() { keysCurrentlyDown.clear(); }
 
     private void removeCurrentKeyHandlers() {
         if (scene != null) {
