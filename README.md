@@ -1,9 +1,9 @@
 # Omnia
 Retro 2D Role-Playing Video Game that blends the Fantasy, Sci-Fi, and Steam-Punk genres. 
 
-For the PC, Mac, Linux, and Android platforms. Written using Java and JavaFX. 
+Targeting the PC, Mac, Linux, and Android platforms. Written using Java and JavaFX.
 
-(Readme last updated: 12/27/2020)
+(Readme last updated: 1/5/2020)
 
 ![Screenshots of Omnia version 0.0.1](https://wforbes.net/wp-content/uploads/2020/12/screens_v0-0-1-1024x762.png)
 
@@ -30,7 +30,7 @@ My core goals are focused on:
 Some of the first concepts of the world can be found here: [wforbes.net/omnia-story-notes](https://wforbes.net/omnia-story-notes)
 
 ---
-## Starter Todo List
+## Starter Todo List (Dec 2020)
 * [X] ~~Resurrect [my old game engine](https://www.youtube.com/watch?v=DIMeRYfil7c&list=PLRjjchumlJl2LIs1esk_C9RPvlEf2GOLb) I worked on in 2013 based loosely on two very old tutorials:~~
     * [X] ~~**Top-Down Tutorial**: Find my code based on [Java 2D Game Development](https://www.youtube.com/watch?v=VE7ezYCTPe4&list=PL8CAB66181A502179) by vanZeben~~
     * [X] ~~**Platformer Tutorial**: Find my code based on [Java 2D Game Programming Platformer Tutorial](https://www.youtube.com/watch?v=9dzhgsVaiSo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv) by ForeignGuyMike~~
@@ -53,17 +53,17 @@ Some of the first concepts of the world can be found here: [wforbes.net/omnia-st
     * [X] ~~**Top-Down: Pause Menu**: Add a pause menu that allows the player to go back to the Main Menu or resume gameplay.~~
     * [X] ~~**Platformer: Death Menu**: Add a menu that appears upon player death that allows them to return to the Main 
     Menu or try the level again.~~
-* [ ] **Implement JavaFX**(1/4): Add a JavaFX implementation of the core Game running classes to enable UI development and 
+* [ ] **Implement JavaFX**(3/4): Add a JavaFX implementation of the core Game running classes to enable UI development and 
 more precise (float, double) figures for game logic.
     * [X] ~~**Game Loop with AnimationTimer**: Test and implement the JavaFX.AnimationTimer for use with the game loop.~~
-    * [ ] **JavaFX graphics rendering**: Test and implement JavaFX graphics classes (GraphicsContext, Image, PixelReader, 
-    PixelWriter, etc.) to recreate, combine and improve on the graphics algorithms for Top-Down and Platformer namespaces
-    * [ ] **Implement game logic**: Enable all existing game logic; updating levels and entities, taking key input and
-    all other existing features.
+    * [X] ~~**JavaFX graphics rendering**: Test and implement JavaFX graphics classes (GraphicsContext, Image, PixelReader, 
+    PixelWriter, etc.) to recreate, combine and improve on the graphics algorithms for Top-Down and Platformer namespaces~~
+    * [X] ~~**Implement game logic**: Enable all existing game logic; updating levels and entities, taking key input and
+    all other existing features.~~
     * [ ] **Implement new UI for menus**: Use JavaFX features to build a simple UI for the MainMenu, PauseMenu, and 
     DeathMenu.
 ---
-## Game Development Todo Lists
+## Game Development Todo Lists (2021-2022)
 * [ ] **Top-Down GameState Tasks**:
     * [ ] **Improve collision logic (wall sliding)**: Right now, when you collide with a solid tile or entity your 
     movement stops. That's ok if you're moving perpendicular to the surface, but not if you're moving diagonally against
@@ -78,7 +78,7 @@ more precise (float, double) figures for game logic.
         collides with them the game state changes to Platformer and opens the appropriate Platformer level.
     * [ ] **Implement Chat/Dialog UI Window**: Add a text box UI component that accepts typed text input from the user 
     and displays the result in the text box after typing Enter or clicking a Send button. The chat/dialog should be 
-    semi-transparent so as to not block view of the level. 
+    semi-transparent so as to not block view of the level.
         * [ ] **Experiment with Game Commands**: Experiment with some basic commands which will return some game 
         information or modify the game state. These commands should be prefaced with a identifying character like '/' 
         or ';', and accept parameters. Example: typing "/getLocation" should display the player's current X/Y coordinates. 
