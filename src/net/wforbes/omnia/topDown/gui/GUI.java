@@ -24,6 +24,7 @@ public class GUI {
     private Button chatSendBtn;
     private TextField chatField;
     private TextArea chatArea;
+    private boolean chatWindowOpen;
 
 
     private boolean chatInputIsOpen = false;
@@ -36,7 +37,7 @@ public class GUI {
 
     }
 
-    public void openChatInput() {
+    public void openChatWindow() {
         this.chatInputIsOpen = true;
         chatBuilder = new StringBuilder("");
         chatArea = new TextArea();
@@ -70,7 +71,17 @@ public class GUI {
         vBox.setPrefSize(1280, 240);
         vBox.getChildren().addAll(chatArea, hBox);
 
+        this.chatWindowOpen = true;
         this.gameController.gameBorder.setBottom(vBox);
+    }
+
+    public void closeChatWindow() {
+        this.chatWindowOpen = false;
+        this.gameController.gameBorder.setBottom(null);
+    }
+
+    public boolean isChatWindowOpen() {
+        return this.chatWindowOpen;
     }
 
     private void parseChatField() {

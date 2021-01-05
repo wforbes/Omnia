@@ -19,7 +19,6 @@ public class Player extends Mob{
     protected boolean isSwimming = false;
     private int tickCount = 0;
     private int lastInputCommandTick = 0;
-    private boolean chatInputIsOpen = false;
 
     public Player(Level level, int x, int y, String username, TopDownState gameState) {
         super(level, username, x, y, 1);
@@ -42,9 +41,21 @@ public class Player extends Mob{
 
     private void checkCommands() {
         if (gameState.gsm.usingFx) {
-            if(gameState.gsm.isKeyDown(KeyCode.ESCAPE) && pauseIsReady()) {
+            if (gameState.gsm.isKeyDown(KeyCode.ESCAPE) && isChatWindowOpen() && !gameState.isPaused()) {
+                this.lastInputCommandTick = this.tickCount;
+                gameState.gui.closeChatWindow();
+            }
+
+            if (gameState.gsm.isKeyDown(KeyCode.ESCAPE) && !isChatWindowOpen() && pauseIsReady() && keyInputIsReady()) {
+                this.lastInputCommandTick = this.tickCount;
                 gameState.pause();
             }
+
+            if (gameState.gsm.isKeyDown(KeyCode.ENTER) && !isChatWindowOpen() && !gameState.isPaused()) {
+                this.lastInputCommandTick = this.tickCount;
+                gameState.gui.openChatWindow();
+            }
+
         } else {
             if (inputHandler.esc.isPressed() && pauseIsReady()) {
                 inputHandler.resetKeys();
@@ -60,6 +71,10 @@ public class Player extends Mob{
     }
     private boolean pauseIsReady() {
         return gameState.tickCount - gameState.lastUnpauseTick > 20;
+    }
+
+    private boolean isChatWindowOpen() {
+        return gameState.gui.isChatWindowOpen();
     }
 
     private boolean keyInputIsReady() {

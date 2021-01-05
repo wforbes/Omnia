@@ -30,7 +30,7 @@ public class TopDownState extends GameState{
     private Level level;
     private Player player;
     private Enemy enemy;
-    private GUI gui;
+    public GUI gui;
     private boolean isPaused;
     private PauseMenu pauseMenu;
     public int lastUnpauseTick = 0;
@@ -109,7 +109,7 @@ public class TopDownState extends GameState{
         enemy = new Enemy(level, 32, 32, "skele");
         level.addEntity(enemy);
 
-        this.openChatInput();
+        //this.openChatWindow();
     }
 
     private void initColors()
@@ -161,8 +161,12 @@ public class TopDownState extends GameState{
         this.lastUnpauseTick = this.tickCount;
         this.pauseMenu.hide();
     }
-    public void openChatInput() {
-        this.gui.openChatInput();
+
+    public boolean isPaused() {
+        return this.isPaused;
+    }
+    public void openChatWindow() {
+        this.gui.openChatWindow();
     }
 
     private void renderTiles()
