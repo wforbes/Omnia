@@ -10,6 +10,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.controllers.GameController;
+import net.wforbes.omnia.gameState.TopDownState;
+import net.wforbes.omnia.topDown.entity.Entity;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.level.Level;
 import net.wforbes.omnia.topDown.entity.Player;
@@ -18,6 +20,7 @@ import net.wforbes.omnia.topDown.graphics.Screen;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class GUI {
 
@@ -37,9 +40,12 @@ public class GUI {
 
     private boolean chatInputIsOpen = false;
 
-    public GUI (GameController gameController) {
-        this.gameController = gameController;
+    public GUI (TopDownState state) {
+        this.gameController = state.getGsm().gameController; //TODO:improve encapsulation
+        this.level = state.getLevel();
+        this.player = state.getPlayer();
         this.chatLog = "";
+        this.showChatTimeStamps = true;
     }
 
     public void tick() {
@@ -105,24 +111,56 @@ public class GUI {
         return this.chatWindowOpen;
     }
 
+    private void prependTimeStamp() {
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm:ss");
+        String timeStamp = dateFormat.format(date);
+        chatBuilder.append("[").append(timeStamp).append("] ");
+    }
+
+    private void checkNPCChat(String chatMsg) {
+        //TODO: move NPC chat recognition to its own chatcontroller class
+        //  like the chatMsg parts, interaction distance,  into the receiving party's class or chat controller
+        for(Entity e : this.level.entities) {
+            //System.out.println(e.getName() + " " + e.x + "/"+e.y);
+            if(Math.abs(player.x - e.x) < 24 && Math.abs(player.y - e.y) < 24) {
+                //TODO: rework this to use regular expression parsing
+                if(chatMsg.contains(e.getName())) {
+                    if (chatMsg.contains("hello") || chatMsg.contains("hi")
+                        || chatMsg.contains("hey") || chatMsg.contains("yo")
+                        || chatMsg.contains("sup") || chatMsg.contains("greetings")
+                    ) {
+                        String eResponse = e.simpleChatResponse("greeting response");
+                        if (!eResponse.equals("")) {
+                            if (showChatTimeStamps) {
+                                this.prependTimeStamp();
+                            }
+                            chatBuilder.append(e.getName()).append(" says,'").append(eResponse).append("'\n");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void parseChatField() {
         String chatMsg = this.chatField.getText();
 
-        System.out.println(chatMsg);
+        //System.out.println(chatMsg);
 
         if (chatMsg.equals("")) return;
-
+        chatMsg = chatMsg.toLowerCase(Locale.ROOT);
         //append timestamp to chat message
         if (showChatTimeStamps) {
-            Date date = new Date();
-            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm:ss");
-            String timeStamp = dateFormat.format(date);
-            chatBuilder.append("[").append(timeStamp).append("] ");
+            this.prependTimeStamp();
         }
 
         if(chatMsg.startsWith("/")) { //issuing a command
             if (chatMsg.startsWith("/say ")) {
-                chatBuilder.append("You say, '").append(chatMsg.substring(5)).append("'\n");
+                chatMsg = chatMsg.substring(5);
+                chatBuilder.append("You say, '").append(chatMsg).append("'\n");
+
+                this.checkNPCChat(chatMsg);
             }
 
             if (chatMsg.startsWith("/shout ")) {
@@ -131,6 +169,8 @@ public class GUI {
         } else { //non-command chat message
             //TODO: add default chat channel setting that non-command text goes to
             chatBuilder.append("You say, '").append(chatMsg).append("'\n");
+
+            this.checkNPCChat(chatMsg);
         }
 
         chatArea.setText(chatBuilder.toString());

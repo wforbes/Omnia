@@ -18,6 +18,13 @@ public class Enemy extends Mob{
         this.canSwim = false;
     }
 
+    public String simpleChatResponse(String type) {
+        if (type.equals("greeting response")) {
+            return "Greetings, traveler.";
+        }
+        return "";
+    }
+
     @Override
     public void tick() {
         this.movementController.tick();

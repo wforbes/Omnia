@@ -17,7 +17,7 @@ public abstract class Entity {
     {
         this.level = level;
     }
-
+    public abstract String simpleChatResponse(String type);
     public abstract void tick();
     public abstract void render(Screen screen);
     public abstract String getName();

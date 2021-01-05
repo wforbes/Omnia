@@ -82,6 +82,10 @@ public class Player extends Mob{
         return gameState.tickCount - this.lastInputCommandTick > 20;
     }
 
+    public String simpleChatResponse(String type) {
+        return "";
+    }
+
     private void checkMovement() {
         int xa = 0;
         int ya = 0;

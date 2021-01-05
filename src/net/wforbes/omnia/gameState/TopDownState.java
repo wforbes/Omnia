@@ -38,13 +38,15 @@ public class TopDownState extends GameState{
     public TopDownState(GameStateManager gsm)
     {
         this.gsm = gsm;
-        this.gui = new GUI(gsm.gameController);
-
     }
 
     public GameStateManager getGsm() {
         return gsm;
     }
+
+    public Level getLevel() { return level; }
+
+    public Player getPlayer() { return player; }
 
     private void setPixelColorsFromScreen()
     {
@@ -108,7 +110,7 @@ public class TopDownState extends GameState{
 
         enemy = new Enemy(level, 32, 32, "skele");
         level.addEntity(enemy);
-
+        this.gui = new GUI(this);
         //this.openChatWindow();
     }
 

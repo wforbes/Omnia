@@ -25,6 +25,8 @@ public abstract class Mob extends Entity{
         this.movementController = new MovementController(this);
     }
 
+    //public abstract String chat(String type);
+
     public String getName(){return name;}
 
     public int getMovingDir(){return movingDir;}
