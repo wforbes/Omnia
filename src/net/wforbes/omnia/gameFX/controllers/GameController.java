@@ -37,6 +37,20 @@ public class GameController implements Initializable {
         this.gsm = new GameStateManager(this);
         this.renderer = new Renderer(this.gameCanvas);
         this.gc = renderer.getContext();
+        this.gameBorder.setPickOnBounds(false);
+        this.gameBorder.setOnMouseClicked(event -> {
+            System.out.println("Border Got A Click!");
+        });
+
+        this.gameStack.setPickOnBounds(false);
+        this.gameStack.setOnMouseClicked(event -> {
+            System.out.println("Stack Got A Click!");
+        });
+        this.gameCanvas.setFocusTraversable(true);
+        this.gameCanvas.setOnMouseClicked(event -> {
+            System.out.println("Canvas Got A Click!");
+        });
+        this.gameCanvas.requestFocus();
         int i = 0;
 
         GameLoopTimer timer = new GameLoopTimer() {
