@@ -1,5 +1,7 @@
 package net.wforbes.omnia.topDown.gui;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -13,6 +15,10 @@ import net.wforbes.omnia.topDown.level.Level;
 import net.wforbes.omnia.topDown.entity.Player;
 import net.wforbes.omnia.topDown.graphics.Screen;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class GUI {
 
     private Player player;
@@ -25,12 +31,15 @@ public class GUI {
     private TextField chatField;
     private TextArea chatArea;
     private boolean chatWindowOpen;
+    private String chatLog;
+    private boolean showChatTimeStamps;
 
 
     private boolean chatInputIsOpen = false;
 
     public GUI (GameController gameController) {
         this.gameController = gameController;
+        this.chatLog = "";
     }
 
     public void tick() {
@@ -44,12 +53,22 @@ public class GUI {
         chatArea.setOpacity(0.75);
         chatArea.setPrefSize(200, 200);
         chatArea.getStyleClass().add("chatArea");
-        chatArea.setDisable(true);
+        chatArea.setEditable(false);
+        chatArea.textProperty().addListener(
+                (ChangeListener<Object>) (observable, oldValue, newValue) -> {
+            chatArea.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+            //use Double.MIN_VALUE to scroll to the top
+        });
+        if (this.chatLog.length() > 0) {
+           this.chatBuilder.append(this.chatLog);
+           this.chatArea.setText(this.chatBuilder.toString());
+           this.chatArea.appendText("");
+        }
 
         chatField = new TextField();
         chatField.setPrefSize(1168, 50);
         chatField.setFont(new Font("Century Gothic", 20));
-        chatField.setFocusTraversable(false);
+        chatField.setFocusTraversable(true);
         chatField.setPromptText("Enter Chat or Commands Here..");
         chatField.setOnAction(event -> {
             this.parseChatField();
@@ -58,7 +77,7 @@ public class GUI {
         chatSendBtn = new Button("Send");
         chatSendBtn.setPrefSize(113, 58);
         chatSendBtn.setFont(new Font("Franklin Gothic Medium", 20));
-        chatSendBtn.setFocusTraversable(false);
+        chatSendBtn.setFocusTraversable(true);
         chatSendBtn.setOnMouseClicked(event -> {
             this.parseChatField();
         });
@@ -73,34 +92,49 @@ public class GUI {
 
         this.chatWindowOpen = true;
         this.gameController.gameBorder.setBottom(vBox);
+        this.chatField.requestFocus();
     }
 
     public void closeChatWindow() {
         this.chatWindowOpen = false;
+        this.chatLog += this.chatArea.getText();
         this.gameController.gameBorder.setBottom(null);
     }
 
-    public boolean isChatWindowOpen() {
+    public boolean chatWindowIsOpen() {
         return this.chatWindowOpen;
     }
 
     private void parseChatField() {
         String chatMsg = this.chatField.getText();
+
         System.out.println(chatMsg);
+
         if (chatMsg.equals("")) return;
-        if(chatMsg.startsWith("/")) {
+
+        //append timestamp to chat message
+        if (showChatTimeStamps) {
+            Date date = new Date();
+            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm:ss");
+            String timeStamp = dateFormat.format(date);
+            chatBuilder.append("[").append(timeStamp).append("] ");
+        }
+
+        if(chatMsg.startsWith("/")) { //issuing a command
             if (chatMsg.startsWith("/say ")) {
                 chatBuilder.append("You say, '").append(chatMsg.substring(5)).append("'\n");
             }
 
             if (chatMsg.startsWith("/shout ")) {
-                chatBuilder.append("You shout, '").append(chatMsg.substring(6)).append("'\n");
+                chatBuilder.append("You shout, '").append(chatMsg.substring(7)).append("'\n");
             }
-        } else {
+        } else { //non-command chat message
+            //TODO: add default chat channel setting that non-command text goes to
             chatBuilder.append("You say, '").append(chatMsg).append("'\n");
         }
 
         chatArea.setText(chatBuilder.toString());
+        chatArea.appendText(""); // to trigger the scroll-to-bottom event
         chatField.setText("");
     }
 

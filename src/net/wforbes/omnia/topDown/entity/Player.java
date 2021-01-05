@@ -41,17 +41,18 @@ public class Player extends Mob{
 
     private void checkCommands() {
         if (gameState.gsm.usingFx) {
-            if (gameState.gsm.isKeyDown(KeyCode.ESCAPE) && isChatWindowOpen() && !gameState.isPaused()) {
+            if (gameState.gsm.isKeyDown(KeyCode.ESCAPE) && chatWindowIsOpen() && !gameState.isPaused()) {
                 this.lastInputCommandTick = this.tickCount;
                 gameState.gui.closeChatWindow();
             }
 
-            if (gameState.gsm.isKeyDown(KeyCode.ESCAPE) && !isChatWindowOpen() && pauseIsReady() && keyInputIsReady()) {
+            if (gameState.gsm.isKeyDown(KeyCode.ESCAPE) && !chatWindowIsOpen()
+                    && pauseIsReady() && keyInputIsReady()) {
                 this.lastInputCommandTick = this.tickCount;
                 gameState.pause();
             }
 
-            if (gameState.gsm.isKeyDown(KeyCode.ENTER) && !isChatWindowOpen() && !gameState.isPaused()) {
+            if (gameState.gsm.isKeyDown(KeyCode.ENTER) && !chatWindowIsOpen() && !gameState.isPaused()) {
                 this.lastInputCommandTick = this.tickCount;
                 gameState.gui.openChatWindow();
             }
@@ -73,8 +74,8 @@ public class Player extends Mob{
         return gameState.tickCount - gameState.lastUnpauseTick > 20;
     }
 
-    private boolean isChatWindowOpen() {
-        return gameState.gui.isChatWindowOpen();
+    private boolean chatWindowIsOpen() {
+        return gameState.gui.chatWindowIsOpen();
     }
 
     private boolean keyInputIsReady() {

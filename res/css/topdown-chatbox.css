@@ -1,3 +1,23 @@
 .chatArea {
     -fx-display-caret: false;
 }
+.chatArea > .scroll-pane {
+    /* Scrollbar policy enum: (always,as_needed,never) */
+    -fx-vbar-policy: as_needed;
+}
+
+.chatArea .track-background {
+    -fx-background-color: black;
+}
+.chatArea > .scroll-pane .scroll-bar:vertical {
+    -fx-pref-width: 2em;
+}
+/* Scroll bar style classes
+track-background
+increment-button
+increment-arrow
+decrement-button
+decrement-arrow
+track (track area of the scrollbar)
+thumb (bar that moves on the track)
+*/
