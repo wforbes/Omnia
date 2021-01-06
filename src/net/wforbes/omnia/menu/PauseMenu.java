@@ -117,6 +117,7 @@ public class PauseMenu extends Menu {
         if (option.equals(options[0])) {
             gsm.getCurrentState().unPause();
         } else if (option.equals(options[1])) {
+            gsm.getCurrentState().unPause();
             gsm.setState(GameStateManager.MENUSTATE);
         } else if (option.equals(options[2])) {
             System.exit(0);
