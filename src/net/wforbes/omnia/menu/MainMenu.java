@@ -1,14 +1,10 @@
 package net.wforbes.omnia.menu;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -21,7 +17,6 @@ import org.jfree.fx.FXGraphics2D;
 public class MainMenu extends Menu {
     private MenuState state;
     private MenuBackground bg;
-    private FXGraphics2D fxGraphics2D;
 
     private Font titleFont, subTitleFont, subTitleFont2, font;
     private double fxScale;
