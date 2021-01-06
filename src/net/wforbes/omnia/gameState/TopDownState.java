@@ -10,7 +10,7 @@ import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.graphics.Screen;
 import net.wforbes.omnia.topDown.graphics.SpriteSheet;
 import net.wforbes.omnia.topDown.gui.Font;
-import net.wforbes.omnia.topDown.gui.GUI;
+import net.wforbes.omnia.topDown.gui.GUIController;
 import net.wforbes.omnia.topDown.level.Level;
 import org.jfree.fx.FXGraphics2D;
 
@@ -30,7 +30,7 @@ public class TopDownState extends GameState{
     private Level level;
     private Player player;
     private Enemy enemy;
-    public GUI gui;
+    public GUIController gui;
     private boolean isPaused;
     private PauseMenu pauseMenu;
     public int lastUnpauseTick = 0;
@@ -111,8 +111,7 @@ public class TopDownState extends GameState{
 
         enemy = new Enemy(level, 32, 32, "skele");
         level.addEntity(enemy);
-        this.gui = new GUI(this);
-        //this.openChatWindow();
+        this.gui = new GUIController(this);
     }
 
     private void initColors()
@@ -160,7 +159,6 @@ public class TopDownState extends GameState{
         this.pauseMenu.show();
     }
     public void unPause() {
-        System.out.println("Got unpause");
         this.isPaused = false;
         this.lastUnpauseTick = this.tickCount;
         this.pauseMenu.hide();

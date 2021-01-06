@@ -81,12 +81,6 @@ public class Player extends Mob{
         return gameState.tickCount - this.lastInputCommandTick > 20;
     }
 
-    private boolean chatWindowIsOpen() {
-        return gameState.gui.chatWindowIsOpen();
-    }
-
-
-
     public String simpleChatResponse(String type) {
         return "";
     }
