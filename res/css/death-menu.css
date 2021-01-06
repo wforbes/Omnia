@@ -1,0 +1,13 @@
+.death-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-family: Arial, "Century Gothic", sans-serif;
+    -fx-font-size: 4em;
+}
+.death-button:hover {
+    -fx-cursor:hand;
+    -fx-text-fill: yellow;
+}
+.death-button:focused {
+    -fx-text-fill: yellow;
+}

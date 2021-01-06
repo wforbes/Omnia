@@ -11,21 +11,18 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.GameStateManager;
-import net.wforbes.omnia.gameState.TopDownState;
 
 import java.util.ArrayList;
 
-public class PauseMenu extends Menu {
+public class DeathMenu extends Menu{
 
     private GameStateManager gsm;
     private boolean visible;
     private Font headingFont;
-    private String heading = "Pause Menu";
+    private String heading = "You Died!";
     private Font optionsFont;
     private String[]  options = {
-        "Resume",
-        "Return to Main Menu",
-        "Quit Game"
+        "Try Again", "Return to Main Menu", "Quit Game"
     };
     private VBox vbox = new VBox(10);
     private ArrayList<Button> buttons = new ArrayList<>();
@@ -33,7 +30,7 @@ public class PauseMenu extends Menu {
     private int lastPressTick = waitTicks;
     private int tickCount = 0;
 
-    public PauseMenu(GameStateManager gsm) {
+    public DeathMenu(GameStateManager gsm) {
         this.gsm = gsm;
         this.visible = false;
         this.headingFont = new Font("Century Gothic", 20 * OmniaFX.getScale());
@@ -62,7 +59,7 @@ public class PauseMenu extends Menu {
                 (OmniaFX.getScaledWidth()/2 - 55 * OmniaFX.getScale())));
         for(int i = 0; i < options.length; i++) {
             Button btn = new Button(options[i]);
-            btn.getStyleClass().add("pause-button");
+            btn.getStyleClass().add("death-button");
             btn.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
                 btn.requestFocus();
             });
@@ -77,7 +74,6 @@ public class PauseMenu extends Menu {
             vbox.getChildren().add(btn);
         }
     }
-
     public void tick() {
         this.checkKeyInput();
         this.tickCount++;
@@ -111,17 +107,18 @@ public class PauseMenu extends Menu {
             System.out.println("new menu got escape");
             gsm.getCurrentState().unPause();
             lastPressTick = tickCount;
-            //this.hide();
         }
     }
 
     @Override
     void select(String option) {
-        if (option.equals(options[0])) {
-            gsm.getCurrentState().unPause();
-        } else if (option.equals(options[1])) {
+        if (option == options[0]) {
+            this.hide();
+            gsm.resetState(GameStateManager.PLATFORMERSTATE);
+        } else if (option == options[1]) {
+            this.hide();
             gsm.setState(GameStateManager.MENUSTATE);
-        } else if (option.equals(options[2])) {
+        } else if (option == options[2]) {
             System.exit(0);
         }
     }

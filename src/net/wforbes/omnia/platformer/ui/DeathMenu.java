@@ -114,7 +114,6 @@ public class DeathMenu {
 
     private void select() {
         //gameState.gsm.inputHandler.resetKeys(); //To avoid double presses
-        System.out.println("test");
         if(currentChoice == 0){
             gameState.gsm.resetState(GameStateManager.PLATFORMERSTATE);
         }

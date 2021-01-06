@@ -8,7 +8,7 @@ import net.wforbes.omnia.platformer.entity.Player;
 import net.wforbes.omnia.platformer.entity.enemies.Slugger;
 import net.wforbes.omnia.platformer.tileMap.Background;
 import net.wforbes.omnia.platformer.tileMap.TileMap;
-import net.wforbes.omnia.platformer.ui.DeathMenu;
+import net.wforbes.omnia.menu.DeathMenu;
 import net.wforbes.omnia.platformer.ui.HUD;
 import org.jfree.fx.FXGraphics2D;
 
@@ -62,7 +62,7 @@ public class PlatformerState extends GameState {
         } else {
             hud = new HUD(player);
         }
-        deathMenu = new DeathMenu(this);
+        deathMenu = new DeathMenu(gsm);
         //bgMusic = new AudioPlayer("/Music/bgMusic1.mp3");
         //bgMusic.play();
     }
@@ -176,7 +176,7 @@ public class PlatformerState extends GameState {
         hud.draw(g);
 
         if(deathMenu.isVisible()) {
-            deathMenu.render(g);
+            //deathMenu.render(g);
         }
 
         //draw dev disp
