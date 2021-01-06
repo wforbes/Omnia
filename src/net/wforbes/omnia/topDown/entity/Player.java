@@ -70,17 +70,20 @@ public class Player extends Mob{
             }
         }
     }
+
     private boolean pauseIsReady() {
         return gameState.tickCount - gameState.lastUnpauseTick > 20;
+    }
+
+    private boolean keyInputIsReady() {
+        return gameState.tickCount - this.lastInputCommandTick > 20;
     }
 
     private boolean chatWindowIsOpen() {
         return gameState.gui.chatWindowIsOpen();
     }
 
-    private boolean keyInputIsReady() {
-        return gameState.tickCount - this.lastInputCommandTick > 20;
-    }
+
 
     public String simpleChatResponse(String type) {
         return "";

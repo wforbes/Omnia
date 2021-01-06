@@ -48,7 +48,6 @@ public class DeathMenu extends Menu{
     }
 
     public void hide() {
-        System.out.println("Got hide");
         this.visible = false;
         gsm.gameController.gameBorder.setCenter(null);
     }

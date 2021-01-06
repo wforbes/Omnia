@@ -51,7 +51,6 @@ public class PauseMenu extends Menu {
     }
 
     public void hide() {
-        System.out.println("Got hide");
         this.visible = false;
         gsm.gameController.gameBorder.setCenter(null);
     }
@@ -108,10 +107,8 @@ public class PauseMenu extends Menu {
     @Override
     void checkKeyInput() {
         if(gsm.isKeyDown(KeyCode.ESCAPE) && keyInputReady()){
-            System.out.println("new menu got escape");
             gsm.getCurrentState().unPause();
             lastPressTick = tickCount;
-            //this.hide();
         }
     }
 

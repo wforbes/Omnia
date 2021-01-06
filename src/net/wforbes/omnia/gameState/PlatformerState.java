@@ -1,8 +1,10 @@
 package net.wforbes.omnia.gameState;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.menu.PauseMenu;
 import net.wforbes.omnia.platformer.entity.Enemy;
 import net.wforbes.omnia.platformer.entity.Player;
 import net.wforbes.omnia.platformer.entity.enemies.Slugger;
@@ -23,7 +25,11 @@ public class PlatformerState extends GameState {
     private Player player;
     private HUD hud;
     private DeathMenu deathMenu;
+    private PauseMenu pauseMenu;
     private ArrayList<Enemy> enemies;
+    private boolean isPaused;
+    public int tickCount = 0;
+    public int lastUnpauseTick = 0;
 
     public PlatformerState(GameStateManager gsm) {
         this.gsm = gsm;
@@ -57,12 +63,12 @@ public class PlatformerState extends GameState {
         enemies.add(s);
 
         if(gsm.usingFx) {
-            System.out.println("usingfx hud");
             hud = new HUD(player, "fx");
         } else {
             hud = new HUD(player);
         }
         deathMenu = new DeathMenu(gsm);
+        pauseMenu = new PauseMenu(gsm);
         //bgMusic = new AudioPlayer("/Music/bgMusic1.mp3");
         //bgMusic.play();
     }
@@ -100,27 +106,38 @@ public class PlatformerState extends GameState {
     }
 
     private void checkKeyInput() {
-        if(gsm.inputHandler.a.isPressed()) player.setLeft(true);
-        if(gsm.inputHandler.d.isPressed()) player.setRight(true);
-        if(gsm.inputHandler.space.isPressed()) player.setJumping(true);
-        if(gsm.inputHandler.w.isPressed()) player.setGliding(true);
-        if(gsm.inputHandler.q.isPressed()) player.setScratching();
-        if(gsm.inputHandler.e.isPressed()) player.setFiring();
-        if(gsm.inputHandler.shift.isPressed()) player.setPhasing(true);
-        if(gsm.inputHandler.m.isPressed()) spawnEnemy();
+        //NOTE: input handling done with Player class in FX
+        if (gsm.inputHandler.a.isPressed()) player.setLeft(true);
+        if (gsm.inputHandler.d.isPressed()) player.setRight(true);
+        if (gsm.inputHandler.space.isPressed()) player.setJumping(true);
+        if (gsm.inputHandler.w.isPressed()) player.setGliding(true);
+        if (gsm.inputHandler.q.isPressed()) player.setScratching();
+        if (gsm.inputHandler.e.isPressed()) player.setFiring();
+        if (gsm.inputHandler.shift.isPressed()) player.setPhasing(true);
+        if (gsm.inputHandler.m.isPressed()) spawnEnemy();
+
     }
 
     @Override
     public void update() {
-        //check Key Input
-        player.update();
+        //check death status
         if (player.isDead) {
             if (!deathMenu.isVisible()) {
                 this.deathMenu.show();
             } else {
                 deathMenu.tick();
+                return;
             }
         }
+        //check pause status
+        if (this.isPaused) {
+            if (!pauseMenu.isVisible()) {
+                this.pauseMenu.show();
+            }
+            pauseMenu.tick();
+            return;
+        }
+        player.update();
         tileMap.setPosition( OmniaFX.getWidth() / 2 - player.getx(), OmniaFX.getHeight() / 2 - player.gety() );
 
         //set background
@@ -138,6 +155,7 @@ public class PlatformerState extends GameState {
                 i--;
             }
         }
+        tickCount++;
     }
 
     @Override
@@ -154,6 +172,9 @@ public class PlatformerState extends GameState {
         hud.draw(gc);
         if(deathMenu.isVisible()) {
             deathMenu.render(gc);
+        }
+        if (pauseMenu.isVisible()){
+            pauseMenu.render(gc);
         }
     }
 
@@ -201,10 +222,19 @@ public class PlatformerState extends GameState {
         this.init();
     }
 
-    @Override
-    public void pause() {
-        //TODO: implement expanded abstract menu and add pause feature
+    public boolean isPaused() {
+        return this.isPaused;
     }
 
-    public void unPause() {}
+    @Override
+    public void pause() {
+        this.isPaused = true;
+        this.pauseMenu.show();
+    }
+
+    public void unPause() {
+        this.isPaused = false;
+        this.lastUnpauseTick = this.tickCount;
+        this.pauseMenu.hide();
+    }
 }

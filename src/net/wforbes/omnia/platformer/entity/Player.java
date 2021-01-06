@@ -18,6 +18,9 @@ public class Player extends MapObject{
 	private PlatformerState gs;
 	private int scale;
 	private InputHandler inputHandler;
+	private int tickCount = 0;
+	private int lastInputCommandTick = 0;
+
 	//player stuff
 	private int killCount;
 	private int health;
@@ -364,6 +367,10 @@ public class Player extends MapObject{
 
 	private void checkKeyInput() {
 		if (this.gs.gsm.usingFx) {
+			if (gs.gsm.isKeyDown(KeyCode.ESCAPE) && pauseIsReady() && keyInputIsReady()){
+				this.lastInputCommandTick = this.tickCount;
+				gs.pause();
+			}
 			if (gs.gsm.isKeyDown(KeyCode.A)) this.setLeft(true);
 			if (gs.gsm.isKeyDown(KeyCode.D)) this.setRight(true);
 			if (gs.gsm.isKeyDown(KeyCode.SPACE)) this.setJumping(true);
@@ -392,6 +399,12 @@ public class Player extends MapObject{
 			if (inputHandler.w.isReleased()) this.setGliding(false);
 			if (inputHandler.shift.isReleased()) this.setPhasing(false);
 		}
+	}
+	private boolean pauseIsReady() {
+		return gs.tickCount - gs.lastUnpauseTick > 20;
+	}
+	private boolean keyInputIsReady() {
+		return gs.tickCount - this.lastInputCommandTick > 20;
 	}
 
 
