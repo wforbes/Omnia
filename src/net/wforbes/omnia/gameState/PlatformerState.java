@@ -205,4 +205,6 @@ public class PlatformerState extends GameState {
     public void pause() {
         //TODO: implement expanded abstract menu and add pause feature
     }
+
+    public void unPause() {}
 }

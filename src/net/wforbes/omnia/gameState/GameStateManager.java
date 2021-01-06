@@ -43,7 +43,7 @@ public class GameStateManager {
         return this.gameController.keys.isDown(keyCode);
     }
     public void clearKeys() {
-        this.gameController.keys.clearKeys();
+        if(usingFx)this.gameController.keys.clearKeys();
     }
 
     public void setState(int state) {
@@ -55,6 +55,9 @@ public class GameStateManager {
         this.gameStates.get(state).reset();
     }
 
+    public GameState getCurrentState() {
+        return this.gameStates.get(currentState);
+    }
     //Used for Game.java logic updates
     public void tick(){
         gameStates.get(currentState).tick();

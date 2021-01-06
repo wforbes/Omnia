@@ -12,13 +12,12 @@ import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.GameStateManager;
 import net.wforbes.omnia.gameState.MenuState;
 import net.wforbes.omnia.menu.background.MenuBackground;
-import org.jfree.fx.FXGraphics2D;
 
 public class MainMenu extends Menu {
     private MenuState state;
     private MenuBackground bg;
 
-    private Font titleFont, subTitleFont, subTitleFont2, font;
+    private final Font titleFont, subTitleFont, subTitleFont2, font;
     private double fxScale;
     private String[] options = {
             "Top-Down",
@@ -146,6 +145,8 @@ public class MainMenu extends Menu {
             lastPressTick = tickCount;
         }
     }
+
+    void select(String option) {}
 
     void select() {
         if(currentChoice == 0){

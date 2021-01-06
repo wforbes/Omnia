@@ -10,4 +10,5 @@ public abstract class GameState {
     public abstract void render(javafx.scene.canvas.GraphicsContext gc);
     public abstract void reset();
     public abstract void pause();
+    public abstract void unPause();
 }

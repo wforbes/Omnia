@@ -45,7 +45,8 @@ public class OmniaFX extends Application {
     private void initStyles(Scene scene) {
         String mainMenuStyles = getClass().getResource("/css/main-menu.css").toExternalForm();
         String topDownChatbox = getClass().getResource("/css/topdown-chatbox.css").toExternalForm();
-        scene.getStylesheets().addAll(mainMenuStyles, topDownChatbox);
+        String pauseMenuStyles = getClass().getResource("/css/pause-menu.css").toExternalForm();
+        scene.getStylesheets().addAll(mainMenuStyles, topDownChatbox, pauseMenuStyles);
 
     }
 

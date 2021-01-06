@@ -3,6 +3,7 @@ package net.wforbes.omnia.gameState;
 import javafx.scene.canvas.GraphicsContext;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.menu.PauseMenu;
 import net.wforbes.omnia.topDown.entity.Enemy;
 import net.wforbes.omnia.topDown.entity.Player;
 import net.wforbes.omnia.topDown.graphics.Colors;
@@ -10,7 +11,6 @@ import net.wforbes.omnia.topDown.graphics.Screen;
 import net.wforbes.omnia.topDown.graphics.SpriteSheet;
 import net.wforbes.omnia.topDown.gui.Font;
 import net.wforbes.omnia.topDown.gui.GUI;
-import net.wforbes.omnia.topDown.gui.PauseMenu;
 import net.wforbes.omnia.topDown.level.Level;
 import org.jfree.fx.FXGraphics2D;
 
@@ -68,8 +68,8 @@ public class TopDownState extends GameState{
         this.renderVersionText();
         this.setPixelColorsFromScreen();
         fxGraphics2D.drawImage(this.image, 0, 0, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(), null);
-        if (pauseMenu.isVisible()) {
-            pauseMenu.render(fxGraphics2D);
+        if (pauseMenu.isVisible()){
+            pauseMenu.render(gc);
         }
     }
 
@@ -92,11 +92,12 @@ public class TopDownState extends GameState{
         if(gsm.usingFx){
             this.image = new BufferedImage(OmniaFX.getWidth(), OmniaFX.getHeight(), BufferedImage.TYPE_INT_RGB);
             this.screen = new Screen(OmniaFX.getWidth(), OmniaFX.getHeight(), new SpriteSheet("/sprite_sheet.png"));
-            this.pauseMenu = new PauseMenu(this, "fx");
+            //this.pauseMenu = new PauseMenu(this, "fx");
+            this.pauseMenu = new PauseMenu(gsm);
         } else {
             this.image = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_RGB);
             this.screen = new Screen(Game.WIDTH, Game.HEIGHT, new SpriteSheet("/sprite_sheet.png"));
-            this.pauseMenu = new PauseMenu(this);
+            //this.pauseMenu = new PauseMenu(this);
         }
 
         this.isPaused = false;
@@ -149,9 +150,9 @@ public class TopDownState extends GameState{
         this.renderVersionText();
         this.setPixelColorsFromScreen();
         graphics2D.drawImage(this.image, 0, 0, Game.WIDTH, Game.HEIGHT, null);
-        if (pauseMenu.isVisible()) {
-            pauseMenu.render(graphics2D);
-        }
+        /*if (pauseMenu.isVisible()) {
+            //pauseMenu.render(graphics2D);
+        }*/
     }
 
     public void pause() {
@@ -159,6 +160,7 @@ public class TopDownState extends GameState{
         this.pauseMenu.show();
     }
     public void unPause() {
+        System.out.println("Got unpause");
         this.isPaused = false;
         this.lastUnpauseTick = this.tickCount;
         this.pauseMenu.hide();

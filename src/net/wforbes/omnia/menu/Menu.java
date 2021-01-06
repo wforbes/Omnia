@@ -12,5 +12,5 @@ public abstract class Menu {
     }
 
     abstract void checkKeyInput();
-    abstract void select();
+    abstract void select(String option);
 }
