@@ -1,14 +1,24 @@
 package net.wforbes.omnia.topDown.gui;
 
+import javafx.animation.FadeTransition;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventTarget;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import net.wforbes.omnia.game.Game;
+import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameFX.controllers.GameController;
 import net.wforbes.omnia.gameState.TopDownState;
 import net.wforbes.omnia.topDown.entity.Entity;
@@ -33,25 +43,211 @@ public class GUI {
     private Button chatSendBtn;
     private TextField chatField;
     private TextArea chatArea;
+    private final int CHATAREA_HEIGHT = 200;
+    private final int CHATFIELD_HEIGHT = 50;
+    private final int CHATBUTTON_HEIGHT = 58;
+    private final int CHAT_VBOX_HEIGHT = 240;
+    private final int CHAT_HBOX_HEIGHT = 34;
     private boolean chatWindowOpen;
     private String chatLog;
     private boolean showChatTimeStamps;
-
+    private final BooleanProperty dragModeActiveProperty =
+            new SimpleBooleanProperty(this, "dragModeActive", true);
+    private final CheckBox dragModeCheckbox = new CheckBox("Drag mode");
 
     private boolean chatInputIsOpen = false;
 
     public GUI (TopDownState state) {
+
         this.gameController = state.getGsm().gameController; //TODO:improve encapsulation
         this.level = state.getLevel();
         this.player = state.getPlayer();
         this.chatLog = "";
         this.showChatTimeStamps = true;
+        this.chatBuilder = new StringBuilder("");
+
+        final Node chatPanel =
+                makeDraggableByTitleRegion(createChatPanel());
+
+        chatPanel.relocate(0, OmniaFX.getScaledHeight() - (CHAT_VBOX_HEIGHT + 42));
+
+
+        final Pane panelsPane = new Pane();
+        panelsPane.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
+        panelsPane.setPrefSize(0.1,0.1);
+        panelsPane.getChildren().addAll(chatPanel);
+
+        dragModeActiveProperty.bind(dragModeCheckbox.selectedProperty());
+
+        this.gameController.gameBorder.setTop(panelsPane);
+
+    }
+
+    private static final class DragContext {
+        public double mouseAnchorX;
+        public double mouseAnchorY;
+        public double initialTranslateX;
+        public double initialTranslateY;
+    }
+
+    //https://stackoverflow.com/questions/41252958/how-to-detect-when-javafx-mouse-event-occurs-in-the-label-are-of-a-titledpane
+    //TODO: find better implementation that doesnt rely on literal class name
+    private boolean targetIsTitleRegion(EventTarget target) {
+        String titleClass = "class javafx.scene.control.skin.TitledPaneSkin$TitleRegion";
+        return target.getClass().toString().equals(titleClass) || // anywhere on title region except title Text
+                (target instanceof Node && ((Node) target).getParent().getClass().toString().equals(titleClass));// title Text
+    }
+
+    //https://docs.oracle.com/javase/8/javafx/events-tutorial/draggablepanelsexamplejava.htm
+    private Node makeDraggableByTitleRegion(final Node node) {
+        final DragContext dragContext = new DragContext();
+        final Group wrapGroup = new Group(node);
+        wrapGroup.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            System.out.println("UI got a mouse press..");
+            if(targetIsTitleRegion(event.getTarget())) {
+                System.out.println("UI title was pressed");
+                //if (dragModeActiveProperty.get()) {//TODO: add toggle feature for locking windows
+                    // remember initial mouse cursor coordinates
+                    // and node position
+                    dragContext.mouseAnchorX = event.getX();
+                    dragContext.mouseAnchorY = event.getY();
+                    dragContext.initialTranslateX =
+                            node.getTranslateX();
+                    dragContext.initialTranslateY =
+                            node.getTranslateY();
+                //}
+            }
+        });
+
+        wrapGroup.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
+            System.out.println("UI got a mouse drag..");
+            if(targetIsTitleRegion(event.getTarget())) {
+                System.out.println("UI title is being dragged");
+                //if (dragModeActiveProperty.get()) {//TODO: add toggle feature for locking windows
+                    // shift node from its initial position by delta
+                    // calculated from mouse cursor movement
+                    node.setTranslateX(
+                            dragContext.initialTranslateX
+                                    + event.getX()
+                                    - dragContext.mouseAnchorX);
+                    node.setTranslateY(
+                            dragContext.initialTranslateY
+                                    + event.getY()
+                                    - dragContext.mouseAnchorY);
+                //}
+            }
+        });
+        return wrapGroup;
+    }
+
+    private static RadioButton createRadioButton(final String text,
+                                                 final ToggleGroup toggleGroup,
+                                                 final boolean selected) {
+        final RadioButton radioButton = new RadioButton(text);
+        radioButton.setToggleGroup(toggleGroup);
+        radioButton.setSelected(selected);
+
+        return radioButton;
+    }
+
+    private static HBox createHBox(final double spacing,
+                                   final Node... children) {
+        final HBox hbox = new HBox(spacing);
+        hbox.getChildren().addAll(children);
+        return hbox;
+    }
+
+    private static VBox createVBox(final double spacing,
+                                   final Node... children) {
+        final VBox vbox = new VBox(spacing);
+        vbox.getChildren().addAll(children);
+        return vbox;
+    }
+
+
+    //TODO: break this into helper functions
+    private Node createChatPanel() {
+        TitledPane titledPane = new TitledPane();
+        titledPane.setText("Chat Window");
+        titledPane.setCollapsible(false);
+        titledPane.setPrefWidth(OmniaFX.getScaledWidth());
+
+        chatArea = new TextArea();
+        chatArea.setPrefSize(200, CHATAREA_HEIGHT);
+        chatArea.getStyleClass().add("chatArea");
+        chatArea.setEditable(false);
+        chatArea.textProperty().addListener(
+                (ChangeListener<Object>) (observable, oldValue, newValue) -> {
+                    chatArea.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                    //use Double.MIN_VALUE to scroll to the top
+                });
+        if (this.chatLog.length() > 0) {
+            this.chatBuilder.append(this.chatLog);
+            this.chatArea.setText(this.chatBuilder.toString());
+            this.chatArea.appendText("");
+        }
+
+        chatField = new TextField();
+        chatField.setPrefSize(1168, CHATFIELD_HEIGHT);
+        chatField.setFont(new Font("Century Gothic", 20));
+        chatField.setFocusTraversable(true);
+        chatField.setPromptText("Enter Chat or Commands Here..");
+        chatField.setOnAction(event -> {
+            this.parseChatField();
+        });
+
+        chatSendBtn = new Button("Send");
+        chatSendBtn.setPrefSize(113, CHATBUTTON_HEIGHT);
+        chatSendBtn.setFont(new Font("Franklin Gothic Medium", 20));
+        chatSendBtn.setFocusTraversable(true);
+        chatSendBtn.setOnMouseClicked(event -> {
+            this.parseChatField();
+        });
+
+        HBox hBox = new HBox();
+        hBox.setPrefSize(1280, 34);
+        hBox.getChildren().addAll(chatField, chatSendBtn);
+
+        VBox vBox = new VBox();
+        vBox.setPrefSize(1280, CHAT_VBOX_HEIGHT);
+        vBox.getChildren().addAll(chatArea, hBox);
+
+        titledPane.setOpacity(0.75);
+
+        FadeTransition titledPaneFadeIn = new FadeTransition(Duration.millis(500), titledPane);
+        titledPaneFadeIn.setFromValue(0.75);
+        titledPaneFadeIn.setToValue(1.0);
+
+        FadeTransition titledPaneFadeOut = new FadeTransition(Duration.millis(500), titledPane);
+        titledPaneFadeOut.setFromValue(1.0);
+        titledPaneFadeOut.setToValue(0.75);
+
+        titledPane.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            titledPaneFadeIn.play();
+        });
+        titledPane.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+            titledPaneFadeOut.play();
+        });
+
+        titledPane.setContent(vBox);
+
+        configureBorder(titledPane);
+
+        return titledPane;
+    }
+    private static void configureBorder(final Region region) {
+        region.setStyle("-fx-background-color: white;"
+                + "-fx-border-color: black;"
+                + "-fx-border-width: 1;"
+                + "-fx-border-radius: 6;"
+                + "-fx-padding: 6;");
     }
 
     public void tick() {
 
     }
 
+    //TODO: removal candidate
     public void openChatWindow() {
         this.chatInputIsOpen = true;
         chatBuilder = new StringBuilder("");
@@ -101,12 +297,14 @@ public class GUI {
         this.chatField.requestFocus();
     }
 
+    //TODO: removal candidate
     public void closeChatWindow() {
         this.chatWindowOpen = false;
         this.chatLog += this.chatArea.getText();
         this.gameController.gameBorder.setBottom(null);
     }
 
+    //TODO: removal candidate
     public boolean chatWindowIsOpen() {
         return this.chatWindowOpen;
     }
@@ -122,7 +320,6 @@ public class GUI {
         //TODO: move NPC chat recognition to its own chatcontroller class
         //  like the chatMsg parts, interaction distance,  into the receiving party's class or chat controller
         for(Entity e : this.level.entities) {
-            //System.out.println(e.getName() + " " + e.x + "/"+e.y);
             if(Math.abs(player.x - e.x) < 24 && Math.abs(player.y - e.y) < 24) {
                 //TODO: rework this to use regular expression parsing
                 if(chatMsg.contains(e.getName())) {
@@ -145,12 +342,9 @@ public class GUI {
 
     private void parseChatField() {
         String chatMsg = this.chatField.getText();
-
-        //System.out.println(chatMsg);
-
         if (chatMsg.equals("")) return;
         chatMsg = chatMsg.toLowerCase(Locale.ROOT);
-        //append timestamp to chat message
+
         if (showChatTimeStamps) {
             this.prependTimeStamp();
         }
@@ -176,21 +370,5 @@ public class GUI {
         chatArea.setText(chatBuilder.toString());
         chatArea.appendText(""); // to trigger the scroll-to-bottom event
         chatField.setText("");
-    }
-
-    public void render(Screen screen) {
-        //System.out.println(screen.xOffset + " " + screen.yOffset);
-        //System.out.println(player.yOffset);
-
-        if (chatInputIsOpen) {
-            renderChatInput(screen);
-        }
-
-        //screen.render(screen.xOffset, screen.yOffset + Game.HEIGHT-1, (0+23*32), Colors.get(-1, 100, 555, 543), 0, 1);
-    }
-
-    private void renderChatInput(Screen screen) {
-
-        //screen.render();
     }
 }

@@ -169,9 +169,6 @@ public class TopDownState extends GameState{
     public boolean isPaused() {
         return this.isPaused;
     }
-    public void openChatWindow() {
-        this.gui.openChatWindow();
-    }
 
     private void renderTiles()
     {

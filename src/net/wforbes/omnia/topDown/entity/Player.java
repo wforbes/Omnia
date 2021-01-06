@@ -41,22 +41,24 @@ public class Player extends Mob{
 
     private void checkCommands() {
         if (gameState.gsm.usingFx) {
+            /*
             if (gameState.gsm.isKeyDown(KeyCode.ESCAPE) && chatWindowIsOpen() && !gameState.isPaused()) {
                 this.lastInputCommandTick = this.tickCount;
-                gameState.gui.closeChatWindow();
-            }
+                //gameState.gui.closeChatWindow();
+                //TODO: unfocus chat window?
+            }*/
 
-            if (gameState.gsm.isKeyDown(KeyCode.ESCAPE) && !chatWindowIsOpen()
-                    && pauseIsReady() && keyInputIsReady()) {
+            if (gameState.gsm.isKeyDown(KeyCode.ESCAPE) && pauseIsReady() && keyInputIsReady()) {
                 this.lastInputCommandTick = this.tickCount;
                 gameState.pause();
             }
-
+            /*
             if (gameState.gsm.isKeyDown(KeyCode.ENTER) && !chatWindowIsOpen() && !gameState.isPaused()) {
                 this.lastInputCommandTick = this.tickCount;
-                gameState.gui.openChatWindow();
+                //gameState.gui.openChatWindow();
+                //TODO: focus chat window?
             }
-
+            */
         } else {
             if (inputHandler.esc.isPressed() && pauseIsReady()) {
                 inputHandler.resetKeys();
