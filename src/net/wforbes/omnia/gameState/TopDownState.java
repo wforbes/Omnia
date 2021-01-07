@@ -1,10 +1,12 @@
 package net.wforbes.omnia.gameState;
 
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.menu.PauseMenu;
 import net.wforbes.omnia.topDown.entity.Enemy;
+import net.wforbes.omnia.topDown.entity.NPC;
 import net.wforbes.omnia.topDown.entity.Player;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.graphics.Screen;
@@ -29,6 +31,7 @@ public class TopDownState extends GameState{
     public int tickCount = 0;
     private Level level;
     private Player player;
+    private NPC npc;
     private Enemy enemy;
     public GUIController gui;
     private boolean isPaused;
@@ -104,13 +107,19 @@ public class TopDownState extends GameState{
         this.pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
         this.colors = new int[6 * 6 * 6];
         this.initColors();
-        level = new Level("/test_level.png");
+        level = new Level("/test_level2.png");
 
-        player = new Player(level, 10, 10, "blueboi", this);
+        Point2D playerStartPos = new Point2D(720, 256);
+        player = new Player(level, "blueboi", playerStartPos,this);
         level.addEntity(player);
 
-        enemy = new Enemy(level, 32, 32, "doc");
-        level.addEntity(enemy);
+        //688, 48
+        Point2D npcStartPos = new Point2D(688, 48);
+        npc = new NPC(level,"doc", npcStartPos);
+        level.addEntity(npc);
+
+        //enemy = new Enemy(level, 32, 32, "doc");
+
         this.gui = new GUIController(this);
     }
 

@@ -1,12 +1,22 @@
 package net.wforbes.omnia.topDown.entity;
 
+import javafx.geometry.Point2D;
 import net.wforbes.omnia.topDown.entity.movement.MovementController;
+import net.wforbes.omnia.topDown.graphics.Colors;
+import net.wforbes.omnia.topDown.graphics.Screen;
+import net.wforbes.omnia.topDown.gui.Font;
 import net.wforbes.omnia.topDown.level.Level;
 import net.wforbes.omnia.topDown.level.tile.Tile;
 
 public abstract class Mob extends Entity{
 
     protected String name;
+    private Point2D spriteLoc;
+    public int xOffset;
+    public int yOffset;
+    protected int spriteColor;
+    protected int nameColor;
+    protected int tickCount = 0;
     protected double speed;
     protected int numSteps = 0;
     MovementController movementController;
@@ -16,6 +26,7 @@ public abstract class Mob extends Entity{
     public boolean isSwimming = false;
     protected boolean canSwim;
 
+    /*
     public Mob(Level level, String name, int x, int y, int speed){
         super(level);
         this.name = name;
@@ -24,8 +35,31 @@ public abstract class Mob extends Entity{
         this.speed = speed;
         this.movementController = new MovementController(this);
     }
+    */
+
+    public Mob(Level level, String name, Point2D startPos, int speed){
+        super(level);
+        this.name = name;
+        this.x = (int)startPos.getX();
+        this.y = (int)startPos.getY();
+        this.speed = speed;
+        this.movementController = new MovementController(this);
+    }
 
     //public abstract String chat(String type);
+
+    protected void setSpriteLoc(Point2D spriteLoc) {
+        this.spriteLoc = spriteLoc;
+    }
+
+    protected void setSpriteColor(int color) {
+        this.spriteColor = color;
+    }
+
+    protected void setNameColor(int color) {
+        this.nameColor = color;
+    }
+
 
     public String getName(){return name;}
 
@@ -213,5 +247,82 @@ public abstract class Mob extends Entity{
             return true;
         }
         return false;
+    }
+
+    public void tick() {
+        tickCount++;
+    }
+
+    public void render(Screen screen) {
+        int xTile = (int)this.spriteLoc.getX();
+        int yTile = (int)this.spriteLoc.getY();
+        int walkingSpeed = 3;
+        //flipTop/Bottom variables: 0 or 1,
+        // used to decide whether or not to flip the sprite to emulate walking
+        int flipTop = (numSteps >> walkingSpeed) & 1;
+        int flipBottom = (numSteps >> walkingSpeed) & 1;
+
+        if(movingDir == 1){//down
+            xTile += 2;
+        }else if(1 < movingDir && movingDir <= 3){//left2, right3
+            xTile += 4 + ((numSteps >> walkingSpeed) & 1) * 2;
+            flipTop = flipBottom = (movingDir - 1) % 2;
+        }else if(movingDir == 4 || movingDir == 5)//upleft, upright
+        {
+            xTile += 8 + ((numSteps >> walkingSpeed) & 1) * 2;
+            flipTop = flipBottom = (movingDir - 3) % 2;
+        }else if(movingDir == 6 || movingDir ==7)//downleft, downright
+        {
+            xTile += 12 + ((numSteps >> walkingSpeed) & 1) * 2;
+            flipTop = flipBottom = (movingDir - 5) % 2;
+        }
+
+        int modifier = 8 * scale;
+        xOffset = x - modifier/2;
+        yOffset = y - modifier/2 - 4;
+
+        if(isSwimming){
+            int waterColor = 0;
+            yOffset += 4; //half the size of body height (8)
+            if(tickCount % 60 < 15){
+                yOffset -= 1; //to implement bobbing within the water
+                waterColor = Colors.get(-1, -1, 225, -1);
+            }else if(15 <= tickCount % 60 && tickCount % 60 < 30){
+                waterColor = Colors.get( -1, 225, 115, -1);
+            }else if(30 <= tickCount % 60 && tickCount % 60 < 45){
+                waterColor = Colors.get( -1, 115, -1, 225);
+            }else{
+                waterColor = Colors.get( -1, 225, 115, -1);
+            }
+            screen.render(xOffset, yOffset + 3, 0 + 26 * 32, waterColor, 0x00, 1);
+            screen.render(xOffset + 8, yOffset + 3, 0 + 26 * 32, waterColor, 0x01, 1);
+        }
+        //upper body
+        screen.render(xOffset + (modifier * flipTop), yOffset, xTile + yTile * 32, spriteColor, flipTop, scale);//q2
+        screen.render(xOffset + modifier - (modifier * flipTop), yOffset, (xTile + 1) + yTile * 32, spriteColor, flipTop, scale);//q1
+
+        //this provides the animation progression through the (0, 26) tile on sprite_sheet
+        //...each progressive "if" step changes the colors so that the illusion wading waves
+        //    can be see around the Player. Modify the 60 if a different time rhythm is required,
+        //    15 is used as a representative 1/4 of 60 because we are working with 4 shades
+        //    of color given the grey scheme of the color class and each shade get's a quarter
+        //    of the animation time.
+        if(!isSwimming){
+            //lower body
+            screen.render(xOffset + (modifier * flipBottom), yOffset + modifier,
+                    xTile + (yTile + 1) * 32, spriteColor, flipBottom, scale); //q3
+            screen.render(xOffset + modifier - (modifier * flipBottom), yOffset + modifier,
+                    (1 + xTile) + (1 + yTile) * 32, spriteColor, flipBottom, scale); //q4
+        }
+
+        //username!
+        if(name != null){
+            //full white colored username 10 pixels above the player
+            int xl = name.length() * 8;
+            int unl = name.length();
+            int unlr = (name.length() % 2 == 0) ? 0 : 1;
+            //(username.length() /2) + username.length()+6
+            Font.render(name, screen, xOffset - (xl - (xl/2) - unl - unlr), yOffset - 10, Colors.get(-1, -1, -1, 555), 1);
+        }
     }
 }
