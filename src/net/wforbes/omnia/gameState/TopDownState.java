@@ -106,10 +106,10 @@ public class TopDownState extends GameState{
         this.initColors();
         level = new Level("/test_level.png");
 
-        player = new Player(level, 10, 10, "ghosty", this);
+        player = new Player(level, 10, 10, "blueboi", this);
         level.addEntity(player);
 
-        enemy = new Enemy(level, 32, 32, "skele");
+        enemy = new Enemy(level, 32, 32, "doc");
         level.addEntity(enemy);
         this.gui = new GUIController(this);
     }

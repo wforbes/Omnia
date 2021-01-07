@@ -7,7 +7,7 @@ import net.wforbes.omnia.topDown.level.Level;
 
 public class Enemy extends Mob{
 
-    private int color = Colors.get(-1, 111, 400, 444);
+    private int color = Colors.get(-1, 111, 222, 555);
     private int scale = 1;
     private int tickCount = 0;
 
@@ -44,7 +44,7 @@ public class Enemy extends Mob{
     @Override
     public void render(Screen screen) {
         int xTile = 0;
-        int yTile = 7;
+        int yTile = 17;
         int walkingSpeed = 3;
         //flipTop/Bottom variables: 0 or 1, used to decide whether or not to flip
         int flipTop = (numSteps >> walkingSpeed) & 1;

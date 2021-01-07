@@ -12,7 +12,7 @@ public class Player extends Mob{
     private TopDownState gameState;
     private InputHandler inputHandler;
     private String username;
-    private int color = Colors.get(-1, 100, 555, 543);
+    private int color = Colors.get(-1, 100, 005, 543);
     private int scale = 1;
     public int xOffset;
     public int yOffset;
@@ -133,7 +133,7 @@ public class Player extends Mob{
     @Override
     public void render(Screen screen) {
         int xTile = 0;
-        int yTile = 9;
+        int yTile = 13;
         int walkingSpeed = 3;
         //flipTop/Bottom variables: 0 or 1,
         // used to decide whether or not to flip the sprite to emulate walking
