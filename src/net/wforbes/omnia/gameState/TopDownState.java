@@ -5,9 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.menu.PauseMenu;
-import net.wforbes.omnia.topDown.entity.Enemy;
-import net.wforbes.omnia.topDown.entity.NPC;
-import net.wforbes.omnia.topDown.entity.Player;
+import net.wforbes.omnia.topDown.entity.*;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.graphics.Screen;
 import net.wforbes.omnia.topDown.graphics.SpriteSheet;
@@ -115,8 +113,12 @@ public class TopDownState extends GameState{
 
         //688, 48
         Point2D npcStartPos = new Point2D(688, 48);
-        npc = new NPC(level,"doc", npcStartPos);
+        npc = new DocNPC(level,"doc", npcStartPos);
         level.addEntity(npc);
+
+        npcStartPos = new Point2D(720, 32);
+        BroNPC broNPC = new BroNPC(level, "bro", npcStartPos);
+        level.addEntity(broNPC);
 
         //enemy = new Enemy(level, 32, 32, "doc");
 

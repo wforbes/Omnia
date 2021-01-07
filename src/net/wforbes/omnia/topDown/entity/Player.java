@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import net.wforbes.omnia.gameState.TopDownState;
 import net.wforbes.omnia.input.InputHandler;
+import net.wforbes.omnia.topDown.entity.dialog.DialogController;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.graphics.Screen;
 import net.wforbes.omnia.topDown.gui.Font;
@@ -15,7 +16,6 @@ public class Player extends Mob{
     private String name;
     private int scale = 1;
     protected boolean isSwimming = false;
-
     private int lastInputCommandTick = 0;
 
     /*
@@ -35,6 +35,7 @@ public class Player extends Mob{
         this.canSwim = true;
         this.setSpriteLoc(new Point2D(0, 13));
         this.setSpriteColor(Colors.get(-1, 100, 005, 543));
+        this.setNameColor(Colors.get(-1, -1, -1, 005));
     }
 
     public String getName(){

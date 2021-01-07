@@ -6,8 +6,7 @@ import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.graphics.Screen;
 import net.wforbes.omnia.topDown.level.Level;
 
-public class NPC extends Mob {
-    private final DialogController dialogController;
+public abstract class NPC extends Mob {
 
     /*
     public NPC(Level level, String name, int x, int y) {
@@ -18,12 +17,9 @@ public class NPC extends Mob {
 
     public NPC(Level level, String name, Point2D startPos) {
         super(level, name, startPos, 1);
-        this.canSwim = true;
-        this.dialogController = new DialogController();
-        this.setSpriteLoc(new Point2D(0, 17));
-        this.setSpriteColor(Colors.get(-1, 111, 222, 555));
-        this.setNameColor(Colors.get(-1, -1, -1, 034));
     }
+
+    public abstract String receiveChat(String chatCmd, String chatMsg);
 
     @Override
     public String simpleChatResponse(String type) {

@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelReader;
 import net.wforbes.omnia.topDown.entity.Entity;
+import net.wforbes.omnia.topDown.entity.dialog.DialogController;
 import net.wforbes.omnia.topDown.graphics.Screen;
 import net.wforbes.omnia.topDown.level.tile.Tile;
 
@@ -19,7 +20,10 @@ public class Level {
     private String imagePath;
     //private BufferedImage image; //TODO: reimplement
     private Image image;
+    public DialogController dialogController;
 
+    //TODO: Refactor this to "Area" because "Level" should
+    //  be used for the player's exp level
     public Level(String imagePath){
         if(imagePath != null){
             this.imagePath = imagePath;
@@ -30,6 +34,7 @@ public class Level {
             tiles = new byte[width * height];
             this.generateLevel();
         }
+        this.dialogController = new DialogController(this);
     }
 
     //TODO: Test this

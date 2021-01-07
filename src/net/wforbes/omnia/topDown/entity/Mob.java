@@ -1,6 +1,7 @@
 package net.wforbes.omnia.topDown.entity;
 
 import javafx.geometry.Point2D;
+import net.wforbes.omnia.topDown.entity.dialog.DialogController;
 import net.wforbes.omnia.topDown.entity.movement.MovementController;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.graphics.Screen;
@@ -322,7 +323,7 @@ public abstract class Mob extends Entity{
             int unl = name.length();
             int unlr = (name.length() % 2 == 0) ? 0 : 1;
             //(username.length() /2) + username.length()+6
-            Font.render(name, screen, xOffset - (xl - (xl/2) - unl - unlr), yOffset - 10, Colors.get(-1, -1, -1, 555), 1);
+            Font.render(name, screen, xOffset - (xl - (xl/2) - unl - unlr), yOffset - 10, nameColor, 1);
         }
     }
 }
