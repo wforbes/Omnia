@@ -11,15 +11,18 @@ public class BroNPC extends NPC{
         this.setSpriteLoc(new Point2D(0, 15));
         this.setSpriteColor(Colors.get(-1, 111, 042, 555));
         this.setNameColor(Colors.get(-1, -1, -1, 024));
+        this.movementController.setMovement("paceVertical");
     }
 
     @Override
-    public String receiveChat(String chatCmd, String chatMsg) {
+    public String receiveChat(Point2D sourceLoc, String chatCmd, String chatMsg) {
         chatMsg = chatMsg.toUpperCase();
         if (chatMsg.contains("HELLO") || chatMsg.contains("YO") || chatMsg.contains("SUP")){
+            this.movementController.standAndFace(sourceLoc);
             return "Sup, my dude?";
         }
         if (chatMsg.contains("GNARLY")) {
+            this.movementController.standAndFace(sourceLoc);
             return "Ya, it's all gnarly bro. You know what's gnarly for me right now? " +
                     "I lost my [taco sauce], my dude. I'm hella bummed on it...";
         }

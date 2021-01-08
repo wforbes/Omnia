@@ -19,7 +19,7 @@ public abstract class NPC extends Mob {
         super(level, name, startPos, 1);
     }
 
-    public abstract String receiveChat(String chatCmd, String chatMsg);
+    public abstract String receiveChat(Point2D sourceLoc, String chatCmd, String chatMsg);
 
     @Override
     public String simpleChatResponse(String type) {

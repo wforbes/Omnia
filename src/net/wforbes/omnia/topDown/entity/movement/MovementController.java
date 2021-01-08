@@ -1,7 +1,10 @@
 package net.wforbes.omnia.topDown.entity.movement;
 
+import javafx.geometry.Point2D;
 import net.wforbes.omnia.topDown.entity.Mob;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class MovementController {
@@ -11,6 +14,7 @@ public class MovementController {
     private long waitCount = 0;
     private boolean moveReady = false;
     private Random gen = new Random();
+    private String movementType;
 
     public MovementController(Mob mover) {
         this.mover = mover;
@@ -31,13 +35,99 @@ public class MovementController {
     }
 
     public void tick() {
-        //System.out.println(this.waitCount);
-        this.paceUpAndDown(5, 10, 40, 100);
+        switch (movementType){
+            case "paceVertical":
+                this.paceUpAndDown(5, 10, 40, 100);
+                break;
+            case "stand":
+                this.standStill();
+                break;
+        }
+    }
+
+    public void standAndFace(Point2D targetLoc) {
+        this.setMovement("stand");
+        double angle = new Point2D(this.mover.x, this.mover.y).angle(targetLoc);
+        //TODO: refactor this to test for diagonal, 45, and 30>x<60,
+        //  then apply booleans in one line
+        if(angle > 0.45) {//vertical facing
+            if(targetLoc.getY() < this.mover.y) {//facing north
+                this.mover.setMovingDir(0);
+            } else {//facing south
+                this.mover.setMovingDir(1);
+            }
+        } else {//horizontal facing
+            if(targetLoc.getX() < this.mover.x) {
+                //facing west
+                this.mover.setMovingDir(2);
+            } else {
+                //facing east
+                this.mover.setMovingDir(3);
+            }
+        }
+
+        /*
+        //TODO: refactor this to test for diagonal, 45, and 30>x<60,
+        //  then apply booleans in one line.. and make it possible to stand
+        //  still and face diagonally
+        if(angle > 0.45) {//vertical facing
+            if(targetLoc.getY() < this.mover.y) {//facing north
+                if(angle < 0.6) {//diagonal (test with .75)
+                    if(targetLoc.getX() < this.mover.x) {//west
+                        this.mover.setMovingDir(4);
+                    } else {//east
+                        this.mover.setMovingDir(5);
+                    }
+                } else {//direct
+                    this.mover.setMovingDir(0);
+                }
+            } else {//facing south
+                if(angle < 0.6) {//diagonal
+                    if(targetLoc.getX() < this.mover.x) {//west
+                        this.mover.setMovingDir(6);
+                    } else {//east
+                        this.mover.setMovingDir(7);
+                    }
+                } else {//direct
+                    this.mover.setMovingDir(1);
+                }
+            }
+        } else {//horizontal facing
+            if(targetLoc.getX() < this.mover.x) { //west
+                if(angle > 0.3) { //diagonal
+                    if(targetLoc.getY() > this.mover.y) {//north
+                        this.mover.setMovingDir(4);
+                    } else {
+                        this.mover.setMovingDir(5);
+                    }
+                } else { //direct
+                    this.mover.setMovingDir(2);
+                }
+            } else { //east
+                if(angle > 0.3) { //diagonal
+                    if(targetLoc.getY() > this.mover.y) {//north
+                        this.mover.setMovingDir(5);
+                    } else {
+                        this.mover.setMovingDir(7);
+                    }
+                } else {//direct
+                    this.mover.setMovingDir(3);
+                }
+            }
+        }
+         */
+    }
+
+    public void standStill() {
+        //this.setMovement("stand");
+    }
+
+    public void setMovement(String moveType) {
+        this.movementType = moveType;
     }
 
     private void paceUpAndDown(int waitMultiple, int waitReset, int minYBound, int maxYBound) {
         if (this.waitCount == 0 || this.waitCount == (waitMultiple + 1) * waitReset) {
-            //System.out.println("waitCount 0 or 5");
             this.waitCount = 1;
             this.moveReady = false;
         } else if (this.waitCount % waitMultiple == 0) {

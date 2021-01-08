@@ -49,8 +49,11 @@ public class DialogController {
         for(Entity entity : this.level.entities) {
             if(!this.areSameEntity(sender, entity) && this.areWithinSayRange(sender, entity)) {
                 if(entity instanceof NPC) {
+                    Mob senderMob = (Mob) sender;
                     NPC listener = ((NPC)entity);
-                    String response = listener.receiveChat(chatCmd, chatMsg);
+                    String response = listener.receiveChat(
+                            senderMob.getLocationPoint(),
+                            chatCmd, chatMsg);
                     if (!response.equals("")) {
                        this.chatWindowController.parseNPCChat(listener.getName(), chatCmd, response);
                     }

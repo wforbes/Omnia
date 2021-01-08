@@ -107,7 +107,7 @@ public class TopDownState extends GameState{
         this.initColors();
         level = new Level("/test_level2.png");
 
-        Point2D playerStartPos = new Point2D(720, 256);
+        Point2D playerStartPos = new Point2D(704, 80);
         player = new Player(level, "blueboi", playerStartPos,this);
         level.addEntity(player);
 

@@ -64,7 +64,15 @@ public abstract class Mob extends Entity{
 
     public String getName(){return name;}
 
+    public Point2D getLocationPoint() {
+        return new Point2D(this.x, this.y);
+    }
+
     public int getMovingDir(){return movingDir;}
+
+    public void setMovingDir(int direction) {
+        this.movingDir = direction;
+    }
 
     public void move(int xa, int ya){
         if(xa != 0 && ya != 0){
