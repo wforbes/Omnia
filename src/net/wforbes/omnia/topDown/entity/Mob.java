@@ -118,9 +118,9 @@ public abstract class Mob extends Entity{
     public boolean hasCollided(int xa, int ya) {
         //collision box function
         int xMin = 0;
-        int xMax = 7;
+        int xMax = 8;
         int yMin = 0;
-        int yMax = 7;
+        int yMax = 8;
 
         //check top and bottom
         //System.out.println(this.getName() + " is checking top/bottom");

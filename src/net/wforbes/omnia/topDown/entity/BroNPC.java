@@ -14,18 +14,19 @@ public class BroNPC extends NPC{
         this.movementController.setMovement("paceVertical");
     }
 
-    @Override
-    public String receiveChat(Point2D sourceLoc, String chatCmd, String chatMsg) {
-        chatMsg = chatMsg.toUpperCase();
-        if (chatMsg.contains("HELLO") || chatMsg.contains("YO") || chatMsg.contains("SUP")){
+    protected void handleGreetings(Point2D sourceLoc, String chatMsg) {
+        if (chatMsg.contains("HELLO") || chatMsg.contains("YO") || chatMsg.contains("SUP")
+            && chatMsg.contains(this.getName().toUpperCase())
+        ){
             this.movementController.standAndFace(sourceLoc);
-            return "Sup, my dude?";
+            chatBuilder.append("Sup, my dude? Life's been [gnarly] for me over here...");
         }
+    }
+    protected void handleQuests(Point2D sourceLoc, String chatMsg) {
         if (chatMsg.contains("GNARLY")) {
             this.movementController.standAndFace(sourceLoc);
-            return "Ya, it's all gnarly bro. You know what's gnarly for me right now? " +
-                    "I lost my [taco sauce], my dude. I'm hella bummed on it...";
+            chatBuilder.append("Ya, it's all gnarly bro. You know what's gnarly for me right now? " +
+                    "I lost my [taco sauce], my dude. I'm hella bummed on it...");
         }
-        return "";
     }
 }
