@@ -55,13 +55,12 @@ public class Player extends Mob{
                 this.lastInputCommandTick = this.tickCount;
                 gameState.pause();
             }
-            /*
-            if (gameState.gsm.isKeyDown(KeyCode.ENTER) && !chatWindowIsOpen() && !gameState.isPaused()) {
+
+            if (gameState.gsm.isKeyDown(KeyCode.ENTER) && !gameState.isPaused()
+                && this.keyInputIsReady()) {
                 this.lastInputCommandTick = this.tickCount;
-                //gameState.gui.openChatWindow();
-                //TODO: focus chat window?
+                gameState.gui.chatWindowController.getChatField().requestFocus();
             }
-            */
         } else {
             if (inputHandler.esc.isPressed() && pauseIsReady()) {
                 inputHandler.resetKeys();

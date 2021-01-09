@@ -38,6 +38,7 @@ public class PlatformerState extends GameState {
     public Player getPlayer(){ return player; }
     public Enemy getEnemy(int i){ return enemies.get(i); }
     public ArrayList<Enemy> getEnemyArray(){ return enemies; }
+    public int getTickCount() { return this.tickCount; }
 
     @Override
     public void init() {

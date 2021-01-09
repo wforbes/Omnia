@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -41,6 +42,8 @@ public class ChatWindowController {
     private final int CHAT_HBOX_HEIGHT = 34;
     private boolean chatWindowOpen;
 
+    private int lastInputCommandTick = 0;
+
     private HashMap<String,String> chatOutputMap;
     private StringBuilder chatBuilder;
     private String chatLog;
@@ -58,6 +61,28 @@ public class ChatWindowController {
         this.chatBuilder = new StringBuilder("");
         this.chatOutputMap = this.gui.level.dialogController.getChatOutputMap();
         this.gui.level.dialogController.setChatWindowController(this);
+    }
+
+    public TextField getChatField() {
+        return chatField;
+    }
+
+    private boolean keyInputIsReady() {
+        return gui.gameController.gsm.getCurrentState().getTickCount()
+                - this.lastInputCommandTick > 20;
+    }
+
+    public void tick() {
+        /*
+        int tickCount = gui.gameController.gsm.getCurrentState().getTickCount();
+        if (gui.gameController.gsm.isKeyDown(KeyCode.ENTER)
+                && !gui.gameController.gsm.getCurrentState().isPaused()
+                && this.keyInputIsReady()) {
+            System.out.println("chatwindow got enter key press");
+            this.lastInputCommandTick = tickCount;
+            this.chatField.requestFocus();
+        }
+         */
     }
 
     public Node getChatPanel() {

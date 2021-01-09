@@ -26,7 +26,7 @@ public class TopDownState extends GameState{
     private int[] pixels;
     private int[] colors;
     public GameStateManager gsm;
-    public int tickCount = 0;
+    public int tickCount;
     private Level level;
     private Player player;
     private NPC npc;
@@ -84,7 +84,12 @@ public class TopDownState extends GameState{
             return;
         }
         level.tick();
+        gui.tick();
         tickCount++;
+    }
+
+    public int getTickCount() {
+        return this.tickCount;
     }
 
     @Override
@@ -101,6 +106,7 @@ public class TopDownState extends GameState{
             //this.pauseMenu = new PauseMenu(this);
         }
 
+        this.tickCount = 0;
         this.isPaused = false;
         this.pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
         this.colors = new int[6 * 6 * 6];

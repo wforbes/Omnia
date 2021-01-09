@@ -82,6 +82,12 @@ public class MenuState extends GameState {
         tickCount++;
     }
 
+    public int getTickCount() {
+        return this.tickCount;
+    }
+
+    public boolean isPaused() { return false; }
+
     private boolean keyInputReady() {
         return tickCount - lastPressTick > waitTicks || lastPressTick == 0;
     }
