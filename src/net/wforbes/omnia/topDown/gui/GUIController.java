@@ -1,45 +1,27 @@
 package net.wforbes.omnia.topDown.gui;
 
-import javafx.animation.FadeTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.event.EventTarget;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.util.Duration;
-import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameFX.controllers.GameController;
 import net.wforbes.omnia.gameState.TopDownState;
-import net.wforbes.omnia.topDown.entity.Entity;
-import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.level.Level;
 import net.wforbes.omnia.topDown.entity.Player;
-import net.wforbes.omnia.topDown.graphics.Screen;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class GUIController {
 
     public Player player;
     public Level level;
-    private GameController gameController;
+    public GameController gameController;
 
     //chat window
-    private ChatWindowController chatWindowController;
+    public ChatWindowController chatWindowController;
     private Node chatPanel;
 
     private final BooleanProperty dragModeActiveProperty =
@@ -64,6 +46,10 @@ public class GUIController {
 
         this.gameController.gameBorder.setTop(panelsPane);
 
+    }
+
+    public void tick() {
+        chatWindowController.tick();
     }
 
     private static final class DragContext {
@@ -154,10 +140,6 @@ public class GUIController {
                 + "-fx-border-width: 1;"
                 + "-fx-border-radius: 6;"
                 + "-fx-padding: 6;");
-    }
-
-    public void tick() {
-
     }
 }
 //Copyright from https://docs.oracle.com/javase/8/javafx/events-tutorial/draggablepanelsexamplejava.htm
