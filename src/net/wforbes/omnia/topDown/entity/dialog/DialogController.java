@@ -23,9 +23,9 @@ public class DialogController {
 
     private void setChatOutputMap() {
         chatOutputMap = new HashMap<>();
-        chatOutputMap.put("SAY", "You say, ");
-        chatOutputMap.put("SHOUT", "You shout, ");
-        chatOutputMap.put("WHISPER", "You whisper, ");
+        chatOutputMap.put("SAY", "You say");
+        chatOutputMap.put("SHOUT", "You shout");
+        chatOutputMap.put("WHISPER", "You whisper");
     }
 
     public void setChatWindowController(ChatWindowController cwc) {
