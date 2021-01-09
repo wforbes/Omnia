@@ -9,8 +9,8 @@ public class DocNPC extends NPC{
     public DocNPC(Level level, String name, Point2D startPos) {
         super(level, name, startPos);
         this.canSwim = true;
-        this.setSpriteLoc(new Point2D(0, 11));
-        this.setSpriteColor(Colors.get(-1, 111, 222, 555));
+        this.setSpriteLoc(new Point2D(0, 17));
+        this.setSpriteColor(Colors.get(-1, 111, 505, 543));
         this.setNameColor(Colors.get(-1, -1, -1, 244));
         this.movementController.setMovement("paceVertical");
     }
