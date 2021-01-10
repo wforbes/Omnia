@@ -1,7 +1,6 @@
 package net.wforbes.omnia.topDown.entity;
 
 import javafx.geometry.Point2D;
-import net.wforbes.omnia.topDown.entity.dialog.DialogController;
 import net.wforbes.omnia.topDown.entity.movement.MovementController;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.graphics.Screen;
@@ -74,6 +73,10 @@ public abstract class Mob extends Entity{
         this.movingDir = direction;
     }
 
+    public boolean isMovingDiagonally() {
+        return movingDir > 3;
+    }
+
     public void move(int xa, int ya){
         if(xa != 0 && ya != 0){
             moveDiagonal(xa, ya);
@@ -81,10 +84,25 @@ public abstract class Mob extends Entity{
             moveCardinal(xa, ya);
         }
 
-        numSteps++;
-
-        if(!hasCollided(xa, ya)){
+        if(hasCollided(xa, ya)){
+            //check for open space in either cardinal
+            //  direction when moving diagonally
+            //  and move there instead to allow for
+            //  sliding up against walls
+            if(isMovingDiagonally()) {
+                for(int i = 4; i <= 7; i++) {
+                    if (movingDir == i) {
+                        if (!hasCollided(xa, 0)) {//check horizontal
+                            ya = 0;
+                        } else if (!hasCollided(0, ya)) { //check vertical
+                            xa = 0;
+                        }
+                    }
+                }
+            }
+        } else {
             moveCoords(xa, ya);
+            numSteps++;
         }
     }
 
