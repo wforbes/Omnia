@@ -171,7 +171,7 @@ public class MainMenu extends Menu {
         gc.setFont(titleFont);
         gc.fillText("Omnia Game Engine", 30 * fxScale, 85 * fxScale);
         gc.setFont(subTitleFont);
-        gc.fillText("alpha version 0.0.1", 225 * fxScale, 100 * fxScale);
+        gc.fillText("prototype version 0.0.2", 225 * fxScale, 100 * fxScale);
 /*
         gc.setFont(font);
         for(int i = 0; i < options.length; i++){
