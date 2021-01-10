@@ -1,20 +1,19 @@
 # Omnia
-Retro 2D Role-Playing Video Game that blends the Fantasy, Sci-Fi, and Steam-Punk genres. 
+Retro 2D Role-Playing Video Game targeted for the PC, Mac, Linux, and Android. 
+Written using Java and JavaFX.
 
-Targeting the PC, Mac, Linux, and Android platforms. Written using Java and JavaFX.
-
-(Readme last updated: 1/5/2020)
+(Readme last updated: 1/9/2020)
 
 ![Screenshots of Omnia version 0.0.1](https://wforbes.net/wp-content/uploads/2020/12/screens_v0-0-1-1024x762.png)
 
 ## Project
-Omnia is a 2D 'Retro' Role-Playing Game written in Java. I'm working on it so that I can practice programming in Java, 
+Omnia is a 2D 'Retro' Role-Playing Game, written in Java. I'm working on it so that I can practice programming in Java, 
 experiment with ideas, and have fun. My girlfriend is an author and creative writing teacher so I'll also be collaborating 
-with her for writing the game script and storyline.
+with her for writing the game's script and storyline.
 
 This is truly a passion project. Instead of using a sophisticated game engine like Unreal, Unity, Godot, or GameMaker 
 I thought I would get the most out of developing the engine myself by reading/watching game tutorials/devlogs, getting 
-inspiration from game libraries, and inventing the systems myself. 
+inspiration from game libraries, and inventing systems on my own.   
 
 ### Goals
 My core goals are focused on:
@@ -22,8 +21,8 @@ My core goals are focused on:
   * Building an enjoyable experience for the player that uses multiple 2D engine styles, rewarding quest experiences, 
   immersive/dynamic NPC interactions, and fun online interactions with other players. 
   * Designing a game world that's visually and interactively interesting, weird, exciting, and enjoyable to play within.
-  * Writing a game story that feels like you're going on an exciting journey that will not only save the world but the 
-  entire space-time continuum of your own universe and all other parallel universes.
+  * Writing a game story that feels like you're going on an exciting journey that offers so many options that the 
+  possibilities are endless.
 
 ## Story
 
@@ -53,15 +52,15 @@ Some of the first concepts of the world can be found here: [wforbes.net/omnia-st
     * [X] ~~**Top-Down: Pause Menu**: Add a pause menu that allows the player to go back to the Main Menu or resume gameplay.~~
     * [X] ~~**Platformer: Death Menu**: Add a menu that appears upon player death that allows them to return to the Main 
     Menu or try the level again.~~
-* [ ] **Implement JavaFX**(3/4): Add a JavaFX implementation of the core Game running classes to enable UI development and 
-more precise (float, double) figures for game logic.
+* [ ] ~~**Implement JavaFX**: Add a JavaFX implementation of the core Game running classes to enable UI development and 
+more precise (float, double) figures for game logic.~~
     * [X] ~~**Game Loop with AnimationTimer**: Test and implement the JavaFX.AnimationTimer for use with the game loop.~~
     * [X] ~~**JavaFX graphics rendering**: Test and implement JavaFX graphics classes (GraphicsContext, Image, PixelReader, 
     PixelWriter, etc.) to recreate, combine and improve on the graphics algorithms for Top-Down and Platformer namespaces~~
     * [X] ~~**Implement game logic**: Enable all existing game logic; updating levels and entities, taking key input and
     all other existing features.~~
-    * [ ] **Implement new UI for menus**: Use JavaFX features to build a simple UI for the MainMenu, PauseMenu, and 
-    DeathMenu.
+    * [X] ~~**Implement new UI for menus**: Use JavaFX features to build a simple UI for the MainMenu, PauseMenu, and 
+    DeathMenu.~~
 ---
 ## Game Development Todo Lists (2021-2022)
 * [ ] **Top-Down GameState Tasks**:
@@ -74,32 +73,40 @@ more precise (float, double) figures for game logic.
     This should include a few different grass tiles, dirt tiles, grass/dirt border tiles, grass/water border tiles,   
     * [ ] **Add level structures**: Right now, there are only blank solid tiles. Tiles that show graphics for buildings,
     cliffs, caves, and other solid topography need to be added.
+        * [ ] **Add top-down entrance/exit doors**: On level structures like houses, stores, buildings, and castles; add 
+            outer doors that when the player collides with them the top-down level changes to the appropriate level for that 
+            structure and the player is spawned at their inner enterance/exit door.
+                * [ ] **Create house levels**: Create a few small levels that correspond to houses and buildings.
+                * [ ] **Create castle levels**: Create a few larger levels that correspond to castles and contain multiple 
+                doors to move from room levels in the castle.
+                * [ ] **Create NPCs for houses and castles**: Create some friendly NPCs to interact with in each of the house, 
+                store, building, and castle levels.
         * [ ] **Add platformer entrance doors**: On level structures like caves or ruins, add doors that when the player 
-        collides with them the game state changes to Platformer and opens the appropriate Platformer level.
-    * [ ] **Implement Chat/Dialog UI Window**: Add a text box UI component that accepts typed text input from the user 
+                collides with them the game state changes to Platformer and opens the appropriate Platformer level.
+    * [X] ~~**Implement Chat/Dialog UI Window**: Add a text box UI component that accepts typed text input from the user 
     and displays the result in the text box after typing Enter or clicking a Send button. The chat/dialog should be 
-    semi-transparent so as to not block view of the level.
+    semi-transparent so as to not block view of the level.~~
+        * [ ] **Experiment with Chat Commands**: Experiment with different chat commands like "/say (message)" or 
+            "/shout (message)" that show up in different colors in the Chat window. "/tell (EntityName) (message)" should 
+            display purple text in the window and allow for direct conversation with the Entity specified in the first 
+            argument. 
         * [ ] **Experiment with Game Commands**: Experiment with some basic commands which will return some game 
         information or modify the game state. These commands should be prefaced with a identifying character like '/' 
         or ';', and accept parameters. Example: typing "/getLocation" should display the player's current X/Y coordinates. 
         "/getTime real" should display the current real-life time, while "/getTime game" should display the current game world 
         time. "/setTime game (day) (hour) (minute)" should adjust the time of day to the specified day/hour/minute, if 
         hour or minute aren't provided then the beginning of the day or hour should be used. Brainstorm more useful ideas.
-        * [ ] **Experiment with Chat Commands**: Experiment with different chat commands like "/say (message)" or 
-        "/shout (message)" that show up in different colors in the Chat window. "/tell (EntityName) (message)" should 
-        display purple text in the window and allow for direct conversation with the Entity specified in the first 
-        argument. 
     * [ ] **Experiment with chat bubbles**: Test ideas on adding a chat bubble above the player when they "/say" something
     * [ ] **Add non-combat NPC entities**: Add a couple different non-combat entities that allow for some conversation 
     and other interaction. Ideas: Quest giver, Quest participant, Merchant, Friend, Stranger, etc.
         * [ ] **NPC time of day location change**: Depending on the game time, static NPCs should appear in a different 
         static location. If they are pacing/wandering they should move to a different location and pace/wander there.
-        * [ ] **Implement NPC chat conversation**: When you approach an NPC and hail them, they should respond with text 
+        * [X] ~~**Implement NPC chat conversation**: When you approach an NPC and hail them, they should respond with text 
         in the chat window. This chat should include trigger phrases that, when the user repeats back to them, continues
-        the conversation. Inspiration: Everquest quest dialogs.
+        the conversation. Inspiration: Everquest quest dialogs.~~
             * [ ] **NPC behavior change with chat**: Test trigger phrases changing the NPCs behavior.
                 * [ ] **Phases cause NPC movement changes**: Trigger phrases should be able to cause NPCs movement to 
-                change (stop wandering, wander in a different pattern, follow the Player, )
+                change (~~stop wandering~~, wander in a different pattern, follow the Player, )
                 * [ ] **Finishing conversations open new ones**: Finishing a conversation should cause them to start a 
                 different conversation the next time they are hailed.
                 * [ ] **NPC conversations change with game time**: Depending on the game time, the NPC should react to 
@@ -118,26 +125,20 @@ more precise (float, double) figures for game logic.
     * [ ] **Add health/damage system**: (todo)
     * [ ] **Implement Player Vitals Status UI**: (todo)
     * [ ] **Implement basic combat**: (todo)
-    * [ ] **Add top-down entrance/exit doors**: On level structures like houses, stores, buildings, and castles; add 
-    outer doors that when the player collides with them the top-down level changes to the appropriate level for that 
-    structure and the player is spawned at their inner enterance/exit door.
-        * [ ] **Create house levels**: Create a few small levels that correspond to houses and buildings.
-        * [ ] **Create castle levels**: Create a few larger levels that correspond to castles and contain multiple 
-        doors to move from room levels in the castle.
-        * [ ] **Create NPCs for houses and castles**: Create some friendly NPCs to interact with in each of the house, 
-        store, building, and castle levels.
-* [ ] **Platformer GameState Tasks**: (todo)
-    * [ ] **Add friendly NPC entities**: (todo)
-    * [ ] **Implement Dialog UI**: (todo)
-    * [ ] **Add player/entity collision**: (todo)
-    * [ ] **Add health/damage system**: (todo)
-    * [ ] **Implement Player Vitals Status UI**: (todo)
 * [ ] **UI/Game-Wide Tasks**: (todo)
     * [ ] **Implement Player Leveling/Experience System**: (todo)
     * [ ] **Implement Player Statistics System**: (todo)
     * [ ] **Implement Skills System**: (todo)
     * [ ] **Implement Spells System**: (todo)
     * [ ] **Implement Class System**: (todo)
+* [ ] **Platformer GameState Tasks**: (todo)
+    * [ ] **Add a wide array of enemy NPC entities**: (todo)
+    * [ ] **Add friendly NPC entities**: (todo)
+    * [ ] **Implement Dialog UI**: (todo)
+    * [ ] **Add player/entity collision**: (todo)
+    * [ ] **Add health/damage system**: (todo)
+    * [ ] **Implement Player Vitals Status UI**: (todo)
+
 ---
 ## Experimental / Research
 
