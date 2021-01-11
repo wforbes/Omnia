@@ -94,12 +94,17 @@ public abstract class Mob extends Entity{
                     if (movingDir == i) {
                         if (!hasCollided(xa, 0)) {//check horizontal
                             ya = 0;
+                            moveCoords(xa, ya);
+                            numSteps++;
                         } else if (!hasCollided(0, ya)) { //check vertical
                             xa = 0;
+                            moveCoords(xa, ya);
+                            numSteps++;
                         }
                     }
                 }
             }
+            //System.out.println(this.getName() + " has collided: " + xa + " " + ya);
         } else {
             moveCoords(xa, ya);
             numSteps++;
