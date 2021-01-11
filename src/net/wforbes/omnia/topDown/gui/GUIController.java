@@ -20,6 +20,8 @@ public class GUIController {
     public Level level;
     public GameController gameController;
 
+    private boolean componentHasFocus;
+
     //chat window
     public ChatWindowController chatWindowController;
     private Node chatPanel;
@@ -32,6 +34,8 @@ public class GUIController {
         this.gameController = state.getGsm().gameController; //TODO:improve encapsulation
         this.level = state.getLevel();
         this.player = state.getPlayer();
+
+        this.componentHasFocus = false;
 
         this.chatWindowController = new ChatWindowController(this);
         this.chatPanel = this.chatWindowController.getChatPanel();
@@ -46,6 +50,12 @@ public class GUIController {
 
         this.gameController.gameBorder.setTop(panelsPane);
 
+    }
+    public boolean getComponentHasFocus() {
+        return this.componentHasFocus;
+    }
+    public void setComponentHasFocus(boolean focused) {
+        this.componentHasFocus = focused;
     }
 
     public void tick() {

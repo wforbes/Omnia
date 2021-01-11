@@ -4,10 +4,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import net.wforbes.omnia.gameState.TopDownState;
 import net.wforbes.omnia.input.InputHandler;
-import net.wforbes.omnia.topDown.entity.dialog.DialogController;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.graphics.Screen;
-import net.wforbes.omnia.topDown.gui.Font;
 import net.wforbes.omnia.topDown.level.Level;
 
 public class Player extends Mob{
@@ -53,7 +51,12 @@ public class Player extends Mob{
 
             if (gameState.gsm.isKeyDown(KeyCode.ESCAPE) && pauseIsReady() && keyInputIsReady()) {
                 this.lastInputCommandTick = this.tickCount;
-                gameState.pause();
+
+                if(gameState.gui.getComponentHasFocus()) {
+                    gameState.gsm.gameController.gameCanvas.requestFocus();
+                } else {
+                    gameState.pause();
+                }
             }
 
             if (gameState.gsm.isKeyDown(KeyCode.ENTER) && !gameState.isPaused()

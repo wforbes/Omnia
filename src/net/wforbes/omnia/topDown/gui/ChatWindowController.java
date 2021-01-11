@@ -1,11 +1,9 @@
 package net.wforbes.omnia.topDown.gui;
 
 import javafx.animation.FadeTransition;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -15,14 +13,12 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import net.wforbes.omnia.gameFX.OmniaFX;
-import net.wforbes.omnia.topDown.entity.Entity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 public class ChatWindowController {
 
@@ -34,8 +30,10 @@ public class ChatWindowController {
     private TextFlow chatAreaFlow;
     private Font chatAreaFont;
     private TextField chatField;
+    private boolean chatFieldFocused;
     private Font chatFieldFont;
     private Button chatSendBtn;
+    private boolean chatSendBtnFocused;
     private HBox chatLowerContainer;
     private VBox chatVerticalContainer;
     private Node chatPanel;
@@ -140,19 +138,6 @@ public class ChatWindowController {
     }
 
     private void createChatArea() {
-        /*
-        chatArea = new TextArea();
-        chatArea.setPrefSize(200, CHATAREA_HEIGHT);
-        chatArea.setWrapText(true);
-        chatArea.setFont(chatAreaFont);
-        chatArea.getStyleClass().add("chatArea");
-        chatArea.setEditable(false);
-        chatArea.textProperty().addListener(
-                (ChangeListener<Object>) (observable, oldValue, newValue) -> {
-                    chatArea.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
-                    //use Double.MIN_VALUE to scroll to the top
-                });
-         */
         chatAreaScroll = new ScrollPane();
         chatAreaScroll.setPrefViewportWidth(1280);
         chatAreaScroll.setPrefViewportHeight(200);
@@ -167,47 +152,6 @@ public class ChatWindowController {
         chatAreaScroll.setContent(chatAreaFlow);
     }
 
-    //TODO: store history with cmd and formatting data
-    //  to avoid double loop and preserve previous appearance
-    //TODO: wait to implement until tearDown of GUI is implemented
-    /*
-    private void reloadChatLog() {
-        /*
-        if (this.chatLog.length() > 0) {
-            this.chatBuilder.append(this.chatLog);
-            this.chatArea.setText(this.chatBuilder.toString());
-            this.chatArea.appendText("");
-        }
-        for(String chatCmd : chatOutputMap.keySet()) {
-            if(chatMsg.toUpperCase().startsWith("/"+chatCmd)) {
-                this.handleChatMsg(chatCmd, chatMsg);
-                return true;
-            }
-        }
-        chatMsg = chatMsg.substring(chatCmd.length() + 2);//2 for '/' and ' '
-        currentChatCmd = chatCmd;
-        chatBuilder.append(chatOutputMap.get(chatCmd)).append(chatMsg).append("\n");
-        Text chat = new Text(chatBuilder.toString());
-        this.chatBuilder.setLength(0);
-        chat.setFont(this.chatAreaFont);
-        chat.setFill(this.chatColorMap.get(this.currentChatCmd));
-        chatAreaFlow.getChildren().add(chat);
-        */
-        //String chatMsg = "";
-        //if(this.chatHistory.size() > 0)
-            //System.out.println(this.chatHistory.get(0).toString());
-                /*
-        for(Text t : this.chatHistory) {
-            for(String chatCmd : chatOutputMap.keySet()) {
-                if(t.toString().toUpperCase().startsWith("/")) {
-
-                    this.chatAreaFlow.getChildren().addAll(this.chatHistory);
-                }
-            }
-        }*/
-
-    //}
-
     private void createChatField() {
         chatField = new TextField();
         chatField.setPrefSize(1168, CHATFIELD_HEIGHT);
@@ -217,6 +161,15 @@ public class ChatWindowController {
         chatField.setOnAction(event -> {
             this.parseChatField();
         });
+
+        this.chatFieldFocused = chatField.focusedProperty().getValue();
+        chatField.focusedProperty().addListener((observableValue, oldValue, newValue) -> {
+            this.gui.setComponentHasFocus(newValue);
+        });
+    }
+
+    public boolean chatFieldIsFocused() {
+        return chatFieldFocused;
     }
 
     private void createChatSendButton() {
@@ -226,6 +179,10 @@ public class ChatWindowController {
         chatSendBtn.setFocusTraversable(true);
         chatSendBtn.setOnMouseClicked(event -> {
             this.parseChatField();
+        });
+        this.chatSendBtnFocused = chatSendBtn.focusedProperty().getValue();
+        chatSendBtn.focusedProperty().addListener((observableValue, oldValue, newValue) -> {
+            this.gui.setComponentHasFocus(newValue);
         });
     }
 
@@ -362,4 +319,46 @@ public class ChatWindowController {
         chatBuilder.append(name).append(" says, \"").append(chatMsg).append("\"\n");
 
     }
+
+
+    //TODO: store history with cmd and formatting data
+    //  to avoid double loop and preserve previous appearance
+    //TODO: wait to implement until tearDown of GUI is implemented
+    /*
+    private void reloadChatLog() {
+        /*
+        if (this.chatLog.length() > 0) {
+            this.chatBuilder.append(this.chatLog);
+            this.chatArea.setText(this.chatBuilder.toString());
+            this.chatArea.appendText("");
+        }
+        for(String chatCmd : chatOutputMap.keySet()) {
+            if(chatMsg.toUpperCase().startsWith("/"+chatCmd)) {
+                this.handleChatMsg(chatCmd, chatMsg);
+                return true;
+            }
+        }
+        chatMsg = chatMsg.substring(chatCmd.length() + 2);//2 for '/' and ' '
+        currentChatCmd = chatCmd;
+        chatBuilder.append(chatOutputMap.get(chatCmd)).append(chatMsg).append("\n");
+        Text chat = new Text(chatBuilder.toString());
+        this.chatBuilder.setLength(0);
+        chat.setFont(this.chatAreaFont);
+        chat.setFill(this.chatColorMap.get(this.currentChatCmd));
+        chatAreaFlow.getChildren().add(chat);
+        */
+    //String chatMsg = "";
+    //if(this.chatHistory.size() > 0)
+    //System.out.println(this.chatHistory.get(0).toString());
+                /*
+        for(Text t : this.chatHistory) {
+            for(String chatCmd : chatOutputMap.keySet()) {
+                if(t.toString().toUpperCase().startsWith("/")) {
+
+                    this.chatAreaFlow.getChildren().addAll(this.chatHistory);
+                }
+            }
+        }*/
+
+    //}
 }
