@@ -139,8 +139,6 @@ public class Player extends Mob {
     public void render(GraphicsContext gc) {
         //TODO: Get movingDir and set sprite image
         this.setMapPosition();
-        System.out.println(xmap);
-        //System.out.println((x + xmap - width / 2.0 + width));
         gc.drawImage(
                 sprites.get(0)[0],
                 (x + xmap - width / 2.0)*OmniaFX.getScale(),

@@ -4,7 +4,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import net.wforbes.omnia.gameFX.OmniaFX;
-import net.wforbes.omnia.u.W;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -135,32 +134,19 @@ public class TileMap {
     public void setPosition(double x, double y){
         double centerX = (OmniaFX.getWidth() / 2.0);
         double centerY = (OmniaFX.getHeight() / 2.0);
-        double xOffset = 0;
-        double yOffset = 0;
 
-        W.out("player x: " + x);
-        W.out("xOffset: " + xOffset);
-        W.out("centerX: " + centerX);
-
-
+        //move the x/y position of the tilemap as
+        //  the difference of screen center and
+        //  the player position, reduced by the
+        //  tilemaps previous position, scaled by
+        //  the tween rate
         this.x += (centerX - x - this.x) * tween;
         this.y += (centerY - y - this.y) * tween;
-        fixBounds();
-
-        colOffset = (int) -(this.x) / tileSize;
-        rowOffset = (int) -(this.y) / tileSize;
-
-        //include the tween to graduate the movement of the camera as
-        //it follows the player to display as a smooth motion
-/*
-        this.x += (x - this.x)* tween;
-        this.y += (y - this.y)* tween;
 
         fixBounds();
 
         colOffset = (int) -(this.x) / tileSize;
         rowOffset = (int) -(this.y) / tileSize;
- */
     }
 
     //helper method, explain later
