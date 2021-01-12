@@ -112,7 +112,7 @@ public class TopDownState extends GameState{
             //this.pauseMenu = new PauseMenu(this);
         }
 
-        this.debugging = true;
+        this.debugging = false;
 
         this.tickCount = 0;
         this.isPaused = false;

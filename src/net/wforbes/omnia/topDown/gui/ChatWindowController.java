@@ -105,7 +105,7 @@ public class ChatWindowController {
          */
     }
 
-    public Node getChatPanel() {
+    public Node getWindowPanel() {
         if(chatPanel == null) {
             this.chatPanel =
                     gui.makeDraggableByTitleRegion(

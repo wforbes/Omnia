@@ -1,13 +1,17 @@
 package net.wforbes.omnia.topDown.entity;
 
 import javafx.geometry.Point2D;
+import net.wforbes.omnia.gameState.TopDownState;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.level.Level;
 
 public class DocNPC extends NPC{
 
-    public DocNPC(Level level, String name, Point2D startPos) {
-        super(level, name, startPos);
+    TopDownState gameState;
+
+    public DocNPC(Level level, String name, Point2D startPos, TopDownState gameState) {
+        super(level, name, startPos, gameState);
+        this.gameState = gameState;
         this.canSwim = true;
         this.setSpriteLoc(new Point2D(0, 17));
         this.setSpriteColor(Colors.get(-1, 111, 505, 543));
@@ -16,7 +20,12 @@ public class DocNPC extends NPC{
     }
 
     public void tick() {
+
         super.tick();
+        if(gameState.isDebugging()) {
+            gameState.gui.devWindowController.setDocPos(this.x, this.y);
+            gameState.gui.devWindowController.setDocMovePos(this.xa, this.ya);
+        }
     }
 
     @Override

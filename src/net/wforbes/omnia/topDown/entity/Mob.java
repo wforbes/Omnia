@@ -1,6 +1,7 @@
 package net.wforbes.omnia.topDown.entity;
 
 import javafx.geometry.Point2D;
+import net.wforbes.omnia.gameState.TopDownState;
 import net.wforbes.omnia.topDown.entity.movement.MovementController;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.graphics.Screen;
@@ -9,7 +10,7 @@ import net.wforbes.omnia.topDown.level.Level;
 import net.wforbes.omnia.topDown.level.tile.Tile;
 
 public abstract class Mob extends Entity{
-
+    protected TopDownState gameState;
     protected String name;
     private Point2D spriteLoc;
     public int xOffset;
@@ -26,6 +27,11 @@ public abstract class Mob extends Entity{
     public boolean isSwimming = false;
     protected boolean canSwim;
 
+    protected int collisionBoxWidth;
+    protected int collisionBoxHeight;
+    public int xa;
+    public int ya;
+
     /*
     public Mob(Level level, String name, int x, int y, int speed){
         super(level);
@@ -37,12 +43,14 @@ public abstract class Mob extends Entity{
     }
     */
 
-    public Mob(Level level, String name, Point2D startPos, int speed){
+    public Mob(Level level, String name, Point2D startPos, int speed, TopDownState gameState){
         super(level);
         this.name = name;
         this.x = (int)startPos.getX();
         this.y = (int)startPos.getY();
+        this.collisionBoxWidth = this.collisionBoxHeight = 9;
         this.speed = speed;
+        this.gameState = gameState; //TODO: clean up
         this.movementController = new MovementController(this);
     }
 
@@ -78,6 +86,8 @@ public abstract class Mob extends Entity{
     }
 
     public void move(int xa, int ya){
+        this.xa = xa;
+        this.ya = ya;
         if(xa != 0 && ya != 0){
             moveDiagonal(xa, ya);
         }else{
@@ -100,6 +110,13 @@ public abstract class Mob extends Entity{
                             xa = 0;
                             moveCoords(xa, ya);
                             numSteps++;
+                        }
+                        if(gameState.isDebugging()) {
+                            if ((hasCollided(xa, 0) || hasCollided(0, ya))) {
+                                gameState.gui.devWindowController.setScratch("Diagonal slide failed!");
+                            } else {
+                                gameState.gui.devWindowController.setScratch("");
+                            }
                         }
                     }
                 }
@@ -141,9 +158,9 @@ public abstract class Mob extends Entity{
     public boolean hasCollided(int xa, int ya) {
         //collision box function
         int xMin = 0;
-        int xMax = 8;
+        int xMax = collisionBoxWidth;
         int yMin = 0;
-        int yMax = 8;
+        int yMax = collisionBoxHeight;
 
         //check top and bottom
         //System.out.println(this.getName() + " is checking top/bottom");
@@ -184,10 +201,15 @@ public abstract class Mob extends Entity{
         //System.out.println(ya);
         //System.out.println(x);
         //System.out.println(y);
+
+        //check collisionBox perimeter
+        //  with an extra pixel to ensure mobs directly colliding
+        //  can move diagonally and slide against each other
         int xMin = 0;
-        int xMax = 7;
+        int xMax = collisionBoxWidth+1;
         int yMin = 0;
-        int yMax = 7;
+        int yMax = collisionBoxHeight+1;
+
         //System.out.println("Number of entities in level: " + level.entities.size());
         //System.out.println("this.name: " + this.name);
         //System.out.println("xa+x+this.x:"+(xa+x+this.x));
@@ -204,16 +226,18 @@ public abstract class Mob extends Entity{
                 //System.out.println("me = " + this.name);
                 //System.out.println("My X coord: " + this.x);
                 //System.out.println("My Y coord: " + this.y);
-
+                if(gameState.isDebugging() && this.name == "blueboi") {
+                    gameState.gui.devWindowController.setPlayerColWith("");
+                }
                 for(int xi = xMin; xi < xMax; xi++) {//top/bottom
                     for(int yi = yMin; yi < yMax; yi++) {//left/right
                         //System.out.println("xa+x+this.x:"+(xa+x+this.x));
                         //System.out.println("ya+y+this.y:"+(ya+y+this.y));
                         if ((e.x + xi) == (xa + x + this.x) && (e.y + yi) == (ya + y + this.y)) {
-                            /*System.out.println("this.name = " + this.name);
-                            if(this.name == "ghosty") {
-                                System.out.println("colliding with: " + e.getName());
-                            }*/
+                            //System.out.println("this.name = " + this.name);
+                            if(gameState.isDebugging() && this.name == "blueboi") {
+                                gameState.gui.devWindowController.setPlayerColWith(e.getName() + " " + xi + " " + yi);
+                            }
                             //System.out.println(xi + " = X test coord iterator (xI)");
                             //System.out.println(x + " = X test coord bound (x)");
                             //System.out.println(e.x + " = X enemy coord (ex)");
@@ -232,6 +256,7 @@ public abstract class Mob extends Entity{
 
                             return true;
                         } else {
+
                             if ((e.x + xi) == (xa + x + this.x)) {
                                 //System.out.println("Same X");
                             }

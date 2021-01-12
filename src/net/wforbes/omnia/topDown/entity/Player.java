@@ -26,7 +26,7 @@ public class Player extends Mob{
     }*/
 
     public Player(Level level, String name, Point2D startPos, TopDownState gameState) {
-        super(level, name, startPos,1);
+        super(level, name, startPos,1, gameState);
         this.gameState = gameState;
         this.inputHandler = gameState.gsm.inputHandler;
         this.name = name;
@@ -139,6 +139,10 @@ public class Player extends Mob{
     public void tick() {
         checkCommands();
         checkMovement();
+        if(gameState.isDebugging()) {
+            gameState.gui.devWindowController.setPlayerPos(this.x, this.y);
+            gameState.gui.devWindowController.setPlayerMovePos(this.xa, this.ya);
+        }
         super.tick();
     }
 

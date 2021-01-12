@@ -1,8 +1,7 @@
 package net.wforbes.omnia.topDown.entity;
 
 import javafx.geometry.Point2D;
-import net.wforbes.omnia.topDown.entity.dialog.DialogController;
-import net.wforbes.omnia.topDown.graphics.Colors;
+import net.wforbes.omnia.gameState.TopDownState;
 import net.wforbes.omnia.topDown.graphics.Screen;
 import net.wforbes.omnia.topDown.level.Level;
 
@@ -16,8 +15,8 @@ public abstract class NPC extends Mob {
         this.dialogController = new DialogController();
     }*/
 
-    public NPC(Level level, String name, Point2D startPos) {
-        super(level, name, startPos, 1);
+    public NPC(Level level, String name, Point2D startPos, TopDownState gameState) {
+        super(level, name, startPos, 1, gameState);
     }
 
     public String receiveChat(Point2D sourceLoc, String chatCmd, String chatMsg) {

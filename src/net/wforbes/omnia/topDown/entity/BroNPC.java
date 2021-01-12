@@ -1,12 +1,13 @@
 package net.wforbes.omnia.topDown.entity;
 
 import javafx.geometry.Point2D;
+import net.wforbes.omnia.gameState.TopDownState;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.level.Level;
 
 public class BroNPC extends NPC{
-    public BroNPC(Level level, String name, Point2D startPos) {
-        super(level, name, startPos);
+    public BroNPC(Level level, String name, Point2D startPos, TopDownState gameState) {
+        super(level, name, startPos, gameState);
         this.canSwim = true;
         this.setSpriteLoc(new Point2D(0, 15));
         this.setSpriteColor(Colors.get(-1, 111, 042, 555));
@@ -15,7 +16,7 @@ public class BroNPC extends NPC{
     }
 
     protected void handleGreetings(Point2D sourceLoc, String chatMsg) {
-        if (chatMsg.contains("HELLO") || chatMsg.contains("YO") || chatMsg.contains("SUP")
+        if (chatMsg.contains("YO") || chatMsg.contains("SUP")
             && chatMsg.contains(this.getName().toUpperCase())
         ){
             this.movementController.standAndFace(sourceLoc);

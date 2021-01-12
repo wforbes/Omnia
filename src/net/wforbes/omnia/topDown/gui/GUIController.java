@@ -24,7 +24,10 @@ public class GUIController {
 
     //chat window
     public ChatWindowController chatWindowController;
-    private Node chatPanel;
+    private Node chatPanel; //TODO: rename to chatWindowPanel
+
+    public DevWindowController devWindowController;
+    private Node devWindowPanel;
 
     private final BooleanProperty dragModeActiveProperty =
             new SimpleBooleanProperty(this, "dragModeActive", true);
@@ -38,13 +41,20 @@ public class GUIController {
         this.componentHasFocus = false;
 
         this.chatWindowController = new ChatWindowController(this);
-        this.chatPanel = this.chatWindowController.getChatPanel();
+        this.chatPanel = this.chatWindowController.getWindowPanel();
         chatPanel.relocate(0, OmniaFX.getScaledHeight() - (chatWindowController.CHAT_VBOX_HEIGHT + 42));
 
         final Pane panelsPane = new Pane();
         panelsPane.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
         panelsPane.setPrefSize(0.1, 0.1);
-        panelsPane.getChildren().addAll(chatPanel);
+
+        if(state.isDebugging()) {
+            this.devWindowController = new DevWindowController(this);
+            this.devWindowPanel = this.devWindowController.getWindowPanel();
+            panelsPane.getChildren().addAll(chatPanel, devWindowPanel);
+        } else {
+            panelsPane.getChildren().addAll(chatPanel);
+        }
 
         dragModeActiveProperty.bind(dragModeCheckbox.selectedProperty());
 

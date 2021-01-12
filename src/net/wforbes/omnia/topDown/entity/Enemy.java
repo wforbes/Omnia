@@ -1,9 +1,9 @@
 package net.wforbes.omnia.topDown.entity;
 
 import javafx.geometry.Point2D;
+import net.wforbes.omnia.gameState.TopDownState;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.graphics.Screen;
-import net.wforbes.omnia.topDown.gui.Font;
 import net.wforbes.omnia.topDown.level.Level;
 
 public class Enemy extends Mob{
@@ -13,8 +13,8 @@ public class Enemy extends Mob{
     private int tickCount = 0;
 
 
-    public Enemy(Level level, Point2D startPos, String name) {
-        super(level, name, startPos, 1);
+    public Enemy(Level level, Point2D startPos, String name, TopDownState gameState) {
+        super(level, name, startPos, 1, gameState);//TODO: cleanup
         int tickCount = 0;
         this.canSwim = false;
     }
