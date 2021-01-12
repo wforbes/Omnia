@@ -150,7 +150,7 @@ public class MenuState extends GameState {
             gsm.setState(GameStateManager.PLATFORMERSTATE);
         }
         if(currentChoice == 2){
-            gsm.setState(GameStateManager.INFOSTATE);
+            //gsm.setState(GameStateManager.INFOSTATE);
         }
         if(currentChoice == 3){
             System.exit(0);

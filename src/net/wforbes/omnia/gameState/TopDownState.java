@@ -36,6 +36,8 @@ public class TopDownState extends GameState{
     private PauseMenu pauseMenu;
     public int lastUnpauseTick = 0;
 
+    private boolean debugging;
+
     public TopDownState(GameStateManager gsm)
     {
         this.gsm = gsm;
@@ -92,6 +94,10 @@ public class TopDownState extends GameState{
         return this.tickCount;
     }
 
+    public boolean isDebugging() {
+        return debugging;
+    }
+
     @Override
     public void init()
     {
@@ -106,6 +112,8 @@ public class TopDownState extends GameState{
             //this.pauseMenu = new PauseMenu(this);
         }
 
+        this.debugging = true;
+
         this.tickCount = 0;
         this.isPaused = false;
         this.pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
@@ -119,11 +127,11 @@ public class TopDownState extends GameState{
 
         //688, 48
         Point2D npcStartPos = new Point2D(688, 48);
-        npc = new DocNPC(level,"doc", npcStartPos);
+        npc = new DocNPC(level,"doc", npcStartPos, this);
         level.addEntity(npc);
 
         npcStartPos = new Point2D(720, 32);
-        BroNPC broNPC = new BroNPC(level, "bro", npcStartPos);
+        BroNPC broNPC = new BroNPC(level, "bro", npcStartPos, this);
         level.addEntity(broNPC);
 
         //enemy = new Enemy(level, 32, 32, "doc");
