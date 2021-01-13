@@ -27,7 +27,7 @@ public class OverworldState extends GameState {
     @Override
     public void init() {
         this.level.init();
-        this.player.init();
+        //this.player.init();
     }
 
     @Override
@@ -39,8 +39,8 @@ public class OverworldState extends GameState {
     public void update() {
         //TODO: check death status
         //TODO: check pause status
-        player.update();
-        level.getTileMap().setPosition(player.getX(), player.getY());
+        //player.update();
+        //level.getTileMap().setPosition(player.getX(), player.getY());
 
         //TODO: attack enemies
         //TODO: update NPCS
@@ -55,7 +55,7 @@ public class OverworldState extends GameState {
     @Override
     public void render(GraphicsContext gc) {
         level.render(gc);
-        player.render(gc);
+        //player.render(gc);
     }
 
     @Override

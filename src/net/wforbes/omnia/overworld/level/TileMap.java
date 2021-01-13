@@ -16,8 +16,8 @@ public class TileMap {
 
     //tiles
     private Tile[][] tiles;
-    private int numTilesAcross;
-    private int numTilesDown;
+    private int tileColCount;
+    private int tileRowCount;
 
     //map
     private int[][] map;
@@ -55,21 +55,20 @@ public class TileMap {
     public void loadTiles(String path) {
         try {
             tileSet = new Image(getClass().getResourceAsStream(path));
-            numTilesAcross = (int)tileSet.getWidth() / tileSize;
-            numTilesDown = (int)tileSet.getWidth() / tileSize;
-            tiles = new Tile[numTilesDown][numTilesAcross];
+            tileColCount = (int)tileSet.getWidth() / tileSize;
+            tileRowCount = (int)tileSet.getHeight() / tileSize;
+            tiles = new Tile[tileColCount][tileRowCount];
             this.loadTileSet();
         }catch(Exception e) {
             e.printStackTrace();
         }
     }
     private void loadTileSet() {
-        for(int col = 0; col < numTilesAcross; col++) {
-            //TODO: if using tileSet with more than 2 rows, use numTilesDown
-            tileImage = new WritableImage(tileSet.getPixelReader(), col * tileSize, 0, tileSize, tileSize);
-            tiles[0][col] = new Tile(tileImage, Tile.NORMAL);
-            tileImage = new WritableImage(tileSet.getPixelReader(), col * tileSize, tileSize, tileSize, tileSize);
-            tiles[1][col] = new Tile(tileImage, Tile.BLOCKED);
+        for(int row = 0; row < tileRowCount; row++) {
+            for(int col = 0; col < tileColCount; col++) {
+                tileImage = new WritableImage(tileSet.getPixelReader(), col * tileSize, row * tileSize, tileSize, tileSize);
+                tiles[col][row] = new Tile(tileImage, Tile.NORMAL);
+            }
         }
     }
     public void loadMap(String s) {
@@ -83,7 +82,7 @@ public class TileMap {
             numCols = Integer.parseInt(br.readLine());
             numRows = Integer.parseInt(br.readLine());
             //The rest of the map is put into an int array named map
-            map = new int[numRows][numCols];
+            map = new int[numCols][numRows];
             //using the number of rows and columns we got in the first two lines
             //		of the text file, we can decide the width and height of the map
             width = numCols * tileSize;
@@ -102,7 +101,7 @@ public class TileMap {
                 String[] tokens = line.split(delims); // split the line into tokens,
                 //  using the white space of our delimiter
                 for(int col = 0; col < numCols; col++){//for every column
-                    map[row][col] = Integer.parseInt(tokens[col]); // go through
+                    map[col][row] = Integer.parseInt(tokens[col]); // go through
                     //		the token array and put it into the map array
                 }
             }
@@ -118,8 +117,8 @@ public class TileMap {
     public int getHeight(){ return height;}
     public int getType(int row, int col){
         int rc = map[row][col];
-        int r = rc / numTilesAcross;
-        int c = rc % numTilesAcross;
+        int r = rc / tileColCount;
+        int c = rc % tileColCount; //TODO: figure out which is row and which is col
         return tiles[r][c].getType();
     }
     public int getMapRowUpperBound() {
@@ -167,9 +166,9 @@ public class TileMap {
                 //if (map[row][col] == 0) continue; //For transparent tiles, tileSet must have trans tile in 0
 
                 int rc = map[row][col];//find which tile to draw
-                int r = rc / numTilesAcross;
-                int c = rc % numTilesAcross;
-                gc.drawImage(tiles[r][c].getImage(), (x + col * tileSize) * OmniaFX.getScale(),
+                int r = rc / tileColCount;
+                int c = rc % tileRowCount;
+                gc.drawImage(tiles[c][r].getImage(), (x + col * tileSize) * OmniaFX.getScale(),
                         (y + row * tileSize) * OmniaFX.getScale(),
                         (double)tileSize * OmniaFX.getScale(), (double)tileSize * OmniaFX.getScale());
             }
