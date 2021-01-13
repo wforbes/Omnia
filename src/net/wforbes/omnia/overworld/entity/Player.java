@@ -22,26 +22,27 @@ public class Player extends Mob {
     private int tickCount = 0;
     private double x, y;
     private double xa, ya;
-    private double speed = 1.75;
+    private double speed = 2;
     private double xOffset, yOffset;
     private int numSteps = 0;
     private boolean isMoving;
-    private double movingDir = 1;
+    private int facingDir;
     private double scale = 1;
     private double collisionBoxWidth;
     private double collisionBoxHeight;
 
     protected int currentAction;
     private ArrayList<Image[]> sprites;
-    private final int[] numFrames = {2, 2, 2, 2, 2};
-    private static final int MOVING_N = 0;
-    private static final int MOVING_S = 1;
-    private static final int MOVING_W = 2;
-    private static final int MOVING_E = 3;
-    private static final int MOVING_NW = 4;
-    private static final int MOVING_NE = 5;
-    private static final int MOVING_SW = 6;
-    private static final int MOVING_SE = 7;
+    private final int[] numFrames = {3, 3, 3, 3, 3, 3, 3, 3};
+    private static final int FACING_N = 0;
+    private static final int FACING_S = 1;
+    private static final int FACING_W = 2;
+    private static final int FACING_E = 3;
+    private static final int FACING_NW = 4;
+    private static final int FACING_NE = 5;
+    private static final int FACING_SW = 6;
+    private static final int FACING_SE = 7;
+    private MovementAnimation movementAnimation;
 
 
     public Player(OverworldState gameState) {
@@ -56,14 +57,31 @@ public class Player extends Mob {
 
     public void init() {
         this.width = this.height = 16;
-        this.spriteSheet = new Image(getClass().getResourceAsStream("/overworld/sprites/pokemon_player_sprites.gif"));
+        this.spriteSheet = new Image(getClass().getResourceAsStream("/overworld/sprites/player1_pokemon.gif"));
         this.sprites = new ArrayList<Image[]>();
+        this.facingDir = FACING_S;
 
-        Image[] images = new Image[1];
-        images[0] = new WritableImage(spriteSheet.getPixelReader(), 32, 0,16,16);
-        sprites.add(images);
+        for(int i = 0; i < numFrames.length; i++) {
+            Image[] images = new Image[numFrames[i]];
+            for (int j = 0; j < numFrames[i]; j++) {
+                images[j] = new WritableImage(spriteSheet.getPixelReader(), j*width, i*height, width, height);
+            }
+            sprites.add(images);
+        }
 
-        this.setPosition(60, 60);
+        movementAnimation = new MovementAnimation();
+        this.setAnimationDirection(facingDir);
+    }
+
+    private void setAnimationDirection(int dir) {
+        movementAnimation.setFacingDir(dir);
+        movementAnimation.setFrames(sprites.get(dir));
+        movementAnimation.setDelay((long)(100 / this.speed));
+    }
+    private void updateAnimationDirection() {
+        movementAnimation.setFacingDir(facingDir);
+        movementAnimation.setFrames(sprites.get(facingDir));
+        movementAnimation.setDelay((long)(100/this.speed));
     }
 
     private void checkMovement() {
@@ -87,6 +105,8 @@ public class Player extends Mob {
             isMoving = true;
         } else {
             isMoving = false;
+            if(movementAnimation.isMoving())
+                movementAnimation.setIsMoving(this.isMoving);
         }
         //TODO: Swimming checks
     }
@@ -101,6 +121,14 @@ public class Player extends Mob {
         }else{
             moveCardinal(xa, ya);
         }
+
+        if(movementAnimation.getFacingDir() != facingDir)
+            this.updateAnimationDirection();
+
+        if(this.isMoving != movementAnimation.isMoving())
+            movementAnimation.setIsMoving(this.isMoving);
+
+
         //TODO: check for collision
 
         moveCoords(xa, ya);
@@ -108,24 +136,25 @@ public class Player extends Mob {
     }
     private void moveCardinal(double xa, double ya){
         if (ya < 0)
-            movingDir = 0;
+            facingDir = FACING_N;
         if (ya > 0)
-            movingDir = 1;
+            facingDir = FACING_S;
         if (xa < 0)
-            movingDir = 2;
+            facingDir = FACING_W;
         if (xa > 0)
-            movingDir = 3;
+            facingDir = FACING_E;
     }
     private void moveDiagonal(double xa, double ya){
         if (ya < 0 && xa  < 0)
-            movingDir = 4;
+            facingDir = FACING_NW;
         if (ya < 0 && xa > 0)
-            movingDir = 5;
+            facingDir = FACING_NE;
         if (ya > 0 && xa < 0)
-            movingDir = 6;
+            facingDir = FACING_SW;
         if (ya > 0 && xa > 0)
-            movingDir = 7;
+            facingDir = FACING_SE;
     }
+
     private void moveCoords(double xa, double ya) {
         x += xa * speed;
         y += ya * speed;
@@ -143,14 +172,16 @@ public class Player extends Mob {
 
     public void update() {
         checkMovement();
+        movementAnimation.update();
         tickCount++;
     }
 
     public void render(GraphicsContext gc) {
-        //TODO: Get movingDir and set sprite image
+        //TODO: Get facingDir and set sprite image
         this.setMapPosition();
+
         gc.drawImage(
-                sprites.get(0)[0],
+                movementAnimation.getImage(),
                 (x + xmap - width / 2.0)*OmniaFX.getScale(),
                 (y + ymap - height / 2.0)*OmniaFX.getScale(),
                 width * OmniaFX.getScale(),

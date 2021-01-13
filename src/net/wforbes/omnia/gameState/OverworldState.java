@@ -16,7 +16,7 @@ public class OverworldState extends GameState {
         this.gsm = gsm;
         this.level = new Level();
         this.player = new Player(this);
-
+        this.player.setPosition(60, 60);
     }
 
     @Override
