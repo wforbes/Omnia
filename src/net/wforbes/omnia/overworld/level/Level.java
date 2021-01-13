@@ -13,7 +13,7 @@ public class Level {
 
     public void init() {
         this.tileMap = new TileMap(8);
-        this.tileMap.loadTiles("/overworld/tile/grass_dirt_8bit.png");
+        this.tileMap.loadTiles("/overworld/tile/grass_dirt_8bit.gif");
         this.tileMap.loadMap("/overworld/tile/maps/level1.map");
         this.tileMap.setPosition(0, 0);
         this.tileMap.setTween(0.07);

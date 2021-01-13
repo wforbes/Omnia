@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class Player extends Mob {
     private OverworldState gameState;
     private Image spriteSheet;
-    private ArrayList<Image[]> sprites;
 
     private String name;
     private double lastInputTick = 0;
@@ -23,7 +22,7 @@ public class Player extends Mob {
     private int tickCount = 0;
     private double x, y;
     private double xa, ya;
-    private double speed = 1.25;
+    private double speed = 1.75;
     private double xOffset, yOffset;
     private int numSteps = 0;
     private boolean isMoving;
@@ -31,6 +30,18 @@ public class Player extends Mob {
     private double scale = 1;
     private double collisionBoxWidth;
     private double collisionBoxHeight;
+
+    protected int currentAction;
+    private ArrayList<Image[]> sprites;
+    private final int[] numFrames = {2, 2, 2, 2, 2};
+    private static final int MOVING_N = 0;
+    private static final int MOVING_S = 1;
+    private static final int MOVING_W = 2;
+    private static final int MOVING_E = 3;
+    private static final int MOVING_NW = 4;
+    private static final int MOVING_NE = 5;
+    private static final int MOVING_SW = 6;
+    private static final int MOVING_SE = 7;
 
 
     public Player(OverworldState gameState) {
@@ -44,12 +55,12 @@ public class Player extends Mob {
     public int getHeight(){ return height; }
 
     public void init() {
-        this.width = this.height = 30;
-        this.spriteSheet = new Image(getClass().getResourceAsStream("/overworld/sprites/player_sprites.gif"));
+        this.width = this.height = 16;
+        this.spriteSheet = new Image(getClass().getResourceAsStream("/overworld/sprites/pokemon_player_sprites.gif"));
         this.sprites = new ArrayList<Image[]>();
 
         Image[] images = new Image[1];
-        images[0] = new WritableImage(spriteSheet.getPixelReader(), 0, 0,30,30);
+        images[0] = new WritableImage(spriteSheet.getPixelReader(), 32, 0,16,16);
         sprites.add(images);
 
         this.setPosition(60, 60);
@@ -116,7 +127,6 @@ public class Player extends Mob {
             movingDir = 7;
     }
     private void moveCoords(double xa, double ya) {
-
         x += xa * speed;
         y += ya * speed;
     }

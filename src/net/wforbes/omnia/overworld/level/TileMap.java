@@ -48,8 +48,8 @@ public class TileMap {
 
     public TileMap(int tileSize) {
         this.tileSize = tileSize;
-        this.numRowsToDraw = OmniaFX.getHeight() / tileSize + 2;
-        this.numColsToDraw = OmniaFX.getWidth() / tileSize + 2;
+        this.numColsToDraw = OmniaFX.getWidth() / tileSize + tileSize * 2; //320
+        this.numRowsToDraw = OmniaFX.getHeight() / tileSize + 2; //240
     }
 
     public void loadTiles(String path) {
@@ -165,9 +165,9 @@ public class TileMap {
                 if (col >= numCols) break; //nothing else to draw break!
                 //if (map[row][col] == 0) continue; //For transparent tiles, tileSet must have trans tile in 0
 
-                int rc = map[row][col];//find which tile to draw
-                int r = rc / tileColCount;
-                int c = rc % tileRowCount;
+                int rc = map[col][row];//find which tile to draw
+                int r = rc / tileRowCount;
+                int c = rc % tileColCount;
                 gc.drawImage(tiles[c][r].getImage(), (x + col * tileSize) * OmniaFX.getScale(),
                         (y + row * tileSize) * OmniaFX.getScale(),
                         (double)tileSize * OmniaFX.getScale(), (double)tileSize * OmniaFX.getScale());
