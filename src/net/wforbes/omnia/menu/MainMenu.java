@@ -5,9 +5,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.GameStateManager;
 import net.wforbes.omnia.gameState.MenuState;
@@ -43,7 +45,7 @@ public class MainMenu extends Menu {
         subTitleFont = new Font("Century Gothic", 10 * fxScale);
 
         //font for subModern presents
-        subTitleFont2 = new Font("Century Gothic", 10 * fxScale);
+        subTitleFont2 = new Font("Century Gothic", 5 * fxScale);
 
         //font info for everything else
         font = new Font("Arial", 12 * fxScale);
@@ -51,6 +53,7 @@ public class MainMenu extends Menu {
 
     public void init() {
         this.setButtons();
+        //this.setTitles();
         /*
         this.lastPressTick = waitTicks;
         this.tickCount = 0;
@@ -58,9 +61,23 @@ public class MainMenu extends Menu {
          */
     }
 
+    private void setTitles() {
+        Pane titlePane = new Pane();
+        titlePane.setStyle("-fx-background-color: rgba(0,0,0,0)");
+        VBox titlesBox = new VBox();
+        titlesBox.setPadding(new Insets(500, 100, 100, 100));
+        Text titleTxt = new Text("Omnia");
+        titleTxt.getStyleClass().add("main-title");
+        titlePane.setLayoutX(100);
+        titlePane.setLayoutY(100);
+        titlePane.setPrefSize(titleTxt.getLayoutBounds().getWidth(), titleTxt.getLayoutBounds().getHeight());
+        titlesBox.getChildren().add(titleTxt);
+        this.state.gsm.gameController.gameBorder.setCenter(titlesBox);
+    }
+
     private void setButtons() {
 
-        Button topDownBtn = new Button("Top-Down");
+        Button topDownBtn = new Button("Top-Down (8-bit)");
         topDownBtn.getStyleClass().add("main-button");
         topDownBtn.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
             topDownBtn.requestFocus();
@@ -74,7 +91,21 @@ public class MainMenu extends Menu {
             state.gsm.setState(GameStateManager.TOPDOWNSTATE);
         });
 
-        Button platformerBtn = new Button("Platformer");
+        Button overworldBtn = new Button("Overworld (32-bit)");
+        overworldBtn.getStyleClass().add("main-button");
+        overworldBtn.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            overworldBtn.requestFocus();
+        });
+        overworldBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            state.gsm.gameController.gameBorder.setLeft(null);
+            state.gsm.setState(GameStateManager.OVERWORLDSTATE);
+        });
+        overworldBtn.setOnAction(event -> {
+            state.gsm.gameController.gameBorder.setLeft(null);
+            state.gsm.setState(GameStateManager.OVERWORLDSTATE);
+        });
+
+        Button platformerBtn = new Button("Platformer (24-bit)");
         platformerBtn.getStyleClass().add("main-button");
         platformerBtn.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
             platformerBtn.requestFocus();
@@ -110,7 +141,7 @@ public class MainMenu extends Menu {
 
         VBox vbox = new VBox(18);
         vbox.setPadding(new Insets((123 * fxScale), 0,0,28*fxScale));
-        vbox.getChildren().addAll(topDownBtn, platformerBtn, infoBtn, quitBtn);
+        vbox.getChildren().addAll(topDownBtn, overworldBtn, platformerBtn, infoBtn, quitBtn);
         state.gsm.gameController.gameBorder.setLeft(vbox);
     }
 
@@ -156,7 +187,7 @@ public class MainMenu extends Menu {
             state.gsm.setState(GameStateManager.PLATFORMERSTATE);
         }
         if(currentChoice == 2){
-            state.gsm.setState(GameStateManager.INFOSTATE);
+            //state.gsm.setState(GameStateManager.INFOSTATE);
         }
         if(currentChoice == 3){
             System.exit(0);
@@ -166,12 +197,27 @@ public class MainMenu extends Menu {
     public void render(GraphicsContext gc) {
         bg.render(gc);
         gc.setFill(Color.BLACK);
+
+        Text presentsTxt = new Text("wforbes presents:");
+        presentsTxt.setFont(subTitleFont2);
+        double presentsX = ((OmniaFX.getScaledWidth() - presentsTxt.getLayoutBounds().getWidth())/2);
         gc.setFont(subTitleFont2);
-        gc.fillText("subModern studios presents:", 30 * fxScale, 60 * fxScale);
+        gc.fillText("wforbes presents:", presentsX, 60 * fxScale);
+
+
+        Text titleTxt = new Text("Omnia");
+        titleTxt.setFont(titleFont);
         gc.setFont(titleFont);
-        gc.fillText("Omnia Game Engine", 30 * fxScale, 85 * fxScale);
+        double centerX = ((OmniaFX.getScaledWidth() - titleTxt.getLayoutBounds().getWidth())/2);
+        //gc.fillText("Omnia", ((OmniaFX.getScaledWidth() - titleTxt.getLayoutBounds().getWidth())/2), 85 * fxScale);
+        gc.fillText("Omnia", centerX, 85 * fxScale);
+
+        Text versionTxt = new Text("prototype v0.0.2");
+        versionTxt.setFont(subTitleFont);
+        double versionX = ((OmniaFX.getScaledWidth() - versionTxt.getLayoutBounds().getWidth())/2);
         gc.setFont(subTitleFont);
-        gc.fillText("prototype version 0.0.2", 225 * fxScale, 100 * fxScale);
+        gc.fillText("prototype v0.0.2", versionX, 100 * fxScale);
+        //gc.fillText("prototype v0.0.2", 225 * fxScale, 100 * fxScale);
 /*
         gc.setFont(font);
         for(int i = 0; i < options.length; i++){
