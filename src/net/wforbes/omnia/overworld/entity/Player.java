@@ -22,7 +22,7 @@ public class Player extends Mob {
     private int tickCount = 0;
     private double x, y;
     private double xa, ya;
-    private double speed = 2;
+    private double speed = 1.25;
     private double xOffset, yOffset;
     private int numSteps = 0;
     private boolean isMoving;
@@ -166,8 +166,8 @@ public class Player extends Mob {
     }
 
     private void setMapPosition() {
-        xmap = gameState.level.getTileMap().getx();
-        ymap = gameState.level.getTileMap().gety();
+        xmap = gameState.world.area.getTileMap().getx();
+        ymap = gameState.world.area.getTileMap().gety();
     }
 
     public void update() {

@@ -1,7 +1,10 @@
-package net.wforbes.omnia.overworld.level;
+package net.wforbes.omnia.overworld.world.area.tile;
 
+import javafx.geometry.Dimension2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelFormat;
+import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import net.wforbes.omnia.gameFX.OmniaFX;
 
@@ -11,13 +14,19 @@ import java.io.InputStreamReader;
 
 public class TileMap {
 
-    private Image tileSet;
-    private Image tileImage;
-
     //tiles
-    private Tile[][] tiles;
+    //private Tile_Old[][] tiles;
+    private byte[][] areaTileIds;
     private int tileColCount;
     private int tileRowCount;
+
+    //imageMap
+    private Image tileSpriteSheet;
+    private Image[][] tileSprites;
+    private Image areaMapImage;
+    private int mapWidth;
+    private int mapHeight;
+    private Dimension2D areaMapDimensions;
 
     //map
     private int[][] map;
@@ -52,13 +61,14 @@ public class TileMap {
         this.numRowsToDraw = OmniaFX.getHeight() / tileSize + 2; //240
     }
 
+    /*
     public void loadTiles(String path) {
         try {
-            tileSet = new Image(getClass().getResourceAsStream(path));
-            tileColCount = (int)tileSet.getWidth() / tileSize;
-            tileRowCount = (int)tileSet.getHeight() / tileSize;
-            tiles = new Tile[tileColCount][tileRowCount];
-            this.loadTileSet();
+            tileSpriteSheet = new Image(getClass().getResourceAsStream(path));
+            tileColCount = (int) tileSpriteSheet.getWidth() / tileSize;
+            tileRowCount = (int) tileSpriteSheet.getHeight() / tileSize;
+            areaTileIds = new byte[tileColCount * tileRowCount];
+            //this.loadMapFromImageFile();
         }catch(Exception e) {
             e.printStackTrace();
         }
@@ -67,11 +77,74 @@ public class TileMap {
         for(int row = 0; row < tileRowCount; row++) {
             for(int col = 0; col < tileColCount; col++) {
                 tileImage = new WritableImage(tileSet.getPixelReader(), col * tileSize, row * tileSize, tileSize, tileSize);
-                tiles[col][row] = new Tile(tileImage, Tile.NORMAL);
+                tileSprites[col][row] = tileImage;
             }
         }
+    }*/
+
+    public void loadTileSprites(String path) {
+        try {
+            tileSpriteSheet = new Image(getClass().getResourceAsStream(path));
+            tileColCount = (int) tileSpriteSheet.getWidth() / tileSize;
+            tileRowCount = (int) tileSpriteSheet.getHeight() / tileSize;
+            tileSprites = new Image[tileColCount][tileRowCount];
+            Image tileImage;
+            for(int row = 0; row < tileRowCount; row++) {
+                for(int col = 0; col < tileColCount; col++) {
+                    tileImage = new WritableImage(tileSpriteSheet.getPixelReader(), col * tileSize, row * tileSize, tileSize, tileSize);
+                    tileSprites[col][row] = tileImage;
+                }
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
     }
-    public void loadMap(String s) {
+    
+    public void loadMapFromImageFile(String s) {
+        try {
+            areaMapImage = new Image(getClass().getResourceAsStream(s));
+            areaMapDimensions = new Dimension2D(areaMapImage.getWidth(),areaMapImage.getHeight());
+            mapWidth = (int)areaMapDimensions.getWidth();
+            mapHeight = (int)areaMapDimensions.getHeight();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void loadTilesFromMapImage() {
+        areaTileIds = new byte[(int)areaMapDimensions.getWidth()][(int)areaMapDimensions.getHeight()];
+
+        PixelReader pixelReader = this.areaMapImage.getPixelReader();
+        int[] tileColors = new int[mapWidth * mapHeight];
+        pixelReader.getPixels(0, 0,
+            mapWidth, mapHeight,
+            PixelFormat.getIntArgbInstance(),
+            tileColors, 0, mapWidth
+        );
+
+        width = (int)areaMapDimensions.getWidth() * tileSize;
+        height = (int)areaMapDimensions.getHeight() * tileSize;
+
+        xmin = OmniaFX.getWidth() - width;
+        xmax = 0;
+        ymin = OmniaFX.getHeight() - height;
+        ymax = 0;
+
+        for(int y = 0; y < mapHeight; y++){
+            for(int x = 0; x < mapWidth; x++){
+
+                tileCheck:
+                    for (Tile t : Tile.tiles) {
+                        if (t != null && t.getMapColor() == tileColors[x + y * mapWidth]) {
+                            this.areaTileIds[x][y] = t.getId();
+                            break tileCheck;
+                        }
+                    }
+            }
+        }
+
+    }
+
+    public void loadMapFromTextFile(String s) {
         try{
             // to load the file
             InputStream in = getClass().getResourceAsStream(s);
@@ -115,12 +188,13 @@ public class TileMap {
     public double gety(){return y;}
     public int getWidth(){return width;}
     public int getHeight(){ return height;}
+    /*
     public int getType(int row, int col){
         int rc = map[row][col];
         int r = rc / tileColCount;
         int c = rc % tileColCount; //TODO: figure out which is row and which is col
         return tiles[r][c].getType();
-    }
+    }*/
     public int getMapRowUpperBound() {
         return map.length;
     }
@@ -156,21 +230,28 @@ public class TileMap {
         if(y > ymax) y = ymax;
     }
 
+    private Image getTileMapSprite(int mapX, int mapY) {
+        Tile tile = Tile.tiles[areaTileIds[mapX][mapY]];
+        //get sprite image of the tile
+        int sheetX = (int)tile.getSheetLoc().getX();
+        int sheetY = (int)tile.getSheetLoc().getY();
+        return this.tileSprites[sheetX][sheetY];
+    }
+
     public void render(GraphicsContext gc) {
         for(int row = rowOffset; row < (rowOffset + numRowsToDraw); row++) {
 
-            if (row >= numRows) break; //nothing else to draw, so break it
+            if (row >= areaMapDimensions.getHeight()) break; //nothing else to draw
 
             for (int col = colOffset; col < (colOffset + numColsToDraw); col++) {
-                if (col >= numCols) break; //nothing else to draw break!
-                //if (map[row][col] == 0) continue; //For transparent tiles, tileSet must have trans tile in 0
+                if (col >= areaMapDimensions.getWidth()) break; //nothing else to draw
 
-                int rc = map[col][row];//find which tile to draw
-                int r = rc / tileRowCount;
-                int c = rc % tileColCount;
-                gc.drawImage(tiles[c][r].getImage(), (x + col * tileSize) * OmniaFX.getScale(),
+                gc.drawImage(this.getTileMapSprite(col, row),
+                        (x + col * tileSize) * OmniaFX.getScale(),
                         (y + row * tileSize) * OmniaFX.getScale(),
-                        (double)tileSize * OmniaFX.getScale(), (double)tileSize * OmniaFX.getScale());
+                        (double)tileSize * OmniaFX.getScale(),
+                        (double)tileSize * OmniaFX.getScale()
+                );
             }
         }
     }

@@ -2,21 +2,21 @@ package net.wforbes.omnia.gameState;
 
 import javafx.scene.canvas.GraphicsContext;
 import net.wforbes.omnia.overworld.entity.Player;
-import net.wforbes.omnia.overworld.level.Level;
+import net.wforbes.omnia.overworld.world.World;
 
 import java.awt.*;
 
 public class OverworldState extends GameState {
     public GameStateManager gsm;
-    public Level level;
+    public World world;
     public Player player;
 
 
     public OverworldState(GameStateManager gsm) {
         this.gsm = gsm;
-        this.level = new Level();
+        this.world = new World();
         this.player = new Player(this);
-        this.player.setPosition(60, 60);
+        this.world.setPlayer(player);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class OverworldState extends GameState {
 
     @Override
     public void init() {
-        this.level.init();
+        this.world.init();
         this.player.init();
     }
 
@@ -40,8 +40,7 @@ public class OverworldState extends GameState {
         //TODO: check death status
         //TODO: check pause status
         player.update();
-        level.getTileMap().setPosition(player.getX(), player.getY());
-
+        world.update();
         //TODO: attack enemies
         //TODO: update NPCS
         tickCount++;
@@ -54,7 +53,7 @@ public class OverworldState extends GameState {
 
     @Override
     public void render(GraphicsContext gc) {
-        level.render(gc);
+        world.render(gc);
         player.render(gc);
     }
 
