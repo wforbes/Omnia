@@ -6,7 +6,7 @@ public class BasicTile extends Tile {
 
     public BasicTile(int id, int spriteX, int spriteY, int mapColor) {
         super(id, Tile.NORMAL, mapColor);
-        this.sheetLoc = new Point2D(spriteX, spriteY);
+        this.spritePos = new Point2D(spriteX, spriteY);
     }
 
     @Override

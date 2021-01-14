@@ -232,9 +232,9 @@ public class TileMap {
 
     private Image getTileMapSprite(int mapX, int mapY) {
         Tile tile = Tile.tiles[areaTileIds[mapX][mapY]];
-        //get sprite image of the tile
-        int sheetX = (int)tile.getSheetLoc().getX();
-        int sheetY = (int)tile.getSheetLoc().getY();
+        //return the sprite image of the tile
+        int sheetX = (int)tile.getSpritePos().getX();
+        int sheetY = (int)tile.getSpritePos().getY();
         return this.tileSprites[sheetX][sheetY];
     }
 
@@ -252,6 +252,7 @@ public class TileMap {
                         (double)tileSize * OmniaFX.getScale(),
                         (double)tileSize * OmniaFX.getScale()
                 );
+
             }
         }
     }

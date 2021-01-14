@@ -6,10 +6,13 @@ public abstract class Tile {
     public static final Tile[] tiles = new Tile[256];
     public static final Tile VOID = new BasicSolidTile(0, -1, -1, 0xFF000000);
     public static final Tile GRASS = new BasicTile(1, 0, 0, 0xFF00FF00);
+    public static final Tile GRASS2 = new BasicTile(2, 1, 0, 0xFF00EE00);
+    public static final Tile GRASS3 = new BasicTile(3, 2, 0, 0xFF00DD00);
+    public static final Tile GRASS4 = new BasicTile(4, 3, 0, 0xFF00CC00);
 
     protected byte id;
     //protected int tileId;
-    protected Point2D sheetLoc;
+    protected Point2D spritePos;
     protected int type;
     private int mapColor;
 
@@ -29,7 +32,7 @@ public abstract class Tile {
     }
 
     public byte getId(){ return id;}
-    public Point2D getSheetLoc(){ return sheetLoc; }
+    public Point2D getSpritePos(){ return spritePos; }
     public int getType(){return type;}
     public int getMapColor(){ return mapColor; }
 
