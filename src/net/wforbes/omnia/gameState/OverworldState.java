@@ -10,12 +10,12 @@ public class OverworldState extends GameState {
     public GameStateManager gsm;
     public World world;
     public Player player;
-
+    public static final String SPRITE_DIR = "/overworld/sprites/";
 
     public OverworldState(GameStateManager gsm) {
         this.gsm = gsm;
         this.world = new World();
-        this.player = new Player(this);
+        this.player = new Player(this, "Will");
         this.world.setPlayer(player);
     }
 

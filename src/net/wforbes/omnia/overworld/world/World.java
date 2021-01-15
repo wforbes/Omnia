@@ -11,7 +11,8 @@ public class World {
 
 
     public World() {
-        //TODO: set up areaGrid that comprises the World
+        //TODO: set up areaGrid that comprises the World once
+        //  multiple areas have been created
         this.area = new Area(this);
     }
 
