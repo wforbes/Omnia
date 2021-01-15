@@ -1,8 +1,10 @@
 package net.wforbes.omnia.overworld.entity;
 
 import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 
 import java.util.ArrayList;
@@ -137,5 +139,27 @@ public abstract class Mob extends Entity {
     protected void refreshMapPosition() {
         xmap = gameState.world.area.getTileMap().getx();
         ymap = gameState.world.area.getTileMap().gety();
+    }
+
+    protected boolean offScreen() {
+        return x + xmap + width < 0 ||
+                x + xmap - width/2.5 > OmniaFX.getWidth() ||
+                y + ymap + height < 0 ||
+                y + ymap - height/2.5 > OmniaFX.getHeight();
+    }
+
+    //public abstract void init();
+    //public abstract void update();
+    public void render(GraphicsContext gc) {
+        this.refreshMapPosition();
+        if(!offScreen()) {
+            gc.drawImage(
+                    movementAnimation.getImage(),
+                    (x + xmap - width / 2.0) * OmniaFX.getScale(),
+                    (y + ymap - height / 2.0) * OmniaFX.getScale(),
+                    width * OmniaFX.getScale(),
+                    height * OmniaFX.getScale()
+            );
+        }
     }
 }
