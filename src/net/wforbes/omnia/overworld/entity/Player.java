@@ -19,7 +19,7 @@ public class Player extends Mob {
     protected int currentAction;
 
     public Player(OverworldState gameState, String name) {
-        super(gameState, name, 0.5);
+        super(gameState, name, 0.5, true);
     }
 
     public Player(OverworldState gameState, String name, Point2D startPos) {
@@ -36,6 +36,7 @@ public class Player extends Mob {
     }
 
     public void update() {
+        //System.out.println(this.x + " " + this.y);
         checkMovement();
         movementAnimation.update();
     }

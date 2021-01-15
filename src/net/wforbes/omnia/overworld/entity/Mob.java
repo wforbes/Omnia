@@ -8,6 +8,7 @@ import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
+import net.wforbes.omnia.overworld.world.area.tile.Tile;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,6 @@ public abstract class Mob extends Entity {
     protected int numSteps = 0;
     protected int facingDir; //0-north, 1-south, 2-west, 3-east,
                             //4-nw, 5-ne, 6-sw, 7-se
-
     //numFrames: each index is a sprite row,
     //  each value is the number of animation frames
     int[] numFrames;
@@ -42,10 +42,16 @@ public abstract class Mob extends Entity {
     public static final int FACING_SE = 7;
     public MovementController movementController;
 
-    public Mob(OverworldState gameState, String name, double speed) {
+    protected boolean isPlayer; //TODO: remove - for testing
+    protected int collisionBoxWidth;
+    protected int collisionBoxHeight;
+
+    public Mob(OverworldState gameState, String name, double speed, boolean player) {
         super(gameState);
+        this.isPlayer = player;
         this.name = name;
         this.speed = speed;
+        this.collisionBoxWidth = this.collisionBoxHeight = 8;
         this.movementController = new MovementController(this);
     }
 
@@ -86,18 +92,95 @@ public abstract class Mob extends Entity {
         }else{
             moveCardinal(xa, ya);
         }
-
-        if(movementAnimation.getFacingDir() != facingDir)
+        if (movementAnimation.getFacingDir() != facingDir)
             this.updateAnimationDirection();
 
-        if(this.isMoving != movementAnimation.isMoving())
+        if (this.isMoving != movementAnimation.isMoving())
             movementAnimation.setIsMoving(this.isMoving);
 
+        if(this.hasCollided(xa, ya)) {
+            if (this.isMovingDiagonally()) {
 
+            }
+        } else {
+            //moveCoords(xa, ya);
+            //numSteps++;
+        }
         //TODO: check for collision
-
         moveCoords(xa, ya);
         numSteps++;
+    }
+
+    public boolean hasCollided(double xa, double ya) {
+        int xMin = 0;
+        int xMax = collisionBoxWidth;
+        int yMin = 0;
+        int yMax = collisionBoxHeight;
+        for(int x = xMin; x < xMax; x++){
+            if(isSolidTile(xa, ya, x, yMin) || isSolidTile(xa, ya, x, yMax)){
+                return true;
+            }
+            /*
+            if((!canSwim && isWaterTile(xa, ya, x, yMin))
+                    || (!canSwim && isWaterTile(xa, ya, x, yMax))) {
+                return true;
+            }
+            //System.out.println("top/bottom");
+            if(isOccupied(xa, ya, x, yMin) || isOccupied(xa, ya, x, yMax)) {
+                return true;
+            }*/
+        }
+        for(int y = yMin; y < yMax; y++){
+            if(isSolidTile((int)xa, (int)ya, xMin, y) || isSolidTile((int)xa, (int)ya, xMax, y)){
+                return true;
+            }/*
+            if((!canSwim && isWaterTile(xa, ya, xMin, y))
+                    || !canSwim && isWaterTile(xa, ya, xMax, y)) {
+                return true;
+            }
+            //System.out.println("left/right");
+            if(isOccupied(xa, ya, xMin, y) || isOccupied(xa, ya, xMax, y)) {
+                return true;
+            }*/
+        }
+        return false;
+    }
+
+    //TODO: wait to finish this for when GUI can draw shapes and illustrate where things are
+    protected boolean isSolidTile(double xa, double ya, double x, double y)
+    {
+        if(gameState.world.area == null) return false; //TODO: is required?
+        int tileSize = gameState.world.area.getTileMap().getTileSize();
+        if(isPlayer){
+            if(xa < 0) {
+                int currentTileFloor = (int)Math.floor((this.x+x)/tileSize)-1;
+                int currentTileCeil = (int)Math.ceil((this.x+x)/tileSize)-1;
+                int nextTileFloor = (int)Math.floor((this.x+x+xa)/tileSize)-1;
+                int nextTileCeil = (int)Math.ceil((this.x+x+xa)/tileSize)-1;
+            }
+
+            int currentTileFloor = (int)Math.floor((this.x+x)/tileSize)+1;
+            int currentTileCeil = (int)Math.ceil((this.x+x)/tileSize)+1;
+            int nextTileFloor = (int)Math.floor((this.x+x+xa)/tileSize)+1;
+            int nextTileCeil = (int)Math.ceil((this.x+x+xa)/tileSize)+1;
+            //System.out.println("Current: " + currentTileFloor + " " + currentTileCeil + " / Next: " + nextTileFloor + " " + nextTileCeil);
+            //System.out.println("isSolidTile floor" + (int)(Math.floor((this.x+x)/tileSize)) + " " + (this.x) + " " + xmap + " " + (x) + " " + (xa));
+            //System.out.println("isSolidTile ceil" + (int)(Math.ceil((this.x+x)/tileSize)) + " " + (this.x) + " " + xmap + " " + (x) + " " + (xa));
+        }
+
+        //System.out.println((this.x + xmap + x) + " " + (this.x + xmap + x + xa));
+        //TODO: may cause rounding issues - check on this and try flooring the ints before getting the tiles
+        Tile lastTile = gameState.world.area.getTileMap().getTile((int)(Math.floor((this.x + x)/tileSize)), (int)(Math.floor((this.y + y)/tileSize)));
+        Tile newTile = gameState.world.area.getTileMap().getTile((int)(Math.floor((this.x + x + xa)/tileSize)), (int)(Math.floor((this.y + y + ya)/tileSize)));
+
+        if(!lastTile.equals(newTile) && newTile.isSolid()){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isMovingDiagonally() {
+        return this.facingDir > 3;
     }
 
     public void setMoving(boolean moving) {

@@ -176,6 +176,11 @@ public class TileMap {
         int sheetY = (int)tile.getSpritePos().getY();
         return this.tileSprites[sheetX][sheetY];
     }
+    public Tile getTile(int mapX, int mapY) {
+        if(x < 0 || x >= width || y < 0 || y >= height)
+            return Tile.VOID;
+        return Tile.tiles[areaTileIds[mapX][mapY]];
+    }
 
     public void render(GraphicsContext gc) {
         for(int row = rowOffset; row < (rowOffset + numRowsToDraw); row++) {

@@ -4,7 +4,7 @@ import javafx.geometry.Point2D;
 
 public abstract class Tile {
     public static final Tile[] tiles = new Tile[256];
-    public static final Tile VOID = new BasicSolidTile(0, -1, -1, 0xFF000000);
+    public static final Tile VOID = new BasicSolidTile(0, 4, 0, 0xFFFFFFFF);
     public static final Tile GRASS = new BasicTile(1, 0, 0, 0xFF00FF00);
     public static final Tile GRASS2 = new BasicTile(2, 1, 0, 0xFF00EE00);
     public static final Tile GRASS3 = new BasicTile(3, 2, 0, 0xFF00DD00);
@@ -20,7 +20,7 @@ public abstract class Tile {
     public static final int NORMAL = 0;
     public static final int BLOCKED = 1;
     public static final int WATER = 2;
-    public static final int LAVA = 1;
+    public static final int LAVA = 3;
 
     public Tile(int id, int type, int mapColor) {
         this.id = (byte) id;
@@ -35,6 +35,7 @@ public abstract class Tile {
     public Point2D getSpritePos(){ return spritePos; }
     public int getType(){return type;}
     public int getMapColor(){ return mapColor; }
+    public boolean isSolid() { return this.type == Tile.BLOCKED; }
 
     public abstract void update();
 }

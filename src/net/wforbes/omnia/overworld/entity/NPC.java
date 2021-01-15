@@ -8,7 +8,7 @@ import net.wforbes.omnia.overworld.entity.movement.MovementController;
 public abstract class NPC extends Mob {
 
     public NPC(OverworldState gameState, String name, double speed) {
-        super(gameState, name, speed);
+        super(gameState, name, speed, false);
         movementController = new MovementController(this);
     }
     public NPC(OverworldState gameState, String name, Point2D startPos, double speed) {
