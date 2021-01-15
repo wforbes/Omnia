@@ -7,15 +7,11 @@ import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import net.wforbes.omnia.gameFX.OmniaFX;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import net.wforbes.omnia.overworld.entity.Entity;
 
 public class TileMap {
 
     //tiles
-    //private Tile_Old[][] tiles;
     private byte[][] areaTileIds;
     private int tileColCount;
     private int tileRowCount;
@@ -60,27 +56,6 @@ public class TileMap {
         this.numColsToDraw = OmniaFX.getWidth() / tileSize + tileSize * 2; //320
         this.numRowsToDraw = OmniaFX.getHeight() / tileSize + 2; //240
     }
-
-    /*
-    public void loadTiles(String path) {
-        try {
-            tileSpriteSheet = new Image(getClass().getResourceAsStream(path));
-            tileColCount = (int) tileSpriteSheet.getWidth() / tileSize;
-            tileRowCount = (int) tileSpriteSheet.getHeight() / tileSize;
-            areaTileIds = new byte[tileColCount * tileRowCount];
-            //this.loadMapFromImageFile();
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-    private void loadTileSet() {
-        for(int row = 0; row < tileRowCount; row++) {
-            for(int col = 0; col < tileColCount; col++) {
-                tileImage = new WritableImage(tileSet.getPixelReader(), col * tileSize, row * tileSize, tileSize, tileSize);
-                tileSprites[col][row] = tileImage;
-            }
-        }
-    }*/
 
     public void loadTileSprites(String path) {
         try {
@@ -141,46 +116,6 @@ public class TileMap {
                     }
             }
         }
-
-    }
-
-    public void loadMapFromTextFile(String s) {
-        try{
-            // to load the file
-            InputStream in = getClass().getResourceAsStream(s);
-            // to read the file..
-            BufferedReader br = new BufferedReader( new InputStreamReader(in));
-            //The first two integers in the text file represent the number of columns
-            //		and then the number of rows, in that order. Each on separate lines
-            numCols = Integer.parseInt(br.readLine());
-            numRows = Integer.parseInt(br.readLine());
-            //The rest of the map is put into an int array named map
-            map = new int[numCols][numRows];
-            //using the number of rows and columns we got in the first two lines
-            //		of the text file, we can decide the width and height of the map
-            width = numCols * tileSize;
-            height = numRows * tileSize;
-
-            xmin = OmniaFX.getWidth() - width;
-            xmax = 0;
-            ymin = OmniaFX.getHeight() - height;
-            ymax = 0;
-
-            String delims = "\\s+"; //this represents white space, so.. the space
-            //		between the numbers in the file we are about to read through
-            // 	with our buffered reader (like regx.. whatever that is from (c++ ?))
-            for(int row = 0; row < numRows; row++){//for every row in the text file
-                String line = br.readLine(); // read the line
-                String[] tokens = line.split(delims); // split the line into tokens,
-                //  using the white space of our delimiter
-                for(int col = 0; col < numCols; col++){//for every column
-                    map[col][row] = Integer.parseInt(tokens[col]); // go through
-                    //		the token array and put it into the map array
-                }
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public int getTileSize(){ return tileSize;}
@@ -188,11 +123,11 @@ public class TileMap {
     public double gety(){return y;}
     public int getWidth(){return width;}
     public int getHeight(){ return height;}
-    /*
+    /*//TODO: rewrite this for new tileSprites if needed
     public int getType(int row, int col){
         int rc = map[row][col];
         int r = rc / tileColCount;
-        int c = rc % tileColCount; //TODO: figure out which is row and which is col
+        int c = rc % tileColCount;
         return tiles[r][c].getType();
     }*/
     public int getMapRowUpperBound() {
@@ -228,6 +163,10 @@ public class TileMap {
         if(y < ymin) y = ymin;
         if(x > xmax) x = xmax;
         if(y > ymax) y = ymax;
+    }
+
+    public void update(Entity e) {
+        this.setPosition(e.getX(), e.getY());
     }
 
     private Image getTileMapSprite(int mapX, int mapY) {

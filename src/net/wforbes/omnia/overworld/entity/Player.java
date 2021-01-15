@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 
 public class Player extends Mob {
     protected String spriteSheetPath = "/overworld/sprites/player1_pokemon.gif";

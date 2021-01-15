@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 
 import java.util.ArrayList;
 

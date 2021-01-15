@@ -14,7 +14,7 @@ public class OverworldState extends GameState {
 
     public OverworldState(GameStateManager gsm) {
         this.gsm = gsm;
-        this.world = new World();
+        this.world = new World(this);
         this.player = new Player(this, "Will");
         this.world.setPlayer(player);
     }

@@ -1,4 +1,4 @@
-package net.wforbes.omnia.overworld.entity;
+package net.wforbes.omnia.overworld.entity.animation;
 
 import javafx.scene.image.Image;
 

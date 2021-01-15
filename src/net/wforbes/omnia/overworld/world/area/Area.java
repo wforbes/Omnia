@@ -1,17 +1,22 @@
 package net.wforbes.omnia.overworld.world.area;
 
 import javafx.scene.canvas.GraphicsContext;
+import net.wforbes.omnia.overworld.entity.DocNPC;
+import net.wforbes.omnia.overworld.entity.NPC;
 import net.wforbes.omnia.overworld.world.World;
 import net.wforbes.omnia.overworld.world.area.tile.TileMap;
+
+import java.util.ArrayList;
 
 public class Area {
 
     private World world;
     private TileMap tileMap;
-
+    public ArrayList<NPC> npcs;
 
     public Area(World world) {
         this.world = world;
+        this.npcs = new ArrayList<>();
     }
 
     public TileMap getTileMap() {
@@ -19,9 +24,15 @@ public class Area {
     }
 
     public void init() {
-        this.world.player.setPosition(60,60);
         this.initTileMap();
+        this.world.player.setPosition(60,60);
+        this.initNPCs();
+    }
 
+    private void initNPCs() {
+        //TODO: find a better way to init many NPCs in one generic step
+        npcs.add(new DocNPC(world.gameState));
+        npcs.get(0).setPosition(80, 80);
     }
 
     private void initTileMap() {
@@ -35,11 +46,17 @@ public class Area {
     }
 
     public void update() {
-        this.tileMap.setPosition(world.player.getX(), world.player.getY());
+        this.tileMap.update(world.player);
     }
 
     public void render(GraphicsContext gc) {
         this.tileMap.render(gc);
+        renderNPCs(gc);
+    }
 
+    private void renderNPCs(GraphicsContext gc) {
+        for(NPC npc:this.npcs) {
+            npc.render(gc);
+        }
     }
 }
