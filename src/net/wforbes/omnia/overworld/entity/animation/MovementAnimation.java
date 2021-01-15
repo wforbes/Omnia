@@ -1,9 +1,10 @@
 package net.wforbes.omnia.overworld.entity.animation;
 
 import javafx.scene.image.Image;
+import net.wforbes.omnia.overworld.entity.Mob;
 
 public class MovementAnimation {
-
+    Mob mover;
     private Image[] frames;//holds all the frames for the animation
     private int currentFrame;// keeps track of the current frame
 
@@ -15,7 +16,8 @@ public class MovementAnimation {
 
     private boolean playedOnce;//useful for attacking animations where it only happens once
 
-    public MovementAnimation(){
+    public MovementAnimation(Mob mover){
+        this.mover = mover;
         playedOnce = false;
     }
 

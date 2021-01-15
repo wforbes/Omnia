@@ -3,22 +3,22 @@ package net.wforbes.omnia.overworld.entity;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.overworld.entity.movement.MovementController;
 
 public abstract class NPC extends Mob {
 
-    //MovementController movementController;
-
     public NPC(OverworldState gameState, String name, double speed) {
         super(gameState, name, speed);
-        //movementController = new MovementController(this);
+        movementController = new MovementController(this);
     }
     public NPC(OverworldState gameState, String name, Point2D startPos, double speed) {
         super(gameState, name, startPos, speed);
-        //movementController = new MovementController((Mob)this);
+        movementController = new MovementController(this);
     }
 
     public void update() {
-        //this.movementController.update();
+        this.movementController.update();
+        this.movementAnimation.update();
         //super.update();
     }
 

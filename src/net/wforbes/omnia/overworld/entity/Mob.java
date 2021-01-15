@@ -7,6 +7,7 @@ import javafx.scene.image.WritableImage;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
+import net.wforbes.omnia.overworld.entity.movement.MovementController;
 
 import java.util.ArrayList;
 
@@ -30,19 +31,22 @@ public abstract class Mob extends Entity {
     int[] numFrames;
     MovementAnimation movementAnimation;
     //TODO: consider an enum to store facing directions
-    static final int FACING_N = 0;
-    static final int FACING_S = 1;
-    static final int FACING_W = 2;
-    static final int FACING_E = 3;
-    static final int FACING_NW = 4;
-    static final int FACING_NE = 5;
-    static final int FACING_SW = 6;
-    static final int FACING_SE = 7;
+    //TODO: consider utility class to contain directions
+    public static final int FACING_N = 0;
+    public static final int FACING_S = 1;
+    public static final int FACING_W = 2;
+    public static final int FACING_E = 3;
+    public static final int FACING_NW = 4;
+    public static final int FACING_NE = 5;
+    public static final int FACING_SW = 6;
+    public static final int FACING_SE = 7;
+    public MovementController movementController;
 
     public Mob(OverworldState gameState, String name, double speed) {
         super(gameState);
         this.name = name;
         this.speed = speed;
+        this.movementController = new MovementController(this);
     }
 
     public Mob(OverworldState gameState, String name, Point2D startPos, double speed) {
@@ -51,6 +55,7 @@ public abstract class Mob extends Entity {
         this.x = startPos.getX();
         this.y = startPos.getY();
         this.speed = speed;
+        this.movementController = new MovementController(this);
     }
 
     @Override
@@ -74,7 +79,7 @@ public abstract class Mob extends Entity {
         }
     }
 
-    void move(double xa, double ya) {
+    public void move(double xa, double ya) {
         //sets sprite image directionality
         if(xa != 0 && ya != 0){
             moveDiagonal(xa, ya);
@@ -93,6 +98,10 @@ public abstract class Mob extends Entity {
 
         moveCoords(xa, ya);
         numSteps++;
+    }
+
+    public void setMoving(boolean moving) {
+        this.isMoving = moving;
     }
 
     void setAnimationDirection(int dir) {
@@ -135,6 +144,10 @@ public abstract class Mob extends Entity {
     public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void setFacingDir(int direction) {
+        this.facingDir = direction;
     }
 
     protected void refreshMapPosition() {

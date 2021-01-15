@@ -1,5 +1,6 @@
 package net.wforbes.omnia.overworld.entity;
 
+import javafx.scene.canvas.GraphicsContext;
 import net.wforbes.omnia.gameState.OverworldState;
 
 public abstract class Entity {
@@ -14,4 +15,7 @@ public abstract class Entity {
     public double getY(){ return y; }
     public abstract String getName();
 
+    public abstract void init();
+    public abstract void update();
+    public abstract void render(GraphicsContext gc);
 }

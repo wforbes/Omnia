@@ -54,7 +54,6 @@ public class OverworldState extends GameState {
     @Override
     public void render(GraphicsContext gc) {
         world.render(gc);
-        player.render(gc);
     }
 
     @Override

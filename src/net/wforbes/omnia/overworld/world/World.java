@@ -23,6 +23,7 @@ public class World {
     }
 
     public void init() {
+        area.addEntity(this.player);
         area.init();
     }
 

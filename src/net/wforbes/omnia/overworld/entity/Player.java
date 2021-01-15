@@ -19,11 +19,11 @@ public class Player extends Mob {
     protected int currentAction;
 
     public Player(OverworldState gameState, String name) {
-        super(gameState, name, 1.25);
+        super(gameState, name, 0.5);
     }
 
     public Player(OverworldState gameState, String name, Point2D startPos) {
-        super(gameState, name, startPos, 1);
+        super(gameState, name, startPos, 0.5);
     }
 
     public void init() {
@@ -31,7 +31,7 @@ public class Player extends Mob {
         this.numFrames = new int[]{3, 3, 3, 3, 3, 3, 3, 3};
         this.loadSprites(OverworldState.SPRITE_DIR + "player1_pokemon.gif");
         this.facingDir = FACING_S;
-        movementAnimation = new MovementAnimation();
+        movementAnimation = new MovementAnimation(this);
         this.setAnimationDirection(facingDir);
     }
 
