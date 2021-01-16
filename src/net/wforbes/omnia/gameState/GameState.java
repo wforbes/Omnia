@@ -1,9 +1,13 @@
 package net.wforbes.omnia.gameState;
 
+import javafx.scene.input.MouseEvent;
+
 public abstract class GameState {
 
     public GameStateManager gsm;
     public int tickCount;
+    public abstract void handleBorderPaneClick(MouseEvent event);
+    public abstract void handleBorderPaneMouseMove(MouseEvent event);
     public abstract int getTickCount();
     public abstract void init();
     public abstract void tick();

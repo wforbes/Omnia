@@ -1,6 +1,7 @@
 package net.wforbes.omnia.gameState;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.menu.MainMenu;
 import net.wforbes.omnia.platformer.tileMap.Background;
 
@@ -159,4 +160,10 @@ public class MenuState extends GameState {
     public void reset() {}
     public void pause() {}
     public void unPause() {}
+    public void handleBorderPaneClick(MouseEvent event) {}
+
+    @Override
+    public void handleBorderPaneMouseMove(MouseEvent event) {
+
+    }
 }

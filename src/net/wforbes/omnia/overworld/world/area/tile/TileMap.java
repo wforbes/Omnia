@@ -177,7 +177,7 @@ public class TileMap {
         return this.tileSprites[sheetX][sheetY];
     }
     public Tile getTile(int mapX, int mapY) {
-        if(x < 0 || x >= width || y < 0 || y >= height)
+        if(mapX < 0 || mapX >= width || mapY < 0 || mapY >= height)
             return Tile.VOID;
         return Tile.tiles[areaTileIds[mapX][mapY]];
     }

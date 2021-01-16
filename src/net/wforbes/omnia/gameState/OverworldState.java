@@ -1,8 +1,10 @@
 package net.wforbes.omnia.gameState;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.overworld.entity.Player;
 import net.wforbes.omnia.overworld.world.World;
+import net.wforbes.omnia.overworld.gui.GUIController;
 
 import java.awt.*;
 
@@ -10,13 +12,41 @@ public class OverworldState extends GameState {
     public GameStateManager gsm;
     public World world;
     public Player player;
+    public GUIController gui;
     public static final String SPRITE_DIR = "/overworld/sprites/";
+
+    private boolean showCollisionGeometry = true;
 
     public OverworldState(GameStateManager gsm) {
         this.gsm = gsm;
         this.world = new World(this);
         this.player = new Player(this, "Will");
         this.world.setPlayer(player);
+    }
+
+    public GameStateManager getManager() {
+        return gsm;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void toggleCollisionGeometry() {
+        showCollisionGeometry = !showCollisionGeometry;
+    }
+    public boolean collisionGeometryVisible() {
+        return showCollisionGeometry;
+    }
+
+    @Override
+    public void handleBorderPaneClick(MouseEvent event) {
+        this.gui.handleBorderPaneClick(event);
+    }
+
+    @Override
+    public void handleBorderPaneMouseMove(MouseEvent event) {
+        this.gui.handleBorderPaneMouseMove(event);
     }
 
     @Override
@@ -28,6 +58,7 @@ public class OverworldState extends GameState {
     public void init() {
         this.world.init();
         this.player.init();
+        this.gui = new GUIController(this);
     }
 
     @Override

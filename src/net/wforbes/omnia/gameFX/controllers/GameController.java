@@ -38,8 +38,12 @@ public class GameController implements Initializable {
         this.renderer = new Renderer(this.gameCanvas);
         this.gc = renderer.getContext();
         this.gameBorder.setPickOnBounds(false);
+        this.gameBorder.setOnMouseMoved(event -> {
+            gsm.getCurrentState().handleBorderPaneMouseMove(event);
+        });
         this.gameBorder.setOnMouseClicked(event -> {
-            System.out.println("Border Got A Click!");
+            //System.out.println("Border Got A Click! " + event.toString());
+            gsm.getCurrentState().handleBorderPaneClick(event);
             //regain canvas focus when clicking outside of UI windows
             gameCanvas.requestFocus();
         });
@@ -69,6 +73,10 @@ public class GameController implements Initializable {
             }
         };
         timer.start();
+    }
+
+    public BorderPane getGameBorderPane() {
+        return this.gameBorder;
     }
 
     public void initializeCanvas() {

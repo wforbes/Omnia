@@ -2,6 +2,7 @@ package net.wforbes.omnia.gameState;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.menu.PauseMenu;
@@ -88,6 +89,16 @@ public class TopDownState extends GameState{
         level.tick();
         gui.tick();
         tickCount++;
+    }
+
+    @Override
+    public void handleBorderPaneClick(MouseEvent event) {
+
+    }
+
+    @Override
+    public void handleBorderPaneMouseMove(MouseEvent event) {
+
     }
 
     public int getTickCount() {

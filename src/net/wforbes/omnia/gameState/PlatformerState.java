@@ -1,16 +1,16 @@
 package net.wforbes.omnia.gameState;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.menu.DeathMenu;
 import net.wforbes.omnia.menu.PauseMenu;
 import net.wforbes.omnia.platformer.entity.Enemy;
 import net.wforbes.omnia.platformer.entity.Player;
 import net.wforbes.omnia.platformer.entity.enemies.Slugger;
 import net.wforbes.omnia.platformer.tileMap.Background;
 import net.wforbes.omnia.platformer.tileMap.TileMap;
-import net.wforbes.omnia.menu.DeathMenu;
 import net.wforbes.omnia.platformer.ui.HUD;
 import org.jfree.fx.FXGraphics2D;
 
@@ -38,6 +38,17 @@ public class PlatformerState extends GameState {
     public Player getPlayer(){ return player; }
     public Enemy getEnemy(int i){ return enemies.get(i); }
     public ArrayList<Enemy> getEnemyArray(){ return enemies; }
+
+    @Override
+    public void handleBorderPaneClick(MouseEvent event) {
+
+    }
+
+    @Override
+    public void handleBorderPaneMouseMove(MouseEvent event) {
+
+    }
+
     public int getTickCount() { return this.tickCount; }
 
     @Override

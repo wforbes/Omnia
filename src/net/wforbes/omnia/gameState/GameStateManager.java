@@ -39,6 +39,11 @@ public class GameStateManager {
         gameStates.add(new OverworldState(this));
         this.setState(MENUSTATE);
     }
+
+    public GameController getGameController() {
+        return gameController;
+    }
+
     public boolean isKeyDown(KeyCode keyCode) {
         return this.gameController.keys.isDown(keyCode);
     }

@@ -3,6 +3,7 @@ package net.wforbes.omnia.overworld.entity;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 
@@ -36,9 +37,10 @@ public class Player extends Mob {
     }
 
     public void update() {
-        //System.out.println(this.x + " " + this.y);
         checkMovement();
         movementAnimation.update();
+        gameState.gui.getDevWindowController().setPlayerMapPos(this.x, this.y);
+        gameState.gui.getDevWindowController().setPlayerScreenPos(Math.floor(this.x+xmap) * OmniaFX.getScale(), Math.floor(this.y+ymap) * OmniaFX.getScale());
     }
 
     private void checkMovement() {
