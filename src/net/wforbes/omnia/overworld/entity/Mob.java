@@ -45,6 +45,8 @@ public abstract class Mob extends Entity {
     public MovementController movementController;
 
     protected boolean isPlayer; //TODO: remove - for testing
+    protected int collisionHeightOffset;
+    protected int collisionRadius;
     protected int collisionBoxWidth;
     protected int collisionBoxHeight;
 
@@ -53,7 +55,9 @@ public abstract class Mob extends Entity {
         this.isPlayer = player;
         this.name = name;
         this.speed = speed;
-        this.collisionBoxWidth = this.collisionBoxHeight = 16;//TODO: fix this magic number
+        this.collisionRadius = 12;
+        //this.collisionBoxWidth = 16;
+        //this.collisionBoxHeight = 16;//TODO: fix this magic number
         this.movementController = new MovementController(this);
     }
 
@@ -116,15 +120,24 @@ public abstract class Mob extends Entity {
     public boolean hasCollided(double xa, double ya) {
         return isOccupied(xa, ya);
     }
+    public int getCollisionBoxWidth() { return this.collisionBoxWidth; }
+    public int getCollisionRadius() { return this.collisionRadius; }
 
     protected boolean isOccupied(double xa, double ya) {
         for(Entity e : gameState.world.area.entities) {
             if(!e.getName().equals(this.name)) {
-                if (this.x + xa < e.getX()+collisionBoxWidth &&
+                /* AABB Collision
+                if (
+                        this.x + xa < e.getX()+collisionBoxWidth &&
                         this.x + xa + collisionBoxWidth > e.getX() &&
                         this.y + ya < e.getY()+collisionBoxHeight &&
                         this.y + ya + collisionBoxHeight >  e.getY()
                 ) {
+                    return true;
+                }*/
+                double xDist = (this.x+xa - e.getX());
+                double yDist = (this.y+ya - e.getY());
+                if(Math.sqrt((xDist*xDist) + (yDist*yDist)) <= (collisionRadius/2.0+e.getCollisionRadius()/2.0)) {
                     return true;
                 }
             }
@@ -218,10 +231,16 @@ public abstract class Mob extends Entity {
     //public abstract void update();
     public void render(GraphicsContext gc) {
         this.refreshMapPosition();
+        /*
         if(gameState.collisionGeometryVisible()) {
             gc.setStroke(Color.RED);
-            gc.strokeRect((x + Math.floor(xmap) - collisionBoxWidth / 2.0) * getScale(), (y + Math.floor(ymap) - collisionBoxHeight / 2.0) * getScale(), collisionBoxWidth * getScale(), collisionBoxHeight * getScale());
-        }
+            gc.strokeRect(
+                    (x + Math.floor(xmap) - collisionBoxWidth / 2.0) * getScale(),
+                    (y + Math.floor(ymap) - collisionBoxHeight / 2.0) * getScale(),
+                    collisionBoxWidth * getScale(),
+                    collisionBoxHeight * getScale()
+            );
+        }*/
 
         if(!offScreen()) {
             gc.drawImage(
@@ -231,6 +250,14 @@ public abstract class Mob extends Entity {
                     width * getScale(),
                     height * getScale()
             );
+            if(gameState.collisionGeometryVisible()) {
+                gc.setStroke(Color.RED);
+                gc.strokeOval(
+                        ((this.x + xmap + (width/2.0))-((width-collisionRadius)/2.0)-collisionRadius)*getScale(),
+                        ((this.y + ymap + (height/2.0))-((height-collisionRadius)/2.0) - collisionRadius)*getScale(),
+                        collisionRadius * getScale(),
+                        collisionRadius * getScale());
+            }
         }
     }
 }

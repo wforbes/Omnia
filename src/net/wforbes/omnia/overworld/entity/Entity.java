@@ -14,6 +14,8 @@ public abstract class Entity {
     public double getX(){ return x; }
     public double getY(){ return y; }
     public abstract String getName();
+    public abstract int getCollisionBoxWidth();
+    public abstract int getCollisionRadius();
 
     public abstract void init();
     public abstract void update();
