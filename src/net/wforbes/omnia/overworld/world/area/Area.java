@@ -25,6 +25,7 @@ public class Area {
     public void addEntity(Entity entity) {
         this.entities.add(entity);
     }
+    public ArrayList<Entity> getEntities() { return this.entities; }
 
     public void init() {
         this.initTileMap();
@@ -35,7 +36,6 @@ public class Area {
 
     private void initEntities() {
         this.addEntity(new DocNPC(world.gameState));
-
         for(Entity e : this.entities) {
             e.init();
         }

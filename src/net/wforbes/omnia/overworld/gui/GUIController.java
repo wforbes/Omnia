@@ -12,23 +12,31 @@ public class GUIController {
 
     private boolean guiHasFocus;
     private WindowDragger windowDragger;
+    private ChatWindowController chatWindowController;
     private DevWindowController devWindowController;
 
     public GUIController(OverworldState state) {
-        //this.gameController = state.getManager().gameController;
         this.gameState = state;
         this.guiHasFocus = false;
-        final Pane panelsPane = new Pane();
-        panelsPane.setStyle("-fx-background-color: rgba(0,100,100,0.5);-fx-background-radius:10;");
-        panelsPane.setPrefSize(0.1,0.1);
 
         this.windowDragger = new WindowDragger();
 
+        this.chatWindowController = new ChatWindowController(this);
+        Node chatWindowPanel = windowDragger.makeDraggableByTitleRegion(
+                chatWindowController.getWindowPanel()
+        );
+        chatWindowPanel.relocate(0, OmniaFX.getScaledHeight() - (chatWindowController.CHAT_VBOX_HEIGHT + 42));
+
         this.devWindowController = new DevWindowController(this);
-        Node devWindowPanel = devWindowController.getWindowPanel();
-        devWindowPanel = windowDragger.makeDraggableByTitleRegion(devWindowPanel);
+        Node devWindowPanel = windowDragger.makeDraggableByTitleRegion(
+                devWindowController.getWindowPanel()
+        );
         devWindowPanel.relocate(0, OmniaFX.getScaledHeight() - (devWindowController.getWindowHeight()));
-        panelsPane.getChildren().add(devWindowPanel);
+
+        final Pane panelsPane = new Pane();
+        panelsPane.setStyle("-fx-background-color: rgba(0,100,100,0.5);-fx-background-radius:10;");
+        panelsPane.setPrefSize(0.1,0.1);
+        panelsPane.getChildren().addAll(devWindowPanel, chatWindowPanel);
 
         this.gameState.getManager().getGameController().getGameBorderPane().setTop(panelsPane);
     }

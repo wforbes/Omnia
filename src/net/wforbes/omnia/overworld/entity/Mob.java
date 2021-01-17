@@ -74,7 +74,9 @@ public abstract class Mob extends Entity {
     public String getName() {
         return this.name;
     }
-
+    public Point2D getLocationPoint() {
+        return new Point2D(this.x, this.y);
+    }
     public int getWidth(){ return width; }
     public int getHeight(){ return height; }
 

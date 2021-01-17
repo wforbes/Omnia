@@ -15,7 +15,10 @@ public class DragResizer {
     private double y;
     private boolean initMinHeight;
     private boolean initMinWidth;
-    private boolean draggableZoneX, draggableZoneY;
+    private boolean draggableZoneX, draggableZoneY, draggableZoneNegY, draggableZoneNegX;
+
+    private double initialTranslateX, initialTranslateY;
+    private double mouseAnchorX, mouseAnchorY;
 
     private boolean dragging;
 
@@ -49,6 +52,8 @@ public class DragResizer {
         }
 
         y = event.getY();
+        mouseAnchorY = event.getY();
+        initialTranslateY = region.getTranslateY();
 
         if (!initMinWidth) {
             region.setMinWidth(region.getWidth());
@@ -56,6 +61,8 @@ public class DragResizer {
         }
 
         x = event.getX();
+        mouseAnchorX = event.getX();
+        initialTranslateX = region.getTranslateX();
     }
 
     protected void mouseDragged(MouseEvent event) {
@@ -84,15 +91,43 @@ public class DragResizer {
 
         }
 
+        if (draggableZoneNegY) {
+            double mousey = event.getY();
+
+            double newHeight = region.getMinHeight() + (y - mousey);
+
+            region.setMinHeight(newHeight);
+            region.setTranslateY(
+                    initialTranslateY + mousey - mouseAnchorY
+            );
+
+            y = mousey;
+
+        }
+
+        if (draggableZoneNegX) {
+            double mousex = event.getX();
+
+            double newWidth = region.getMinWidth() + (x - mousex);
+
+            region.setMinWidth(newWidth);
+            region.setTranslateX(
+                    initialTranslateX + mousex - mouseAnchorX
+            );
+
+            x = mousex;
+
+        }
+
     }
 
     protected void mouseOver(MouseEvent event) {
         if (isInDraggableZone(event) || dragging) {
-            if (draggableZoneY) {
+            if (draggableZoneY || draggableZoneNegY) {
                 region.setCursor(Cursor.S_RESIZE);
             }
 
-            if (draggableZoneX) {
+            if (draggableZoneX || draggableZoneNegX) {
                 region.setCursor(Cursor.E_RESIZE);
             }
 
@@ -104,7 +139,9 @@ public class DragResizer {
     protected boolean isInDraggableZone(MouseEvent event) {
         draggableZoneY = (boolean)(event.getY() > (region.getHeight() - RESIZE_MARGIN));
         draggableZoneX = (boolean)(event.getX() > (region.getWidth() - RESIZE_MARGIN));
-        return (draggableZoneY || draggableZoneX);
+        draggableZoneNegY = (event.getY() < (RESIZE_MARGIN));
+        draggableZoneNegX = (event.getX() < (RESIZE_MARGIN));
+        return (draggableZoneY || draggableZoneX || draggableZoneNegY || draggableZoneNegX);
     }
 
     protected void mouseReleased(MouseEvent event) {

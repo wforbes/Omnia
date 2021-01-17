@@ -36,7 +36,7 @@ public class WindowDragger {
         });
 
         wrapGroup.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
-            System.out.println("UI got a mouse drag..");
+            //System.out.println("UI got a mouse drag..");
             if (targetIsTitleRegion(event.getTarget())) {
                 System.out.println("UI title is being dragged");
                 //if (dragModeActiveProperty.get()) {//TODO: add toggle feature for locking windows
