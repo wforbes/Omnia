@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class DevWindowController {
@@ -36,15 +37,12 @@ public class DevWindowController {
     public DevWindowController(GUIController gui) {
         this.gui = gui;
         this.windowTitle = "Omnia Developer Tools";
-        this.windowSize = new Dimension2D(500, 500);
+        this.windowSize = new Dimension2D(250, 150);
     }
 
     public Node getWindowPanel() {
         if(this.windowPanel == null) {
-            this.windowPanel =
-                    gui.makeDraggableByTitleRegion(
-                        createWindowPanel()
-                    );
+            this.windowPanel = createWindowPanel();
         }
         return windowPanel;
     }
@@ -99,14 +97,19 @@ public class DevWindowController {
         scratchLabel = new Label();
         VBox mouseDevContainer = this.createMouseDevContainer();
         VBox collisionDevContainer = this.createCollisionDevContainer();
+        HBox.setHgrow(mouseDevContainer, Priority.ALWAYS); //TODO:
+        HBox.setHgrow(collisionDevContainer, Priority.ALWAYS); //TODO:
 
         HBox horizontalLayoutContainer = new HBox();
+
         horizontalLayoutContainer.getChildren().addAll(mouseDevContainer, collisionDevContainer);
 
         VBox verticalLayoutContainer = new VBox();
-        verticalLayoutContainer.setPrefSize(windowSize.getWidth(), windowSize.getHeight());
+        //verticalLayoutContainer.setPrefSize(windowSize.getWidth(), windowSize.getHeight());
+        VBox.setVgrow(horizontalLayoutContainer, Priority.ALWAYS); //TODO:
         verticalLayoutContainer.getChildren().addAll(horizontalLayoutContainer);
-
+        VBox.setVgrow(verticalLayoutContainer, Priority.ALWAYS); //TODO:
+        DragResizer.makeResizable(verticalLayoutContainer);
         this.titledPane.setContent(verticalLayoutContainer);
         GUIController.configureBorder(titledPane);
         return titledPane;
@@ -116,15 +119,15 @@ public class DevWindowController {
         TitledPane titledPane = new TitledPane();
         titledPane.setText(windowTitle);
         titledPane.setCollapsible(false);
-        titledPane.setPrefWidth(windowSize.getWidth());
-        titledPane.setPrefHeight(windowSize.getHeight());
+        //titledPane.setMinWidth(windowSize.getWidth());
+        //titledPane.setMinHeight(windowSize.getHeight());
         titledPane.setOpacity(0.75);
         return titledPane;
     }
 
     private VBox createMouseDevContainer() {
         VBox mouseDevContainer = new VBox();
-        mouseDevContainer.setPrefSize(windowSize.getWidth()/2, 250);
+        //mouseDevContainer.setPrefSize(windowSize.getWidth()/2, 250);
 
         HBox clickPosContainer = new HBox();
         clickPosLabel = new Label("Click Pos: ");
@@ -139,14 +142,13 @@ public class DevWindowController {
         cursorPosContainer.getChildren().addAll(cursorPosLabel, cursorPosVal);
         VBox mouseMovesContainer = new VBox();
         mouseMovesContainer.getChildren().addAll(cursorPosContainer);
-
         mouseDevContainer.getChildren().addAll(clickPosContainer, mouseMovesContainer);
         return mouseDevContainer;
     }
 
     private VBox createCollisionDevContainer() {
         VBox collisionDevContainer = new VBox();
-        collisionDevContainer.setPrefSize(windowSize.getWidth()/2, 250);
+        //collisionDevContainer.setPrefSize(windowSize.getWidth()/2, 250);
 
         HBox collisionGeometryContainer = new HBox();
         collisionGeometryBtn = new Button("Collision Geometry");
@@ -176,6 +178,7 @@ public class DevWindowController {
         playerXClearDataVal = new Label();
         playerYClearDataVal = new Label();
         playerCollidedContainer.getChildren().addAll(playerCollidedVal, playerXClearDataVal, playerYClearDataVal);
+
 
         VBox entityCollisionContainer = new VBox();
         entityCollisionContainer.getChildren().addAll(
