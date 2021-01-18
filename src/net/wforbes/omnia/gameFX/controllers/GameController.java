@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameFX.animation.GameLoopTimer;
 import net.wforbes.omnia.gameFX.controls.KeyPolling;
+import net.wforbes.omnia.gameFX.controls.mouse.MouseController;
 import net.wforbes.omnia.gameFX.rendering.Renderer;
 import net.wforbes.omnia.gameState.GameStateManager;
 
@@ -28,6 +29,7 @@ public class GameController implements Initializable {
     public GameStateManager gsm;
     public Renderer renderer;
     public GraphicsContext gc;
+    public MouseController mouseController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -45,6 +47,7 @@ public class GameController implements Initializable {
         this.gameBorder.setOnMouseClicked(event -> {
             System.out.println("Border Got A Click! " + event.toString());
             gameCanvas.requestFocus();//regain canvas focus when clicking outside of UI windows
+
         });
 
         this.gameStack.setPickOnBounds(false);

@@ -1,9 +1,11 @@
 package net.wforbes.omnia.overworld.world.area;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.overworld.entity.DocNPC;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.world.World;
+import net.wforbes.omnia.overworld.world.area.effect.EffectController;
 import net.wforbes.omnia.overworld.world.area.tile.TileMap;
 
 import java.util.ArrayList;
@@ -13,10 +15,12 @@ public class Area {
     private World world;
     private TileMap tileMap;
     public ArrayList<Entity> entities;
+    public EffectController effectController;
 
     public Area(World world) {
         this.world = world;
         this.entities = new ArrayList<>();
+        this.effectController = new EffectController(this);
     }
 
     public TileMap getTileMap() {
@@ -29,6 +33,7 @@ public class Area {
 
     public void init() {
         this.initTileMap();
+        this.effectController.init();
         this.initEntities();
         this.world.player.setPosition(60,60);
         //this.initNPCs();
@@ -50,6 +55,10 @@ public class Area {
         this.tileMap.setTween(0.07);
     }
 
+    public void handleCanvasClick(MouseEvent event) {
+        this.effectController.handleCanvasClick(event);
+    }
+
     public void update() {
         this.tileMap.update(world.player);
         for(Entity e: this.entities) {
@@ -60,6 +69,7 @@ public class Area {
     public void render(GraphicsContext gc) {
         this.tileMap.render(gc);
         renderEntities(gc);
+        this.effectController.render(gc);
     }
 
     private void renderEntities(GraphicsContext gc) {

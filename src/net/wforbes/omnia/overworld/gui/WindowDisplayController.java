@@ -9,7 +9,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import net.wforbes.omnia.u.W;
 
 public class WindowDisplayController {
     private GUIController gui;
@@ -59,6 +58,17 @@ public class WindowDisplayController {
             event.consume();
         });
         devBtn.focusedProperty().addListener((observableValue, oldValue, newValue) -> {
+            this.gui.setGUIHasFocus(newValue);
+        });
+
+        ToggleButton settingsBtn = new ToggleButton("Settings");
+        settingsBtn.setFont(buttonFont);
+        settingsBtn.setFocusTraversable(true);
+        settingsBtn.setOnMouseClicked(event -> {
+            //this.gui.toggleSettingsWindowVisible();
+            event.consume();
+        });
+        settingsBtn.focusedProperty().addListener((observableValue, oldValue, newValue) -> {
             this.gui.setGUIHasFocus(newValue);
         });
 

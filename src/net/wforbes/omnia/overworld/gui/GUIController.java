@@ -82,11 +82,11 @@ public class GUIController {
         return this.devWindowController;
     }
     public ChatWindowController getChatWindow() { return this.chatWindowController; }
-    public void handleBorderPaneClick(MouseEvent event) {
-        this.devWindowController.handleBorderPaneClick(event);
+    public void handleCanvasClick(MouseEvent event) {
+        this.devWindowController.handleCanvasClick(event);
     }
-    public void handleBorderPaneMouseMove(MouseEvent event) {
-        this.devWindowController.handleBorderPaneMouseMove(event);
+    public void handleCanvasMouseMove(MouseEvent event) {
+        this.devWindowController.handleCanvasMouseMove(event);
     }
 
     public void toggleDevWindowVisible() {

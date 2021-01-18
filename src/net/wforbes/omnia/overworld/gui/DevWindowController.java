@@ -53,10 +53,10 @@ public class DevWindowController {
         return this.windowSize.getHeight();
     }
 
-    public void handleBorderPaneClick(MouseEvent event) {
+    public void handleCanvasClick(MouseEvent event) {
         this.setClickPosVal(event);
     }
-    public void handleBorderPaneMouseMove(MouseEvent event) {
+    public void handleCanvasMouseMove(MouseEvent event) {
         this.setMovePosVal(event);
     }
 
