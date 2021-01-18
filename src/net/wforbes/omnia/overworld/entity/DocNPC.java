@@ -50,6 +50,8 @@ public class DocNPC extends NPC {
         } else if (chatMsg.contains("RESEARCH REQUEST")) {
             this.movementController.standAndFace(sourceLoc);
             chatBuilder.append(DocDialog.dialogMap.get("research request"));
+            //TODO: give 'research request paperwork' item to player
+            //TODO: start 'research request' quest
         }
     }
 }

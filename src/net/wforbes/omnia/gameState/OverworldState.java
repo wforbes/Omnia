@@ -16,6 +16,7 @@ public class OverworldState extends GameState {
     public static final String SPRITE_DIR = "/overworld/sprites/";
 
     private boolean showCollisionGeometry = true;
+    private boolean showMobNames = true;
 
     public OverworldState(GameStateManager gsm) {
         this.gsm = gsm;
@@ -38,20 +39,21 @@ public class OverworldState extends GameState {
     public boolean collisionGeometryVisible() {
         return showCollisionGeometry;
     }
+    public boolean mobNamesVisible() { return showMobNames; }
 
     @Override
-    public void handleBorderPaneClick(MouseEvent event) {
+    public void handleCanvasClick(MouseEvent event) {
         this.gui.handleBorderPaneClick(event);
     }
 
     @Override
-    public void handleBorderPaneMouseMove(MouseEvent event) {
+    public void handleCanvasMouseMove(MouseEvent event) {
         this.gui.handleBorderPaneMouseMove(event);
     }
 
     @Override
     public int getTickCount() {
-        return 0;
+        return tickCount;
     }
 
     @Override
@@ -78,9 +80,7 @@ public class OverworldState extends GameState {
     }
 
     @Override
-    public void render(Graphics2D g) {
-
-    }
+    public void render(Graphics2D g) { }
 
     @Override
     public void render(GraphicsContext gc) {
@@ -88,14 +88,10 @@ public class OverworldState extends GameState {
     }
 
     @Override
-    public void reset() {
-
-    }
+    public void reset() { }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() { }
 
     @Override
     public boolean isPaused() {

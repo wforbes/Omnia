@@ -1,6 +1,8 @@
 package net.wforbes.omnia.overworld.gui;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
@@ -169,7 +171,7 @@ public class ChatWindowController {
         chatField.setFocusTraversable(true);
         chatField.setPromptText("Enter Chat or Commands Here..");
         chatField.setOnAction(event -> {
-            this.parseChatField();
+            submitChat();
         });
 
         this.chatFieldFocused = chatField.focusedProperty().getValue();
@@ -190,7 +192,7 @@ public class ChatWindowController {
         chatSendBtn.setFont(new Font("Franklin Gothic Medium", 20));
         chatSendBtn.setFocusTraversable(true);
         chatSendBtn.setOnMouseClicked(event -> {
-            this.parseChatField();
+            submitChat();
         });
         this.chatSendBtnFocused = chatSendBtn.focusedProperty().getValue();
         chatSendBtn.focusedProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -212,6 +214,23 @@ public class ChatWindowController {
         //chatVerticalContainer.setPrefSize(1280, CHAT_VBOX_HEIGHT);
         //chatVerticalContainer.setMinHeight();
         chatVerticalContainer.getChildren().addAll(chatAreaScroll, chatLowerContainer);
+    }
+
+    private void submitChat() {
+        this.parseChatField();
+        gui.gameState.getManager().getGameController().gameCanvas.requestFocus();
+        setActiveThenFadeOut();
+    }
+    public void setActiveThenFadeOut() {
+        titledPane.setOpacity(1.0);
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(3000), actionEvent -> {
+            FadeTransition titledPaneFadeOut = new FadeTransition(Duration.millis(500), titledPane);
+            titledPaneFadeOut.setFromValue(1.0);
+            titledPaneFadeOut.setToValue(GUIController.OPACITY_MAX);
+            titledPaneFadeOut.play();
+        }));
+        timeline.play();
     }
 
     //TODO: make generic and add to GUIController

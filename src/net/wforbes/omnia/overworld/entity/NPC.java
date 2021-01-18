@@ -2,6 +2,7 @@ package net.wforbes.omnia.overworld.entity;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 
@@ -10,6 +11,7 @@ public abstract class NPC extends Mob {
     protected int lastChatTick = 0;
     public NPC(OverworldState gameState, String name, double speed) {
         super(gameState, name, speed, false);
+        this.nameColor = Color.LIGHTBLUE;
         movementController = new MovementController(this);
     }
     public NPC(OverworldState gameState, String name, Point2D startPos, double speed) {

@@ -40,12 +40,12 @@ public class PlatformerState extends GameState {
     public ArrayList<Enemy> getEnemyArray(){ return enemies; }
 
     @Override
-    public void handleBorderPaneClick(MouseEvent event) {
+    public void handleCanvasClick(MouseEvent event) {
 
     }
 
     @Override
-    public void handleBorderPaneMouseMove(MouseEvent event) {
+    public void handleCanvasMouseMove(MouseEvent event) {
 
     }
 

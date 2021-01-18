@@ -48,7 +48,10 @@ public class OmniaFX extends Application {
         String pauseMenuStyles = getClass().getResource("/css/pause-menu.css").toExternalForm();
         String deathMenuStyles = getClass().getResource("/css/death-menu.css").toExternalForm();
         String guiWindowsStyles = getClass().getResource("/css/gui-windows.css").toExternalForm();
-        scene.getStylesheets().addAll(mainMenuStyles, topDownChatbox, pauseMenuStyles, deathMenuStyles, guiWindowsStyles);
+        scene.getStylesheets().addAll(
+                mainMenuStyles, topDownChatbox, pauseMenuStyles, deathMenuStyles,
+                guiWindowsStyles
+        );
 
     }
 

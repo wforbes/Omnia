@@ -92,12 +92,12 @@ public class TopDownState extends GameState{
     }
 
     @Override
-    public void handleBorderPaneClick(MouseEvent event) {
+    public void handleCanvasClick(MouseEvent event) {
 
     }
 
     @Override
-    public void handleBorderPaneMouseMove(MouseEvent event) {
+    public void handleCanvasMouseMove(MouseEvent event) {
 
     }
 

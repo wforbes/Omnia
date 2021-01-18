@@ -6,8 +6,8 @@ public abstract class GameState {
 
     public GameStateManager gsm;
     public int tickCount;
-    public abstract void handleBorderPaneClick(MouseEvent event);
-    public abstract void handleBorderPaneMouseMove(MouseEvent event);
+    public abstract void handleCanvasClick(MouseEvent event);
+    public abstract void handleCanvasMouseMove(MouseEvent event);
     public abstract int getTickCount();
     public abstract void init();
     public abstract void tick();

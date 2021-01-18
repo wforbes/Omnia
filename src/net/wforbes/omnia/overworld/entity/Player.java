@@ -3,6 +3,7 @@ package net.wforbes.omnia.overworld.entity;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
@@ -10,6 +11,7 @@ import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 public class Player extends Mob {
     protected String spriteSheetPath = "/overworld/sprites/player1_pokemon.gif";
     private double lastInputTick = 0;
+    private int lastInputCommandTick = 0;
 
     //TODO: inheritable
 
@@ -20,7 +22,9 @@ public class Player extends Mob {
     protected int currentAction;
 
     public Player(OverworldState gameState, String name) {
+
         super(gameState, name, 0.5, true);
+        this.nameColor = Color.BLUE;
     }
 
     public Player(OverworldState gameState, String name, Point2D startPos) {
@@ -38,9 +42,10 @@ public class Player extends Mob {
 
     public void update() {
         checkMovement();
+        checkCommands();
         movementAnimation.update();
-        gameState.gui.getDevWindowController().setPlayerMapPos(this.x, this.y);
-        gameState.gui.getDevWindowController().setPlayerScreenPos(Math.floor(this.x+xmap) * OmniaFX.getScale(), Math.floor(this.y+ymap) * OmniaFX.getScale());
+        gameState.gui.getDevWindow().setPlayerMapPos(this.x, this.y);
+        gameState.gui.getDevWindow().setPlayerScreenPos(Math.floor(this.x+xmap) * OmniaFX.getScale(), Math.floor(this.y+ymap) * OmniaFX.getScale());
     }
 
     private void checkMovement() {
@@ -68,6 +73,28 @@ public class Player extends Mob {
                 movementAnimation.setIsMoving(this.isMoving);
         }
         //TODO: Swimming checks
+    }
+
+    private void checkCommands() {
+        if(gameState.gsm.isKeyDown(KeyCode.ESCAPE) && keyInputIsReady()) {
+            lastInputCommandTick = gameState.getTickCount();
+            if (gameState.gui.hasFocus()) {
+               gameState.gsm.gameController.gameCanvas.requestFocus();
+            } else {
+                //TODO: implement pause
+            }
+        }
+
+        if(gameState.gsm.isKeyDown(KeyCode.ENTER) && keyInputIsReady()) {
+            lastInputCommandTick = gameState.getTickCount();
+            if(!gameState.gui.chatWindowVisible) {
+                gameState.gui.toggleChatWindowVisible();
+            }
+        }
+    }
+
+    private boolean keyInputIsReady() {
+        return gameState.getTickCount() - lastInputCommandTick > 30;
     }
 
     public void render(GraphicsContext gc) {

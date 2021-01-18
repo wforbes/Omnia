@@ -160,10 +160,10 @@ public class MenuState extends GameState {
     public void reset() {}
     public void pause() {}
     public void unPause() {}
-    public void handleBorderPaneClick(MouseEvent event) {}
+    public void handleCanvasClick(MouseEvent event) {}
 
     @Override
-    public void handleBorderPaneMouseMove(MouseEvent event) {
+    public void handleCanvasMouseMove(MouseEvent event) {
 
     }
 }

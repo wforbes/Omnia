@@ -1,6 +1,3 @@
-.titled-pane {
-    -fx-effect:dropshadow(one-pass-box, rgba(255,255,255,0.2), 1, 0.0, 0, 1);
-}
 .titled-pane > .title {
     -fx-background-color: linear-gradient(#E8CD1E, #9D1C20);
     -fx-border-color: white;
@@ -12,7 +9,7 @@
 }
 
 .titled-pane > *.content {
-    -fx-background-color: linear-gradient(grey, black);
+    -fx-background-color: linear-gradient(#555, #000);
 }
 
 .label {
@@ -42,11 +39,7 @@
     /*-fx-background-radius:0.25em;
     -fx-background-color: red;*/
 }
-ScrollPane {
-
-    -fx-background: linear-gradient(
-            rgba(150, 150, 150, 0.3),
-            rgba(50, 50, 50, 0.3)
-    );
+.scroll-pane > .viewport {
+    -fx-background: linear-gradient(#AAA,#FFF);
     -fx-border-radius: 0.25em;
 }

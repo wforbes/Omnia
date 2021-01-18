@@ -9,6 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+import net.wforbes.omnia.u.W;
 
 public class WindowDisplayController {
     private GUIController gui;
@@ -55,6 +56,8 @@ public class WindowDisplayController {
         devBtn.setFocusTraversable(true);
         devBtn.setOnMouseClicked(event -> {
             this.gui.toggleDevWindowVisible();
+            W.takeFocus(gui.getChatWindow().getChatField());
+            gui.getChatWindow().setActiveThenFadeOut();
             event.consume();
         });
         devBtn.focusedProperty().addListener((observableValue, oldValue, newValue) -> {

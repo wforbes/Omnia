@@ -64,15 +64,16 @@ public class GUIController {
         this.gameState.getManager().getGameController().getGameBorderPane().setTop(panelsPane);
     }
 
-    public boolean getGUIHasFocus() {
+    public boolean hasFocus() {
         return this.guiHasFocus;
     }
     public void setGUIHasFocus(boolean focused) {
         this.guiHasFocus = focused;
     }
-    public DevWindowController getDevWindowController() {
+    public DevWindowController getDevWindow() {
         return this.devWindowController;
     }
+    public ChatWindowController getChatWindow() { return this.chatWindowController; }
     public void handleBorderPaneClick(MouseEvent event) {
         this.devWindowController.handleBorderPaneClick(event);
     }
@@ -97,6 +98,8 @@ public class GUIController {
             panelsPane.getChildren().add(devWindowPanel);
         } else {
             panelsPane.getChildren().remove(devWindowPanel);
+            //refocus canvas when devWindow is closed
+            gameState.getManager().getGameController().gameCanvas.requestFocus();
         }
     }
 
@@ -104,8 +107,11 @@ public class GUIController {
         chatWindowVisible = !chatWindowVisible;
         if(chatWindowVisible) {
             panelsPane.getChildren().add(chatWindowPanel);
+            gameState.gui.getChatWindow().setActiveThenFadeOut();
         } else {
             panelsPane.getChildren().remove(chatWindowPanel);
+            //refocus canvas when chatWindow is closed
+            gameState.getManager().getGameController().gameCanvas.requestFocus();
         }
     }
 

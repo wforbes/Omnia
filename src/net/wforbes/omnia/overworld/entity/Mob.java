@@ -5,6 +5,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontSmoothingType;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
@@ -50,15 +54,21 @@ public abstract class Mob extends Entity {
     protected int collisionBoxWidth;
     protected int collisionBoxHeight;
 
+    protected Color nameColor;
+    protected Text nameText;
+    protected Font nameFont;
+
     public Mob(OverworldState gameState, String name, double speed, boolean player) {
         super(gameState);
         this.isPlayer = player;
         this.name = name;
         this.speed = speed;
         this.collisionRadius = 12;
-        //this.collisionBoxWidth = 16;
-        //this.collisionBoxHeight = 16;//TODO: fix this magic number
         this.movementController = new MovementController(this);
+        this.nameFont = Font.font("Century Gothic", FontWeight.BOLD, 22);
+        this.nameText = new Text(this.getName());
+        this.nameText.setFont(nameFont);
+        this.nameText.setFontSmoothingType(FontSmoothingType.LCD);
     }
 
     public Mob(OverworldState gameState, String name, Point2D startPos, double speed) {
@@ -108,12 +118,12 @@ public abstract class Mob extends Entity {
             movementAnimation.setIsMoving(this.isMoving);
 
         if(this.hasCollided(xa, ya)) {
-            gameState.gui.getDevWindowController().setPlayerCollided(true);
+            gameState.gui.getDevWindow().setPlayerCollided(true);
             if (this.isMovingDiagonally()) {
                 this.attemptToSlideAgainst(xa, ya);
             }
         } else {
-            gameState.gui.getDevWindowController().setPlayerCollided(false);
+            gameState.gui.getDevWindow().setPlayerCollided(false);
             moveCoords(xa, ya);
             numSteps++;
         }
@@ -245,21 +255,41 @@ public abstract class Mob extends Entity {
         }*/
 
         if(!offScreen()) {
-            gc.drawImage(
-                    movementAnimation.getImage(),
-                    (x + xmap - width / 2.0) * getScale(),
-                    (y + ymap - height / 2.0) * getScale(),
-                    width * getScale(),
-                    height * getScale()
-            );
+            this.renderSprite(gc);
+
+            if(gameState.mobNamesVisible()) {
+                this.renderName(gc);
+            }
             if(gameState.collisionGeometryVisible()) {
-                gc.setStroke(Color.RED);
-                gc.strokeOval(
-                        ((this.x + xmap + (width/2.0))-((width-collisionRadius)/2.0)-collisionRadius)*getScale(),
-                        ((this.y + ymap + (height/2.0))-((height-collisionRadius)/2.0) - collisionRadius)*getScale(),
-                        collisionRadius * getScale(),
-                        collisionRadius * getScale());
+                this.renderCollisionGeometry(gc);
             }
         }
+    }
+    private void renderSprite(GraphicsContext gc) {
+        gc.drawImage(
+                movementAnimation.getImage(),
+                (x + xmap - width / 2.0) * getScale(),
+                (y + ymap - height / 2.0) * getScale(),
+                width * getScale(),
+                height * getScale()
+        );
+    }
+
+    private void renderName(GraphicsContext gc) {
+        gc.setFill(this.nameColor);
+        gc.setFont(nameText.getFont());
+        gc.fillText(
+                nameText.getText(),
+                ((this.x + xmap)*getScale()) - nameText.getLayoutBounds().getWidth()/2.0,
+                (this.y + ymap)*getScale() - nameText.getLayoutBounds().getHeight()*1.5
+        );
+    }
+    private void renderCollisionGeometry(GraphicsContext gc) {
+        gc.setStroke(Color.RED);
+        gc.strokeOval(
+                ((this.x + xmap + (width/2.0))-((width-collisionRadius)/2.0)-collisionRadius)*getScale(),
+                ((this.y + ymap + (height/2.0))-((height-collisionRadius)/2.0) - collisionRadius)*getScale(),
+                collisionRadius * getScale(),
+                collisionRadius * getScale());
     }
 }

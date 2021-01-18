@@ -37,28 +37,34 @@ public class GameController implements Initializable {
         this.gsm = new GameStateManager(this);
         this.renderer = new Renderer(this.gameCanvas);
         this.gc = renderer.getContext();
+
         this.gameBorder.setPickOnBounds(false);
         this.gameBorder.setOnMouseMoved(event -> {
-            gsm.getCurrentState().handleBorderPaneMouseMove(event);
+            //gsm.getCurrentState().handleCanvasMouseMove(event);
         });
         this.gameBorder.setOnMouseClicked(event -> {
-            //System.out.println("Border Got A Click! " + event.toString());
-            gsm.getCurrentState().handleBorderPaneClick(event);
-            //regain canvas focus when clicking outside of UI windows
-            gameCanvas.requestFocus();
+            System.out.println("Border Got A Click! " + event.toString());
+            gameCanvas.requestFocus();//regain canvas focus when clicking outside of UI windows
         });
 
         this.gameStack.setPickOnBounds(false);
         this.gameStack.setOnMouseClicked(event -> {
             System.out.println("Stack Got A Click!");
+            gsm.getCurrentState().handleCanvasClick(event);
         });
+        this.gameStack.setOnMouseMoved(event -> {
+            gsm.getCurrentState().handleCanvasMouseMove(event);
+        });
+
+        this.gameCanvas.requestFocus();
         this.gameCanvas.setFocusTraversable(true);
         this.gameCanvas.setOnMouseClicked(event -> {
-            System.out.println("Canvas Got A Click!");
+            System.out.println("Canvas Got A Click! " + event.toString());
+            gameCanvas.requestFocus();//regain canvas focus when clicking outside of UI windows
         });
-        this.gameCanvas.requestFocus();
-        int i = 0;
 
+
+        int i = 0;
         GameLoopTimer timer = new GameLoopTimer() {
             @Override
             public void tick(float secondsSinceLastFrame) {
