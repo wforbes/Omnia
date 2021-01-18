@@ -2,6 +2,7 @@ package net.wforbes.omnia.overworld.gui;
 
 import javafx.animation.FadeTransition;
 import javafx.collections.ListChangeListener;
+import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -13,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
+import net.wforbes.omnia.gameFX.OmniaFX;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,13 +39,20 @@ public class ChatWindowController {
     private VBox chatVerticalContainer;
     private Node chatPanel;
 
-    public final int WINDOW_WIDTH = 500;
-    public final int WINDOW_HEIGHT = 200;
-    public final int CHATAREA_HEIGHT = 150;
-    public final int CHATFIELD_HEIGHT = 30;
-    public final int CHATBUTTON_HEIGHT = 28;
-    public final int CHAT_VBOX_HEIGHT = 150;
-    private final int CHAT_HBOX_HEIGHT = 34;
+
+    public final int CHATAREA_SCROLL_WIDTH = OmniaFX.getScaledWidth() - 50;
+    public final int CHATAREA_SCROLL_HEIGHT = 200;
+    public final int CHATAREA_FLOW_WIDTH = OmniaFX.getScaledWidth();
+    public final int CHATAREA_FLOW_HEIGHT = 170;
+    public final int CHATFIELD_WIDTH = (int)(OmniaFX.getScaledWidth()*0.0875);
+    public final int CHATFIELD_HEIGHT = 42;
+    public final int CHATBUTTON_WIDTH = 113;
+    public final int CHATBUTTON_HEIGHT = 42;
+    public final int CHAT_VBOX_HEIGHT = 240;
+    public final int CHAT_LOWER_WIDTH = OmniaFX.getScaledWidth();
+    public final int CHAT_LOWER_HEIGHT = 34;
+    public Dimension2D windowSize = new Dimension2D(OmniaFX.getScaledWidth(),
+            (double)CHATAREA_SCROLL_HEIGHT+(double)CHATFIELD_HEIGHT+75);
 
     private int lastInputCommandTick = 0;
 
@@ -84,6 +93,10 @@ public class ChatWindowController {
 
     public TextField getChatField() { return chatField; }
 
+    public double getWindowHeight() {
+        return this.windowSize.getHeight();
+    }
+
     private boolean keyInputIsReady() {
         return gui.gameState.getTickCount()
                 - this.lastInputCommandTick > 20;
@@ -119,19 +132,26 @@ public class ChatWindowController {
         this.titledPane = new TitledPane();
         this.titledPane.setText("Chat Window");
         this.titledPane.setCollapsible(false);
-        //this.titledPane.setPrefWidth(OmniaFX.getScaledWidth());
-        this.titledPane.setOpacity(0.75);
+        this.titledPane.setMinSize(CHATAREA_SCROLL_WIDTH, CHATAREA_FLOW_HEIGHT);
+        this.titledPane.setOpacity(GUIController.OPACITY_MAX);
     }
 
     private void createChatArea() {
         chatAreaScroll = new ScrollPane();
-        chatAreaScroll.setPrefViewportWidth(WINDOW_WIDTH);
-        chatAreaScroll.setPrefViewportHeight(WINDOW_HEIGHT);
-        HBox.setHgrow(chatAreaScroll, Priority.ALWAYS);
-        VBox.setVgrow(chatAreaScroll, Priority.ALWAYS);
+        chatAreaScroll.setPrefViewportWidth(CHATAREA_SCROLL_WIDTH);
+        chatAreaScroll.setPrefViewportHeight(CHATAREA_SCROLL_HEIGHT);
+        //chatAreaScroll.setPrefViewportWidth(WINDOW_WIDTH);
+        //chatAreaScroll.setPrefViewportHeight(WINDOW_HEIGHT);
+        //HBox.setHgrow(chatAreaScroll, Priority.ALWAYS);
+        //VBox.setVgrow(chatAreaScroll, Priority.ALWAYS);
         chatAreaFlow = new TextFlow();
-        chatAreaFlow.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        chatAreaFlow.getStyleClass().add("chatArea");
+        //chatAreaFlow.setMinSize(CHATAREA_SCROLL_WIDTH,CHATAREA_SCROLL_HEIGHT);
+        //chatAreaFlow.setPrefSize(CHATAREA_SCROLL_WIDTH, CHATAREA_SCROLL_HEIGHT);
+        //HBox.setHgrow(chatAreaFlow, Priority.ALWAYS);
+        //VBox.setVgrow(chatAreaFlow, Priority.ALWAYS);
+        //chatAreaScroll.setFitToWidth(true);
+        //chatAreaScroll.setFitToHeight(true);
+        chatAreaFlow.getStyleClass().add("chat-area");
         chatAreaFlow.getChildren().addListener((ListChangeListener<Node>) ((change) -> {
             chatAreaFlow.layout();
             chatAreaScroll.layout();
@@ -142,10 +162,10 @@ public class ChatWindowController {
 
     private void createChatField() {
         chatField = new TextField();
-        //chatField.setPrefSize(CHATFIELD_, CHATFIELD_HEIGHT);
+        chatField.setMinSize(CHATFIELD_WIDTH, CHATFIELD_HEIGHT);
         HBox.setHgrow(chatField, Priority.ALWAYS);
         VBox.setVgrow(chatField, Priority.ALWAYS);
-        chatField.setFont(new javafx.scene.text.Font("Century Gothic", 20));
+        chatField.setFont(new Font("Century Gothic", 20));
         chatField.setFocusTraversable(true);
         chatField.setPromptText("Enter Chat or Commands Here..");
         chatField.setOnAction(event -> {
@@ -164,7 +184,7 @@ public class ChatWindowController {
 
     private void createChatSendButton() {
         chatSendBtn = new Button("Send");
-        //chatSendBtn.setPrefSize(113, CHATBUTTON_HEIGHT);
+        chatSendBtn.setMinSize(CHATBUTTON_WIDTH, CHATBUTTON_HEIGHT);
         HBox.setHgrow(chatSendBtn, Priority.ALWAYS);
         VBox.setVgrow(chatSendBtn, Priority.ALWAYS);
         chatSendBtn.setFont(new Font("Franklin Gothic Medium", 20));
@@ -190,18 +210,19 @@ public class ChatWindowController {
     private void createChatVerticalContainer() {
         chatVerticalContainer = new VBox();
         //chatVerticalContainer.setPrefSize(1280, CHAT_VBOX_HEIGHT);
-        chatVerticalContainer.setPrefHeight(CHAT_VBOX_HEIGHT);
+        //chatVerticalContainer.setMinHeight();
         chatVerticalContainer.getChildren().addAll(chatAreaScroll, chatLowerContainer);
     }
 
+    //TODO: make generic and add to GUIController
     private void setWindowFadeTransitions() {
         FadeTransition titledPaneFadeIn = new FadeTransition(Duration.millis(500), titledPane);
-        titledPaneFadeIn.setFromValue(0.75);
+        titledPaneFadeIn.setFromValue(GUIController.OPACITY_MAX);
         titledPaneFadeIn.setToValue(1.0);
 
         FadeTransition titledPaneFadeOut = new FadeTransition(Duration.millis(500), titledPane);
         titledPaneFadeOut.setFromValue(1.0);
-        titledPaneFadeOut.setToValue(0.75);
+        titledPaneFadeOut.setToValue(GUIController.OPACITY_MAX);
 
         titledPane.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
             titledPaneFadeIn.play();

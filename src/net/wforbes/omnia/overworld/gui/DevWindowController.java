@@ -1,5 +1,6 @@
 package net.wforbes.omnia.overworld.gui;
 
+import javafx.animation.FadeTransition;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -9,6 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class DevWindowController {
     private GUIController gui;
@@ -111,17 +113,18 @@ public class DevWindowController {
         VBox.setVgrow(verticalLayoutContainer, Priority.ALWAYS); //TODO:
         DragResizer.makeResizable(verticalLayoutContainer);
         this.titledPane.setContent(verticalLayoutContainer);
+        this.setWindowFadeTransitions();
         GUIController.configureBorder(titledPane);
         return titledPane;
     }
 
     private TitledPane createTitledPane() {
-        TitledPane titledPane = new TitledPane();
+        this.titledPane = new TitledPane();
         titledPane.setText(windowTitle);
         titledPane.setCollapsible(false);
         //titledPane.setMinWidth(windowSize.getWidth());
         //titledPane.setMinHeight(windowSize.getHeight());
-        titledPane.setOpacity(0.75);
+        titledPane.setOpacity(GUIController.OPACITY_MAX);
         return titledPane;
     }
 
@@ -187,5 +190,23 @@ public class DevWindowController {
 
         collisionDevContainer.getChildren().addAll(entityPosContainer, entityCollisionContainer);
         return collisionDevContainer;
+    }
+
+    //TODO: make generic and add to GUIController
+    private void setWindowFadeTransitions() {
+        FadeTransition titledPaneFadeIn = new FadeTransition(Duration.millis(500), titledPane);
+        titledPaneFadeIn.setFromValue(GUIController.OPACITY_MAX);
+        titledPaneFadeIn.setToValue(1.0);
+
+        FadeTransition titledPaneFadeOut = new FadeTransition(Duration.millis(500), titledPane);
+        titledPaneFadeOut.setFromValue(1.0);
+        titledPaneFadeOut.setToValue(GUIController.OPACITY_MAX);
+
+        titledPane.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            titledPaneFadeIn.play();
+        });
+        titledPane.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+            titledPaneFadeOut.play();
+        });
     }
 }

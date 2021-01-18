@@ -1,14 +1,14 @@
 .main-button {
-    -fx-background-color: transparent;
+    -fx-background-color: transparent!important;
+    -fx-border-width:0em!important;
     -fx-text-fill: white;
     -fx-font-family: Arial, "Century Gothic", sans-serif;
     -fx-font-size: 4em;
-
 }
 .main-button:hover {
     -fx-cursor:hand;
-    -fx-text-fill: yellow;
+    -fx-text-fill: yellow!important;
 }
 .main-button:focused {
-    -fx-text-fill: yellow;
+    -fx-text-fill: yellow!important;
 }

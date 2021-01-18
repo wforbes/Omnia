@@ -14,6 +14,18 @@ public class GUIController {
     private WindowDragger windowDragger;
     private ChatWindowController chatWindowController;
     private DevWindowController devWindowController;
+    private WindowDisplayController windowDisplayController;
+
+    private Pane panelsPane;
+    private Node windowDisplayPanel;
+    private Node devWindowPanel;
+    private Node chatWindowPanel;
+
+    public boolean chatWindowVisible;
+    public boolean devWindowVisible;
+
+
+    public static double OPACITY_MAX = 0.5;
 
     public GUIController(OverworldState state) {
         this.gameState = state;
@@ -22,21 +34,32 @@ public class GUIController {
         this.windowDragger = new WindowDragger();
 
         this.chatWindowController = new ChatWindowController(this);
-        Node chatWindowPanel = windowDragger.makeDraggableByTitleRegion(
+        chatWindowPanel = windowDragger.makeDraggableByTitleRegion(
                 chatWindowController.getWindowPanel()
         );
-        chatWindowPanel.relocate(0, OmniaFX.getScaledHeight() - (chatWindowController.CHAT_VBOX_HEIGHT + 42));
+        chatWindowPanel.relocate(0, OmniaFX.getScaledHeight() - chatWindowController.getWindowHeight());
+        chatWindowVisible = false;
 
         this.devWindowController = new DevWindowController(this);
-        Node devWindowPanel = windowDragger.makeDraggableByTitleRegion(
+        devWindowPanel = windowDragger.makeDraggableByTitleRegion(
                 devWindowController.getWindowPanel()
         );
-        devWindowPanel.relocate(0, OmniaFX.getScaledHeight() - (devWindowController.getWindowHeight()));
+        devWindowPanel.relocate(0, OmniaFX.getScaledHeight()
+                - devWindowController.getWindowHeight() - 50
+                - chatWindowController.getWindowHeight()
+        );
+        devWindowVisible = false;
 
-        final Pane panelsPane = new Pane();
+        windowDisplayController = new WindowDisplayController(this);
+        windowDisplayPanel = windowDragger.makeDraggableByTitleRegion(
+                windowDisplayController.getWindowPanel()
+        );
+        windowDisplayPanel.relocate(OmniaFX.getScaledWidth()/2.0 - windowDisplayController.getTitledPane().getWidth()/2.0,0);
+
+        this.panelsPane = new Pane();
         panelsPane.setStyle("-fx-background-color: rgba(0,100,100,0.5);-fx-background-radius:10;");
         panelsPane.setPrefSize(0.1,0.1);
-        panelsPane.getChildren().addAll(devWindowPanel, chatWindowPanel);
+        panelsPane.getChildren().addAll(windowDisplayPanel);
 
         this.gameState.getManager().getGameController().getGameBorderPane().setTop(panelsPane);
     }
@@ -58,11 +81,32 @@ public class GUIController {
     }
 
     public static void configureBorder(final Region region) {
+        /*
         region.setStyle("-fx-background-color: white;"
                 + "-fx-border-color: black;"
-                + "-fx-border-width: 1;"
+                + "-fx-border-width: 0.02em;"
                 + "-fx-border-radius: 6;"
-                + "-fx-padding: 6;");
+                + "-fx-padding: 1;");
+
+         */
+    }
+
+    public void toggleDevWindowVisible() {
+        devWindowVisible = !devWindowVisible;
+        if(devWindowVisible) {
+            panelsPane.getChildren().add(devWindowPanel);
+        } else {
+            panelsPane.getChildren().remove(devWindowPanel);
+        }
+    }
+
+    public void toggleChatWindowVisible() {
+        chatWindowVisible = !chatWindowVisible;
+        if(chatWindowVisible) {
+            panelsPane.getChildren().add(chatWindowPanel);
+        } else {
+            panelsPane.getChildren().remove(chatWindowPanel);
+        }
     }
 
     public void tick() {

@@ -18,6 +18,7 @@ public class DragResizer {
     private boolean draggableZoneX, draggableZoneY, draggableZoneNegY, draggableZoneNegX;
 
     private double initialTranslateX, initialTranslateY;
+    private double initialLayoutX;
     private double mouseAnchorX, mouseAnchorY;
 
     private boolean dragging;
@@ -63,6 +64,7 @@ public class DragResizer {
         x = event.getX();
         mouseAnchorX = event.getX();
         initialTranslateX = region.getTranslateX();
+        initialLayoutX = region.getLayoutX();
     }
 
     protected void mouseDragged(MouseEvent event) {
@@ -91,6 +93,7 @@ public class DragResizer {
 
         }
 
+        /* //TODO: fix negative axis resize
         if (draggableZoneNegY) {
             double mousey = event.getY();
 
@@ -102,7 +105,6 @@ public class DragResizer {
             );
 
             y = mousey;
-
         }
 
         if (draggableZoneNegX) {
@@ -110,26 +112,29 @@ public class DragResizer {
 
             double newWidth = region.getMinWidth() + (x - mousex);
 
-            region.setMinWidth(newWidth);
             region.setTranslateX(
                     initialTranslateX + mousex - mouseAnchorX
             );
-
+            region.setMinWidth(newWidth);
+            double gtx = region.getTranslateX();
+            System.out.println(initialTranslateX + " " + mouseAnchorX + " " + initialLayoutX
+                    + " | " + gtx + " " + mousex);
+            //System.out.println(mousex - mouseAnchorX + " = " + mousex +" - " + mouseAnchorX);
             x = mousex;
-
         }
-
+         */
     }
 
     protected void mouseOver(MouseEvent event) {
         if (isInDraggableZone(event) || dragging) {
-            if (draggableZoneY || draggableZoneNegY) {
+            if (draggableZoneY) {//TODO: add negY cursor
                 region.setCursor(Cursor.S_RESIZE);
             }
 
-            if (draggableZoneX || draggableZoneNegX) {
+            if (draggableZoneX) {//TODO: add negX cursor
                 region.setCursor(Cursor.E_RESIZE);
             }
+
 
         } else {
             region.setCursor(Cursor.DEFAULT);

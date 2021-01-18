@@ -1,0 +1,52 @@
+.titled-pane {
+    -fx-effect:dropshadow(one-pass-box, rgba(255,255,255,0.2), 1, 0.0, 0, 1);
+}
+.titled-pane > .title {
+    -fx-background-color: linear-gradient(#E8CD1E, #9D1C20);
+    -fx-border-color: white;
+    -fx-border-radius: 0.05em;
+    -fx-border-width: 0.05em;
+}
+.titled-pane > .title > .text {
+    -fx-fill:white;
+}
+
+.titled-pane > *.content {
+    -fx-background-color: linear-gradient(grey, black);
+}
+
+.label {
+    -fx-text-fill:white;
+}
+
+.toggle-button, .button {
+    -fx-background-color: linear-gradient(#555, #222);
+    -fx-border-color: white;
+    -fx-border-radius:0.5em;
+    -fx-border-width:0.05em;
+    -fx-background-radius:0.5em;
+    -fx-background-width:0.05em;
+    -fx-text-fill:white;
+}
+.toggle-button:hover, .button:hover {
+    -fx-background-color: linear-gradient(#AAA, #DDD);
+    -fx-background-radius:0.5em;
+    -fx-background-width:0.05em;
+    -fx-text-fill:#444;
+}
+.toggle-button:pressed, .button:pressed {
+    -fx-background-color: linear-gradient(#333, #888);
+}
+
+.chat-area {
+    /*-fx-background-radius:0.25em;
+    -fx-background-color: red;*/
+}
+ScrollPane {
+
+    -fx-background: linear-gradient(
+            rgba(150, 150, 150, 0.3),
+            rgba(50, 50, 50, 0.3)
+    );
+    -fx-border-radius: 0.25em;
+}
