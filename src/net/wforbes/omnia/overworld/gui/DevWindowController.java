@@ -114,7 +114,6 @@ public class DevWindowController {
         DragResizer.makeResizable(verticalLayoutContainer);
         this.titledPane.setContent(verticalLayoutContainer);
         this.setWindowFadeTransitions();
-        GUIController.configureBorder(titledPane);
         return titledPane;
     }
 

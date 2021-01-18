@@ -23,6 +23,7 @@ public class OverworldState extends GameState {
         this.world = new World(this);
         this.player = new Player(this, "Will");
         this.world.setPlayer(player);
+        this.gui = new GUIController(this);
     }
 
     public GameStateManager getManager() {
@@ -60,7 +61,7 @@ public class OverworldState extends GameState {
     public void init() {
         this.world.init();
         this.player.init();
-        this.gui = new GUIController(this);
+        this.gui.init();
     }
 
     @Override

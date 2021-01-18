@@ -56,8 +56,6 @@ public class WindowDisplayController {
         devBtn.setFocusTraversable(true);
         devBtn.setOnMouseClicked(event -> {
             this.gui.toggleDevWindowVisible();
-            W.takeFocus(gui.getChatWindow().getChatField());
-            gui.getChatWindow().setActiveThenFadeOut();
             event.consume();
         });
         devBtn.focusedProperty().addListener((observableValue, oldValue, newValue) -> {

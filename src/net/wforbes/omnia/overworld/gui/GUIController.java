@@ -1,11 +1,12 @@
 package net.wforbes.omnia.overworld.gui;
 
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.u.W;
 
 public class GUIController {
     public OverworldState gameState;
@@ -54,14 +55,21 @@ public class GUIController {
         windowDisplayPanel = windowDragger.makeDraggableByTitleRegion(
                 windowDisplayController.getWindowPanel()
         );
-        windowDisplayPanel.relocate(OmniaFX.getScaledWidth()/2.0 - windowDisplayController.getTitledPane().getWidth()/2.0,0);
 
         this.panelsPane = new Pane();
         panelsPane.setStyle("-fx-background-color: rgba(0,100,100,0.5);-fx-background-radius:10;");
         panelsPane.setPrefSize(0.1,0.1);
         panelsPane.getChildren().addAll(windowDisplayPanel);
 
+    }
+
+    public void init() {
         this.gameState.getManager().getGameController().getGameBorderPane().setTop(panelsPane);
+        Platform.runLater(()-> {
+            windowDisplayPanel.relocate(
+                    OmniaFX.getScaledWidth()/2.0
+                            - windowDisplayPanel.getLayoutBounds().getWidth()/2.0,10);
+        });
     }
 
     public boolean hasFocus() {
@@ -81,17 +89,6 @@ public class GUIController {
         this.devWindowController.handleBorderPaneMouseMove(event);
     }
 
-    public static void configureBorder(final Region region) {
-        /*
-        region.setStyle("-fx-background-color: white;"
-                + "-fx-border-color: black;"
-                + "-fx-border-width: 0.02em;"
-                + "-fx-border-radius: 6;"
-                + "-fx-padding: 1;");
-
-         */
-    }
-
     public void toggleDevWindowVisible() {
         devWindowVisible = !devWindowVisible;
         if(devWindowVisible) {
@@ -107,7 +104,8 @@ public class GUIController {
         chatWindowVisible = !chatWindowVisible;
         if(chatWindowVisible) {
             panelsPane.getChildren().add(chatWindowPanel);
-            gameState.gui.getChatWindow().setActiveThenFadeOut();
+            W.takeFocus(getChatWindow().getChatField());
+            getChatWindow().setActiveThenFadeOut();
         } else {
             panelsPane.getChildren().remove(chatWindowPanel);
             //refocus canvas when chatWindow is closed
