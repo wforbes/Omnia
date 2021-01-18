@@ -35,14 +35,14 @@ public class DialogController {
     //TODO: Find better way to determine uniqueness and equivalence of entities, move this into entity
     private boolean areSameEntity(Entity e1, Entity e2) { return e1.getX() == e2.getX() && e1.getY() == e2.getY(); }
 
-    private boolean areWithinAudibleRange(net.wforbes.omnia.topDown.entity.Entity e1, net.wforbes.omnia.topDown.entity.Entity e2) {
-        return Math.abs(e1.x - e2.x) <= AUDIBLE_RANGE
-                && Math.abs(e1.y - e2.y) <= AUDIBLE_RANGE;
+    private boolean areWithinAudibleRange(Entity e1, Entity e2) {
+        return Math.abs(e1.getX() - e2.getY()) <= AUDIBLE_RANGE
+                && Math.abs(e1.getX() - e2.getY()) <= AUDIBLE_RANGE;
     }
 
     public void submitChatMsg(Entity sender, String chatCmd, String chatMsg) {
         for(Entity entity : this.world.area.getEntities()) {
-            if(!this.areSameEntity(sender, entity)) {
+            if(!this.areSameEntity(sender, entity) && this.areWithinAudibleRange(sender, entity)) {
                 if(entity instanceof NPC) {
                     Mob senderMob = (Mob) sender;
                     NPC listener = ((NPC) entity);
