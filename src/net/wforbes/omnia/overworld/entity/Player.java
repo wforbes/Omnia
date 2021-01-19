@@ -89,6 +89,8 @@ public class Player extends Mob {
             lastInputCommandTick = gameState.getTickCount();
             if(!gameState.gui.chatWindowVisible) {
                 gameState.gui.toggleChatWindowVisible();
+            } else {
+                gameState.gui.getChatWindow().getChatField().requestFocus();
             }
         }
     }
