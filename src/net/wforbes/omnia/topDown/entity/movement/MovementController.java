@@ -3,8 +3,6 @@ package net.wforbes.omnia.topDown.entity.movement;
 import javafx.geometry.Point2D;
 import net.wforbes.omnia.topDown.entity.Mob;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 public class MovementController {
