@@ -13,7 +13,7 @@ public class DialogController {
     private ChatWindowController chatWindowController;
     private HashMap<String, String> chatOutputMap;
     private String[] chatChannels = new String[]{"SAY", "SHOUT", "WHISPER"};
-    private final int AUDIBLE_RANGE = 24;
+    private final int AUDIBLE_RANGE = 32;
 
     public DialogController(World world) {
         this.world = world;
@@ -36,8 +36,8 @@ public class DialogController {
     private boolean areSameEntity(Entity e1, Entity e2) { return e1.getX() == e2.getX() && e1.getY() == e2.getY(); }
 
     private boolean areWithinAudibleRange(Entity e1, Entity e2) {
-        return Math.abs(e1.getX() - e2.getY()) <= AUDIBLE_RANGE
-                && Math.abs(e1.getX() - e2.getY()) <= AUDIBLE_RANGE;
+        return Math.abs(e1.getX() - e2.getX()) <= AUDIBLE_RANGE
+                && Math.abs(e1.getY() - e2.getY()) <= AUDIBLE_RANGE;
     }
 
     public void submitChatMsg(Entity sender, String chatCmd, String chatMsg) {

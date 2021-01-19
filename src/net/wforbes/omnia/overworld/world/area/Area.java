@@ -52,7 +52,7 @@ public class Area {
         this.tileMap.loadTilesFromMapImage();
         this.tileMap.loadTileSprites("/overworld/tile/areatiles0.gif");
         this.tileMap.setPosition(0, 0);
-        this.tileMap.setTween(0.07);
+        this.tileMap.setTween(0.06);
     }
 
     public void handleCanvasClick(MouseEvent event) {

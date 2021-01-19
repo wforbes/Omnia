@@ -1,8 +1,12 @@
 package net.wforbes.omnia.overworld.world.area.effect;
 
-import javafx.animation.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -21,6 +25,11 @@ public class ClickCircle {
     private double circleFadeDelay = 250;
     private double circleFadeDuration = 250;
     private DoubleProperty circleOpacity = new SimpleDoubleProperty();
+    private double xMapDiff;
+    private double yMapDiff;
+
+    private Point2D initialMapPosition;
+
     public ClickCircle(EffectController ec) {
         this.effectController = ec;
     }
@@ -44,6 +53,9 @@ public class ClickCircle {
     }
 
     public void set(double x, double y) {
+        initialMapPosition = new Point2D(
+                effectController.getArea().getTileMap().getX(),
+                effectController.getArea().getTileMap().getY());
         c.setCenterX(x);
         c.setCenterY(y);
         circleFadeTimeline.stop();
@@ -60,9 +72,12 @@ public class ClickCircle {
             } else {
                 gc.setGlobalAlpha(1.0);
             }
+            xMapDiff = effectController.getArea().getTileMap().getX() - initialMapPosition.getX();
+            yMapDiff = effectController.getArea().getTileMap().getY() - initialMapPosition.getY();
+
             gc.strokeOval(
-                    c.getCenterX() + effectController.getArea().getTileMap().getx() - (c.getRadius()*getScale())/2.0,
-                    c.getCenterY() + effectController.getArea().getTileMap().gety() - ((c.getRadius() - c.getRadius()/2)*getScale())/2.0,
+                    (c.getCenterX() + xMapDiff*getScale()) - (c.getRadius()*getScale())/2.0,
+                    (c.getCenterY() + yMapDiff*getScale()) - ((c.getRadius() - c.getRadius()/2)*getScale())/2.0,
                     c.getRadius()*getScale(),
                     (c.getRadius() - c.getRadius()/3)*getScale()
             );

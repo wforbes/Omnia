@@ -11,8 +11,8 @@ public abstract class Entity {
         this.gameState = gameState;
     }
 
-    public double getX(){ return x; }
-    public double getY(){ return y; }
+    public abstract double getX();
+    public abstract double getY();
     public abstract String getName();
     public abstract int getCollisionBoxWidth();
     public abstract int getCollisionRadius();

@@ -20,7 +20,7 @@ public class DocNPC extends NPC {
     }
 
     public void init() {
-        this.setPosition(80, 80);
+        this.setPosition(200, 200);
         this.movementController.setMovementSpace(this.x-40, this.y-40, this.x+40, this.y+40);
         this.movementController.setMovementType(MovementController.MOVEMENT_PACE_VERTICAL);
     }

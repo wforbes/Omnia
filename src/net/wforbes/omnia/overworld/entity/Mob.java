@@ -48,11 +48,12 @@ public abstract class Mob extends Entity {
     public static final int FACING_SE = 7;
     public MovementController movementController;
 
-    protected boolean isPlayer; //TODO: remove - for testing
+    public boolean isPlayer; //TODO: remove - for testing
     protected int collisionHeightOffset;
     protected int collisionRadius;
     protected int collisionBoxWidth;
     protected int collisionBoxHeight;
+    public boolean isColliding;
 
     protected Color nameColor;
     protected Text nameText;
@@ -84,11 +85,32 @@ public abstract class Mob extends Entity {
     public String getName() {
         return this.name;
     }
+    public double getX() {
+        return this.x + this.width/2.0;
+    }
+    public double getY() {
+        return this.y + this.height/2.0;
+    }
     public Point2D getLocationPoint() {
-        return new Point2D(this.x, this.y);
+        return new Point2D(this.x + this.width/2.0, this.y + this.height/2.0);
     }
     public int getWidth(){ return width; }
     public int getHeight(){ return height; }
+    public double getXMap() {
+        return this.xmap;
+    }
+    public double getYMap() {
+        return this.ymap;
+    }
+    public int getFacingDir() {
+        return this.facingDir;
+    }
+    public boolean getIsMoving() {
+        return this.isMoving;
+    }
+    public MovementAnimation getMovementAnimation() {
+        return this.movementAnimation;
+    }
 
     void loadSprites(String path) {
         this.spriteSheet = new Image(getClass().getResourceAsStream(path));
@@ -118,12 +140,21 @@ public abstract class Mob extends Entity {
             movementAnimation.setIsMoving(this.isMoving);
 
         if(this.hasCollided(xa, ya)) {
-            gameState.gui.getDevWindow().setPlayerCollided(true);
+            if(this.isPlayer) {
+                gameState.gui.getDevWindow().setPlayerCollided(true);
+            } else {
+                this.isColliding = true;
+            }
             if (this.isMovingDiagonally()) {
                 this.attemptToSlideAgainst(xa, ya);
             }
         } else {
-            gameState.gui.getDevWindow().setPlayerCollided(false);
+            if(this.isPlayer) {
+                gameState.gui.getDevWindow().setPlayerCollided(false);
+            } else {
+                this.isColliding = false;
+            }
+
             moveCoords(xa, ya);
             numSteps++;
         }
@@ -147,8 +178,8 @@ public abstract class Mob extends Entity {
                 ) {
                     return true;
                 }*/
-                double xDist = (this.x+xa - e.getX());
-                double yDist = (this.y+ya - e.getY());
+                double xDist = (this.getX()+xa - e.getX());
+                double yDist = (this.getY()+ya - e.getY());
                 if(Math.sqrt((xDist*xDist) + (yDist*yDist)) <= (collisionRadius/2.0+e.getCollisionRadius()/2.0)) {
                     return true;
                 }
@@ -186,7 +217,7 @@ public abstract class Mob extends Entity {
         movementAnimation.setFrames(sprites.get(dir));
         movementAnimation.setDelay((long)(100 / this.speed));
     }
-    void updateAnimationDirection() {
+    public void updateAnimationDirection() {
         movementAnimation.setFacingDir(facingDir);
         movementAnimation.setFrames(sprites.get(facingDir));
         movementAnimation.setDelay((long)(100/this.speed));
@@ -228,8 +259,8 @@ public abstract class Mob extends Entity {
     }
 
     protected void refreshMapPosition() {
-        xmap = gameState.world.area.getTileMap().getx();
-        ymap = gameState.world.area.getTileMap().gety();
+        xmap = gameState.world.area.getTileMap().getX();
+        ymap = gameState.world.area.getTileMap().getY();
     }
 
     protected boolean offScreen() {

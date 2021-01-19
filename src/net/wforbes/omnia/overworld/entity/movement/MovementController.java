@@ -14,6 +14,9 @@ public class MovementController {
 
     private long waitCount = 0;
     private boolean moveReady = false;
+    private boolean waitingToPace = false;
+    private boolean paceCollideWait = false;
+    private boolean paceCollideTurnAround = true;
 
     public MovementController(Mob mover) {
         this.mover = mover;
@@ -41,14 +44,35 @@ public class MovementController {
         }
     }
 
-    protected void standStill() { }
+    protected void standStill() {
+        if(waitingToPace) {
+            this.tryToMoveInFacingDir();
+        }
+
+        if(!this.mover.isColliding) {
+            this.resumePacing();
+        }
+    }
+
+    private void tryToMoveInFacingDir() {
+        if(this.mover.getFacingDir() == 0) {
+            this.xya = new int[]{0, -1, 0};
+        } else if(this.mover.getFacingDir() == 1){
+            this.xya = new int[]{0, 1, 1};
+        }
+        this.mover.move(xya[0], xya[1]);
+    }
+
+    private void resumePacing() {
+        this.setMovementType(1);
+        this.waitingToPace = false;
+        this.mover.setMoving(true);
+    }
 
     public void standAndFace(Point2D targetLoc) {
-        this.setMovementType(0);
-        double angle = new Point2D(this.mover.getX(), this.mover.getY()).angle(targetLoc);
-        //TODO: refactor this to test for diagonal, 45, and 30>x<60,
-        //  then apply booleans in one line
-        if (angle > 0.45) {//vertical facing
+        this.stopMovement();
+        double angle = new Point2D(1,0).angle(this.mover.getLocationPoint().subtract(targetLoc));
+        if (angle > 45 && angle < 135) {//vertical facing
             if (targetLoc.getY() < this.mover.getY()) {//facing north
                 this.mover.setFacingDir(Mob.FACING_N);
             } else {//facing south
@@ -63,6 +87,15 @@ public class MovementController {
                 this.mover.setFacingDir(Mob.FACING_E);
             }
         }
+
+        if (this.mover.getMovementAnimation().getFacingDir() != this.mover.getFacingDir())
+            this.mover.updateAnimationDirection();
+    }
+
+    private void stopMovement() {
+        this.setMovementType(0);
+        this.mover.setMoving(false);
+        this.mover.getMovementAnimation().setIsMoving(this.mover.getIsMoving());
     }
 
     private void paceVertically(int waitMultiple, int waitReset, int minYBound, int maxYBound) {
@@ -70,20 +103,46 @@ public class MovementController {
             this.waitCount = 1;
             this.moveReady = false;
         } else if (this.waitCount % waitMultiple == 0) {
-            if (this.mover.getY() < minYBound) {
-                this.xya = new int[]{0, 1, 1};
-                this.moveReady = true;
-            }
 
-            if (this.mover.getY() >= minYBound && this.mover.getY() <= maxYBound) {
-                if(this.xya[2] == 0) this.xya[1] = -1;
-                if(xya[2] == 1) this.xya[1] = 1;
-                this.moveReady = true;
-            }
+            if(!this.mover.isColliding){
+                if(waitingToPace) {
+                    this.waitingToPace = false;
+                }
 
-            if (this.mover.getY() > maxYBound) {
-                this.xya = new int[]{0, -1, 0};
-                this.moveReady = true;
+                if (this.mover.getY() < minYBound) {
+                    this.xya = new int[]{0, 1, 1};
+                    this.moveReady = true;
+                }
+
+                if (this.mover.getY() >= minYBound && this.mover.getY() <= maxYBound) {
+                    if (this.xya[2] == 0) this.xya[1] = -1;
+                    if (xya[2] == 1) this.xya[1] = 1;
+                    this.moveReady = true;
+                }
+
+                if (this.mover.getY() > maxYBound) {
+                    this.xya = new int[]{0, -1, 0};
+                    this.moveReady = true;
+                }
+            } else {// if colliding, do something else
+                if(this.paceCollideTurnAround) {
+                    if (this.mover.getFacingDir() == 1) {
+                        this.mover.setFacingDir(0);
+                        this.xya = new int[]{0, -1, 0};
+                        this.moveReady = true;
+                    } else {
+                        this.mover.setFacingDir(1);
+                        this.xya = new int[]{0, 1, 1};
+                        this.moveReady = true;
+                    }
+                } else if(this.paceCollideWait) {
+                    this.waitingToPace = true;
+                    this.stopMovement();
+                    this.moveReady = false;
+                } else {
+                    this.stopMovement();
+                    this.moveReady = false;
+                }
             }
         }
 
