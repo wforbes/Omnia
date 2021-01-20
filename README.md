@@ -2,34 +2,29 @@
 Retro 2D Role-Playing Video Game targeted for the PC, Mac, Linux, and Android. 
 Written using Java and JavaFX.
 
-(Readme last updated: 1/9/2020)
+(Readme last updated: 1/19/2020)
 
 ![Screenshots of Omnia version 0.0.1](https://wforbes.net/wp-content/uploads/2020/12/screens_v0-0-1-1024x762.png)
 
 ## Project
-Omnia is a 2D 'Retro' Role-Playing Game, written in Java. I'm working on it so that I can practice programming in Java, 
-experiment with ideas, and have fun. My girlfriend is an author and creative writing teacher so I'll also be collaborating 
-with her for writing the game's script and storyline.
+Omnia is a 2D 'Retro' Role-Playing Game with multiple game perspectives (Top-Down, Platformer, Turn-Based, Puzzle, etc),
+ written in Java. I'm working on it so that I can practice programming in Java, use this for my final project in Computer 
+ Science degree, experiment with ideas, and just have fun. 
 
-This is truly a passion project. Instead of using a sophisticated game engine like Unreal, Unity, Godot, or GameMaker 
+Instead of using a sophisticated game engine like Unreal, Unity, Godot, or GameMaker 
 I thought I would get the most out of developing the engine myself by reading/watching game tutorials/devlogs, getting 
-inspiration from game libraries, and inventing systems on my own.   
-
-### Goals
-My core goals are focused on:
-  * Developing a homegrown game engine that's enjoyable to code in and expandable to the limits of imagination.
-  * Building an enjoyable experience for the player that uses multiple 2D engine styles, rewarding quest experiences, 
-  immersive/dynamic NPC interactions, and fun online interactions with other players. 
-  * Designing a game world that's visually and interactively interesting, weird, exciting, and enjoyable to play within.
-  * Writing a game story that feels like you're going on an exciting journey that offers so many options that the 
-  possibilities are endless.
-
-## Story
-
-Some of the first concepts of the world can be found here: [wforbes.net/omnia-story-notes](https://wforbes.net/omnia-story-notes)
+inspiration from game libraries, and inventing systems on my own. (Every naive young programmer's last words.)
 
 ---
-## Starter Todo List (Dec 2020)
+# To-do lists
+Keeping track of my work and plans here will inspire me to keep going and stay accountable to consistently working on 
+the project.
+I'd like to keep my head down for all of 2021 and just code/draw as much as possible, then re-evaluate the project
+when it's time to write my final capstone papers for school. Talk to you next year.
+ 
+### Starter Todo List (Nov/Dec 2020) - Omnia v0.0.1
+Resurrect and combine two old game engines to run together. Add in the use of JavaFX to improve graphics rendering and 
+ease the implementation of GUI features.
 * [X] ~~Resurrect [my old game engine](https://www.youtube.com/watch?v=DIMeRYfil7c&list=PLRjjchumlJl2LIs1esk_C9RPvlEf2GOLb) I worked on in 2013 based loosely on two very old tutorials:~~
     * [X] ~~**Top-Down Tutorial**: Find my code based on [Java 2D Game Development](https://www.youtube.com/watch?v=VE7ezYCTPe4&list=PL8CAB66181A502179) by vanZeben~~
     * [X] ~~**Platformer Tutorial**: Find my code based on [Java 2D Game Programming Platformer Tutorial](https://www.youtube.com/watch?v=9dzhgsVaiSo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv) by ForeignGuyMike~~
@@ -62,95 +57,290 @@ more precise (float, double) figures for game logic.~~
     * [X] ~~**Implement new UI for menus**: Use JavaFX features to build a simple UI for the MainMenu, PauseMenu, and 
     DeathMenu.~~
 ---
-## Game Development Todo Lists (2021-2022)
-* [ ] **Top-Down GameState Tasks**:
-    * [ ] **Improve collision logic (wall sliding)**: Right now, when you collide with a solid tile or entity your 
-    movement stops. That's ok if you're moving perpendicular to the surface, but not if you're moving diagonally against
-    it. Logic should be added that checks for this diagonal movement and only restricts the perpendicular vector. The
-    goal is to allow the player to slide against the colliding tile/entity in the parallel direction.
-    * [ ] **Improve tile graphics**: Right now, there are only basic low resolution tiles for grass and water. These 
-    tiles, and perhaps the tile system itself, needs to be improved to allow for more detailed and varied ground tiles.
-    This should include a few different grass tiles, dirt tiles, grass/dirt border tiles, grass/water border tiles,   
-    * [ ] **Add level structures**: Right now, there are only blank solid tiles. Tiles that show graphics for buildings,
-    cliffs, caves, and other solid topography need to be added.
-        * [ ] **Add top-down entrance/exit doors**: On level structures like houses, stores, buildings, and castles; add 
-            outer doors that when the player collides with them the top-down level changes to the appropriate level for that 
-            structure and the player is spawned at their inner enterance/exit door.
-                * [ ] **Create house levels**: Create a few small levels that correspond to houses and buildings.
-                * [ ] **Create castle levels**: Create a few larger levels that correspond to castles and contain multiple 
-                doors to move from room levels in the castle.
-                * [ ] **Create NPCs for houses and castles**: Create some friendly NPCs to interact with in each of the house, 
-                store, building, and castle levels.
-        * [ ] **Add platformer entrance doors**: On level structures like caves or ruins, add doors that when the player 
-                collides with them the game state changes to Platformer and opens the appropriate Platformer level.
-    * [X] ~~**Implement Chat/Dialog UI Window**: Add a text box UI component that accepts typed text input from the user 
-    and displays the result in the text box after typing Enter or clicking a Send button. The chat/dialog should be 
-    semi-transparent so as to not block view of the level.~~
-        * [ ] **Experiment with Chat Commands**: Experiment with different chat commands like "/say (message)" or 
-            "/shout (message)" that show up in different colors in the Chat window. "/tell (EntityName) (message)" should 
-            display purple text in the window and allow for direct conversation with the Entity specified in the first 
-            argument. 
-        * [ ] **Experiment with Game Commands**: Experiment with some basic commands which will return some game 
-        information or modify the game state. These commands should be prefaced with a identifying character like '/' 
-        or ';', and accept parameters. Example: typing "/getLocation" should display the player's current X/Y coordinates. 
-        "/getTime real" should display the current real-life time, while "/getTime game" should display the current game world 
-        time. "/setTime game (day) (hour) (minute)" should adjust the time of day to the specified day/hour/minute, if 
-        hour or minute aren't provided then the beginning of the day or hour should be used. Brainstorm more useful ideas.
-    * [ ] **Experiment with chat bubbles**: Test ideas on adding a chat bubble above the player when they "/say" something
-    * [ ] **Add non-combat NPC entities**: Add a couple different non-combat entities that allow for some conversation 
-    and other interaction. Ideas: Quest giver, Quest participant, Merchant, Friend, Stranger, etc.
-        * [ ] **NPC time of day location change**: Depending on the game time, static NPCs should appear in a different 
-        static location. If they are pacing/wandering they should move to a different location and pace/wander there.
-        * [X] ~~**Implement NPC chat conversation**: When you approach an NPC and hail them, they should respond with text 
-        in the chat window. This chat should include trigger phrases that, when the user repeats back to them, continues
-        the conversation. Inspiration: Everquest quest dialogs.~~
-            * [ ] **NPC behavior change with chat**: Test trigger phrases changing the NPCs behavior.
-                * [ ] **Phases cause NPC movement changes**: Trigger phrases should be able to cause NPCs movement to 
-                change (~~stop wandering~~, wander in a different pattern, follow the Player, )
-                * [ ] **Finishing conversations open new ones**: Finishing a conversation should cause them to start a 
-                different conversation the next time they are hailed.
-                * [ ] **NPC conversations change with game time**: Depending on the game time, the NPC should react to 
-                chat conversation differently.
-        * [ ] **Implement NPC party system**: (TODO)
-        * [ ] **Add Currency system**: Add a simple inventory window that displays the amount of money the player has.
-        * [ ] **Implement Quest System**: Implement a system that allows the user to get a quest from an NPC, track the 
-        quest in a UI window, fulfill the quest's requirements (test something simple like going to a specified location
-        and talking to a different NPC), and then returning to the quest giver with the quest completed to receive a 
-        reward.
-        * [ ] **Quest Reward: Currency**: When the user finishes a quest, reward them with some money and add it to 
-        their inventory.
-        * [ ] **Implement Merchant System**: Add a system that allows the user to buy items from and sell items to 
+### Overworld (Jan 2021) - Omnia v0.0.2
+#### Rewrite the Top-Down gamestate 
+[Github project board](https://github.com/wforbes/Omnia/projects/5)
+
+It's clear that the Top-Down gamestate is very limited in it's 8-bit graphics capability. This month I'm focused on rewriting
+ the Top-Down gamestate to be able to handle more rich graphics like the Platformer gamestate, retaining the same Top-Down
+ mechanics and utilizing the newly added JavaFX backbone to the game.
+* [X] ~~**Copy Existing Code** - Copy in the base code from the Top-Down and the Platformer, using the most desirable pieces
+ of either and structuring it in an organized way.~~ 
+* [X] ~~**Add Player and Level** - Implement tilemap and player with movement functionality~~
+* [X] ~~**Add image-based tilemap system** - Replace the .map file tilemap system of the platformer with the image-based 
+tilemap system of the Top-Down engine~~ 
+* [X] ~~**Add NPC logic and render NPC** - Add the Mob and NPC classes and get them rendering on the screen~~
+* [X] ~~**Add GUI logic with chat window** - Add the GUI logic from Top-Down and add it's chat window. Add a developer 
+    window that shows useful information when coding and add a UI display window that toggles the other two windows open 
+    or closed.~~ 
+* [X] ~~**Add in mob collision** - Add collision logic from Top-Down and improve it to use circular collision boundries. 
+    Simplify the collision detection algorithm. Add rendering of collision boundaries and a toggle button in the dev 
+    window to show/hide the boundaries.~~
+* [X] ~~**Implement NPC movement** - Add in the automated NPC movement from Top-Down.~~
+* [X] ~~**Style the GUI with CSS** - Add some styles to the GUI to get away from the default JavaFX look~~
+* [X] ~~**Add GUI resizing** - Add the ability to resize GUI windows.~~
+* [X] ~~**Render mob names** - Render each Mob's name above their head with JavaFX Text objects~~
+* [X] ~~**NPC dialog and movement changes** - Add NPC dialog from Top-Down state, and stop NPC movement when they respond 
+to dialog.~~
+* [X] ~~**Add NPC collision reaction** - When an NPC collides with something while pacing, have them react to it. Have them 
+    change direction and walk their path in the other direction. Have them stop and wait for their path to be clear and 
+    continue in the same direction when it is. Have them simply stop walking indefinitely.~~
+* [X] ~~**Improve chat window features** - Add a key/focus flow to quickly press Enter, start typing a chat message, send 
+the message and keep playing quickly.~~
+* [X] ~~**Implement Player running** - Pressing the SHIFT key while moving increases movement and animation speed.~~
+* [ ] **Add Pause feature and menu** - Add the pause menu from the Top-Down engine.
+* [ ] **Add collidable environment structures** - Add a layer of objects that render over the ground tiles which mobs 
+    collide with. 
+* [ ] **Implement water tiles** - Add animated water tiles from the Top-Down engine. When a mob enters these tiles they 
+    should appear to be submerged.
+* [ ] **Slow swimming speed** - While a mob is moving through water, their movement speed should be reduced.
+* [ ] **Add simple settings window** - Add a simple GUI settings window with the ability to change Player movement keybinds
+* [ ] **Refine mob collision boundaries** - Modify the mob's collision boundaries
+* [ ] **Create GUI window hierarchy** - The most recently interacted with or opened GUI windows should appear on top of 
+others to emulate windows in an operating system.
+---
+### Engine Improvements and Homework (Feb 2021) v0.0.3
+#### Resizing the game & starting real documentation
+* [ ] **Scale and Resize the game**
+    * [ ] **Enable Full Screen Mode**: The game application should run in Full Screen Mode and play well in all common 16:9 
+    resolutions (1920x1080, 1600x900, 1366x768, 1280x720, 960x540, 854x480, 640x360) - optionally/experimentally on 4k (3840x2160)
+    * [ ] **Enable Windowed Mode**: The game application runs in Windowed Mode and plays well in various resizes of the 
+    window, down to some minimum size (like 640 wide)
+    * [ ] **Ensure everything works**: Test all existing features at all available resolutions/scales and make sure 
+    everything works as intended. Fix anything that's amiss. 
+* [ ] **Begin the Design Document**
+    * [ ] **Research 'Design Document' formats**: Find the best way to structure and best content to include in the
+    design document. Explore large picture concepts and define should be accomplished with the game.
+    * [ ] **Define a GUI Design**: Explore ideal GUI looks and functionality, realize what's actually possible with fx css
+    * [ ] **Define a Art Design**: Explore details from favorite games to draw inspiration. 
+* [ ] **Main Menu improvements**
+    * [ ] **Redesign visuals**: Redesign to reflect what was discovered in the design document
+    * [ ] **Add Info/About page**
+* [ ] **Create ALOT of pixel art**: Draw and create and then draw some more.
+* [ ] **Experiments: Overworld Movement**: 
+* [ ] **Experiments: Overworld Combat**
+* [ ] **Backlog**: Experiment with anything from the backlog that seems interesting.
+
+---
+### Quest System (Mar 2021) v0.0.3
+#### Add a simple quest system - inspired by mmos like WoW and Everquest
+* [ ] **Start a quest through dialog**: The player can gain a quest through dialog with an NPC that is assigned and 
+persisted in memory until completed 
+    * [ ] **Quest is added to Quest GUI**: Quest assignment adds the quest to the active quests in the Quest Journal
+* [ ] **Quest Journal Window**: The Quest Journal window displays all the player's active quests and details
+    * [ ] **Quest List**: The active quests are displayed in a list on the window
+    * [ ] **Quest Details**: Clicking a quest list item displays details about that quest in the Quest Details pane
+* [ ] **Quest Objectives**: Quests are made up of multiple objectives that, when each are completed, the user is 
+notified and the Journal is updated
+    * [ ] **Notification window**: A small GUI window opens and closes automatically to inform the user of the 
+    completion of an objective
+    * [ ] **Location Objectives**: When the player enters a specified map area, the objective is completed
+    * [ ] **NPC Interaction Objective**: Talking or interacting with a specified NPC completes the objective
+    * [ ] **Delivery Objectives**: Giving a specified item to the right NPC will complete the objective
+    * [ ] **Loot Objective**: Gaining an specified item completes the objective (*Inventory system)
+    * [ ] **Combat Objective**: Fighting or killing a specified mob(s) will complete the objective (*Combat system)
+* [ ] **Finishing a Quest**: Completing all objectives of a Quest will grant the player with a reward
+    * [ ] **Quest Completion Window**: Quest Completion Window displays final dialog/info and rewards from the quest
+    * [ ] **Currency Reward**: Being rewarded with currency adds the amount to user's inventory and notifies user 
+    (*Inventory system)
+    * [ ] **Item Reward**: Being rewarded with an item adds the item to user's inventory and notifies user (*Inventory system)
+* [ ] **Optional Considerations**
+    * [ ] **Click interaction**: Clicking on NPC opens quest interaction window for starting quests and finishing quests
+    * [ ] **Available Quest Indicator**: NPC has something to notify you they have an available quest, Exclamation 
+    mark/Question mark above head
+
+---
+### Inventory System (Apr 2021) v0.0.4
+#### Add an inventory system - inspired by mmos like WoW and Everquest
+* [ ] **Inventory Window**: The user can open a GUI Inventory Window which display slots which may be occupied with items, 
+ 		represented by icon sprites
+* [ ] **Moving items**: The user can pick up and move items with the cursor by clicking them
+    * [ ] **Slot Item Pickup**: Left-clicking an item in an inventory slot removes the item from the slot and places it on the
+        cursor - carried on the lower right corner of the cursor
+    * [ ] **Slot Item Drop**: Left-clicking an empty inventory slot when there's an item on the cursor places it in the slot, 
+        removing it from the cursor
+    * [ ] **Item Slot/Cursor Swap**: Left-clicking an empty inventory slot when there is another item on the cursor swaps the 
+        item in the slot with the item on the cursor
+* [ ] **Deleting items**: The user can click a 'Destroy' button in the Inventory Window which will delete the item carried on 
+    the cursor
+* [ ] **Stacking items**: Some items can be stacked with items of the same type
+    * [ ] **Stack count**: Stacking items are displayed with the stack quantity number shown over the lower right corner of the
+        item sprite
+    * [ ] **Stack pickup**: Picking up a stacked item with more than one in the stack opens a quantity selection window to choose
+        how much of the stack to pick up, clicking OK places the chosen quantity on the cursor
+    * [ ] **Stack fill**: Placing a stacked item in a slot with the same item type fills the stack in the slot with as much as it can
+    * [ ] **Stack drop**: Placing a stacked item in an empty slot moves the whole stack into that empty slot
+* [ ] **Item Inspection**: The user can see details about items like their description, effects, and stats by opening the Item Inspection Window
+* [ ] **Item Activation**: Some items can be right-clicked to activate them
+    * [ ] **Usable Items**: When activated, a usable item triggers an effect specific to the item
+    * [ ] **Consumable Items**: (food, drink, magic item) When activated, a consumable item triggers an effect and it's 'use count' 
+        is decremented, once the 'use count' reaches zero, it's removed/destroyed
+    * [ ] **Readable Items**: (books, scrolls, notes, documents) When activated, a readable item opens a Reading Window that displays
+        the text or image content of that item
+    * [ ] **Container Items**: (bags, backpacks, satchels) When activated, a container item opens a small inventory window with that 
+        container's available slots. Containers essentially expand the player's inventory to hold more items. Items can be 
+        added/removed from these slots the same way the inventory window's slots do. Closing this window and reopening it persists 
+        these items in the correct slots.
+* [ ] **Equipable Items**
+    * [ ] **Equipable Item Slots**:Equipable items can be placed into normal inventory slots but can only placed into their designated 
+    * [ ] **Slot Types**:
+        - Worn/Clothing/Armor: left earring, neck, head, face, right earring, back, shoulder, right wrist, hand, right ring,
+                feet, legs, left right, waist, left wrist, arms, chest
+        - Held/Weapon/Shield: Right hand, Left hand, range, ammo
+* [ ] **Item Weights**: Items each have a 'weight' attribute which, when they occupy the player's inventory, are added to a total weight
+        being held by the player that displays in the Inventory Window
+* [ ] **Ground Items**: Items can be dropped on and picked up from the ground
+    * [ ] **Dropping Items**: Left-clicking on the map with an item on the cursor will place an item icon on the ground near the player
+    * [ ] **Picking Up Items**: Left-clicking on an item icon on the ground places it on the cursor and opens the inventory window
+        * [ ] **Optional**: Left-clicking on an item icon on the ground will automatically place it in the first available inventory slot
+
+---
+## Unplanned Backlog (2021)
+#### Overworld
+* [ ] **Combat System**:
+    * [ ] **Enemy Mob**: Add Enemy Mob that's collidable with attacks
+        * [ ] **Attack button**: When the "A" button is pressed, an attack action occurs. 
+        * [ ] **Emit Attack**: When an attack action occurs, a 170 degree triangle region is 'swept' for a collision check
+        * [ ] **Receive Attack**: If an enemy's hitbox has collided with the attack, register that the attack happened.
+        * [ ] **Notify Attack Landing**: When the attack happens, display a message in the chat window to notify that 
+        the attack landed
+        * [ ] **Aggro Range**: Add enemy aggro range, when the player enters it - the enemy is flagged as 'attacking'
+        * [ ] **Enemy Attack**: Add enemy melee attack, when the player is in melee range the enemy should swing at them using 
+        the same mechanics as player attacks
+        * [ ] **Enemy Combat Movement**: Enable enemy movement to pursue the player directly.
+        * [ ] **Enemy Combat AI**: Give the enemy AI techniques to fight with.
+        * [ ] **Damage numbers**: Render damage numbers on the canvas near the associated Mob.
+* [ ] **Player 'Action' Movement**:
+    * [ ] **Strafing**: move sideways while continuing to face a forward direction
+    * [ ] **Jumping**: scale a jumpable structure
+    * [ ] **Falling**: jump/fall down ledges
+    * [ ] **Dodging**: jump, dive and roll to avoid combat elements (melee, projectile, spells)
+    * [ ] **Dashing**: move rapidly forward for a moment to close distance quickly 
+* [ ] **Entrance/Exit Doors**: 
+* [ ] **Create first interior area**:
+* [ ] **Game Command System**:
+* [ ] **Experiment with chat bubbles**: Test ideas on adding a chat bubble above the player when they "/say" something
+* [ ] **Finishing conversations open new ones**: Finishing a conversation should cause them to start a 
+        different conversation the next time they are spoken to.
+* [ ] **Merchant System**: Add a system that allows the user to buy items from and sell items to 
         Merchant NPCs by deducting or adding currency in exchange for items in the player's inventory.
-    * [ ] **Implement Player inventory UI**: (todo)
-    * [ ] **Add health/damage system**: (todo)
-    * [ ] **Implement Player Vitals Status UI**: (todo)
-    * [ ] **Implement basic combat**: (todo)
-* [ ] **UI/Game-Wide Tasks**: (todo)
-    * [ ] **Implement Player Leveling/Experience System**: (todo)
-    * [ ] **Implement Player Statistics System**: (todo)
-    * [ ] **Implement Skills System**: (todo)
-    * [ ] **Implement Spells System**: (todo)
-    * [ ] **Implement Class System**: (todo)
-* [ ] **Platformer GameState Tasks**: (todo)
-    * [ ] **Add a wide array of enemy NPC entities**: (todo)
-    * [ ] **Add friendly NPC entities**: (todo)
-    * [ ] **Implement Dialog UI**: (todo)
-    * [ ] **Add player/entity collision**: (todo)
-    * [ ] **Add health/damage system**: (todo)
-    * [ ] **Implement Player Vitals Status UI**: (todo)
+* [ ] **NPC party system**:
+* [ ] **Health/damage system**:
+* [ ] **Player Vitals Status UI**:
+* [ ] **Player Leveling/Experience System**:
+* [ ] **Player Statistics System**:
+* [ ] **Skills System**:
+* [ ] **Class System**:
+* [ ] **Mini-Map**: The nearest section of the Area is displayed in a miniature format with the 
+        player's location and other noteworthy locations indicated with icons
+* [ ] **World Map**:
+    - The player can open a large GUI window that displays a map of the Area, zoom out to access 
+        the map of the world, or zoom in from world or move over from surrounding Areas.
+    - Landmarks and other important locations are indicated on the Area maps, major landmarks 
+        are indicated on the world map
+* [ ] **Game Time**
+    - Day/Night cycle
+    * [ ] **NPC time of day location change**: Depending on the game time, static NPCs should appear in a different 
+            static location. If they are pacing/wandering they should move to a different location and pace/wander there.
+    * [ ] **NPC conversations change with game time**: Depending on the game time, the NPC should react to 
+    chat conversation differently.
+* [ ] **Worn Item visuals**
+* [ ] **Held Items/Weapon visuals**
+* [ ] **Projectiles**
+* [ ] **Particles / Effects**
+    - Particle Sprites
+    - Rendered
+    - Glitch/Distortions
+* [ ] **Spell system**
+* [ ] **Time Speed Changes**: Slow down or speed up immediate time spans
+* [ ] **Dynamic Structures**
+    - Movable Structures: Player can push or pull structures to a different place on the tilemap
+        - Push boxes and stones like in Zelda
+    - Destructable Structures: Player can act on a structure to alter it's appearance or remove it
+        - Melee hits can break a fence or weaker object
+        - Projectile spells
+        - Holding a Mining Pick can break a Mineral vein 
+    - Interactive Structures: Pressing an interact button changes their state
+    - Opening Gates: interacting with a switch or button opens
+    - Placable Structures: Player can build/place tear-down/pickup a structure on the tilemap
+* [ ] **Vehicles**:
+
+#### Platformer
+- Review systems and features from Overworld to add to Platformer
+- Redesign and resize tile sets
+- Implement image based tilemap system
+- Enterance/Exit doors to move from Overworld to Platformer and back
+- Items
+    - Collectable items
+        - Coins
+        - Item sets (like yoshi coins)
+    - Worn Item visuals
+        - Held Items/Weapon visuals
+- Mechanics
+    - Player/Mob collision
+        - Damage from collision on player
+        - Damage on Mob from head collision
+        - Damage on Mob from attack collision
+        - Damage on Mob from projectile collision
+    - Running/Sprinting: Fine tune player movement
+    - Dash: Move foward quickly over a short distance leaving a blur behind you
+        - On the ground
+        - While jumping
+    - Double Jump
+    - Wall Jumping
+    - Wall Climbing
+    - Improved Gliding
+    - Flying
+    - Diagonal/Vertical Directed Projectiles
+    - Phasing avoids attacks
+    - Blocking reduces damage from attacks
+    - Time Speed Changes - Slow down or speed up immediate time 
+    - Time Reversal
+    - Structures
+        - Structures that damage and shoot projectiles
+        - Structures that help and heal the player
+        - Structures that can be climbed on
+    - Swimming
+        - Water pools hamper player movement
+    - Water level
+- GUI / Indicators
+    - Damage is indicated by floating numbers	
+- Environmental Hazards
+#### Game Modes
+- Developer Mode
+    - Move the current game state engine options into a developer menu that offer playing with expanded features that 
+    aid in development
+- Sandbox Mode
+    - Move the current game state engine options into a Sandbox menu
+    - Modify the game states to play starting from a list of options/settings to enter the sandbox with
+    - Game engines run from Sandbox menu in the format that they exist with now, as an open world that is played non-linearly
+- Story Mode
+    - Create a new save file
+    - Playing a save file runs the game on a scripted story mode which progresses through phases linearly
+    - Saving the game persists all the progress in the story progress and game data
+#### Turn-Based Game State
+- Experiment with a game state that provides turn-based combat, like original Final Fantasy games and Pokemon games.
+#### Puzzle Game State
+- Create a game state that can support multiple types of puzzle games similar to Dr.Mario, Yoshi, Yoshi's Cookie, 
+Bust-a-Move, Tetris, Bomberman, Minesweeper, etc.
+- Invent a new Puzzle style game that is inspired by the previously mentioned games.
+#### Aerial Flying Game State
+- Create a fast-paced side-scrolling game state that allows the player to maneuver a flying sprite and engage in dog-fights
+
 
 ---
 ## Experimental / Research
 
-### Other Engines
-* [ ] **Turn-Based Game State**: Experiment with a game state that provides turn-based combat, like old Final Fantasy 
-and Pokemon games.
+### C++ Rewrite
+* [ ] **Build C++ Version**: Recreate basic game features in C++ and compare the process with working in Java 
 
 ### Networking
 * [ ] **Client-to-Client Networking**: Add the networking classes from vanZeben's tutorials and successfully network two
 game clients on two different PCs over LAN and WAN. Experiment with different configurations and implementations.
 * [ ] **Client-to-Server Networking**: Set up a simple Node.js web server on the Google Cloud and experiment with running 
 sockets between game clients and the server, updating server logic and coordinating online play. 
+* [ ] **Server API**: Create an API that interfaces with another of my projects [Lvlz.app](https://levelz.app) and 
+explore ways that real-life accomplishments recorded in Lvlz.app can be applied to game rewards in Omnia.
 * [ ] **In App Web Browser**: Explore the web browser capability provided by JavaFX.
 
 ### Game Ports and Libraries
@@ -158,17 +348,6 @@ sockets between game clients and the server, updating server logic and coordinat
 * [ ] **Research browser port or JavaScript rewrite**: Research and experiment with porting/rewriting the game to JavaScript for the browser
 * [ ] **Research Java game libraries**: Research and experiment with game libraries like [FXGL](http://almasb.github.io/FXGL/), [LWJGL](https://lwjgl.org), 
 and others.
----
-## Documentation
-* [ ] **Begin a Game Design Document**
-    * [ ] Brainstorm on the following topics:
-        * [ ] **Define Prototype Complete**: What should the user be able to do on the game for the 'prototype' status
-        to be complete and 'alpha' status to begin.
-        * [ ] **Define Full Scope**: Outline the full scope of the project to be ready for production (3 year timeframe)
-        * [ ] **Mechanics**: Start a list of how the mechanics of the prototype game will work and their purpose.
-        * [ ] **Storyline**: Define the characters and setting, the journey they go on, the problems they need to solve
-        * [ ] **Education**: Pull together some basic things that the game should teach in it's educational content
-
 ---
 ---
 
@@ -180,9 +359,10 @@ the old gameboy pokemon games and other old RPGs like Final Fantasy. The other w
 out of them while I finished my degree. Shortly after starting that endeavor I was lucky enough to be hired at my first 
 tech job working on a huge C# based web app, so my focus shifted to that style of programming. It's been 7 years now and 
 I've learned a lot about software development after working for 3 other companies. Now that I'm in a position where I 
-work from home and I'm enrolled at [WGU](https://wgu.edu) to finish my bachelor's degree; I'm dusting off this old 
-project and starting to work on it again with the hopes of being able to use it as my Senior Capstone project for 
-school.
+work from home and I've re-enrolled in school at [WGU](https://wgu.edu) to finish my bachelor's degree; I'm dusting off 
+this old project and starting to work on it again with the hopes of being able to use it as my Senior Capstone project for 
+school. I'd like to put my head down for all of 2021 and just code/draw as much as possible, then re-evaluate the project
+when it's time to write my final capstone papers for school.
 
 ---
 
@@ -196,7 +376,7 @@ but this won't happen soon. If there's anything I can do to help your work, plea
 #### BSD 4-Clause
 Copyright (c) 2020 William Forbes c/o Submodern Studios, LLC. All rights reserved.
 
-This software was developed by William Forbes at Submodern Studios, LLC.
+This software was developed with technology made by William Forbes at Submodern Studios, LLC.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are

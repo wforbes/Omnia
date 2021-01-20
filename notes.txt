@@ -1,3 +1,281 @@
+To-do list for 1/18
+
+start @ 11:40..50...somethin'
+X Register mouse events (click, position) with MouseController
+X Show geometry of where a mouse click happens
+break @ 2:40pm
+
+start @ 6:10pm
+X Pressing enter with the chatwindow already open should request focus to the chat textfield
+X Stop NPC walking animation when they are spoken to and respond
+X Turn NPC to face the source of dialog speaker
+X Stop NPC walking animation when they collide with something
+X Add NPC ability to turn around and walk the other way when they collide with something
+X Add NPC ability to wait they collide with something until their path is clear and continue pacing
+X Fix ClickCircle by finding the difference in screen position when moving
+
+- Add Pause menu to Overworld
+- Add Structures to be rendered on the area map - simple wall and more complex house, etc.
+- Add water/liquid tiles that animate and Mobs appears to be submerged/swimming in when occupying them
+
+==== 1/23
+- Add running: Holding shift while walking increases Player speed
+- Modify Mob speed while swimming
+=1/24
+- Add settings window
+- Add setting for click-to-move/keyboard functionality
+- Add setting for keybinds
+=1/26
+- refine mob collision bounds and geometry to appear and operate closer to the sprites feet/bottom
+- render Circle Clicks to appear behind Mobs
+=1/27
+- Add shadows underneath Mobs
+=1/28
+- Work out system of GUI window hierarchy to determine which GUI windows should be on top of others
+	- When a UI window is opened, it should be on the top of all others
+	- When a UI window is clicked or interacted with, it should be on top of all others
+==== 1/30
+
+v0.0.4 - "Overworld Core" - due 5/31/21 (18 weeks)
+1 - Fullscreen and Windowed mode
+	1.1 -  The game application runs in Full Screen Mode and plays well in all common 16:9 resolutions (1920x1080, 1600x900, 
+		1366x768, 1280x720, 960x540, 854x480, 640x360) - optionally/experimentally on 4k (3840x2160)
+	1.2 - The game application runs in Windowed Mode and plays well in various resizes of the window, down to some 
+		minimum size (like 640 wide)
+2 - Design Document
+	2.1 - GUI assets are styled based on a design document that outlines how the GUI should be styled
+	2.2 - Game assets are styled based on a design document that outlines how sprites and tiles should be styled
+3 - Main Menu improvements
+	3.1 - The game's main menu is redesigned to reflect the design document (2)
+	3.2 - The game's main menu contains an "Info" or "About" menu which provides basic information about the game with links 
+	to webpages with more information, or to return to the main menu.
+4 - Overworld Visuals
+	4.1 - The overworld can render tile sets and sprites of any dimension up to over 100x100 pixels
+	4.2 - The overworld's Tile set has been expanded with a variety of world tiles to include Grass, Dirt, Dirt paths, Stone 
+	pathways, and others that are sized to larger dimensions
+	4.3 - The overworld's Entity sprite set has been expanded with a variety of Player, NPC, Enemy, and animals that are sized
+	to larger dimensions
+	4.4 - The overworld's Structure sprite set is expanded with a variety of objects, barriers, buildings, and terrain that are 
+	sized to varying dimensions - both large and tiny
+5 - Quest system
+	5.1 - The player can gain a quest through dialog with an NPC that is assigned and persisted until completed
+		5.1.1 - Quest assignment adds the quest to active quests in the Quest journal
+	5.2 - The Quest Journal window provides the UI to display all the player's active quests
+		5.2.1 - Active quests are displayed in a list
+		5.2.2 - Clicking a quest list item displays details about that quest in the Quest Information pane
+			5.2.2 Details0 - Quests have a Name, Description, List of Rewards, List of Objectives
+			5.2.2 Details1 - Quests names are short phrases that identify the quest
+			5.2.2 Details2 - Quest descriptions are a couple paragraphs that describe what the quest is about
+				and may contain instructions or hints
+			5.2.3 Details3 - Quest reward list explains what can be gained from the quest
+	5.3 - Quests are made up of multiple objectives that, when each are completed, the user is notified
+		5.3.1 - Notification window is a small GUI window that opens and closes automatically to inform the user of 
+			the completion of an objective
+		5.3.2 - Location objective: When the player enters a specified map area, the objective is complete
+		5.3.3 - NPC interaction objective: Talking or interacting with a specified NPC completes the objective
+		5.3.4 - Delivery objective: Giving a specified item to the right NPC will complete the objective
+		5.3.5 - Loot objective: Gaining an specified item completes the objective (*Inventory system)
+		5.3.6 - Kill/combat objective: Fighting or killing a specified mob(s) will complete the objective (*Combat system)
+	5.4 - Completing all objectives of a Quest will grant the player with a reward
+		5.4.1 - Quest Completion Window displays final dialog/info and rewards from the quest
+		5.4.2 - Currency Reward: Being rewarded with currency adds the amount to user's inventory and notifies user (*Inventory system)
+		5.4.3 - Item Reward: Being rewarded with an item adds the item to user's inventory and notifies user (*Inventory system)
+	5.5 - Optional considerations
+		5.5.1 -?- Clicking on NPC opens quest interaction window (starting quest, finishing quest)
+		5.5.2 -?- NPC has something to notify you they have an available quest, Exclamation mark/Question mark above head
+6 - Inventory system
+ 	6.1 - Inventory Window: The user can open a GUI Inventory Window which display slots which may be occupied with items, 
+ 		represented by icon sprites
+	6.2 - Moving items: The user can pick up and move items with the cursor by clicking them
+		6.2.1 - Slot Item Pickup: Left-clicking an item in an inventory slot removes the item from the slot and places it on the
+			cursor - carried on the lower right corner of the cursor
+		6.2.2 - Slot Item Drop: Left-clicking an empty inventory slot when there's an item on the cursor places it in the slot, 
+			removing it from the cursor
+		6.2.3 - Item Slot/Cursor Swap: Left-clicking an empty inventory slot when there is another item on the cursor swaps the 
+			item in the slot with the item on the cursor
+	6.3 - Deleting items: The user can click a 'Destroy' button in the Inventory Window which will delete the item carried on 
+		the cursor
+	6.4 - Stacking items: Some items can be stacked with items of the same type
+		6.4.1 - Stack count: Stacking items are displayed with the stack quantity number shown over the lower right corner of the
+			item sprite
+		6.4.2 - Stack pickup: Picking up a stacked item with more than one in the stack opens a quantity selection window to choose
+			how much of the stack to pick up, clicking OK places the chosen quantity on the cursor
+		6.4.3 - Stack fill: Placing a stacked item in a slot with the same item type fills the stack in the slot with as much as it can
+		6.4.4 - Stack drop: Placing a stacked item in an empty slot moves the whole stack into that empty slot
+	6.5 - Item Inspection 
+		6.5.1 - The user can see details about items like their description, effects, and stats by opening the Item Inspection Window
+	6.6 - Item Activation: Some items can be right-clicked to activate them
+		6.6.1 - Usable Items: When activated, a usable item triggers an effect specific to the item
+		6.6.1 - Consumable Items: (food, drink, magic item) When activated, a consumable item triggers an effect and it's 'use count' 
+			is decremented, once the 'use count' reaches zero, it's removed/destroyed
+		6.6.2 - Readable Items: (books, scrolls, notes, documents) When activated, a readable item opens a Reading Window that displays
+			the text or image content of that item
+		6.6.3 - Container Items: (bags, backpacks, satchels) When activated, a container item opens a small inventory window with that 
+			container's available slots. Containers essentially expand the player's inventory to hold more items. Items can be 
+			added/removed from these slots the same way the inventory window's slots do. Closing this window and reopening it persists 
+			these items in the correct slots.
+	6.7 - Equipable Items
+		6.7.1 - Equipable items can be placed into normal inventory slots but can only placed into their designated 
+		6.7.2 - Equipable item slots include:
+				Worn/Clothing/Armor: left earring, neck, head, face, right earring, back, shoulder, right wrist, hand, right ring,
+					feet, legs, left right, waist, left wrist, arms, chest
+				Held/Weapon/Shield: Right hand, Left hand, range, ammo
+	6.8 - Item Weights
+		6.8.1 - Items each have a 'weight' attribute which, when they occupy the player's inventory, are added to a total weight
+			being held by the player that displays in the Inventory Window
+	6.9 - Ground Items - Items can be dropped on and picked up from the ground
+		6.9.1 - Left-clicking on the map with an item on the cursor will place an item icon on the ground near the player
+		6.9.2 - Left-clicking on an item icon on the ground places it on the cursor and opens the inventory window
+			- *Optional: Left-clicking on an item icon on the ground will automatically place it in the first available inventory slot
+
+v0.0.4 Schedule
+Work 2-3 hours per day, work quickly, don't go off on tangents
+1 - Fullscreen and Windowed mode (1 week: Feb 1-7)
+	1.1 - Full Screen Mode (3 days: 2-3 hours/day: 6-9 Hours)
+	1.2 - Windowed Mode (4 days: 2-3 hours/day: 8-12 Hours)
+2 - Design Document (2 weeks: Feb 8-21) - 22-33hours
+	2.0 - Research the best formats for design documents (3d: 2-3h/d: 6-9h)
+	2.1 - Focus on GUI asset designs, JavaFX, concepts (4d: 2-3h/d: 8-12h)
+	2.2 - Focus on Game asset designs, favorite games, concepts (4d: 2-3h/d: 8-12h)
+3 - Main Menu improvements (1 week: Feb 22-28)
+4 - Overworld Visuals (2 weeks: Feb 22-Mar 7)
+5 - Quest system (3 weeks: Mar 8-28)
+6 - Inventory system (4 weeks: Mar 29-Apr 25)
+BONUS! (5 weeks added for extra time: Apr 26-May 31)
+
+Work ideas for May-December 2021
+
+- Save Files
+	- Overworld gamestate can save the current state of the game into a file that persists the data
+	- 
+
+Overworld Game State
+	- Player Movement
+		- Jumping: scale a jumpable structure
+		- Dodging: jump, dive and roll to avoid combat elements (melee, projectile, spells)
+	- Mini-Map
+		- The nearest section of the Area is displayed in a miniature format with the 
+			player's location and other noteworthy locations indicated with icons
+	- World Map
+		- The player can open a large GUI window that displays a map of the Area, zoom out to access 
+			the map of the world, or zoom in from world or move over from surrounding Areas.
+		- Landmarks and other important locations are indicated on the Area maps, major landmarks 
+			are indicated on the world map
+	- GameTime
+		- Day/Night cycle
+	- Worn Item visuals
+	- Held Items/Weapon visuals
+	- Projectiles
+	- Particles / Effects
+		- Particle Sprites
+		- Rendered
+		- Glitch/Distortions
+	- Spell system
+	- Time Speed Changes: Slow down or speed up immediate time spans
+	- Dynamic Structures
+		- Movable Structures: Player can push or pull structures to a different place on the tilemap
+			- Push boxes and stones like in Zelda
+		- Destructable Structures: Player can act on a structure to alter it's appearance or remove it
+			- Melee hits can break a fence or weaker object
+			- Projectile spells
+			- Holding a Mining Pick can break a Mineral vein 
+		- Interactive Structures: Pressing an interact button changes their state
+		- Opening Gates: interacting with a switch or button opens
+		- Placable Structures: Player can build/place tear-down/pickup a structure on the tilemap
+	- Vehicles
+
+Platformer Game State
+	- Redesigned and resized tile sets
+	- Player/Mob collision
+		- Damage from collision on player
+		- Damage on Mob from head collision
+		- Damage on Mob from attack collision
+		- Damage on Mob from projectile collision
+	- Worn Item visuals
+		- Held Items/Weapon visuals
+	- Double Jump
+	- Wall Jumping
+	- Running
+	- Rush/Sprint Burst: Move foward quickly over a short distance leaving a blur behind you
+		- On the ground
+		- While jumping
+	- Damage is indicated by floating numbers
+	- Diagonal/Vertical Directed Projectiles
+	- Phasing avoids attacks
+	- Blocking reduces damage from attacks
+	- Time Speed Changes - Slow down or speed up immediate time 
+	- Time Reversal
+	- Structures
+		- Structures that damage and shoot projectiles
+		- Structures that help and heal the player
+		- Structures that can be climbed on
+	- Swimming
+		- Water pools hamper player movement
+	- Water level
+	- Flying
+
+Turn-Based Game State
+
+Puzzle Game State
+
+Flying Game State
+
+2022 Ideas
+Story Mode
+- Create a new save file
+- Customize a player appearance, name and basics to begin using save file
+- Playing a save file runs the game on a scripted story mode which progresses through phases
+- Saving the game persists all the progress in the story script and gameplay
+
+Sandbox Mode
+- Move the current game state engine options into a Sandbox menu
+- Modify the game states
+- Game engines run from Sandbox menu in the format that they exist with now, as an open world t
+
+Developer Mode
+- Move the current game state engine options into a developer menu
+
+=====================================
+Dev links;
+SCALING: https://stackoverflow.com/questions/16606162/javafx-fullscreen-resizing-elements-based-upon-screen-size
+STYLES: https://docs.oracle.com/javase/8/javafx/api/javafx/scene/doc-files/cssref.html
+https://stackoverflow.com/questions/30906542/how-is-the-point2d-angle-method-to-be-understood
+https://docs.oracle.com/javase/8/javafx/api/javafx/geometry/Point2D.html#subtract-double-double-
+https://docs.oracle.com/javase/8/javafx/api/javafx/scene/shape/Circle.html
+https://stackoverflow.com/questions/40729967/drawing-shapes-on-javafx-canvas
+https://docs.oracle.com/javase/8/javafx/api/javafx/scene/canvas/GraphicsContext.html#setGlobalAlpha-double-
+https://docs.oracle.com/javase/10/docs/api/javafx/animation/FadeTransition.html#byValueProperty
+https://docs.oracle.com/javase/10/docs/api/javafx/util/Duration.html
+https://docs.oracle.com/javase/8/javafx/api/javafx/animation/Timeline.html
+https://docs.oracle.com/javafx/2/animations/basics.htm
+https://stackoverflow.com/questions/29014187/fading-in-and-fading-out-of-an-circle-in-javafx-canvas
+
+https://docs.oracle.com/javafx/2/ui_controls/progress.htm
+
+Collision
+https://www.reddit.com/r/gamedev/comments/bo1q24/collisionobstructed_movement_in_top_down_2d_games/
+http://www.jeffreythompson.org/collision-detection/circle-circle.php
+
+Pathfinding
+https://en.wikipedia.org/wiki/Pathfinding#A*_algorithm
+
+More
+https://www.dummies.com/programming/java/javafx-how-to-use-property-events/
+platform run later: https://stackoverflow.com/questions/12744542/requestfocus-in-textfield-doesnt-work
+scrollpane remove border: https://stackoverflow.com/questions/17540137/javafx-scrollpane-border-and-background
+style text programmatically: https://docs.oracle.com/javafx/2/text/jfxpub-text.htm
+measure text: https://stackoverflow.com/questions/13015698/how-to-calculate-the-pixel-width-of-a-string-in-javafx
+scrollpane background color: https://stackoverflow.com/questions/22952531/scrollpanes-in-javafx-8-always-have-gray-background
+textflow css: https://stackoverflow.com/questions/46602975/javafx-css-selector-for-text-elements-in-textflow
+background insets: https://stackoverflow.com/questions/42468235/what-does-the-property-fx-background-insets-mean-and-all-means-of-its-params
+styling buttons: http://fxexperience.com/2011/12/styling-fx-buttons-with-css/
+style pressed buttons: https://stackoverflow.com/questions/30273020/style-pressed-button-in-javafx
+style title of titledpane: https://stackoverflow.com/questions/49812400/style-the-title-of-a-javafx-titledpane-with-css
+javafx buttons: http://tutorials.jenkov.com/javafx/button.html
+togglebuttons: http://tutorials.jenkov.com/javafx/togglebutton.html
+https://docs.oracle.com/javafx/2/api/javafx/scene/control/ToggleButton.html#setSelected(boolean)
+https://stackoverflow.com/questions/8247926/java-event-listener-to-detect-a-variable-change/35849077
+
 Image - https://docs.oracle.com/javase/8/javafx/api/javafx/scene/image/Image.html
 GraphicsContext - https://docs.oracle.com/javase/8/javafx/api/javafx/scene/canvas/GraphicsContext.html
 https://docs.oracle.com/javase/8/javafx/api/javafx/scene/image/PixelWriter.html
@@ -16,8 +294,6 @@ https://docs.oracle.com/javase/7/docs/api/java/awt/image/BufferedImage.html
 
 Game Loop, AnimationTimer
 https://stackoverflow.com/questions/30146560/how-to-change-animationtimer-speed
-
-
 
 
 Old project with networking...
