@@ -28,7 +28,9 @@ public abstract class Mob extends Entity {
 
     double xmap, ymap;//current area map position
     protected double speed;
+    protected double runSpeedMod = 1.5;
     protected boolean isMoving;
+    protected boolean isRunning;
     protected int numSteps = 0;
     protected int facingDir; //0-north, 1-south, 2-west, 3-east,
                             //4-nw, 5-ne, 6-sw, 7-se
@@ -110,6 +112,9 @@ public abstract class Mob extends Entity {
     }
     public MovementAnimation getMovementAnimation() {
         return this.movementAnimation;
+    }
+    public void setRunning(boolean run) {
+        this.isRunning = run;
     }
 
     void loadSprites(String path) {
@@ -245,8 +250,8 @@ public abstract class Mob extends Entity {
     }
 
     private void moveCoords(double xa, double ya) {
-        this.x += xa * speed;
-        this.y += ya * speed;
+        this.x += xa * (speed * ((isRunning)?runSpeedMod:1));
+        this.y += ya * (speed * ((isRunning)?runSpeedMod:1));
     }
 
     public void setPosition(double x, double y) {

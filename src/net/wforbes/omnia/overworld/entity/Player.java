@@ -51,20 +51,25 @@ public class Player extends Mob {
     private void checkMovement() {
         double xa = 0;
         double ya = 0;
-        if(gameState.gsm.isKeyDown(KeyCode.UP) || gameState.gsm.isKeyDown(KeyCode.W)) {
+        if(gameState.gsm.isKeyDown(KeyCode.UP)) {
             ya--;
         }
-        if(gameState.gsm.isKeyDown(KeyCode.DOWN) || gameState.gsm.isKeyDown(KeyCode.S)) {
+        if(gameState.gsm.isKeyDown(KeyCode.DOWN)) {
             ya++;
         }
-        if (gameState.gsm.isKeyDown(KeyCode.LEFT) || gameState.gsm.isKeyDown(KeyCode.A)) {
+        if (gameState.gsm.isKeyDown(KeyCode.LEFT)) {
             xa--;
         }
-        if (gameState.gsm.isKeyDown(KeyCode.RIGHT) || gameState.gsm.isKeyDown(KeyCode.D)) {
+        if (gameState.gsm.isKeyDown(KeyCode.RIGHT)) {
             xa++;
         }
 
         if(xa != 0 || ya != 0) {
+            if (gameState.gsm.isKeyDown(KeyCode.SHIFT)) {
+                this.setRunning(true);
+            } else if(this.isRunning){
+                this.setRunning(false);
+            }
             move(xa, ya);
             isMoving = true;
         } else {
