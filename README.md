@@ -8,8 +8,7 @@ Written using Java and JavaFX.
 
 ## Project
 Omnia is a 2D 'Retro' Role-Playing Game with multiple game perspectives (Top-Down, Platformer, Turn-Based, Puzzle, etc),
- written in Java. I'm working on it so that I can practice programming in Java, use this for my final project in Computer 
- Science degree, experiment with ideas, and just have fun. 
+ written in Java. I'm working on it this for the final 'capstone' project in my Computer Science degree - but also so that I can practice programming in Java, experiment with ideas, and just have fun. 
 
 Instead of using a sophisticated game engine like Unreal, Unity, Godot, or GameMaker 
 I thought I would get the most out of developing the engine myself by reading/watching game tutorials/devlogs, getting 
@@ -195,7 +194,7 @@ notified and the Journal is updated
         * [ ] **Optional**: Left-clicking on an item icon on the ground will automatically place it in the first available inventory slot
 
 ---
-## Unplanned Backlog (2021)
+## Unscheduled Backlog
 #### Overworld
 * [ ] **Combat System**:
     * [ ] **Enemy Mob**: Add Enemy Mob that's collidable with attacks
