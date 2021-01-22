@@ -153,5 +153,5 @@ public class DragResizer {
         dragging = false;
         region.setCursor(Cursor.DEFAULT);
     }
-
 }
+//NOTE: study https://github.com/varren/JavaFX-Resizable-Draggable-Node/blob/master/src/sample/DragResizeMod.java
