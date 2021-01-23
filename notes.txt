@@ -16,6 +16,9 @@ X Fix ClickCircle by finding the difference in screen position when moving
 
 X Add Pause menu to Overworld
 X Add keyboard input controller that improves input and delays
+
+X Add some code to begin working on scaling the game view and gui to match varying window sizes
+
 - Add Structures to be rendered on the area map - simple wall and more complex house, etc.
 - Add water/liquid tiles that animate and Mobs appears to be submerged/swimming in when occupying them
 
