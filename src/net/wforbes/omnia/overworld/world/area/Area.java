@@ -23,6 +23,7 @@ public class Area {
         this.effectController = new EffectController(this);
     }
 
+    public World getWorld(){ return this.world; }
     public TileMap getTileMap() {
         return this.tileMap;
     }
@@ -47,7 +48,7 @@ public class Area {
     }
 
     private void initTileMap() {
-        this.tileMap = new TileMap(8);
+        this.tileMap = new TileMap(this, 8);
         this.tileMap.loadMapFromImageFile("/overworld/tile/maps/areamap0.gif");
         this.tileMap.loadTilesFromMapImage();
         this.tileMap.loadTileSprites("/overworld/tile/areatiles0.gif");

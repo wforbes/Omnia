@@ -14,7 +14,8 @@ X Add NPC ability to turn around and walk the other way when they collide with s
 X Add NPC ability to wait they collide with something until their path is clear and continue pacing
 X Fix ClickCircle by finding the difference in screen position when moving
 
-- Add Pause menu to Overworld
+X Add Pause menu to Overworld
+X Add keyboard input controller that improves input and delays
 - Add Structures to be rendered on the area map - simple wall and more complex house, etc.
 - Add water/liquid tiles that animate and Mobs appears to be submerged/swimming in when occupying them
 

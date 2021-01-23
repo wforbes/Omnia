@@ -8,8 +8,10 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.overworld.entity.Entity;
+import net.wforbes.omnia.overworld.world.area.Area;
 
 public class TileMap {
+    private Area area;
 
     //tiles
     private byte[][] areaTileIds;
@@ -51,10 +53,14 @@ public class TileMap {
     private int numRowsToDraw;
     private int numColsToDraw;
 
-    public TileMap(int tileSize) {
+    public TileMap(Area area, int tileSize) {
+        this.area = area;
         this.tileSize = tileSize;
+
         this.numColsToDraw = OmniaFX.getWidth() / tileSize + tileSize * 2; //320
         this.numRowsToDraw = OmniaFX.getHeight() / tileSize + 2; //240
+        //this.numColsToDraw = (int)area.getWorld().getGameState().getManager().getGameController().getStageWidth() / tileSize + tileSize * 2;
+        //this.numRowsToDraw = (int)area.getWorld().getGameState().getManager().getGameController().getStageHeight() / tileSize + 2;
     }
 
     public void loadTileSprites(String path) {

@@ -12,22 +12,35 @@ public class OmniaFX extends Application {
 //For implementing window size change listener:
 //  https://stackoverflow.com/questions/44159794/get-single-stage-resize-event-when-user-releases-left-mouse-button
     private static Stage stage;
+    private Scene scene;
     private static int WIDTH = 320;//1920;
     private static int HEIGHT = 240; //1080;
-    private static int SCALE = 4;//1;
+    private static int SCALE = 1;//1;
+    private static double screenWidth = 320;
+    private static double screenHeight = 240;
+    private static double screenScale = 1;
 
     public static void main(String[] args) { launch(args); }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         stage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainView.fxml"));
-        Scene scene = new Scene(root, WIDTH * SCALE, HEIGHT * SCALE);
+        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
+        Parent root = loader.load();
+        scene = new Scene(root, WIDTH * SCALE, HEIGHT * SCALE);
         this.initStyles(scene);
+
+         //TODO: set game to scale on window resize
+        /*
+        GameController gameController = loader.getController();
+        gameController.setupScaling(scene);
+        */
 
         KeyPolling.getInstance().pollScene(scene);
 
         primaryStage.setResizable(true);
+
         primaryStage.setWidth(WIDTH * SCALE);
         primaryStage.setHeight(HEIGHT * SCALE);
 
@@ -57,6 +70,10 @@ public class OmniaFX extends Application {
 
     public static Stage getPrimaryStage() {
         return stage;
+    }
+
+    public Scene getScene() {
+        return scene;
     }
 
     public static int getScaledWidth() {

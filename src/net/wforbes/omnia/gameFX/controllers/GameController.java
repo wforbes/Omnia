@@ -1,25 +1,30 @@
 package net.wforbes.omnia.gameFX.controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameFX.animation.GameLoopTimer;
 import net.wforbes.omnia.gameFX.controls.keyboard.KeyPolling;
-import net.wforbes.omnia.gameFX.controls.keyboard.KeyboardController;
-import net.wforbes.omnia.gameFX.controls.mouse.MouseController;
 import net.wforbes.omnia.gameFX.rendering.Renderer;
 import net.wforbes.omnia.gameState.GameStateManager;
+import net.wforbes.omnia.u.W;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class GameController implements Initializable {
+    public Scene scene;
     public Stage stage;
     public Canvas gameCanvas;
     public AnchorPane gameAnchor;
@@ -31,16 +36,13 @@ public class GameController implements Initializable {
     public GameStateManager gsm;
     public Renderer renderer;
     public GraphicsContext gc;
-    public MouseController mouseController;
-    public KeyboardController keyboardHandler;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initializeCanvas();
+        //initializeCanvas();
         stage = OmniaFX.getPrimaryStage();
         stage.setTitle("Omnia");
         this.gsm = new GameStateManager(this);
-        //this.keyboardHandler = new KeyboardHandler(gameAnchor);
         this.renderer = new Renderer(this.gameCanvas);
         this.gc = renderer.getContext();
 
@@ -101,6 +103,61 @@ public class GameController implements Initializable {
             }
         };
         timer.start();
+    }
+
+    //TODO: set game to scale on window resize
+    public void setupScaling(Scene scene) {
+        W.out("Got Scene: " + scene.toString());
+        this.scene = scene;
+        initializeCanvas();
+        this.setScalable(scene, gameAnchor);
+    }
+
+    private void setScalable(final Scene scene, final Pane gameAnchor) {
+        final double initWidth = scene.getWidth();
+        final double initHeight = scene.getHeight();
+        final double ratio = initWidth/initHeight;
+        SceneSizeChangeListener sizeListener = new SceneSizeChangeListener(scene, ratio, initHeight, initWidth, gameAnchor);
+        scene.widthProperty().addListener(sizeListener);
+        scene.heightProperty().addListener(sizeListener);
+    }
+    //https://stackoverflow.com/questions/16606162/javafx-fullscreen-resizing-elements-based-upon-screen-size
+    private static class SceneSizeChangeListener implements ChangeListener<Number> {
+        private final Scene scene;
+        private final double ratio;
+        private final double initHeight;
+        private final double initWidth;
+        private final Pane contentPane;
+        public SceneSizeChangeListener(Scene scene, double ratio, double initHeight, double initWidth, Pane contentPane) {
+            this.scene = scene;
+            this.ratio = ratio;
+            this.initHeight = initHeight;
+            this.initWidth = initWidth;
+            this.contentPane = contentPane;
+        }
+        @Override
+        public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+            final double newWidth  = scene.getWidth();
+            final double newHeight = scene.getHeight();
+
+            double scaleFactor =
+                    newWidth / newHeight > ratio
+                            ? newHeight / initHeight
+                            : newWidth / initWidth;
+            System.out.println("Scale factor: " + scaleFactor);
+            if (scaleFactor >= 1) {
+                Scale scale = new Scale(scaleFactor, scaleFactor);
+                scale.setPivotX(0);
+                scale.setPivotY(0);
+                scene.getRoot().getTransforms().setAll(scale);
+            //if (scaleFactor >= 1) {
+                contentPane.setPrefWidth (newWidth  / scaleFactor);
+                contentPane.setPrefHeight(newHeight / scaleFactor);
+            } else {
+                contentPane.setPrefWidth (Math.max(initWidth,  newWidth));
+                contentPane.setPrefHeight(Math.max(initHeight, newHeight));
+            }
+        }
     }
 
     public double getStageWidth() {

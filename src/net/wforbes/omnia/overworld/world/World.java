@@ -21,6 +21,7 @@ public class World {
         this.area = new Area(this);
     }
 
+    public OverworldState getGameState() { return this.gameState; }
     public DialogController getDialogController() { return this.dialogController; }
     public void setPlayer(Player player) {
         this.player = player;
