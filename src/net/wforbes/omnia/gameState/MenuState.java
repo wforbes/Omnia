@@ -1,7 +1,9 @@
 package net.wforbes.omnia.gameState;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import net.wforbes.omnia.gameFX.controls.keyboard.KeyboardController;
 import net.wforbes.omnia.menu.MainMenu;
 import net.wforbes.omnia.platformer.tileMap.Background;
 
@@ -160,6 +162,22 @@ public class MenuState extends GameState {
     public void reset() {}
     public void pause() {}
     public void unPause() {}
+
+    @Override
+    public KeyboardController getKeyboard() {
+        return null;
+    }
+
+    @Override
+    public void handleKeyPressed(KeyEvent event) {
+
+    }
+
+    @Override
+    public void handleKeyReleased(KeyEvent event) {
+
+    }
+
     public void handleCanvasClick(MouseEvent event) {}
 
     @Override

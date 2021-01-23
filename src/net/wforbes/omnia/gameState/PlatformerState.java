@@ -1,9 +1,11 @@
 package net.wforbes.omnia.gameState;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.gameFX.controls.keyboard.KeyboardController;
 import net.wforbes.omnia.menu.DeathMenu;
 import net.wforbes.omnia.menu.PauseMenu;
 import net.wforbes.omnia.platformer.entity.Enemy;
@@ -38,6 +40,21 @@ public class PlatformerState extends GameState {
     public Player getPlayer(){ return player; }
     public Enemy getEnemy(int i){ return enemies.get(i); }
     public ArrayList<Enemy> getEnemyArray(){ return enemies; }
+
+    @Override
+    public KeyboardController getKeyboard() {
+        return null;
+    }
+
+    @Override
+    public void handleKeyPressed(KeyEvent event) {
+
+    }
+
+    @Override
+    public void handleKeyReleased(KeyEvent event) {
+
+    }
 
     @Override
     public void handleCanvasClick(MouseEvent event) {

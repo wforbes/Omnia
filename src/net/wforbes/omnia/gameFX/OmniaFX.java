@@ -6,15 +6,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import net.wforbes.omnia.gameFX.controls.KeyPolling;
+import net.wforbes.omnia.gameFX.controls.keyboard.KeyPolling;
 
 public class OmniaFX extends Application {
 //For implementing window size change listener:
 //  https://stackoverflow.com/questions/44159794/get-single-stage-resize-event-when-user-releases-left-mouse-button
     private static Stage stage;
-    private static final int WIDTH = 320;
-    private static final int HEIGHT = 240;
-    private static final int SCALE = 4;
+    private static final int WIDTH = 320;//1920;
+    private static final int HEIGHT = 240; //1080;
+    private static final int SCALE = 4;//1;
 
     public static void main(String[] args) { launch(args); }
 

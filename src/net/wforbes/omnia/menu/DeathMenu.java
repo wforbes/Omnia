@@ -121,4 +121,9 @@ public class DeathMenu extends Menu{
             System.exit(0);
         }
     }
+
+    @Override
+    void update() {
+        //todo: implement when overworld starts killing you
+    }
 }

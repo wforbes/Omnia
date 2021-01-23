@@ -1,11 +1,16 @@
 package net.wforbes.omnia.gameState;
 
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import net.wforbes.omnia.gameFX.controls.keyboard.KeyboardController;
 
 public abstract class GameState {
 
     public GameStateManager gsm;
     public int tickCount;
+    public abstract KeyboardController getKeyboard();
+    public abstract void handleKeyPressed(KeyEvent event);
+    public abstract void handleKeyReleased(KeyEvent event);
     public abstract void handleCanvasClick(MouseEvent event);
     public abstract void handleCanvasMouseMove(MouseEvent event);
     public abstract int getTickCount();

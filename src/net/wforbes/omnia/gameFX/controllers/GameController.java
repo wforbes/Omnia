@@ -3,13 +3,15 @@ package net.wforbes.omnia.gameFX.controllers;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameFX.animation.GameLoopTimer;
-import net.wforbes.omnia.gameFX.controls.KeyPolling;
+import net.wforbes.omnia.gameFX.controls.keyboard.KeyPolling;
+import net.wforbes.omnia.gameFX.controls.keyboard.KeyboardController;
 import net.wforbes.omnia.gameFX.controls.mouse.MouseController;
 import net.wforbes.omnia.gameFX.rendering.Renderer;
 import net.wforbes.omnia.gameState.GameStateManager;
@@ -30,6 +32,7 @@ public class GameController implements Initializable {
     public Renderer renderer;
     public GraphicsContext gc;
     public MouseController mouseController;
+    public KeyboardController keyboardHandler;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -37,8 +40,21 @@ public class GameController implements Initializable {
         stage = OmniaFX.getPrimaryStage();
         stage.setTitle("Omnia");
         this.gsm = new GameStateManager(this);
+        //this.keyboardHandler = new KeyboardHandler(gameAnchor);
         this.renderer = new Renderer(this.gameCanvas);
         this.gc = renderer.getContext();
+
+        this.gameAnchor.setOnKeyPressed(keyEvent -> {
+            //System.out.println(keyEvent.getEventType() + " " + KeyEvent.KEY_PRESSED);
+            if(keyEvent.getEventType() == KeyEvent.KEY_PRESSED)
+                gsm.getCurrentState().handleKeyPressed(keyEvent);
+        });
+        this.gameAnchor.setOnKeyReleased(keyEvent -> {
+            //System.out.println(keyEvent.getEventType() + " " + KeyEvent.KEY_RELEASED);
+            if(keyEvent.getEventType() == KeyEvent.KEY_RELEASED)
+                gsm.getCurrentState().handleKeyReleased(keyEvent);
+        });
+
 
         this.gameBorder.setPickOnBounds(false);
         this.gameBorder.setOnMouseMoved(event -> {
@@ -47,7 +63,6 @@ public class GameController implements Initializable {
         this.gameBorder.setOnMouseClicked(event -> {
             System.out.println("Border Got A Click! " + event.toString());
             gameCanvas.requestFocus();//regain canvas focus when clicking outside of UI windows
-
         });
 
         this.gameStack.setPickOnBounds(false);

@@ -99,9 +99,9 @@ public class ChatWindowController {
         return this.windowSize.getHeight();
     }
 
-    private boolean keyInputIsReady() {
-        return gui.gameState.getTickCount()
-                - this.lastInputCommandTick > 20;
+    public void focusChatField() {
+        chatField.requestFocus();
+        this.setActiveThenFadeOut();
     }
 
     public void tick() {}

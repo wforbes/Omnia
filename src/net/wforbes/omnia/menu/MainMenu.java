@@ -165,7 +165,7 @@ public class MainMenu extends Menu {
             if(currentChoice == -1){
                 currentChoice = options.length - 1;
             }
-            lastPressTick = tickCount;
+            //lastPressTick = tickCount;
         }
 
         if(state.gsm.isKeyDown(KeyCode.DOWN) && keyInputReady()){
@@ -173,8 +173,13 @@ public class MainMenu extends Menu {
             if(currentChoice == options.length){
                 currentChoice = 0;
             }
-            lastPressTick = tickCount;
+            //lastPressTick = tickCount;
         }
+    }
+
+    @Override
+    boolean keyInputReady() {
+        return false;
     }
 
     void select(String option) {}

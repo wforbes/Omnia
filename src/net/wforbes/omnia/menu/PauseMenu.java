@@ -11,7 +11,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.GameStateManager;
-import net.wforbes.omnia.gameState.TopDownState;
 
 import java.util.ArrayList;
 
@@ -29,9 +28,6 @@ public class PauseMenu extends Menu {
     };
     private VBox vbox = new VBox(10);
     private ArrayList<Button> buttons = new ArrayList<>();
-    private final int waitTicks = 20;
-    private int lastPressTick = waitTicks;
-    private int tickCount = 0;
 
     public PauseMenu(GameStateManager gsm) {
         this.gsm = gsm;
@@ -79,7 +75,14 @@ public class PauseMenu extends Menu {
 
     public void tick() {
         this.checkKeyInput();
-        this.tickCount++;
+        //this.tickCount++;
+    }
+
+    public void update() {
+        if(!isVisible()) {
+            show();
+        }
+        this.checkKeyInput();
     }
 
     public void render(GraphicsContext gc) {
@@ -100,15 +103,14 @@ public class PauseMenu extends Menu {
 
 
     public boolean keyInputReady() {
-        int waitTicks = 20;
-        return tickCount - lastPressTick > waitTicks || lastPressTick == 0;
+        return gsm.getCurrentState().getKeyboard().keyInputIsReady();
     }
 
     @Override
     void checkKeyInput() {
-        if(gsm.isKeyDown(KeyCode.ESCAPE) && keyInputReady()){
+        if(gsm.getCurrentState().getKeyboard().isKeyDown(KeyCode.ESCAPE) && keyInputReady()){
+            gsm.getCurrentState().getKeyboard().consumeKey(KeyCode.ESCAPE);
             gsm.getCurrentState().unPause();
-            lastPressTick = tickCount;
         }
     }
 

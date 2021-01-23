@@ -2,9 +2,11 @@ package net.wforbes.omnia.gameState;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.gameFX.controls.keyboard.KeyboardController;
 import net.wforbes.omnia.menu.PauseMenu;
 import net.wforbes.omnia.topDown.entity.*;
 import net.wforbes.omnia.topDown.graphics.Colors;
@@ -89,6 +91,21 @@ public class TopDownState extends GameState{
         level.tick();
         gui.tick();
         tickCount++;
+    }
+
+    @Override
+    public KeyboardController getKeyboard() {
+        return null;
+    }
+
+    @Override
+    public void handleKeyPressed(KeyEvent event) {
+
+    }
+
+    @Override
+    public void handleKeyReleased(KeyEvent event) {
+
     }
 
     @Override

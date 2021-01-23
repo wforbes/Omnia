@@ -15,6 +15,7 @@ public class GameStateManager {
     public GameController gameController;
     private ArrayList<GameState> gameStates;
     private int currentState;
+    private int tickCount = 0;
     public static final int MENUSTATE = 0;
     public static final int TOPDOWNSTATE = 1;
     public static final int PLATFORMERSTATE = 2;
@@ -63,6 +64,8 @@ public class GameStateManager {
     public GameState getCurrentState() {
         return this.gameStates.get(currentState);
     }
+    public int getTickCount() { return this.tickCount; }
+
     //Used for Game.java logic updates
     public void tick(){
         gameStates.get(currentState).tick();
@@ -70,6 +73,7 @@ public class GameStateManager {
 
     //Used for GameFX.java logic updates
     public void update() {
+        this.tickCount++;
         gameStates.get(currentState).update();
     }
 

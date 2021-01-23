@@ -51,21 +51,21 @@ public class Player extends Mob {
     private void checkMovement() {
         double xa = 0;
         double ya = 0;
-        if(gameState.gsm.isKeyDown(KeyCode.UP)) {
+        if(gameState.keyboardController.isKeyDown(KeyCode.UP)) {
             ya--;
         }
-        if(gameState.gsm.isKeyDown(KeyCode.DOWN)) {
+        if(gameState.keyboardController.isKeyDown(KeyCode.DOWN)) {
             ya++;
         }
-        if (gameState.gsm.isKeyDown(KeyCode.LEFT)) {
+        if (gameState.keyboardController.isKeyDown(KeyCode.LEFT)) {
             xa--;
         }
-        if (gameState.gsm.isKeyDown(KeyCode.RIGHT)) {
+        if (gameState.keyboardController.isKeyDown(KeyCode.RIGHT)) {
             xa++;
         }
 
         if(xa != 0 || ya != 0) {
-            if (gameState.gsm.isKeyDown(KeyCode.SHIFT)) {
+            if (gameState.keyboardController.isKeyDown(KeyCode.SHIFT)) {
                 this.setRunning(true);
             } else if(this.isRunning){
                 this.setRunning(false);
@@ -81,27 +81,27 @@ public class Player extends Mob {
     }
 
     private void checkCommands() {
-        if(gameState.gsm.isKeyDown(KeyCode.ESCAPE) && keyInputIsReady()) {
-            lastInputCommandTick = gameState.getTickCount();
+        if(gameState.keyboardController.isKeyDown(KeyCode.ESCAPE) && keyInputIsReady()) {
+            gameState.keyboardController.consumeKey(KeyCode.ESCAPE);
             if (gameState.gui.hasFocus()) {
                gameState.gsm.gameController.gameCanvas.requestFocus();
             } else {
-                //TODO: implement pause
+                gameState.pause();
             }
         }
 
-        if(gameState.gsm.isKeyDown(KeyCode.ENTER) && keyInputIsReady()) {
-            lastInputCommandTick = gameState.getTickCount();
+        if(gameState.keyboardController.isKeyDown(KeyCode.ENTER) && keyInputIsReady()) {
+            gameState.keyboardController.consumeKey(KeyCode.ENTER);
             if(!gameState.gui.chatWindowVisible) {
                 gameState.gui.toggleChatWindowVisible();
             } else {
-                gameState.gui.getChatWindow().getChatField().requestFocus();
+                gameState.gui.getChatWindow().focusChatField();
             }
         }
     }
 
     private boolean keyInputIsReady() {
-        return gameState.getTickCount() - lastInputCommandTick > 30;
+        return gameState.keyboardController.keyInputIsReady();
     }
 
     public void render(GraphicsContext gc) {
