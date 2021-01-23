@@ -83,17 +83,21 @@ public class GameController implements Initializable {
 
 
         int i = 0;
+
         GameLoopTimer timer = new GameLoopTimer() {
             @Override
-            public void tick(float secondsSinceLastFrame) {
+            public void tick(float secondsElapsed) {
+                renderer.prepare();
+                gc.save();
+                gsm.update();
+                gsm.render(gc);
+                gc.restore();
+                /*
                 time += 0.017;
+                stage.setTitle("OmniaFX: FPS " + secondsElapsed);
                 if (time >= 0.017) {
-                    renderer.prepare();
-                    gc.save();
-                    gsm.update();
-                    gsm.render(gc);
-                    gc.restore();
-                }
+
+                }*/
             }
         };
         timer.start();

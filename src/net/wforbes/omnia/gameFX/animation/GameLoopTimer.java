@@ -67,6 +67,13 @@ public abstract class GameLoopTimer extends AnimationTimer {
 
     @Override
     public void handle(long now) {
+        long animDuration = now - animationStart;
+        animationDuration.set(animDuration / 1e9);
+        float secondsSinceLastFrame = (float) ((now - lastFrameTimeNanos) / 1e9);
+        lastFrameTimeNanos = now;
+        tick(secondsSinceLastFrame);
+
+        /*
         if (pauseScheduled) {
             pauseStart = now;
             isPaused = true;
@@ -91,8 +98,8 @@ public abstract class GameLoopTimer extends AnimationTimer {
             float secondsSinceLastFrame = (float) ((now - lastFrameTimeNanos) / 1e9);
             lastFrameTimeNanos = now;
             tick(secondsSinceLastFrame);
-        }
+        }*/
     }
 
-    public abstract void tick(float secondsSinceLastFrame);
+    public abstract void tick(float secondsElapsed);
 }
