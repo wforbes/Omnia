@@ -103,6 +103,14 @@ public class GameController implements Initializable {
         timer.start();
     }
 
+    public double getStageWidth() {
+        return this.stage.getWidth();
+    }
+
+    public double getStageHeight() {
+        return this.stage.getHeight();
+    }
+
     public BorderPane getGameBorderPane() {
         return this.gameBorder;
     }

@@ -74,6 +74,7 @@ public class GameStateManager {
     //Used for GameFX.java logic updates
     public void update() {
         this.tickCount++;
+        System.out.println(gameController.getStageWidth());
         gameStates.get(currentState).update();
     }
 
