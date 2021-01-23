@@ -15,7 +15,7 @@ public class OmniaFX extends Application {
     private Scene scene;
     private static int WIDTH = 320;//1920;
     private static int HEIGHT = 240; //1080;
-    private static int SCALE = 1;//1;
+    private static int SCALE = 4;//1;
     private static double screenWidth = 320;
     private static double screenHeight = 240;
     private static double screenScale = 1;
