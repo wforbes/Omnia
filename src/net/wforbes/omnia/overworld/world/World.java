@@ -26,6 +26,7 @@ public class World {
     public void setPlayer(Player player) {
         this.player = player;
     }
+    public Area getCurrentArea() { return this.area; }
 
     public void init() {
         area.addEntity(this.player);

@@ -19,11 +19,13 @@ X Add keyboard input controller that improves input and delays
 
 X Add some code to begin working on scaling the game view and gui to match varying window sizes
 
+X Experiment with dashing to move forward instantly by a few tiles when Space is pressed
+
 - Add Structures to be rendered on the area map - simple wall and more complex house, etc.
 - Add water/liquid tiles that animate and Mobs appears to be submerged/swimming in when occupying them
 
 ==== 1/23
-- Add running: Holding shift while walking increases Player speed
+X Add running: Holding shift while walking increases Player speed
 - Modify Mob speed while swimming
 =1/24
 - Add settings window

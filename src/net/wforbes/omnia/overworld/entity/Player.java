@@ -13,7 +13,9 @@ public class Player extends Mob {
     private double lastInputTick = 0;
     private int lastInputCommandTick = 0;
 
-    //TODO: inheritable
+    private int dashDistance = 4;
+    private int dashDelay = 120;
+    private int lastDashTick = 0;
 
     private double scale = 1;
     private double collisionBoxWidth;
@@ -48,6 +50,10 @@ public class Player extends Mob {
         gameState.gui.getDevWindow().setPlayerScreenPos(Math.floor(this.x+xmap) * OmniaFX.getScale(), Math.floor(this.y+ymap) * OmniaFX.getScale());
     }
 
+    private boolean dashReady() {
+        return gameState.getTickCount() - lastDashTick > dashDelay || lastDashTick == 0;
+    }
+
     private void checkMovement() {
         double xa = 0;
         double ya = 0;
@@ -69,6 +75,13 @@ public class Player extends Mob {
                 this.setRunning(true);
             } else if(this.isRunning){
                 this.setRunning(false);
+            }
+            //TODO: experimenting with dash
+            if(gameState.keyboardController.isKeyDown(KeyCode.SPACE) && dashReady()) {
+                int tileSize = gameState.getWorld().getCurrentArea().getTileMap().getTileSize();
+                xa *= dashDistance * tileSize;
+                ya *= dashDistance * tileSize;
+                lastDashTick = gameState.getTickCount();
             }
             move(xa, ya);
             isMoving = true;
