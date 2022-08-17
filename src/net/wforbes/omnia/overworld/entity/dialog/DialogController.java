@@ -47,7 +47,7 @@ public class DialogController {
                     Mob senderMob = (Mob) sender;
                     NPC listener = ((NPC) entity);
                     String response = listener.receiveChat(
-                            senderMob.getLocationPoint(),
+                            senderMob,
                             chatCmd, chatMsg);
                     if(!response.equals("")) {
                         this.chatWindowController.parseNPCChat(listener.getName(), chatCmd, response);

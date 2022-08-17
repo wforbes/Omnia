@@ -28,20 +28,20 @@ public abstract class NPC extends Mob {
         super.render(gc);
     }
 
-    public String receiveChat(Point2D sourceLoc, String chatCmd, String chatMsg) {
+    public String receiveChat(Mob senderMob, String chatCmd, String chatMsg) {
         this.lastChatTick = gameState.getTickCount();
         this.chatBuilder = new StringBuilder("");
         chatMsg = chatMsg.toUpperCase();
         String response = "";
 
-        this.handleGreetings(sourceLoc, chatMsg);
+        this.handleGreetings(senderMob, chatMsg);
         if(chatBuilder.length() == 0) {
-            this.handleQuests(sourceLoc, chatMsg);
+            this.handleQuests(senderMob, chatMsg);
         }
         response = chatBuilder.toString();
         chatBuilder = null;
         return response;
     }
-    protected abstract void handleGreetings(Point2D sourceLoc, String chatMsg);
-    protected abstract void handleQuests(Point2D sourceLoc, String chatMsg);
+    protected abstract void handleGreetings(Mob senderMob, String chatMsg);
+    protected abstract void handleQuests(Mob senderMob, String chatMsg);
 }

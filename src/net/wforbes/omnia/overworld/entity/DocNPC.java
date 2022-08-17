@@ -3,11 +3,13 @@ package net.wforbes.omnia.overworld.entity;
 import javafx.geometry.Point2D;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
+import net.wforbes.omnia.overworld.entity.attention.AttentionController;
 import net.wforbes.omnia.overworld.entity.dialog.NPCDialog.DocDialog;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 
 public class DocNPC extends NPC {
     private DocDialog npcDialog;
+    private AttentionController attentionController;
     public DocNPC(OverworldState gameState) {
         super(gameState, "Doc",0.25);
         this.width = this.height = 16;
@@ -17,6 +19,7 @@ public class DocNPC extends NPC {
         movementAnimation = new MovementAnimation(this);
         npcDialog = new DocDialog();
         this.setAnimationDirection(facingDir);
+        this.attentionController = new AttentionController();
     }
 
     public void init() {
@@ -27,20 +30,26 @@ public class DocNPC extends NPC {
 
     public void update() {
         super.update();
+
     }
 
+    public void setAttentionFocus(Mob senderMob) {
+        this.movementController.standAndFace(senderMob.getLocationPoint());
+        //TODO: set the target on attentionController
+    }
 
     @Override
-    protected void handleGreetings(Point2D sourceLoc, String chatMsg) {
+    protected void handleGreetings(Mob senderMob, String chatMsg) {
         if ((chatMsg.contains("HELLO") || chatMsg.contains("GREETINGS"))
                 && chatMsg.contains(this.getName().toUpperCase())
         ){
-            this.movementController.standAndFace(sourceLoc);
+            this.setAttentionFocus(senderMob);
             chatBuilder.append(DocDialog.dialogMap.get("greeting"));
         }
     }
     @Override
-    protected void handleQuests(Point2D sourceLoc, String chatMsg) {
+    protected void handleQuests(Mob senderMob, String chatMsg) {
+        Point2D sourceLoc = senderMob.getLocationPoint();
         if (chatMsg.contains("SYNCHOTRONS")) {
             this.movementController.standAndFace(sourceLoc);
             chatBuilder.append(DocDialog.dialogMap.get("synchotrons"));
