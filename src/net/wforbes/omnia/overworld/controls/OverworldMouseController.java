@@ -1,6 +1,7 @@
-package net.wforbes.omnia.gameFX.controls.mouse;
+package net.wforbes.omnia.overworld.controls;
 
 import javafx.scene.input.MouseEvent;
+import net.wforbes.omnia.gameFX.controls.mouse.MouseController;
 import net.wforbes.omnia.gameState.OverworldState;
 
 public class OverworldMouseController extends MouseController {

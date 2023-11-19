@@ -8,6 +8,7 @@ import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameFX.controls.keyboard.KeyboardController;
 import net.wforbes.omnia.menu.PauseMenu;
+import net.wforbes.omnia.topDown.controls.TopDownKeyboardController;
 import net.wforbes.omnia.topDown.entity.*;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.graphics.Screen;
@@ -22,13 +23,15 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 public class TopDownState extends GameState{
+    public GameStateManager gsm;
+    private KeyboardController keyboardController;
 
     private BufferedImage image;
     private FXGraphics2D fxGraphics2D;
     private Screen screen;
     private int[] pixels;
     private int[] colors;
-    public GameStateManager gsm;
+
     public int tickCount;
     private Level level;
     private Player player;
@@ -44,6 +47,7 @@ public class TopDownState extends GameState{
     public TopDownState(GameStateManager gsm)
     {
         this.gsm = gsm;
+        this.keyboardController = new TopDownKeyboardController(this);
     }
 
     public GameStateManager getGsm() {
@@ -95,7 +99,7 @@ public class TopDownState extends GameState{
 
     @Override
     public KeyboardController getKeyboard() {
-        return null;
+        return keyboardController;
     }
 
     @Override
