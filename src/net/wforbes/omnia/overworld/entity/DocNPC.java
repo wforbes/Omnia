@@ -7,8 +7,13 @@ import net.wforbes.omnia.overworld.entity.attention.AttentionController;
 import net.wforbes.omnia.overworld.entity.dialog.NPCDialog.DocDialog;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 
+import java.util.Arrays;
+
 public class DocNPC extends NPC {
     private DocDialog npcDialog;
+    private static final String[] chatTriggers = {
+            "hello", "greetings"
+    };
     private AttentionController attentionController;
     public DocNPC(OverworldState gameState) {
         super(gameState, "Doc",0.25);
@@ -35,14 +40,17 @@ public class DocNPC extends NPC {
 
     public void setAttentionFocus(Mob senderMob) {
         this.movementController.standAndFace(senderMob.getLocationPoint());
-        //TODO: set the target on attentionController
+        this.attentionController.setTarget(senderMob);
+    }
+
+    private boolean hasTriggerPhrase(String str) {
+        return Arrays.stream(chatTriggers).anyMatch(s -> str.toUpperCase().contains(s.toUpperCase()))
+                && str.toUpperCase().contains(this.getName().toUpperCase());
     }
 
     @Override
     protected void handleGreetings(Mob senderMob, String chatMsg) {
-        if ((chatMsg.contains("HELLO") || chatMsg.contains("GREETINGS"))
-                && chatMsg.contains(this.getName().toUpperCase())
-        ){
+        if (hasTriggerPhrase(chatMsg)) {
             this.setAttentionFocus(senderMob);
             chatBuilder.append(DocDialog.dialogMap.get("greeting"));
         }
@@ -50,14 +58,14 @@ public class DocNPC extends NPC {
     @Override
     protected void handleQuests(Mob senderMob, String chatMsg) {
         Point2D sourceLoc = senderMob.getLocationPoint();
-        if (chatMsg.contains("SYNCHOTRONS")) {
-            this.movementController.standAndFace(sourceLoc);
+        if (chatMsg.toUpperCase().contains("SYNCHOTRONS")) {
+            this.setAttentionFocus(senderMob);
             chatBuilder.append(DocDialog.dialogMap.get("synchotrons"));
-        } else if (chatMsg.contains("SYNCHOTRON LIGHT")) {
-            this.movementController.standAndFace(sourceLoc);
+        } else if (chatMsg.toUpperCase().contains("SYNCHOTRON LIGHT")) {
+            this.setAttentionFocus(senderMob);
             chatBuilder.append(DocDialog.dialogMap.get("synchotron light"));
-        } else if (chatMsg.contains("RESEARCH REQUEST")) {
-            this.movementController.standAndFace(sourceLoc);
+        } else if (chatMsg.toUpperCase().contains("RESEARCH REQUEST")) {
+            this.setAttentionFocus(senderMob);
             chatBuilder.append(DocDialog.dialogMap.get("research request"));
             //TODO: give 'research request paperwork' item to player
             //TODO: start 'research request' quest

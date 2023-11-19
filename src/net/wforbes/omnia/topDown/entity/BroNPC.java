@@ -5,7 +5,13 @@ import net.wforbes.omnia.gameState.TopDownState;
 import net.wforbes.omnia.topDown.graphics.Colors;
 import net.wforbes.omnia.topDown.level.Level;
 
+import java.util.Arrays;
+
 public class BroNPC extends NPC{
+    private static final String[] chatTriggers = {
+        "yo", "sup", "hey"
+    };
+
     public BroNPC(Level level, String name, Point2D startPos, TopDownState gameState) {
         super(level, name, startPos, gameState);
         this.canSwim = true;
@@ -15,16 +21,19 @@ public class BroNPC extends NPC{
         this.movementController.setMovement("paceVertical");
     }
 
+    private boolean hasTriggerPhrase(String str) {
+        return Arrays.asList(chatTriggers).contains(str.toLowerCase())
+                && str.toUpperCase().contains(this.getName().toUpperCase());
+    }
+
     protected void handleGreetings(Point2D sourceLoc, String chatMsg) {
-        if (chatMsg.contains("YO") || chatMsg.contains("SUP")
-            && chatMsg.contains(this.getName().toUpperCase())
-        ){
+        if (hasTriggerPhrase(chatMsg)) {
             this.movementController.standAndFace(sourceLoc);
             chatBuilder.append("Sup, my dude? Life's been [gnarly] for me over here...");
         }
     }
     protected void handleQuests(Point2D sourceLoc, String chatMsg) {
-        if (chatMsg.contains("GNARLY")) {
+        if (chatMsg.toUpperCase().contains("GNARLY")) {
             this.movementController.standAndFace(sourceLoc);
             chatBuilder.append("Ya, it's all gnarly bro. You know what's gnarly for me right now? " +
                     "I lost my [taco sauce], my dude. I'm hella bummed on it...");

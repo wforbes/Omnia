@@ -13,7 +13,7 @@ public class DialogController {
     private ChatWindowController chatWindowController;
     private HashMap<String, String> chatOutputMap;
     private String[] chatChannels = new String[]{"SAY", "SHOUT", "WHISPER"};
-    private final int AUDIBLE_RANGE = 32;
+    private final int AUDIBLE_RANGE = 64;
 
     public DialogController(World world) {
         this.world = world;

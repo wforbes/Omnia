@@ -3,9 +3,19 @@ package net.wforbes.omnia.overworld.entity;
 import javafx.geometry.Point2D;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
+import net.wforbes.omnia.overworld.entity.attention.AttentionController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 
+import java.util.Arrays;
+
 public class BroNPC extends NPC {
+
+    private static final String[] chatTriggers = {
+        "yo", "sup", "hey"
+    };
+
+    private AttentionController attentionController;
+
     public BroNPC(OverworldState gameState, String name, double speed) {
         super(gameState, name, speed);
         this.width = this.height = 16;
@@ -27,13 +37,32 @@ public class BroNPC extends NPC {
 
     public void update() { super.update(); }
 
-    @Override
-    protected void handleGreetings(Point2D sourceLoc, String chatMsg) {
 
+    public void setAttentionFocus(Mob senderMob) {
+        this.movementController.standAndFace(senderMob.getLocationPoint());
+        this.attentionController.setTarget(senderMob);
+    }
+
+    private boolean hasTriggerPhrase(String str) {
+        return Arrays.asList(chatTriggers).contains(str.toLowerCase())
+                && str.toUpperCase().contains(this.getName().toUpperCase());
     }
 
     @Override
-    protected void handleQuests(Point2D sourceLoc, String chatMsg) {
+    protected void handleGreetings(Mob senderMob, String chatMsg) {
+        if (hasTriggerPhrase(chatMsg)){
+            this.setAttentionFocus(senderMob);
+            chatBuilder.append("sup dude... life's been [gnarly] for me broseph.");
+        }
+    }
 
+    @Override
+    protected void handleQuests(Mob senderMob, String chatMsg) {
+        if (chatMsg.toUpperCase().contains("GNARLY")) {
+            this.setAttentionFocus(senderMob);
+            chatBuilder.append("ya.. it's all gnarly bro. you know what's gnarly for me right now? "+
+                "I lost my [taco sauce], my dude. I'm hella bummed on it."
+            );
+        }
     }
 }

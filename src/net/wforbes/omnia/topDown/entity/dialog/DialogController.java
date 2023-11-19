@@ -14,7 +14,7 @@ public class DialogController {
     private Level level;
     private ChatWindowController chatWindowController;
     private HashMap<String,String> chatOutputMap;
-    private final int SAY_RANGE_PIXELS = 24;
+    private final int SAY_RANGE_PIXELS = 64;
 
     public DialogController(Level level) {
         this.level = level;
