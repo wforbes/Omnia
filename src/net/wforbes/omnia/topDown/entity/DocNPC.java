@@ -72,7 +72,7 @@ public class DocNPC extends NPC{
             // this just needs an actual quest/dialog system
             System.out.println(response);
         } catch (Exception ex) {
-            System.out.println("nope");
+            System.out.println("handleQuests exception: " + ex.getMessage());
         }
 
         if (response != null && !response.isEmpty()) {

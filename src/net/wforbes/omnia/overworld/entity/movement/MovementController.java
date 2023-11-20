@@ -45,6 +45,8 @@ public class MovementController {
     }
 
     protected void standStill() {
+        if (this.mover.hasAttentionOnSomething()) return;
+
         if(waitingToPace) {
             this.tryToMoveInFacingDir();
         }
@@ -99,10 +101,12 @@ public class MovementController {
     }
 
     private void paceVertically(int waitMultiple, int waitReset, int minYBound, int maxYBound) {
+        /*
         if (this.waitCount == 0 || this.waitCount == (waitMultiple + 1) * waitReset) {
             this.waitCount = 1;
             this.moveReady = false;
-        } else if (this.waitCount % waitMultiple == 0) {
+        } else */
+        if (this.waitCount % waitMultiple == 0) {
 
             if(!this.mover.isColliding){
                 if(waitingToPace) {

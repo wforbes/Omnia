@@ -20,6 +20,7 @@ public abstract class NPC extends Mob {
     }
 
     public void update() {
+        super.update();
         this.movementController.update();
         this.movementAnimation.update();
     }

@@ -12,7 +12,9 @@ import javafx.scene.text.Text;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
+import net.wforbes.omnia.overworld.entity.attention.AttentionController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
+import net.wforbes.omnia.u.W;
 
 import java.util.ArrayList;
 
@@ -20,6 +22,7 @@ import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
 public abstract class Mob extends Entity {
 
+    protected AttentionController attentionController;
     protected String name;
     protected String spriteSheetPath;
     protected Image spriteSheet;
@@ -72,6 +75,7 @@ public abstract class Mob extends Entity {
         this.nameText = new Text(this.getName());
         this.nameText.setFont(nameFont);
         this.nameText.setFontSmoothingType(FontSmoothingType.LCD);
+        this.attentionController = new AttentionController(this);
     }
 
     public Mob(OverworldState gameState, String name, Point2D startPos, double speed) {
@@ -163,6 +167,10 @@ public abstract class Mob extends Entity {
             moveCoords(xa, ya);
             numSteps++;
         }
+    }
+
+    public boolean hasAttentionOnSomething() {
+        return this.attentionController.getIsFocusing();
     }
 
     public boolean hasCollided(double xa, double ya) {
@@ -276,7 +284,11 @@ public abstract class Mob extends Entity {
     }
 
     //public abstract void init();
-    //public abstract void update();
+
+    public void update() {
+        this.attentionController.update();
+    }
+
     public void render(GraphicsContext gc) {
         this.refreshMapPosition();
         /*

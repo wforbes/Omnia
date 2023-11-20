@@ -3,9 +3,9 @@ package net.wforbes.omnia.overworld.entity;
 import javafx.geometry.Point2D;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
-import net.wforbes.omnia.overworld.entity.attention.AttentionController;
 import net.wforbes.omnia.overworld.entity.dialog.NPCDialog.DocDialog;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
+import net.wforbes.omnia.u.W;
 
 import java.util.Arrays;
 
@@ -14,17 +14,17 @@ public class DocNPC extends NPC {
     private static final String[] chatTriggers = {
             "hello", "greetings"
     };
-    private AttentionController attentionController;
+
     public DocNPC(OverworldState gameState) {
         super(gameState, "Doc",0.25);
         this.width = this.height = 16;
         this.numFrames = new int[]{3,3,3,3};
         this.loadSprites(OverworldState.SPRITE_DIR + "doc_pokemon.gif");
-        this.facingDir = FACING_S;
         movementAnimation = new MovementAnimation(this);
-        npcDialog = new DocDialog();
+        this.facingDir = FACING_S;
         this.setAnimationDirection(facingDir);
-        this.attentionController = new AttentionController();
+        this.attentionController.setAttentionSpan(30);
+        npcDialog = new DocDialog();
     }
 
     public void init() {
@@ -35,12 +35,12 @@ public class DocNPC extends NPC {
 
     public void update() {
         super.update();
-
     }
 
     public void setAttentionFocus(Mob senderMob) {
+        W.out(this.getName() + " setting attention focus on " + senderMob.getName());
         this.movementController.standAndFace(senderMob.getLocationPoint());
-        this.attentionController.setTarget(senderMob);
+        this.attentionController.startFocusing(senderMob);
     }
 
     private boolean hasTriggerPhrase(String str) {
