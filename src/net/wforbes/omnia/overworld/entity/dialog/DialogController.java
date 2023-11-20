@@ -49,7 +49,7 @@ public class DialogController {
                     String response = listener.receiveChat(
                             senderMob,
                             chatCmd, chatMsg);
-                    if(!response.equals("")) {
+                    if (!response.equals("")) {
                         this.chatWindowController.parseNPCChat(listener.getName(), chatCmd, response);
                     }
 

@@ -58,12 +58,20 @@ public class DocNPC extends NPC {
     @Override
     protected void handleQuests(Mob senderMob, String chatMsg) {
         Point2D sourceLoc = senderMob.getLocationPoint();
-        if (chatMsg.toUpperCase().contains("SYNCHOTRONS")) {
+        //TODO: work out a system that can parse quest dialog without
+        //  string literals here...
+        if (chatMsg.toUpperCase().contains("SYNCHROTRONS")) {
             this.setAttentionFocus(senderMob);
-            chatBuilder.append(DocDialog.dialogMap.get("synchotrons"));
-        } else if (chatMsg.toUpperCase().contains("SYNCHOTRON LIGHT")) {
+            chatBuilder.append(DocDialog.dialogMap.get("synchrotrons"));
+        } else if (chatMsg.toUpperCase().contains("SYNCHROTRON LIGHT")) {
             this.setAttentionFocus(senderMob);
-            chatBuilder.append(DocDialog.dialogMap.get("synchotron light"));
+            chatBuilder.append(DocDialog.dialogMap.get("synchrotron light"));
+        } else if (chatMsg.toUpperCase().contains("LAB")) {
+            this.setAttentionFocus(senderMob);
+            chatBuilder.append(DocDialog.dialogMap.get("lab"));
+        } else if (chatMsg.toUpperCase().contains("SEE IT")) {
+            this.setAttentionFocus(senderMob);
+            chatBuilder.append(DocDialog.dialogMap.get("see it"));
         } else if (chatMsg.toUpperCase().contains("RESEARCH REQUEST")) {
             this.setAttentionFocus(senderMob);
             chatBuilder.append(DocDialog.dialogMap.get("research request"));

@@ -15,14 +15,20 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import net.wforbes.omnia.u.W;
+import netscape.javascript.JSObject;
 import javafx.util.Duration;
 import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.overworld.entity.dialog.DialogController;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class ChatWindowController {
     private GUIController gui;
@@ -71,6 +77,8 @@ public class ChatWindowController {
     private String currentChatCmd;
     private ScrollPane chatAreaScroll;
 
+    private DialogController dialogController;
+
     public ChatWindowController(GUIController gui) {
         this.gui = gui;
         this.windowTitle = "Chat Window";
@@ -79,10 +87,11 @@ public class ChatWindowController {
         this.chatLog = "";
         if(this.chatHistory == null) this.chatHistory = new ArrayList<>();
         this.showChatTimeStamps = true;
-        this.chatBuilder = new StringBuilder("");
+        this.chatBuilder = new StringBuilder();
         this.chatOutputMap = this.gui.gameState.world.getDialogController().getChatOutputMap();
         this.setChatColorMap();
         this.gui.gameState.world.getDialogController().setChatWindowController(this);
+        this.dialogController = this.gui.gameState.world.getDialogController();
     }
 
     //TODO: refactor chat channels and their colors into settings
@@ -137,26 +146,41 @@ public class ChatWindowController {
 
     private void createChatArea() {
         chatAreaScroll = new ScrollPane();
+        chatAreaScroll.setFitToWidth(true);
         chatAreaScroll.setPrefViewportWidth(CHATAREA_SCROLL_WIDTH);
         chatAreaScroll.setPrefViewportHeight(CHATAREA_SCROLL_HEIGHT);
-        //chatAreaScroll.setPrefViewportWidth(WINDOW_WIDTH);
-        //chatAreaScroll.setPrefViewportHeight(WINDOW_HEIGHT);
-        //HBox.setHgrow(chatAreaScroll, Priority.ALWAYS);
-        //VBox.setVgrow(chatAreaScroll, Priority.ALWAYS);
+        /* Start of javascript implementation...
+        WebView webView = new WebView();
+        WebEngine engine = webView.getEngine();
+        engine.documentProperty().addListener((obs, oldDoc, newDoc) -> {
+            if (newDoc != null) {
+                JSObject window = (JSObject) engine.executeScript("window");
+                window.setMember("app", this);
+            }
+        });
+
+        StringBuilder html = new StringBuilder();
+        html.append("<html><body><div name='text'>");
+
+        html.append("<ul><li>Welcome to <a href='#' onclick='app.process(\"Omnia\")'>")
+            .append("OMNIA")
+            .append("</a></li></ul>");
+        html.append("</div></body></html>");
+        engine.loadContent(html.toString());
+        */
+
         chatAreaFlow = new TextFlow();
-        //chatAreaFlow.setMinSize(CHATAREA_SCROLL_WIDTH,CHATAREA_SCROLL_HEIGHT);
-        //chatAreaFlow.setPrefSize(CHATAREA_SCROLL_WIDTH, CHATAREA_SCROLL_HEIGHT);
-        //HBox.setHgrow(chatAreaFlow, Priority.ALWAYS);
-        //VBox.setVgrow(chatAreaFlow, Priority.ALWAYS);
-        //chatAreaScroll.setFitToWidth(true);
-        //chatAreaScroll.setFitToHeight(true);
         chatAreaFlow.getStyleClass().add("chat-area");
+
         chatAreaFlow.getChildren().addListener((ListChangeListener<Node>) ((change) -> {
+            //System.out.println(change);
             chatAreaFlow.layout();
             chatAreaScroll.layout();
             chatAreaScroll.setVvalue(1.0f);
         }));
+
         chatAreaScroll.setContent(chatAreaFlow);
+
     }
 
     private void createChatField() {
@@ -218,6 +242,29 @@ public class ChatWindowController {
         gui.gameState.getManager().getGameController().gameCanvas.requestFocus();
         setActiveThenFadeOut();
     }
+    private void submitChat(String msg) {
+        String timeStampString = "";
+        if (showChatTimeStamps) {
+            timeStampString = this.getTimeStampString();
+        }
+
+        currentChatCmd = DEFAULT_CHAT_CMD;
+        Text chat = new Text(chatBuilder.append(timeStampString + " ")
+                .append(chatOutputMap.get(DEFAULT_CHAT_CMD))
+                .append(", \"").append(msg).append("\"\n").toString()
+        );
+
+        this.chatBuilder.setLength(0);
+        chat.setFont(this.chatAreaFont);
+        chat.setFill(this.chatColorMap.get(this.currentChatCmd));
+        chatAreaFlow.getChildren().add(chat);
+
+        gui.gameState.world.getDialogController()
+                .submitChatMsg(gui.gameState.player, DEFAULT_CHAT_CMD, msg);
+        gui.gameState.getManager().getGameController().gameCanvas.requestFocus();
+        setActiveThenFadeOut();
+    }
+
     public void setActiveThenFadeOut() {
         titledPane.setOpacity(1.0);
         Timeline timeline = new Timeline();
@@ -248,12 +295,7 @@ public class ChatWindowController {
         });
     }
 
-    private void prependTimeStamp() {
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm:ss");
-        String timeStamp = dateFormat.format(date);
-        chatBuilder.append("[").append(timeStamp).append("] ");
-    }
+
 
     private boolean tryAsChatCmd(String chatMsg) {
         for(String chatCmd : chatOutputMap.keySet()) {
@@ -270,16 +312,8 @@ public class ChatWindowController {
         currentChatCmd = chatCmd;
         chatBuilder.append(chatOutputMap.get(chatCmd)).append(", \"")
                 .append(chatMsg).append("\"\n");
-        gui.gameState.world.getDialogController().submitChatMsg(gui.gameState.player, chatCmd, chatMsg);
-    }
 
-    //TODO: add default chat channel setting that non-command chatMsg goes to
-    //TODO: move chat/string building to dialog controller (?)
-    private void handleChatMsg(String chatMsg) {
-        currentChatCmd = DEFAULT_CHAT_CMD;
-        chatBuilder.append(chatOutputMap.get(DEFAULT_CHAT_CMD))
-                .append(", \"").append(chatMsg).append("\"\n");
-        gui.gameState.world.getDialogController().submitChatMsg(gui.gameState.player, DEFAULT_CHAT_CMD, chatMsg);
+        gui.gameState.world.getDialogController().submitChatMsg(gui.gameState.player, chatCmd, chatMsg);
     }
 
     private boolean tryAsSystemCmd(String chatMsg) {
@@ -299,13 +333,17 @@ public class ChatWindowController {
 
     }
 
+    private String getTimeStampString() {
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm:ss");
+        String timeStamp = dateFormat.format(date);
+        //chatBuilder.append("[").append(timeStamp).append("] ");
+        return "[" + timeStamp + "]";
+    }
+
     private void parseChatField() {
         String chatMsg = this.chatField.getText();
         if (chatMsg.equals("")) return;
-
-        if (showChatTimeStamps) {
-            this.prependTimeStamp();
-        }
 
         if(chatMsg.startsWith(String.valueOf(DEFAULT_CMD_CHAR))) {
             if (!this.tryAsChatCmd(chatMsg)) {
@@ -314,31 +352,72 @@ public class ChatWindowController {
                 }
             }
         } else {
-            this.handleChatMsg(chatMsg);
+            this.submitChat(chatMsg);
         }
-        Text chat = new Text(chatBuilder.toString());
-        this.chatBuilder.setLength(0);
-        chat.setFont(this.chatAreaFont);
-        chat.setFill(this.chatColorMap.get(this.currentChatCmd));
-        chatAreaFlow.getChildren().add(chat);
+
         chatField.setText("");
-        /*
-        chatArea.setText(chatBuilder.toString());
-        chatArea.appendText(""); // to trigger the scroll-to-bottom event
-        chatField.setText("");
-         */
     }
 
     public void parseNPCChat(String name, String chatCmd, String chatMsg) {
         if(chatMsg == null || chatMsg.equals(""))
             return;
 
+        String timeStampString = "";
         if (showChatTimeStamps) {
-            this.prependTimeStamp();
+            //this.prependTimeStamp();
+            timeStampString = this.getTimeStampString();
         }
 
-        //TODO: add recognition of chat command used
-        chatBuilder.append(name).append(" says, \"").append(chatMsg).append("\"\n");
+        boolean hasLink = chatMsg.contains("[") && chatMsg.contains("]");
+        if (hasLink) {
+            chatMsg = name + " says, \"" + chatMsg + "\"\n";
+            List<String> links = new ArrayList<>();
+            int beforeLastLinkIdx = 0;
+            int openIdx = chatMsg.indexOf('[');
+            int closeIdx = chatMsg.indexOf(']', openIdx + 1);
+            Text chat = new Text(timeStampString + " ");
+            chat.setFont(this.chatAreaFont);
+            chat.setFill(this.chatColorMap.get(this.currentChatCmd));
+            chatAreaFlow.getChildren().add(chat);
+            while (openIdx >= 0 && closeIdx >= 0) {
+                String link = chatMsg.substring(openIdx+1, closeIdx);
+
+                chat = new Text(chatMsg.substring(beforeLastLinkIdx, openIdx + 1));
+                chat.setFont(this.chatAreaFont);
+                chat.setFill(this.chatColorMap.get(this.currentChatCmd));
+                chatAreaFlow.getChildren().add(chat);
+
+                links.add(link);
+                Hyperlink hyperlink = new Hyperlink(link);
+                hyperlink.setFont(this.chatAreaFont);
+                hyperlink.setOnAction(e -> submitChat(link));
+                chatAreaFlow.getChildren().add(hyperlink);
+
+                beforeLastLinkIdx = closeIdx;
+
+                if (chatMsg.length() < openIdx + 1) break;
+                if (chatMsg.indexOf('[', openIdx + 1) == -1) {
+                    chat = new Text(chatMsg.substring(closeIdx, chatMsg.length() - 1)+ "\n");
+                    chat.setFont(this.chatAreaFont);
+                    chat.setFill(this.chatColorMap.get(this.currentChatCmd));
+                    chatAreaFlow.getChildren().add(chat);
+                    break;
+                }
+                openIdx = chatMsg.indexOf('[', openIdx + 1);
+                closeIdx = chatMsg.indexOf(']', openIdx + 1);
+
+            }
+            links = null;
+
+        } else {
+            currentChatCmd = DEFAULT_CHAT_CMD;
+            Text chat = new Text(timeStampString + name + " says, \"" + chatMsg + "\"\n");
+
+            this.chatBuilder.setLength(0);
+            chat.setFont(this.chatAreaFont);
+            chat.setFill(this.chatColorMap.get(this.currentChatCmd));
+            chatAreaFlow.getChildren().add(chat);
+        }
 
     }
 }

@@ -31,7 +31,7 @@ public abstract class NPC extends Mob {
 
     public String receiveChat(Mob senderMob, String chatCmd, String chatMsg) {
         this.lastChatTick = gameState.getTickCount();
-        this.chatBuilder = new StringBuilder("");
+        this.chatBuilder = new StringBuilder();
         chatMsg = chatMsg.toUpperCase();
         String response = "";
 

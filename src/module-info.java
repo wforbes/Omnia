@@ -7,6 +7,8 @@ module net.wforbes.gameFX {
     requires java.desktop;
     requires org.jfree.fxgraphics2d;
     requires com.almasb.fxgl.all;
+    requires javafx.web;
+    requires jdk.jsobject;
 
     opens net.wforbes.omnia.gameFX to javafx.graphics;
     opens net.wforbes.omnia.gameFX.controllers to javafx.fxml;
