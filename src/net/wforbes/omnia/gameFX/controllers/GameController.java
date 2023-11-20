@@ -1,5 +1,9 @@
 package net.wforbes.omnia.gameFX.controllers;
 
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
@@ -36,6 +40,7 @@ public class GameController implements Initializable {
     public GameStateManager gsm;
     public Renderer renderer;
     public GraphicsContext gc;
+    public GameLoopTimer timer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -83,23 +88,36 @@ public class GameController implements Initializable {
             gameCanvas.requestFocus();//regain canvas focus when clicking outside of UI windows
         });
 
+        timer = new GameLoopTimer() {
 
-        int i = 0;
+            private int displayFPS = 0;
+            private int displayTPS = 0;
+            private int displayUpTime = 0;
 
-        GameLoopTimer timer = new GameLoopTimer() {
             @Override
-            public void tick(float secondsElapsed) {
+            public void render() {
                 renderer.prepare();
                 gc.save();
-                gsm.update();
                 gsm.render(gc);
                 gc.restore();
-                /*
-                time += 0.017;
-                stage.setTitle("OmniaFX: FPS " + secondsElapsed);
-                if (time >= 0.017) {
+                stage.setTitle("OmniaFX: { "
+                    + "FPS: " + this.displayFPS + ", " + "TPS: " + this.displayTPS + ", "
+                    + "Up Time: " + this.displayUpTime
+                + " }");
+            }
 
-                }*/
+            @Override
+            public void tick() {
+
+                gsm.update();
+
+            }
+
+            @Override
+            public void output(int _FPS, int _TPS, int _upTime) {
+                this.displayFPS = _FPS;
+                this.displayTPS = _TPS;
+                this.displayUpTime = _upTime;
             }
         };
         timer.start();
