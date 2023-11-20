@@ -21,6 +21,7 @@ public class GameStateManager {
     public static final int PLATFORMERSTATE = 2;
     public static final int OVERWORLDSTATE = 3;
 
+    // Used with Game.java for non JavaFX runtime
     public GameStateManager(Game game) {
         this.inputHandler = new InputHandler(game);
         gameStates = new ArrayList<>();
@@ -30,6 +31,7 @@ public class GameStateManager {
         this.setState(MENUSTATE);
     }
 
+    // Used with GameController.java for OmniaFX/JavaFX run time
     public GameStateManager(GameController gameController) {
         this.usingFx = true;
         this.gameController = gameController;
@@ -56,6 +58,7 @@ public class GameStateManager {
         this.currentState = state;
         this.clearKeys();
         this.gameStates.get(currentState).init();
+
     }
     public void resetState(int state) {
         this.gameStates.get(state).reset();
@@ -78,14 +81,15 @@ public class GameStateManager {
         gameStates.get(currentState).update();
     }
 
-    //Used for GameFX.java renders
-    public void render(GraphicsContext gc) {
-        gameStates.get(currentState).render(gc);
-    }
-
     //Used for Game.java renders
     public void render(Graphics2D g2D){
         gameStates.get(currentState).render(g2D);
+    }
+
+
+    //Used for GameFX.java renders
+    public void render(GraphicsContext gc) {
+        gameStates.get(currentState).render(gc);
     }
 
 }
