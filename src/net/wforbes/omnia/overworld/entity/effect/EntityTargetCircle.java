@@ -35,8 +35,9 @@ public class EntityTargetCircle {
                 new KeyFrame(Duration.millis(0),
                         new KeyValue(circleOpacity, 1)
                 ),
-                new KeyFrame(Duration.millis(circleFadeDelay),
-                        new KeyValue(circleOpacity, 0)
+                //new KeyFrame(Duration.millis(circleFadeDelay),
+                new KeyFrame(Duration.millis(750),
+                        new KeyValue(circleOpacity, 0, Interpolator.EASE_IN)
                 )
         );
         c = new Circle(0, 0, 16, circleColor);
@@ -92,5 +93,9 @@ public class EntityTargetCircle {
             );
             gc.setGlobalAlpha(1.0);
         }
+    }
+
+    public void teardown() {
+        this.entityEffectController = null;
     }
 }

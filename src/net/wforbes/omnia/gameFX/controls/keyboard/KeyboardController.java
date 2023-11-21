@@ -61,4 +61,6 @@ public abstract class KeyboardController {
     //TODO: hook calls into gamestate to handle the event actively
     public abstract void keyPressedHook(KeyEvent event);
     public abstract void keyReleasedHook(KeyEvent event);
+
+    public abstract void teardown();
 }

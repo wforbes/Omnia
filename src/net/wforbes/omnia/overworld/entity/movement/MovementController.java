@@ -158,4 +158,7 @@ public class MovementController {
         this.waitCount++;
     }
 
+    public void teardown() {
+        this.mover = null;
+    }
 }

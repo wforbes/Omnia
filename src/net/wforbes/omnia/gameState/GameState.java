@@ -23,4 +23,6 @@ public abstract class GameState {
     public abstract void pause();
     public abstract boolean isPaused();
     public abstract void unPause();
+
+    public abstract void exit();
 }

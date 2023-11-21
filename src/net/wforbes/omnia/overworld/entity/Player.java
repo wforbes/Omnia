@@ -2,6 +2,7 @@ package net.wforbes.omnia.overworld.entity;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import net.wforbes.omnia.gameFX.OmniaFX;
@@ -10,6 +11,7 @@ import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.TargetController;
 
 import java.lang.annotation.Target;
+import java.util.ArrayList;
 
 public class Player extends Mob {
     protected String spriteSheetPath = "/overworld/sprites/player1_pokemon.gif";
@@ -128,5 +130,14 @@ public class Player extends Mob {
 
     public void render(GraphicsContext gc) {
         super.render(gc);
+    }
+
+    public void teardown() {
+        super.teardown();
+        this.width = this.height = 16;
+        this.numFrames = null;
+        this.spriteSheet = null;
+        this.targetController.teardown();
+        this.targetController = null;
     }
 }

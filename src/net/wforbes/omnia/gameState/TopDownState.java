@@ -238,7 +238,6 @@ public class TopDownState extends GameState{
         Font.render(msg, screen, 0, 0, Colors.get(-1, -1, -1, 000), 1);
     }
 
-
-
     public void reset() {}
+    public void exit() {}
 }

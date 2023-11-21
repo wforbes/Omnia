@@ -184,4 +184,6 @@ public class MenuState extends GameState {
     public void handleCanvasMouseMove(MouseEvent event) {
 
     }
+
+    public void exit() {}
 }

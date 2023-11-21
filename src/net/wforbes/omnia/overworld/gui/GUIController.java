@@ -116,4 +116,23 @@ public class GUIController {
     public void tick() {
         //chatWindowController.tick();
     }
+
+    public void teardown() {
+        this.windowDragger.teardown();
+        this.windowDragger = null;
+
+        this.chatWindowController.teardown();
+        chatWindowPanel.setVisible(false);
+        chatWindowPanel = null;
+        chatWindowVisible = false;
+
+        this.devWindowController.teardown();
+        this.devWindowController = null;
+        devWindowVisible = false;
+
+        this.windowDisplayController.teardown();
+
+        this.panelsPane.setVisible(false);
+        this.panelsPane = null;
+    }
 }

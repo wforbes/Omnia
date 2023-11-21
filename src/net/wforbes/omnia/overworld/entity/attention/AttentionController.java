@@ -90,4 +90,8 @@ public class AttentionController {
     public void setStartFocusTime(int sec) {
         this.startFocusTime = sec;
     }
+
+    public void teardown() {
+        this.owner = null;
+    }
 }

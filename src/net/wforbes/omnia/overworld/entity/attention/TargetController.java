@@ -65,4 +65,6 @@ public class TargetController {
         return (effectController.getClickCircle().getCircleRadius()*2.0)
                 + (e.getCollisionRadius()*2.0);
     }
+
+    public void teardown() {}
 }

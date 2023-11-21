@@ -20,4 +20,6 @@ public class MenuController {
     /*
     public DeathMenu getDeathMenu() {}
      */
+
+    public void teardown() {}
 }

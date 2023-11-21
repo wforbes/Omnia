@@ -25,4 +25,7 @@ public class EntityEffectController {
         this.targetCircle.render(gc);
     }
 
+    public void teardown() {
+        this.targetCircle.teardown();
+    }
 }

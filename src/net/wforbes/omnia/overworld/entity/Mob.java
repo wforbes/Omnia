@@ -1,5 +1,6 @@
 package net.wforbes.omnia.overworld.entity;
 
+import javafx.animation.*;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -9,13 +10,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.AttentionController;
 import net.wforbes.omnia.overworld.entity.effect.EntityEffectController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
-import net.wforbes.omnia.u.W;
 
 import java.util.ArrayList;
 
@@ -64,6 +65,7 @@ public abstract class Mob extends Entity {
     protected Color nameColor;
     protected Text nameText;
     protected Font nameFont;
+    private Timeline nameColorTimeline;
 
     public Mob(OverworldState gameState, String name, double speed, boolean player) {
         super(gameState);
@@ -76,6 +78,7 @@ public abstract class Mob extends Entity {
         this.nameText = new Text(this.getName());
         this.nameText.setFont(nameFont);
         this.nameText.setFontSmoothingType(FontSmoothingType.LCD);
+        this.initNameAnimation();
         this.attentionController = new AttentionController(this);
         this.entityEffectController = new EntityEffectController(this);
     }
@@ -294,12 +297,51 @@ public abstract class Mob extends Entity {
         if (wasTargeted && !this.isTargeted) {
             this.isTargeted = true;
             this.entityEffectController.getTargetCircle().set();
+            System.out.println(this.nameColorTimeline);
+            //this.nameColorTimeline.play();
             return;
         }
         // otherwise
         this.isTargeted = false;
         this.entityEffectController.getTargetCircle().unset();
+        //this.nameColorTimeline.stop();
     }
+
+    public void initNameAnimation() {
+        this.nameText.setX(20);
+        this.nameText.setY(100);
+        var color1 = Color.LIGHTBLUE;
+        var color2 = Color.BLUE;
+        nameText.setFill(color1);
+        /*
+        text.setStyle("-fx-font-family: serif; -fx-font-size: 42;"
+                + "-fx-font-style: oblique; -fx-font-weight: bold");
+         */
+        nameColorTimeline =  new Timeline(
+                new KeyFrame(new Duration(0),
+                    new KeyValue(nameText.fillProperty(), color2)
+                ),
+                new KeyFrame(new Duration(750),
+                        new KeyValue(nameText.fillProperty(), color1, Interpolator.EASE_IN)
+                )
+        );
+        nameColorTimeline.setCycleCount(Timeline.INDEFINITE);
+        nameColorTimeline.setAutoReverse(true);
+        nameColorTimeline.play();
+        /*
+        nameFillTransition = new FillTransition(
+                Duration.seconds(0.5),
+                this.nameText,
+                this.nameColor,
+                Color.LIGHTBLUE
+        );
+
+        nameFillTransition.setCycleCount(Timeline.INDEFINITE);
+        nameFillTransition.setAutoReverse(true);
+        nameFillTransition.play();
+        */
+    }
+
     public void update() {
         this.attentionController.update();
     }
@@ -324,11 +366,9 @@ public abstract class Mob extends Entity {
             if(gameState.mobNamesVisible()) {
                 this.renderName(gc);
             }
-
-            /* TODO: config setting - showCollisionGeometry
             if(gameState.collisionGeometryVisible()) {
                 this.renderCollisionGeometry(gc);
-            }*/
+            }
         }
     }
     private void renderBackgroundEffects(GraphicsContext gc) {
@@ -356,13 +396,23 @@ public abstract class Mob extends Entity {
 
 
     private void renderName(GraphicsContext gc) {
-        gc.setFill(this.nameColor);
-        gc.setFont(nameText.getFont());
-        gc.fillText(
-                nameText.getText(),
-                ((this.x + xmap)*getScale()) - nameText.getLayoutBounds().getWidth()/2.0,
-                (this.y + ymap)*getScale() - nameText.getLayoutBounds().getHeight()*1.5
-        );
+        if (this.isTargeted && this.nameColorTimeline.getStatus() == Animation.Status.RUNNING) {
+            gc.setFill(this.nameText.getFill());
+            gc.setFont(nameText.getFont());
+            gc.fillText(
+                    nameText.getText(),
+                    ((this.x + xmap) * getScale()) - nameText.getLayoutBounds().getWidth() / 2.0,
+                    (this.y + ymap) * getScale() - nameText.getLayoutBounds().getHeight() * 1.5
+            );
+        } else {
+            gc.setFill(this.nameColor);
+            gc.setFont(nameText.getFont());
+            gc.fillText(
+                    nameText.getText(),
+                    ((this.x + xmap) * getScale()) - nameText.getLayoutBounds().getWidth() / 2.0,
+                    (this.y + ymap) * getScale() - nameText.getLayoutBounds().getHeight() * 1.5
+            );
+        }
     }
     private void renderCollisionGeometry(GraphicsContext gc) {
         gc.setStroke(Color.RED);
@@ -371,5 +421,19 @@ public abstract class Mob extends Entity {
                 ((this.y + ymap + (height/2.0))-((height-collisionRadius)/2.0) - collisionRadius)*getScale(),
                 collisionRadius * getScale(),
                 collisionRadius * getScale());
+    }
+
+    public void teardown() {
+        this.name = null;
+        this.movementController.teardown();
+        this.movementController = null;
+        this.nameFont = null;
+        this.nameText = null;
+        this.attentionController.teardown();
+        this.attentionController = null;
+        this.entityEffectController.teardown();
+        this.entityEffectController = null;
+        this.spriteSheet = null;
+        this.sprites = null;
     }
 }

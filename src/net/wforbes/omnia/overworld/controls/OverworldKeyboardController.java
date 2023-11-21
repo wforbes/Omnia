@@ -18,4 +18,7 @@ public class OverworldKeyboardController extends KeyboardController {
         //System.out.println(event.getCode());
     }
 
+    public void teardown() {
+        this.gameState = null;
+    }
 }

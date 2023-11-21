@@ -266,4 +266,6 @@ public class PlatformerState extends GameState {
         this.lastUnpauseTick = this.tickCount;
         this.pauseMenu.hide();
     }
+
+    public void exit() {}
 }

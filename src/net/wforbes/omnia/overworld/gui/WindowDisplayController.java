@@ -95,4 +95,11 @@ public class WindowDisplayController {
             titledPaneFadeOut.play();
         });
     }
+
+    public void teardown() {
+        this.gui = null;
+        this.buttonFont = null;
+        this.titledPane.setVisible(false);
+        this.titledPane = null;
+    }
 }

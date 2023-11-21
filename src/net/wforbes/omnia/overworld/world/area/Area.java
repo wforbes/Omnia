@@ -61,8 +61,8 @@ public class Area {
         System.out.println("getX/Y: " + event.getX() + ", " + event.getY());
         System.out.println("sceneX/Y: " + event.getSceneX() + ", " + event.getSceneY());
          */
-        this.world.player.getTargetController().handleEntityTargeting(event, entities, effectController);
-        this.effectController.handleCanvasClick(event);
+        System.out.println("area.handleCanvasClick event: " + event);
+
     }
 
     public void update() {
@@ -95,5 +95,14 @@ public class Area {
                 return -1;
             }
         });
+    }
+
+    public void teadown() {
+        this.world = null;
+        for (Entity e : this.entities) {
+            e.teardown();
+        }
+        this.entities = null;
+        this.effectController = new EffectController(this);
     }
 }

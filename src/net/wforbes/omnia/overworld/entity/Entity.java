@@ -20,4 +20,6 @@ public abstract class Entity {
     public abstract void init();
     public abstract void update();
     public abstract void render(GraphicsContext gc);
+
+    public abstract void teardown();
 }

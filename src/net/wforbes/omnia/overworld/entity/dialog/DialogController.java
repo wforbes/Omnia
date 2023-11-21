@@ -57,4 +57,9 @@ public class DialogController {
             }
         }
     }
+
+    public void teardown() {
+        this.world = null;
+        this.chatOutputMap = null;
+    }
 }

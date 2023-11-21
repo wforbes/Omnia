@@ -208,4 +208,11 @@ public class DevWindowController {
             titledPaneFadeOut.play();
         });
     }
+
+    public void teardown() {
+        // TODO: save any settings before exit?
+        this.titledPane.setVisible(false);
+        this.titledPane = null;
+    }
+
 }

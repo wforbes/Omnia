@@ -418,6 +418,23 @@ public class ChatWindowController {
             chat.setFill(this.chatColorMap.get(this.currentChatCmd));
             chatAreaFlow.getChildren().add(chat);
         }
+    }
 
+    public void teardown() {
+        this.gui = null;
+        this.chatAreaFont = null;
+        this.chatFieldFont = null;
+        //this.chatLog = ""; //TODO: save chat log?
+        this.chatHistory = null; //TODO: save chat history?
+        this.chatBuilder = null;
+        this.chatOutputMap = null;
+        this.dialogController = null;
+        this.chatColorMap = null; //TODO: save chat color map along with history?
+        this.titledPane.setVisible(false);
+        this.titledPane = null;
+        this.chatAreaScroll.setVisible(false);
+        this.chatAreaScroll = null;
+        this.chatSendBtn.setVisible(false);
+        this.chatSendBtn = null;
     }
 }

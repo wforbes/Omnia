@@ -19,4 +19,5 @@ public class TopDownKeyboardController extends KeyboardController {
     public void keyReleasedHook(KeyEvent event) {
 
     }
+    public void teardown() {}
 }

@@ -30,6 +30,7 @@ public class PauseMenu extends Menu {
     private ArrayList<Button> buttons = new ArrayList<>();
 
     public PauseMenu(GameStateManager gsm) {
+        System.out.println(gsm);
         this.gsm = gsm;
         this.visible = false;
         this.headingFont = new Font("Century Gothic", 20 * OmniaFX.getScale());
@@ -120,9 +121,17 @@ public class PauseMenu extends Menu {
             gsm.getCurrentState().unPause();
         } else if (option.equals(options[1])) {
             gsm.getCurrentState().unPause();
+            gsm.getCurrentState().exit();
             gsm.setState(GameStateManager.MENUSTATE);
         } else if (option.equals(options[2])) {
             System.exit(0);
         }
     }
+
+    public void teardown() {
+        System.out.println("teardown on pause menu");
+        this.vbox.setVisible(false);
+        this.visible = false;
+    }
+
 }

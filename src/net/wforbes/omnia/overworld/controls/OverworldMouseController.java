@@ -12,6 +12,8 @@ public class OverworldMouseController extends MouseController {
 
     @Override
     public void handleCanvasClick(MouseEvent event) {
+        //TODO: effectController pivot point away from Area and into GUI
+        gameState.world.area.effectController.handleCanvasClick(event);
         gameState.world.player.getTargetController().handleEntityTargeting(
             event,
             gameState.world.area.entities,
@@ -22,6 +24,11 @@ public class OverworldMouseController extends MouseController {
 
     @Override
     public void handleCanvasMouseMove(MouseEvent event) {
+        if (this.gameState == null) return;
         gameState.gui.handleCanvasMouseMove(event);
+    }
+
+    public void teardown() {
+        this.gameState = null;
     }
 }

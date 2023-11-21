@@ -34,5 +34,8 @@ public class EffectController {
         this.clickCircle.render(gc);
     }
 
-
+    public void teardown() {
+        this.area = null;
+        this.clickCircle = null;
+    }
 }

@@ -24,12 +24,20 @@ public class OverworldState extends GameState {
     public GUIController gui;
     public static final String SPRITE_DIR = "/overworld/sprites/";
 
-    private boolean showCollisionGeometry = true;
+    private boolean showCollisionGeometry = false;
     private boolean showMobNames = true;
+
     private boolean isPaused = false;
+    private boolean isExiting = false;
+    private boolean previouslyExited;
 
     public OverworldState(GameStateManager gsm) {
-        this.gsm = gsm;
+        this.setup(gsm);
+    }
+
+    private void setup(GameStateManager gsm) {
+        if (gsm != null) this.gsm = gsm;
+        System.out.println("Building Overworld game state");
         this.mouseController = new OverworldMouseController(this);
         this.keyboardController = new OverworldKeyboardController(this);
         this.world = new World(this);
@@ -37,6 +45,12 @@ public class OverworldState extends GameState {
         this.world.setPlayer(player);
         this.gui = new GUIController(this);
         this.menuController = new MenuController(gsm);
+
+    }
+
+    private void resurrect(GameStateManager gsm) {
+        this.setup(gsm);
+        this.previouslyExited = false;
     }
 
     public GameStateManager getManager() {
@@ -78,6 +92,7 @@ public class OverworldState extends GameState {
 
     @Override
     public void handleCanvasMouseMove(MouseEvent event) {
+        if (this.isExiting) return;
         this.mouseController.handleCanvasMouseMove(event);
     }
 
@@ -88,6 +103,9 @@ public class OverworldState extends GameState {
 
     @Override
     public void init() {
+        if (previouslyExited && this.gsm != null) {
+            this.resurrect(this.gsm);
+        }
         this.world.init();
         this.player.init();
         this.gui.init();
@@ -100,6 +118,7 @@ public class OverworldState extends GameState {
 
     @Override
     public void update() {
+        if (isExiting) return;
         //TODO: check death status
         if(isPaused) {
             menuController.getPauseMenu().update();
@@ -117,6 +136,7 @@ public class OverworldState extends GameState {
 
     @Override
     public void render(GraphicsContext gc) {
+        if (isExiting) return;
         world.render(gc);
         if(isPaused) {
             menuController.getPauseMenu().render(gc);
@@ -142,5 +162,25 @@ public class OverworldState extends GameState {
         this.isPaused = false;
         //this.menuController.getPauseMenu().setLastUnpauseTick(this.tickCount);
         this.menuController.getPauseMenu().hide();
+    }
+
+    @Override
+    public void exit() {
+        this.isExiting = true;
+        // TODO: step 1 - start saving the game state implicitly
+        // TODO: step 2 - present the user with options on saving game
+        //this.gsm = null; // we gonna need that on resurrect
+        this.mouseController.teardown();
+        this.keyboardController.teardown();
+        this.world.teardown();
+        this.world = null;
+        this.player.teardown();
+        this.player = null;
+        this.gui.teardown();
+        this.gui = null;
+        this.menuController.teardown();
+        this.menuController = null;
+        this.previouslyExited = true;
+        this.isExiting = false;
     }
 }
