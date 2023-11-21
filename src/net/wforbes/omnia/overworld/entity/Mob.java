@@ -13,6 +13,7 @@ import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.AttentionController;
+import net.wforbes.omnia.overworld.entity.effect.EntityEffectController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 import net.wforbes.omnia.u.W;
 
@@ -52,7 +53,7 @@ public abstract class Mob extends Entity {
     public static final int FACING_SW = 6;
     public static final int FACING_SE = 7;
     public MovementController movementController;
-
+    private EntityEffectController entityEffectController;
     public boolean isPlayer; //TODO: remove - for testing
     protected int collisionHeightOffset;
     protected int collisionRadius;
@@ -76,6 +77,7 @@ public abstract class Mob extends Entity {
         this.nameText.setFont(nameFont);
         this.nameText.setFontSmoothingType(FontSmoothingType.LCD);
         this.attentionController = new AttentionController(this);
+        this.entityEffectController = new EntityEffectController(this);
     }
 
     public Mob(OverworldState gameState, String name, Point2D startPos, double speed) {
@@ -284,7 +286,20 @@ public abstract class Mob extends Entity {
     }
 
     //public abstract void init();
-
+    private boolean isTargeted;
+    public boolean isTargeted() {
+        return this.isTargeted;
+    }
+    public void setTargeted (boolean wasTargeted) {
+        if (wasTargeted && !this.isTargeted) {
+            this.isTargeted = true;
+            this.entityEffectController.getTargetCircle().set();
+            return;
+        }
+        // otherwise
+        this.isTargeted = false;
+        this.entityEffectController.getTargetCircle().unset();
+    }
     public void update() {
         this.attentionController.update();
     }
@@ -303,17 +318,33 @@ public abstract class Mob extends Entity {
         }*/
 
         if(!offScreen()) {
+            this.renderBackgroundEffects(gc);
             this.renderSprite(gc);
 
             if(gameState.mobNamesVisible()) {
                 this.renderName(gc);
             }
+
+            /* TODO: config setting - showCollisionGeometry
             if(gameState.collisionGeometryVisible()) {
                 this.renderCollisionGeometry(gc);
-            }
+            }*/
         }
     }
+    private void renderBackgroundEffects(GraphicsContext gc) {
+        this.entityEffectController.renderBackground(gc);
+    }
+    private boolean rendered = false;
     private void renderSprite(GraphicsContext gc) {
+        /* use to debug position data from first render
+        if (!rendered) {
+            System.out.println(this.getName() + " renderedX: " + (x + xmap - width / 2.0) * getScale());
+            System.out.println(this.getName() + " renderedY: " + (y + ymap - height / 2.0) * getScale());
+            System.out.println(this.getName() + " renderedWidth: " + width * getScale());
+            System.out.println(this.getName() + " renderedHeight: " + height * getScale());
+            this.rendered = true;
+        }*/
+
         gc.drawImage(
                 movementAnimation.getImage(),
                 (x + xmap - width / 2.0) * getScale(),
@@ -322,6 +353,7 @@ public abstract class Mob extends Entity {
                 height * getScale()
         );
     }
+
 
     private void renderName(GraphicsContext gc) {
         gc.setFill(this.nameColor);

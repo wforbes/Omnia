@@ -18,6 +18,10 @@ public class EffectController {
         return this.area;
     }
 
+    public ClickCircle getClickCircle() {
+        return this.clickCircle;
+    }
+
     public void init() {
         clickCircle.init();
     }

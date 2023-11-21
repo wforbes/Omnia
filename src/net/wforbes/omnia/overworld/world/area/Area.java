@@ -36,7 +36,7 @@ public class Area {
         this.initTileMap();
         this.effectController.init();
         this.initEntities();
-        this.world.player.setPosition(60,60);
+        this.world.player.setPosition(120,120);
         //this.initNPCs();
     }
 
@@ -57,6 +57,11 @@ public class Area {
     }
 
     public void handleCanvasClick(MouseEvent event) {
+        /*
+        System.out.println("getX/Y: " + event.getX() + ", " + event.getY());
+        System.out.println("sceneX/Y: " + event.getSceneX() + ", " + event.getSceneY());
+         */
+        this.world.player.getTargetController().handleEntityTargeting(event, entities, effectController);
         this.effectController.handleCanvasClick(event);
     }
 
@@ -75,7 +80,7 @@ public class Area {
 
     private void renderEntities(GraphicsContext gc) {
         this.sortEntitiesByYPos();
-        for(Entity e : this.entities) {
+        for (Entity e : this.entities) {
             e.render(gc);
         }
     }

@@ -20,6 +20,7 @@ public class ClickCircle {
 
     private Color circleColor;
     private double circleLineWidth;
+    private double circleRadius = 6;
     private Circle c;
 
     private double circleFadeDelay = 250;
@@ -49,7 +50,11 @@ public class ClickCircle {
                 )
         );
         circleColor = Color.YELLOW;
-        c = new Circle(0, 0, 16, circleColor);
+        c = new Circle(0, 0, circleRadius, circleColor);
+    }
+
+    public double getCircleRadius() {
+        return this.circleRadius;
     }
 
     public void set(double x, double y) {

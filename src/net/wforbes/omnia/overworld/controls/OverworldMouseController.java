@@ -12,7 +12,11 @@ public class OverworldMouseController extends MouseController {
 
     @Override
     public void handleCanvasClick(MouseEvent event) {
-        gameState.world.area.handleCanvasClick(event);
+        gameState.world.player.getTargetController().handleEntityTargeting(
+            event,
+            gameState.world.area.entities,
+            gameState.world.area.effectController
+        );
         gameState.gui.handleCanvasClick(event);
     }
 

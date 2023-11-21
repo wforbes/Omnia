@@ -7,6 +7,9 @@ import javafx.scene.paint.Color;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
+import net.wforbes.omnia.overworld.entity.attention.TargetController;
+
+import java.lang.annotation.Target;
 
 public class Player extends Mob {
     protected String spriteSheetPath = "/overworld/sprites/player1_pokemon.gif";
@@ -22,6 +25,7 @@ public class Player extends Mob {
     private double collisionBoxHeight;
 
     protected int currentAction;
+    private TargetController targetController;
 
     public Player(OverworldState gameState, String name) {
 
@@ -40,6 +44,11 @@ public class Player extends Mob {
         this.facingDir = FACING_S;
         movementAnimation = new MovementAnimation(this);
         this.setAnimationDirection(facingDir);
+        this.targetController = new TargetController();
+    }
+
+    public TargetController getTargetController() {
+        return this.targetController;
     }
 
     public void update() {
