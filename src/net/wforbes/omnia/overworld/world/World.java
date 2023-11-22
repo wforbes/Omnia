@@ -18,6 +18,7 @@ public class World {
         //TODO: set up areaGrid that comprises the World once
         //  multiple areas have been created
         this.dialogController = new DialogController(this);
+        //this.systemMessageController = new SystemMessageController(this);
         this.area = new Area(this);
     }
 
@@ -41,4 +42,12 @@ public class World {
         area.render(gc);
     }
 
+    public void teardown() {
+        this.gameState = null;
+        //TODO: tear down areaGrid once its implemented
+        this.dialogController.teardown();
+        this.dialogController = null;
+        //this.systemMessageController = null;
+        this.area = new Area(this);
+    }
 }
