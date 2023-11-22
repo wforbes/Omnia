@@ -36,7 +36,7 @@ public class Area {
         this.initTileMap();
         this.effectController.init();
         this.initEntities();
-        this.world.player.setPosition(120,120);
+        this.world.player.setPosition(256,256);
         //this.initNPCs();
     }
 

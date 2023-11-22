@@ -2,16 +2,17 @@ package net.wforbes.omnia.overworld.entity;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.TargetController;
+import net.wforbes.omnia.overworld.entity.projectile.Projectile;
+import net.wforbes.omnia.overworld.entity.projectile.ProjectileController;
 
-import java.lang.annotation.Target;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player extends Mob {
     protected String spriteSheetPath = "/overworld/sprites/player1_pokemon.gif";
@@ -28,6 +29,7 @@ public class Player extends Mob {
 
     protected int currentAction;
     private TargetController targetController;
+    private ProjectileController projectileController;
 
     public Player(OverworldState gameState, String name) {
 
@@ -46,19 +48,31 @@ public class Player extends Mob {
         this.facingDir = FACING_S;
         movementAnimation = new MovementAnimation(this);
         this.setAnimationDirection(facingDir);
-        this.targetController = new TargetController();
+        this.targetController = new TargetController();//TODO: pass this to targetController for player references
+        this.projectileController = new ProjectileController(this);
     }
 
     public TargetController getTargetController() {
         return this.targetController;
     }
+    public ProjectileController getProjectileController() {
+        return this.projectileController;
+    }
 
     public void update() {
-        checkMovement();
         checkCommands();
+        checkMovement();
         movementAnimation.update();
+        checkActions();
         gameState.gui.getDevWindow().setPlayerMapPos(this.x, this.y);
         gameState.gui.getDevWindow().setPlayerScreenPos(Math.floor(this.x+xmap) * OmniaFX.getScale(), Math.floor(this.y+ymap) * OmniaFX.getScale());
+        this.projectileController.update();
+    }
+
+    private void checkActions() {
+        if (gameState.keyboardController.isKeyDown(KeyCode.DIGIT1)) {
+            this.projectileController.fireProjectile();
+        }
     }
 
     private boolean dashReady() {
@@ -68,16 +82,28 @@ public class Player extends Mob {
     private void checkMovement() {
         double xa = 0;
         double ya = 0;
-        if(gameState.keyboardController.isKeyDown(KeyCode.UP)) {
+        if(
+            gameState.keyboardController.isKeyDown(KeyCode.UP)
+            || gameState.keyboardController.isKeyDown(KeyCode.W)
+        ) {
             ya--;
         }
-        if(gameState.keyboardController.isKeyDown(KeyCode.DOWN)) {
+        if(
+            gameState.keyboardController.isKeyDown(KeyCode.DOWN)
+            || gameState.keyboardController.isKeyDown(KeyCode.S)
+        ) {
             ya++;
         }
-        if (gameState.keyboardController.isKeyDown(KeyCode.LEFT)) {
+        if(
+            gameState.keyboardController.isKeyDown(KeyCode.LEFT)
+            || gameState.keyboardController.isKeyDown(KeyCode.A)
+        ) {
             xa--;
         }
-        if (gameState.keyboardController.isKeyDown(KeyCode.RIGHT)) {
+        if (
+            gameState.keyboardController.isKeyDown(KeyCode.RIGHT)
+            || gameState.keyboardController.isKeyDown(KeyCode.D)
+        ) {
             xa++;
         }
 
@@ -130,7 +156,9 @@ public class Player extends Mob {
 
     public void render(GraphicsContext gc) {
         super.render(gc);
+        this.projectileController.render(gc);
     }
+
 
     public void teardown() {
         super.teardown();
@@ -139,5 +167,6 @@ public class Player extends Mob {
         this.spriteSheet = null;
         this.targetController.teardown();
         this.targetController = null;
+        this.projectileController.teardown();
     }
 }
