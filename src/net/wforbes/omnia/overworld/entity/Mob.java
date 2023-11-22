@@ -293,7 +293,7 @@ public abstract class Mob extends Entity {
     public boolean isTargeted() {
         return this.isTargeted;
     }
-    public void setTargeted (boolean wasTargeted) {
+    public void setTargeted(boolean wasTargeted) {
         if (wasTargeted && !this.isTargeted) {
             this.isTargeted = true;
             this.entityEffectController.getTargetCircle().set();

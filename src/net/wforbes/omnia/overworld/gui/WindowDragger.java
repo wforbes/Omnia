@@ -14,10 +14,12 @@ public class WindowDragger {
         public double initialTranslateY;
     }
 
+    private final DragContext dragContext = new DragContext();
+    private Group wrapGroup;
+
     //https://docs.oracle.com/javase/8/javafx/events-tutorial/draggablepanelsexamplejava.htm
     public Node makeDraggableByTitleRegion(final Node node) {
-        final DragContext dragContext = new DragContext();
-        final Group wrapGroup = new Group(node);
+        wrapGroup = new Group(node);
         wrapGroup.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             System.out.println("UI got a mouse press..");
             if (targetIsTitleRegion(event.getTarget())) {
@@ -33,6 +35,9 @@ public class WindowDragger {
                         node.getTranslateY();
                 //}
             }
+        });
+        wrapGroup.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            System.out.println("UI got a mouse click..");
         });
 
         wrapGroup.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
@@ -62,5 +67,10 @@ public class WindowDragger {
         String titleClass = "class javafx.scene.control.skin.TitledPaneSkin$TitleRegion";
         return target.getClass().toString().equals(titleClass) || // anywhere on title region except title Text
                 (target instanceof Node && ((Node) target).getParent().getClass().toString().equals(titleClass));// title Text
+    }
+
+    public void teardown() {
+        //this.dragContext = null;
+        this.wrapGroup = null;
     }
 }

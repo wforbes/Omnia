@@ -127,6 +127,10 @@ public class TileMap {
     public int getTileSize(){ return tileSize;}
     public double getX(){ return x;}
     public double getY(){return y;}
+    public double getXMin() { return this.xmin; }
+    public double getXMax() { return this.xmax; }
+    public double getYMin() { return this.ymin; }
+    public double getYMax() { return this.ymax; }
     public int getWidth(){return width;}
     public int getHeight(){ return height;}
     /*//TODO: rewrite this for new tileSprites if needed
@@ -157,7 +161,7 @@ public class TileMap {
         this.x += (centerX - x - this.x) * tween;
         this.y += (centerY - y - this.y) * tween;
 
-        fixBounds();
+        fixBounds(); //keep the camera in the bounds of the map
 
         colOffset = (int) -(this.x) / tileSize;
         rowOffset = (int) -(this.y) / tileSize;
