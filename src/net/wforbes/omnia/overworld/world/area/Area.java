@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.overworld.entity.DocNPC;
 import net.wforbes.omnia.overworld.entity.Entity;
+import net.wforbes.omnia.overworld.entity.flora.BushFlora;
 import net.wforbes.omnia.overworld.world.World;
 import net.wforbes.omnia.overworld.world.area.effect.EffectController;
 import net.wforbes.omnia.overworld.world.area.tile.TileMap;
@@ -16,6 +17,7 @@ public class Area {
     private TileMap tileMap;
     public ArrayList<Entity> entities;
     public EffectController effectController;
+    private BushFlora flora;
 
     public Area(World world) {
         this.world = world;
@@ -35,9 +37,16 @@ public class Area {
     public void init() {
         this.initTileMap();
         this.effectController.init();
+        this.initFlora();
         this.initEntities();
         this.world.player.setPosition(256,256);
         //this.initNPCs();
+    }
+
+    private void initFlora() {
+
+        this.flora = new BushFlora(world.gameState);
+        this.flora.init();
     }
 
     private void initEntities() {
@@ -48,10 +57,11 @@ public class Area {
     }
 
     private void initTileMap() {
-        this.tileMap = new TileMap(this, 8);
+        this.tileMap = new TileMap(this, 32);
         this.tileMap.loadMapFromImageFile("/overworld/tile/maps/areamap0.gif");
         this.tileMap.loadTilesFromMapImage();
-        this.tileMap.loadTileSprites("/overworld/tile/areatiles0.gif");
+        //this.tileMap.loadTileSprites("/overworld/tile/areatiles0.gif");
+        this.tileMap.loadTileSprites("/overworld/tile/tiles2.gif");
         this.tileMap.setPosition(0, 0);
         this.tileMap.setTween(0.06);
     }
@@ -74,8 +84,13 @@ public class Area {
 
     public void render(GraphicsContext gc) {
         this.tileMap.render(gc);
+        renderFlora(gc);
         renderEntities(gc);
         this.effectController.render(gc);
+    }
+
+    private void renderFlora(GraphicsContext gc) {
+        this.flora.render(gc);
     }
 
     private void renderEntities(GraphicsContext gc) {
