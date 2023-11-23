@@ -62,7 +62,7 @@ public abstract class Mob extends Entity {
     protected int collisionBoxWidth;
     protected int collisionBoxHeight;
     public boolean isColliding;
-
+    private Flora collidingFlora;
     protected Color nameColor;
     protected Text nameText;
     protected Font nameFont;
@@ -184,6 +184,13 @@ public abstract class Mob extends Entity {
     }
     public int getCollisionBoxWidth() { return this.collisionBoxWidth; }
     public int getCollisionRadius() { return this.collisionRadius; }
+    public Flora getCollidingFlora () {
+        return this.collidingFlora;
+    }
+
+    public void addHarvestMaterialsToInventory(Flora flora) {
+        System.out.println("TODO: add harvest materials to inventory");
+    }
 
     protected boolean isOccupied(double xa, double ya) {
         for(Entity e : gameState.world.area.entities) {
@@ -209,9 +216,11 @@ public abstract class Mob extends Entity {
             double xDist = (this.getX()+xa - (f.getX() + f.getWidth()/2.0));
             double yDist = (this.getY()+ya - (f.getY() + f.getHeight()/2.0));
             if(Math.sqrt((xDist*xDist) + (yDist*yDist)) <= (collisionRadius/2.0+f.getCollisionRadius()/2.0)) {
+                this.collidingFlora = f;
                 return true;
             }
         }
+        this.collidingFlora = null;
         return false;
     }
 

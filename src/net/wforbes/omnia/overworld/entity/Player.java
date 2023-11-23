@@ -8,6 +8,7 @@ import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.TargetController;
+import net.wforbes.omnia.overworld.entity.harvest.HarvestController;
 import net.wforbes.omnia.overworld.entity.projectile.Projectile;
 import net.wforbes.omnia.overworld.entity.projectile.ProjectileController;
 
@@ -30,6 +31,7 @@ public class Player extends Mob {
     protected int currentAction;
     private TargetController targetController;
     private ProjectileController projectileController;
+    private HarvestController harvestController;
 
     public Player(OverworldState gameState, String name) {
 
@@ -50,6 +52,11 @@ public class Player extends Mob {
         this.setAnimationDirection(facingDir);
         this.targetController = new TargetController();//TODO: pass this to targetController for player references
         this.projectileController = new ProjectileController(this);
+        this.harvestController = new HarvestController(this);
+        //TODO: user hits harvest button, gui shows gather timer bar,
+        //  render empty gather node,
+        //  start regrow timer on node,
+        //  put item into player inventory
     }
 
     public void init(int xPos, int yPos) {}
@@ -69,11 +76,15 @@ public class Player extends Mob {
         gameState.gui.getDevWindow().setPlayerMapPos(this.x, this.y);
         gameState.gui.getDevWindow().setPlayerScreenPos(Math.floor(this.x+xmap) * OmniaFX.getScale(), Math.floor(this.y+ymap) * OmniaFX.getScale());
         this.projectileController.update();
+        this.harvestController.update();
     }
 
     private void checkActions() {
         if (gameState.keyboardController.isKeyDown(KeyCode.DIGIT1)) {
             this.projectileController.fireProjectile();
+        }
+        if (gameState.keyboardController.isKeyDown(KeyCode.H)) {
+            this.harvestController.harvestMaterials();
         }
     }
 
@@ -124,6 +135,7 @@ public class Player extends Mob {
             }
             move(xa, ya);
             isMoving = true;
+            this.cancelStationaryActions();
         } else {
             isMoving = false;
             if(movementAnimation.isMoving())
@@ -150,6 +162,10 @@ public class Player extends Mob {
                 gameState.gui.getChatWindow().focusChatField();
             }
         }
+    }
+
+    private void cancelStationaryActions() {
+        this.harvestController.cancelHarvesting();
     }
 
     private boolean keyInputIsReady() {
