@@ -60,7 +60,8 @@ public class ClickCircle {
     public void set(double x, double y) {
         initialMapPosition = new Point2D(
                 effectController.getArea().getTileMap().getX(),
-                effectController.getArea().getTileMap().getY());
+                effectController.getArea().getTileMap().getY()
+        );
         c.setCenterX(x);
         c.setCenterY(y);
         circleFadeTimeline.stop();

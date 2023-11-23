@@ -43,3 +43,14 @@
     -fx-background: linear-gradient(#AAA,#FFF);
     -fx-border-radius: 0.25em;
 }
+
+.action-pane {
+
+}
+.action-progress-indicator {
+
+}
+.action-progress-indicator .percentage {
+    -fx-fill: white;
+    -fx-font-weight: 700;
+}

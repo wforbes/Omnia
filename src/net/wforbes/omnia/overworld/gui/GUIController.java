@@ -6,26 +6,28 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.overworld.entity.Player;
 import net.wforbes.omnia.u.W;
+
+import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
 public class GUIController {
     public OverworldState gameState;
 
     private boolean guiHasFocus;
     private WindowDragger windowDragger;
-    private ChatWindowController chatWindowController;
-    private DevWindowController devWindowController;
     private WindowDisplayController windowDisplayController;
-
-    private Pane panelsPane;
     private Node windowDisplayPanel;
-    private Node devWindowPanel;
+    Pane panelsPane;
+    private ChatWindowController chatWindowController;
     private Node chatWindowPanel;
-
     public boolean chatWindowVisible;
+    private DevWindowController devWindowController;
+    private Node devWindowPanel;
     public boolean devWindowVisible;
-
-
+    private ActionWindowController actionWindowController;
+    Node actionWindowPanel;
+    private boolean actionWindowVisible;
     public static double OPACITY_MAX = 0.5;
 
     public GUIController(OverworldState state) {
@@ -51,11 +53,18 @@ public class GUIController {
         );
         devWindowVisible = false;
 
+        this.actionWindowController = new ActionWindowController(this);
+
+        actionWindowPanel = windowDragger.makeDraggableByTitleRegion(
+                actionWindowController.getWindowPanel()
+        );
+        actionWindowVisible = false;
+
+
         windowDisplayController = new WindowDisplayController(this);
         windowDisplayPanel = windowDragger.makeDraggableByTitleRegion(
                 windowDisplayController.getWindowPanel()
         );
-
         this.panelsPane = new Pane();
         panelsPane.setStyle("-fx-background-color: rgba(0,100,100,0.5);-fx-background-radius:10;");
         panelsPane.setPrefSize(0.1,0.1);
@@ -82,6 +91,7 @@ public class GUIController {
         return this.devWindowController;
     }
     public ChatWindowController getChatWindow() { return this.chatWindowController; }
+    public ActionWindowController getActionWindow() { return this.actionWindowController; }
     public void handleCanvasClick(MouseEvent event) {
         this.devWindowController.handleCanvasClick(event);
     }
@@ -113,8 +123,8 @@ public class GUIController {
         }
     }
 
-    public void tick() {
-        //chatWindowController.tick();
+    public void update() {
+        this.actionWindowController.update();
     }
 
     public void teardown() {
@@ -129,6 +139,10 @@ public class GUIController {
         this.devWindowController.teardown();
         this.devWindowController = null;
         devWindowVisible = false;
+
+        this.actionWindowController.teardown();
+        this.actionWindowController = null;
+        actionWindowVisible = false;
 
         this.windowDisplayController.teardown();
 

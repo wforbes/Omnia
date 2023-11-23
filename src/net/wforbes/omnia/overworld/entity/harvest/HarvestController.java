@@ -28,6 +28,9 @@ public class HarvestController {
             this.harvestCooldownTimer = 0;
             this.isHarvesting = true;
             this.harvestTarget = flora;
+            this.owner.gameState.gui.getActionWindow().startAction(
+                "harvesting", 0.01, harvestTarget
+            );
             this.harvestActionTimer++;
             this.harvestCooldownTimer++;
             System.out.println("Started harvesting... " + flora);
@@ -39,10 +42,17 @@ public class HarvestController {
             if (this.harvestActionTimer > 0) {
                 this.harvestActionTimer++;
                 if (this.harvestActionTimer <= this.harvestActionTime && this.harvestActionTimer % 10 == 0) {
-                    System.out.println("harvest action timer (mod10): " + this.harvestActionTimer);
+                    System.out.println(
+                        "harvest action timer (mod10): " +
+                        ((float)this.harvestActionTimer / (float)this.harvestActionTime)
+                    );
+                    this.owner.gameState.gui.getActionWindow().updateAction(
+                        (double)this.harvestActionTimer / (double)this.harvestActionTime
+                    );
                 }
                 if (this.harvestActionTimer >= this.harvestActionTime) {
                     System.out.println("Harvest complete!");
+                    this.owner.gameState.gui.getActionWindow().completeAction();
                     this.isHarvesting = false;
                     this.harvestActionTimer = 0;
                     this.transferHarvestMaterials(this.harvestTarget);
@@ -70,6 +80,7 @@ public class HarvestController {
     public void cancelHarvesting() {
         if (!this.isHarvesting) return;
         System.out.println("Harvesting cancelled");
+        this.owner.gameState.gui.getActionWindow().cancelAction();
         if (this.harvestActionTimer > 0) {
             this.isHarvesting = false;
             this.harvestActionTimer = 0;

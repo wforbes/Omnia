@@ -11,6 +11,8 @@ public abstract class Flora {
 
     public abstract double getX();
     public abstract double getY();
+    public abstract double getXMap();
+    public abstract double getYMap();
     public abstract int getCollisionRadius();
     public abstract double getWidth();
     public abstract double getHeight();

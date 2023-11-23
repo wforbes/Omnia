@@ -43,6 +43,12 @@ public class BushFlora extends Flora {
     public int getCollisionRadius() {
         return this.collisionRadius;
     }
+    public double getXMap() {
+        return this.xmap;
+    }
+    public double getYMap() {
+        return this.ymap;
+    }
     public double getWidth() { return this.width; }
     public double getHeight() { return this.height; }
 
@@ -61,7 +67,7 @@ public class BushFlora extends Flora {
     public void render(GraphicsContext gc) {
         this.refreshMapPosition();
         this.renderSprite(gc);
-        this.renderCollisionGeometry(gc);
+        //this.renderCollisionGeometry(gc);
     }
 
     protected void refreshMapPosition() {

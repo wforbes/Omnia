@@ -128,6 +128,7 @@ public class OverworldState extends GameState {
         }
         player.update();
         world.update();
+        gui.update();
         //TODO: attack enemies
         //TODO: update NPCS
         tickCount++;
