@@ -77,20 +77,6 @@ public class MainMenu extends Menu {
 
     private void setButtons() {
 
-        Button topDownBtn = new Button("Top-Down (8-bit)");
-        topDownBtn.getStyleClass().add("main-button");
-        topDownBtn.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
-            topDownBtn.requestFocus();
-        });
-        topDownBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            state.gsm.gameController.gameBorder.setLeft(null);
-            state.gsm.setState(GameStateManager.TOPDOWNSTATE);
-        });
-        topDownBtn.setOnAction(event -> {
-            state.gsm.gameController.gameBorder.setLeft(null);
-            state.gsm.setState(GameStateManager.TOPDOWNSTATE);
-        });
-
         Button overworldBtn = new Button("Overworld (32-bit)");
         overworldBtn.getStyleClass().add("main-button");
         overworldBtn.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
@@ -105,7 +91,21 @@ public class MainMenu extends Menu {
             state.gsm.setState(GameStateManager.OVERWORLDSTATE);
         });
 
-        Button platformerBtn = new Button("Platformer (24-bit)");
+        Button topDownBtn = new Button("Top-Down (OLD/BROKEN)");
+        topDownBtn.getStyleClass().add("main-button");
+        topDownBtn.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            topDownBtn.requestFocus();
+        });
+        topDownBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            state.gsm.gameController.gameBorder.setLeft(null);
+            state.gsm.setState(GameStateManager.TOPDOWNSTATE);
+        });
+        topDownBtn.setOnAction(event -> {
+            state.gsm.gameController.gameBorder.setLeft(null);
+            state.gsm.setState(GameStateManager.TOPDOWNSTATE);
+        });
+
+        Button platformerBtn = new Button("Platformer (OLD/BROKEN)");
         platformerBtn.getStyleClass().add("main-button");
         platformerBtn.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
             platformerBtn.requestFocus();
@@ -141,7 +141,7 @@ public class MainMenu extends Menu {
 
         VBox vbox = new VBox(18);
         vbox.setPadding(new Insets((123 * fxScale), 0,0,28*fxScale));
-        vbox.getChildren().addAll(topDownBtn, overworldBtn, platformerBtn, infoBtn, quitBtn);
+        vbox.getChildren().addAll(overworldBtn, topDownBtn, platformerBtn, infoBtn, quitBtn);
         state.gsm.gameController.gameBorder.setLeft(vbox);
     }
 
