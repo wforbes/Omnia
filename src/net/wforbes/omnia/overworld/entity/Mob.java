@@ -17,6 +17,7 @@ import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.AttentionController;
 import net.wforbes.omnia.overworld.entity.effect.EntityEffectController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
+import net.wforbes.omnia.overworld.world.terrain.flora.Flora;
 
 import java.util.ArrayList;
 
@@ -201,6 +202,14 @@ public abstract class Mob extends Entity {
                 if(Math.sqrt((xDist*xDist) + (yDist*yDist)) <= (collisionRadius/2.0+e.getCollisionRadius()/2.0)) {
                     return true;
                 }
+            }
+        }
+        // LOL put this collision check somewhere with better access to new terrain items
+        for (Flora f : gameState.world.area.getTerrainController().getFloraController().getBushes()) {
+            double xDist = (this.getX()+xa - (f.getX() + f.getWidth()/2.0));
+            double yDist = (this.getY()+ya - (f.getY() + f.getHeight()/2.0));
+            if(Math.sqrt((xDist*xDist) + (yDist*yDist)) <= (collisionRadius/2.0+f.getCollisionRadius()/2.0)) {
+                return true;
             }
         }
         return false;

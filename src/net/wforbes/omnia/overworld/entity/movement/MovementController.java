@@ -74,6 +74,8 @@ public class MovementController {
     public void standAndFace(Point2D targetLoc) {
         this.stopMovement();
         double angle = new Point2D(1,0).angle(this.mover.getLocationPoint().subtract(targetLoc));
+        System.out.println(targetLoc);
+        System.out.println(angle);
         if (angle > 45 && angle < 135) {//vertical facing
             if (targetLoc.getY() < this.mover.getY()) {//facing north
                 this.mover.setFacingDir(Mob.FACING_N);
@@ -101,11 +103,11 @@ public class MovementController {
     }
 
     private void paceVertically(int waitMultiple, int waitReset, int minYBound, int maxYBound) {
-        /*
+
         if (this.waitCount == 0 || this.waitCount == (waitMultiple + 1) * waitReset) {
             this.waitCount = 1;
             this.moveReady = false;
-        } else */
+        } else
         if (this.waitCount % waitMultiple == 0) {
 
             if(!this.mover.isColliding){

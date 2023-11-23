@@ -52,6 +52,8 @@ public class Player extends Mob {
         this.projectileController = new ProjectileController(this);
     }
 
+    public void init(int xPos, int yPos) {}
+
     public TargetController getTargetController() {
         return this.targetController;
     }

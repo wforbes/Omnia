@@ -18,6 +18,7 @@ public abstract class Entity {
     public abstract int getCollisionRadius();
 
     public abstract void init();
+    public abstract void init(int xPos, int yPos);
     public abstract void update();
     public abstract void render(GraphicsContext gc);
 

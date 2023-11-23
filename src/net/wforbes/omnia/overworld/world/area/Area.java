@@ -4,8 +4,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.overworld.entity.DocNPC;
 import net.wforbes.omnia.overworld.entity.Entity;
-import net.wforbes.omnia.overworld.entity.flora.BushFlora;
-import net.wforbes.omnia.overworld.entity.flora.FloraController;
+import net.wforbes.omnia.overworld.entity.NPC;
+import net.wforbes.omnia.overworld.world.terrain.TerrainController;
+import net.wforbes.omnia.overworld.world.terrain.flora.BushFlora;
+import net.wforbes.omnia.overworld.world.terrain.flora.FloraController;
 import net.wforbes.omnia.overworld.world.World;
 import net.wforbes.omnia.overworld.world.area.effect.EffectController;
 import net.wforbes.omnia.overworld.world.area.tile.TileMap;
@@ -17,14 +19,16 @@ public class Area {
     private World world;
     private TileMap tileMap;
     public ArrayList<Entity> entities;
+    public int TEST_NPC_XPOS = 200;
+    public int TEST_NPC_YPOS = 200;
     public EffectController effectController;
-    private BushFlora flora;
-    private FloraController floraController;
+    private TerrainController terrainController;
 
     public Area(World world) {
         this.world = world;
         this.entities = new ArrayList<>();
         this.effectController = new EffectController(this);
+        this.terrainController = new TerrainController(this);
     }
 
     public World getWorld(){ return this.world; }
@@ -36,25 +40,28 @@ public class Area {
     }
     public ArrayList<Entity> getEntities() { return this.entities; }
 
+    public TerrainController getTerrainController() {
+        return this.terrainController;
+    }
+
     public void init() {
         this.initTileMap();
         this.effectController.init();
-        this.initFlora();
+        this.terrainController.init();
         this.initEntities();
         this.world.player.setPosition(256,256);
         //this.initNPCs();
     }
 
-    private void initFlora() {
-        this.floraController = new FloraController(this);
-        this.floraController.init();
-    }
-
     private void initEntities() {
-        this.addEntity(new DocNPC(world.gameState));
+        NPC testNPC = new DocNPC(world.gameState);
+        testNPC.init(TEST_NPC_XPOS, TEST_NPC_YPOS);
+
+        this.addEntity(testNPC);
+        /*
         for(Entity e : this.entities) {
             e.init();
-        }
+        }*/
     }
 
     private void initTileMap() {
@@ -85,13 +92,13 @@ public class Area {
 
     public void render(GraphicsContext gc) {
         this.tileMap.render(gc);
-        renderFlora(gc);
+        renderTerrain(gc);
         renderEntities(gc);
         this.effectController.render(gc);
     }
 
-    private void renderFlora(GraphicsContext gc) {
-        this.floraController.render(gc);
+    private void renderTerrain(GraphicsContext gc) {
+        this.terrainController.render(gc);
     }
 
     private void renderEntities(GraphicsContext gc) {
@@ -113,7 +120,7 @@ public class Area {
         });
     }
 
-    public void teadown() {
+    public void teardown() {
         this.world = null;
         for (Entity e : this.entities) {
             e.teardown();

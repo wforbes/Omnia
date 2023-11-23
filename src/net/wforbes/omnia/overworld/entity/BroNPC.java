@@ -35,6 +35,8 @@ public class BroNPC extends NPC {
         this.movementController.setMovementType(MovementController.MOVEMENT_PACE_VERTICAL);
     }
 
+    public void init(int xPos, int yPos) {}
+
     public void update() { super.update(); }
 
 

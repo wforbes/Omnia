@@ -1,23 +1,26 @@
-package net.wforbes.omnia.overworld.entity.flora;
+package net.wforbes.omnia.overworld.world.terrain.flora;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import net.wforbes.omnia.gameState.OverworldState;
 
 import java.util.Random;
 
 import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
-public class BushFlora {
-    private final OverworldState gameState;
+public class BushFlora extends Flora {
     private Point2D point2D;
     private Image spriteImg;
     private double x, y, xmap, ymap, width, height;
 
+    private int collisionRadius = 16;
+
     public BushFlora(OverworldState gameState) {
-        this.gameState = gameState;
-        this.loadSprite(OverworldState.FLORA_DIR + "bushes/Bush_blue_flowers3.png");
+        super(gameState);
+
+        this.loadSprite(OverworldState.TERRAIN_DIR + "flora/bushes/Bush_blue_flowers3.png");
         Random rand = new Random();
         this.x = rand.nextDouble() * 100;
         this.y = rand.nextDouble() * 100;
@@ -25,8 +28,8 @@ public class BushFlora {
     }
 
     public BushFlora(OverworldState gameState, double x, double y) {
-        this.gameState = gameState;
-        this.loadSprite(OverworldState.FLORA_DIR + "bushes/Bush_blue_flowers3.png");
+        super(gameState);
+        this.loadSprite(OverworldState.TERRAIN_DIR + "flora/bushes/Bush_blue_flowers3.png");
         this.x = x;
         this.y = y;
     }
@@ -37,6 +40,11 @@ public class BushFlora {
     public double getY() {
         return this.y;
     }
+    public int getCollisionRadius() {
+        return this.collisionRadius;
+    }
+    public double getWidth() { return this.width; }
+    public double getHeight() { return this.height; }
 
     private void loadSprite(String path) {
         this.spriteImg = new Image(getClass().getResourceAsStream(path));
@@ -53,11 +61,21 @@ public class BushFlora {
     public void render(GraphicsContext gc) {
         this.refreshMapPosition();
         this.renderSprite(gc);
+        this.renderCollisionGeometry(gc);
     }
 
     protected void refreshMapPosition() {
-        xmap = gameState.world.area.getTileMap().getX();
-        ymap = gameState.world.area.getTileMap().getY();
+        xmap = this.gameState.world.area.getTileMap().getX();
+        ymap = this.gameState.world.area.getTileMap().getY();
+    }
+
+    private void renderCollisionGeometry(GraphicsContext gc) {
+        gc.setStroke(Color.RED);
+        gc.strokeOval(
+                ((this.x + xmap + (width/2.0))-((width-collisionRadius)/2.0)-collisionRadius)*getScale(),
+                ((this.y + ymap + (height/2.0))-((height-collisionRadius)/2.0) - collisionRadius)*getScale(),
+                collisionRadius * getScale(),
+                collisionRadius * getScale());
     }
 
     private void renderSprite(GraphicsContext gc) {

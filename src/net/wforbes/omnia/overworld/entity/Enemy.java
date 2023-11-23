@@ -12,6 +12,7 @@ public class Enemy extends Mob {
     public void init() {
 
     }
+    public void init(int xPos, int yPos) {}
 
     @Override
     public void update() {
