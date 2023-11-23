@@ -5,6 +5,7 @@ import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.overworld.entity.DocNPC;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.flora.BushFlora;
+import net.wforbes.omnia.overworld.entity.flora.FloraController;
 import net.wforbes.omnia.overworld.world.World;
 import net.wforbes.omnia.overworld.world.area.effect.EffectController;
 import net.wforbes.omnia.overworld.world.area.tile.TileMap;
@@ -18,6 +19,7 @@ public class Area {
     public ArrayList<Entity> entities;
     public EffectController effectController;
     private BushFlora flora;
+    private FloraController floraController;
 
     public Area(World world) {
         this.world = world;
@@ -44,9 +46,8 @@ public class Area {
     }
 
     private void initFlora() {
-
-        this.flora = new BushFlora(world.gameState);
-        this.flora.init();
+        this.floraController = new FloraController(this);
+        this.floraController.init();
     }
 
     private void initEntities() {
@@ -90,7 +91,7 @@ public class Area {
     }
 
     private void renderFlora(GraphicsContext gc) {
-        this.flora.render(gc);
+        this.floraController.render(gc);
     }
 
     private void renderEntities(GraphicsContext gc) {

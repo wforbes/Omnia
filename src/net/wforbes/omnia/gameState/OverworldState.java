@@ -23,6 +23,7 @@ public class OverworldState extends GameState {
     public Player player;
     public GUIController gui;
     public static final String SPRITE_DIR = "/overworld/sprites/";
+    public static final String FLORA_DIR = "/overworld/flora/";
 
 
     private boolean showCollisionGeometry = false;
