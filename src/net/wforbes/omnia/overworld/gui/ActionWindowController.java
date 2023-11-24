@@ -5,10 +5,9 @@ import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TitledPane;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import net.wforbes.omnia.overworld.world.terrain.flora.Flora;
+import net.wforbes.omnia.gameFX.rendering.Renderable;
+import net.wforbes.omnia.overworld.entity.action.Actionable;
 
 import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
@@ -24,19 +23,19 @@ public class ActionWindowController {
     private ProgressIndicator progressIndicator;
 
     public boolean isVisible = false;
-    private String currentActionVerb;
+    private String currentActionGerund;
     private boolean inCompleteState;
     private int completeStateTimer;
-    private int completeStateCooldown = 200;
+    private int completeStateCooldown = 100;
     private double targetOffsetX;
     private double targetOffsetY;
-    private Flora actionTarget; //TODO: create interface for actionable things
-    //  Actionable -> Harvestable -> Flora -> BushFlora
+    private Actionable actionTarget;
+    private Renderable actor;
 
     public ActionWindowController(GUIController gui) {
         this.gui = gui;
         this.windowTitle = "";
-        this.windowSize = new Dimension2D(150, 50);
+        //this.windowSize = new Dimension2D(150, 50);
     }
 
     public Node getWindowPanel() {
@@ -56,16 +55,17 @@ public class ActionWindowController {
         //HBox.setHgrow(collisionDevContainer, Priority.ALWAYS); //TODO:
 
         HBox horizontalLayoutContainer = new HBox();
+        //VBox verticalLayoutContainer = new VBox();
+        horizontalLayoutContainer.getChildren().addAll(progressIndicator, progressLabel); //progressLabel,
+        //verticalLayoutContainer.getChildren().addAll(progressLabel, progressIndicator); //progressLabel,
 
-        horizontalLayoutContainer.getChildren().addAll(progressIndicator); //progressLabel,
 
-        VBox verticalLayoutContainer = new VBox();
         //verticalLayoutContainer.setPrefSize(windowSize.getWidth(), windowSize.getHeight());
         //VBox.setVgrow(horizontalLayoutContainer, Priority.ALWAYS); //TODO:
-        verticalLayoutContainer.getChildren().addAll(horizontalLayoutContainer);
-        VBox.setVgrow(verticalLayoutContainer, Priority.ALWAYS); //TODO:
-        DragResizer.makeResizable(verticalLayoutContainer);
-        this.titledPane.getChildren().add(verticalLayoutContainer);
+        //verticalLayoutContainer.getChildren().addAll(horizontalLayoutContainer);
+        //VBox.setVgrow(verticalLayoutContainer, Priority.ALWAYS); //TODO:
+        DragResizer.makeResizable(horizontalLayoutContainer);
+        this.titledPane.getChildren().add(horizontalLayoutContainer);
         //this.titledPane.setContent(verticalLayoutContainer);
         this.titledPane.setOpacity(1.0);
         return titledPane;
@@ -108,26 +108,25 @@ public class ActionWindowController {
     }
 
     private void relocateWindow() {
-        Flora f = this.actionTarget;
-        this.targetOffsetX = (((f.getWidth()/2.0) * getScale()) - (this.titledPane.getWidth()/2.0))/2.0;
-        this.targetOffsetY = -(((f.getHeight()/2.0) * getScale()) - (this.titledPane.getHeight()/2.0))/2.0;
+        Renderable m = this.actor;
 
         gui.actionWindowPanel.relocate(
-                (f.getX() + f.getXMap() - f.getWidth() / 2.0) * getScale() + targetOffsetX,
-                (f.getY() + f.getYMap() - f.getHeight() / 2.0) * getScale() + targetOffsetY
+                ((m.getX() + m.getXMap())* getScale()) - 10, //- this.windowPanel.getLayoutBounds().getWidth() / 2.0,
+                (m.getY() + m.getYMap())* getScale() - this.windowPanel.getLayoutBounds().getHeight() * 1.5
         );
     }
 
-    public void startAction(String actionVerb, double initialProgress, Flora harvestTarget) {
-        this.currentActionVerb = actionVerb;
-        this.progressLabel.setText(currentActionVerb
+    public void startAction(String actionGerund, double initialProgress, Renderable actor/*Actionable target*/) {
+        this.currentActionGerund = actionGerund;
+        this.progressLabel.setText(currentActionGerund
                 /*
                 Character.toUpperCase(currentActionVerb.charAt(0))
                 + currentActionVerb.substring(1, currentActionVerb.length() - 1)
                 + "..."*/
         );
-        this.actionTarget = harvestTarget;
-        this.progressIndicator.setStyle("inherit");
+        //this.actionTarget = target; //TODO:Use actionTarget if window is showing over it
+        this.actor = actor;
+        this.progressIndicator.getStyleClass().remove("cancelled");//.setStyle("inherit");
         this.progressIndicator.setProgress(initialProgress);
         this.showWindow(true);
     }
@@ -138,8 +137,8 @@ public class ActionWindowController {
 
     public void completeAction() {
         this.progressLabel.setText(
-            Character.toUpperCase(currentActionVerb.charAt(0))
-            + currentActionVerb.substring(1)
+            Character.toUpperCase(currentActionGerund.charAt(0))
+            + currentActionGerund.substring(1)
             + " " + "(Complete!)"
         );
         this.inCompleteState = true;
@@ -147,12 +146,12 @@ public class ActionWindowController {
     }
     public void cancelAction() {
         this.progressLabel.setText(
-                Character.toUpperCase(currentActionVerb.charAt(0))
-                + currentActionVerb.substring(1)
+                Character.toUpperCase(currentActionGerund.charAt(0))
+                + currentActionGerund.substring(1)
                 + " " + "(Cancelled!)"
         );
         //this.progressIndicator.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-        this.progressIndicator.setStyle("-fx-progress-color: red");
+        this.progressIndicator.getStyleClass().add("cancelled"); //setStyle("-fx-progress-color: red");
 
         this.inCompleteState = true;
         this.completeStateTimer++;
@@ -166,14 +165,14 @@ public class ActionWindowController {
     }
 
     public void clearAction() {
-        this.currentActionVerb = "";
+        this.currentActionGerund = "";
         this.progressLabel.setText("");
         this.progressIndicator.setProgress(0);
     }
 
     public void update() {
         if (this.inCompleteState) this.updateCompleteState();
-        if (this.actionTarget != null && this.isVisible) {
+        if (this.actor != null && this.isVisible) {
             this.relocateWindow();
         }
 
@@ -182,7 +181,6 @@ public class ActionWindowController {
     private void updateCompleteState() {
         if (this.completeStateTimer > 0) {
             this.completeStateTimer++;
-            System.out.println("complete state timer: " + this.completeStateTimer);
         }
         if (this.completeStateTimer >= this.completeStateCooldown) {
             this.clearCompleteState();

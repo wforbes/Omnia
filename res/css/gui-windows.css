@@ -47,8 +47,12 @@
 .action-pane {
 
 }
-.action-progress-indicator {
-
+.action-progress-indicator.cancelled {
+    -fx-progress-color: red;
+}
+.action-progress-indicator .percentage {
+    -fx-fill: white;
+    -fx-font-weight: 700;
 }
 .action-progress-indicator .percentage {
     -fx-fill: white;

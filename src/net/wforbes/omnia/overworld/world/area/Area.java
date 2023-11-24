@@ -2,33 +2,35 @@ package net.wforbes.omnia.overworld.world.area;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import net.wforbes.omnia.gameFX.rendering.Renderable;
 import net.wforbes.omnia.overworld.entity.DocNPC;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.NPC;
-import net.wforbes.omnia.overworld.world.terrain.TerrainController;
-import net.wforbes.omnia.overworld.world.terrain.flora.BushFlora;
-import net.wforbes.omnia.overworld.world.terrain.flora.FloraController;
 import net.wforbes.omnia.overworld.world.World;
 import net.wforbes.omnia.overworld.world.area.effect.EffectController;
+import net.wforbes.omnia.overworld.world.area.object.AreaObject;
+import net.wforbes.omnia.overworld.world.area.object.AreaObjectController;
 import net.wforbes.omnia.overworld.world.area.tile.TileMap;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Area {
 
+    private final AreaObjectController areaObjectController;
     private World world;
     private TileMap tileMap;
-    public ArrayList<Entity> entities;
+    public List<Entity> entities;
     public int TEST_NPC_XPOS = 200;
     public int TEST_NPC_YPOS = 200;
     public EffectController effectController;
-    private TerrainController terrainController;
+    public List<AreaObject> areaObjects;
 
     public Area(World world) {
         this.world = world;
         this.entities = new ArrayList<>();
+        this.areaObjectController = new AreaObjectController(this);
         this.effectController = new EffectController(this);
-        this.terrainController = new TerrainController(this);
     }
 
     public World getWorld(){ return this.world; }
@@ -38,25 +40,25 @@ public class Area {
     public void addEntity(Entity entity) {
         this.entities.add(entity);
     }
-    public ArrayList<Entity> getEntities() { return this.entities; }
+    public List<Entity> getEntities() { return this.entities; }
 
-    public TerrainController getTerrainController() {
-        return this.terrainController;
-    }
+    public List<AreaObject> getAreaObjects() { return this.areaObjectController.getAreaObjects(); }
 
     public void init() {
         this.initTileMap();
         this.effectController.init();
-        this.terrainController.init();
+        this.areaObjectController.init();
+        //this.initAreaObjects();
         this.initEntities();
-        this.world.player.setPosition(256,256);
+        this.world.player.setPosition(50,50);
         //this.initNPCs();
     }
+
+    private void initAreaObjects() {}
 
     private void initEntities() {
         NPC testNPC = new DocNPC(world.gameState);
         testNPC.init(TEST_NPC_XPOS, TEST_NPC_YPOS);
-
         this.addEntity(testNPC);
         /*
         for(Entity e : this.entities) {
@@ -92,13 +94,31 @@ public class Area {
 
     public void render(GraphicsContext gc) {
         this.tileMap.render(gc);
-        renderTerrain(gc);
-        renderEntities(gc);
+        this.renderRenderables(gc);
         this.effectController.render(gc);
     }
 
-    private void renderTerrain(GraphicsContext gc) {
-        this.terrainController.render(gc);
+    private void renderRenderables(GraphicsContext gc) {
+        //this.sortEntitiesByYPos();
+        ArrayList<Renderable> renderables = this.getSortedRenderableList();
+        for (Renderable r : renderables) {
+            r.render(gc);
+        }
+    }
+    private ArrayList<Renderable> getSortedRenderableList() {
+        ArrayList<Renderable> renderables = new ArrayList<>();
+        renderables.addAll(this.entities);
+        renderables.addAll(this.areaObjectController.getAreaObjects());
+        renderables.sort((e1, e2) -> {
+            if (e1.getY() == e2.getY()) {
+                return 0;
+            } else if (e1.getY() > e2.getY()) {
+                return 1;
+            } else {
+                return -1;
+            }
+        });
+        return renderables;
     }
 
     private void renderEntities(GraphicsContext gc) {

@@ -17,7 +17,9 @@ import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.AttentionController;
 import net.wforbes.omnia.overworld.entity.effect.EntityEffectController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
-import net.wforbes.omnia.overworld.world.terrain.flora.Flora;
+import net.wforbes.omnia.overworld.world.area.object.AreaObject;
+import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
+import net.wforbes.omnia.overworld.world.area.object.flora.tree.Tree;
 
 import java.util.ArrayList;
 
@@ -62,7 +64,7 @@ public abstract class Mob extends Entity {
     protected int collisionBoxWidth;
     protected int collisionBoxHeight;
     public boolean isColliding;
-    private Flora collidingFlora;
+    private AreaObject collidingAreaObject;
     protected Color nameColor;
     protected Text nameText;
     protected Font nameFont;
@@ -106,8 +108,8 @@ public abstract class Mob extends Entity {
     public Point2D getLocationPoint() {
         return new Point2D(this.x + this.width/2.0, this.y + this.height/2.0);
     }
-    public int getWidth(){ return width; }
-    public int getHeight(){ return height; }
+    public double getWidth(){ return width; }
+    public double getHeight(){ return height; }
     public double getXMap() {
         return this.xmap;
     }
@@ -184,8 +186,8 @@ public abstract class Mob extends Entity {
     }
     public int getCollisionBoxWidth() { return this.collisionBoxWidth; }
     public int getCollisionRadius() { return this.collisionRadius; }
-    public Flora getCollidingFlora () {
-        return this.collidingFlora;
+    public AreaObject getCollidingAreaObject() {
+        return this.collidingAreaObject;
     }
 
     public void addHarvestMaterialsToInventory(Flora flora) {
@@ -193,6 +195,7 @@ public abstract class Mob extends Entity {
     }
 
     protected boolean isOccupied(double xa, double ya) {
+        //TODO: simplify this to iterate through area Renderables
         for(Entity e : gameState.world.area.entities) {
             if(!e.getName().equals(this.name)) {
                 /* AABB Collision
@@ -212,15 +215,37 @@ public abstract class Mob extends Entity {
             }
         }
         // LOL put this collision check somewhere with better access to new terrain items
-        for (Flora f : gameState.world.area.getTerrainController().getFloraController().getBushes()) {
-            double xDist = (this.getX()+xa - (f.getX() + f.getWidth()/2.0));
-            double yDist = (this.getY()+ya - (f.getY() + f.getHeight()/2.0));
-            if(Math.sqrt((xDist*xDist) + (yDist*yDist)) <= (collisionRadius/2.0+f.getCollisionRadius()/2.0)) {
-                this.collidingFlora = f;
+        //for (ActionableObject ao : gameState.world.area.getTerrainController().getFloraController().getBushes()) {
+        for (AreaObject ao : gameState.world.area.getAreaObjects()) {
+            if (ao instanceof Tree) {
+                /*
+                System.out.println("Tree x/y: " +
+                        (ao.getX() + ao.getWidth()/2.0) + "/" +
+                        (ao.getY() + ao.getHeight()/2.0)
+                );*/
+            }
+            double xDist = (this.getX()+xa - (ao.getX() + ao.getWidth()/2.0));
+            double yDist = (this.getY() + ya - (ao.getY() + ao.getHeight()/2.0));
+            if(Math.sqrt((xDist*xDist) + (yDist*yDist)) <= (collisionRadius/2.0+ao.getCollisionRadius()/2.0)) {
+                this.collidingAreaObject = ao;
                 return true;
             }
+            /*
+            double thisCenterX = (this.getX()+this.getWidth()/2.0)+xa;
+            double thisCenterY = (this.getY()+this.getHeight()/2.0)+ya;
+            double aoCenterX = ao.getX() - (ao.getWidth()/2.0);
+            double aoCenterY = ao.getY() - (ao.getHeight()/2.0);
+            double xDist = (thisCenterX - aoCenterX);
+            //double xDist = (this.getX() + xa - (ao.getX() + ao.getWidth()/2.0 - ao.getCollisionRadius()/2.0));
+            double yDist = (thisCenterY - aoCenterY);
+            //double yDist = (this.getY() + ya - (ao.getY() + ao.getHeight()/2.0 - ao.getCollisionRadius()/2.0));
+            if(Math.sqrt(xDist*xDist+yDist*yDist) < (collisionRadius+ao.getCollisionRadius())) {
+                this.collidingAreaObject = ao;
+                return true;
+            }
+             */
         }
-        this.collidingFlora = null;
+        this.collidingAreaObject = null;
         return false;
     }
 

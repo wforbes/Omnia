@@ -8,12 +8,8 @@ import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.TargetController;
-import net.wforbes.omnia.overworld.entity.harvest.HarvestController;
-import net.wforbes.omnia.overworld.entity.projectile.Projectile;
+import net.wforbes.omnia.overworld.entity.action.harvest.HarvestController;
 import net.wforbes.omnia.overworld.entity.projectile.ProjectileController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Player extends Mob {
     protected String spriteSheetPath = "/overworld/sprites/player1_pokemon.gif";
