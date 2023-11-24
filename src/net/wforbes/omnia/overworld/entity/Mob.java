@@ -185,7 +185,7 @@ public abstract class Mob extends Entity {
         return isOccupied(xa, ya);
     }
     public int getCollisionBoxWidth() { return this.collisionBoxWidth; }
-    public int getCollisionRadius() { return this.collisionRadius; }
+    public double getCollisionRadius() { return this.collisionRadius; }
     public AreaObject getCollidingAreaObject() {
         return this.collidingAreaObject;
     }
@@ -224,8 +224,9 @@ public abstract class Mob extends Entity {
                         (ao.getY() + ao.getHeight()/2.0)
                 );*/
             }
+            //original pattern
             double xDist = (this.getX()+xa - (ao.getX() + ao.getWidth()/2.0));
-            double yDist = (this.getY() + ya - (ao.getY() + ao.getHeight()/2.0));
+            double yDist = (this.getY()+ya - (ao.getY() + ao.getHeight()/2.0));
             if(Math.sqrt((xDist*xDist) + (yDist*yDist)) <= (collisionRadius/2.0+ao.getCollisionRadius()/2.0)) {
                 this.collidingAreaObject = ao;
                 return true;
@@ -242,8 +243,7 @@ public abstract class Mob extends Entity {
             if(Math.sqrt(xDist*xDist+yDist*yDist) < (collisionRadius+ao.getCollisionRadius())) {
                 this.collidingAreaObject = ao;
                 return true;
-            }
-             */
+            }*/
         }
         this.collidingAreaObject = null;
         return false;
@@ -427,7 +427,15 @@ public abstract class Mob extends Entity {
             System.out.println(this.getName() + " renderedHeight: " + height * getScale());
             this.rendered = true;
         }*/
-
+        /*//render with x/y in topleft of sprite
+        gc.drawImage(
+                movementAnimation.getImage(),
+                (x + xmap) * getScale(),
+                (y + ymap) * getScale(),
+                width * getScale(),
+                height * getScale()
+        );*/
+        //render with x/y in center of sprite
         gc.drawImage(
                 movementAnimation.getImage(),
                 (x + xmap - width / 2.0) * getScale(),
@@ -459,11 +467,20 @@ public abstract class Mob extends Entity {
     }
     private void renderCollisionGeometry(GraphicsContext gc) {
         gc.setStroke(Color.RED);
+        //render with x/y at topleft of oval xy tangents
+        /*gc.strokeOval(
+            (this.x + xmap + (this.width/2.0)-(collisionRadius/2.0))*getScale(),
+            (this.y + ymap + (this.height/2.0)-(collisionRadius/2.0))*getScale(),
+            collisionRadius * getScale(),
+            collisionRadius * getScale()
+        );*/
+        //render with x/y at oval center
         gc.strokeOval(
                 ((this.x + xmap + (width/2.0))-((width-collisionRadius)/2.0)-collisionRadius)*getScale(),
                 ((this.y + ymap + (height/2.0))-((height-collisionRadius)/2.0) - collisionRadius)*getScale(),
                 collisionRadius * getScale(),
-                collisionRadius * getScale());
+                collisionRadius * getScale()
+        );
     }
 
     public void teardown() {

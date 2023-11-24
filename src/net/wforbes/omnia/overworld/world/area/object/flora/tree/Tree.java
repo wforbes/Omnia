@@ -32,6 +32,7 @@ public class Tree extends Flora {
         this.loadSprite(TREES_SPRITE_DIR+"fixed_Tree1.png");
         this.x = x;
         this.y = y;
+        this.collisionRadius = 60;
     }
 
     public Tree(OverworldState gameState, String spriteName, float x, float y) {

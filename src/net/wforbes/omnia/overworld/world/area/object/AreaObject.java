@@ -15,7 +15,9 @@ public class AreaObject implements Renderable {
 
     private final OverworldState gameState;
     protected float x, y, xmap, ymap, width, height;
-    protected int collisionRadius;
+    protected double collisionRadius;
+
+    protected double baseXToHeightRatio;
 
     protected Image spriteImg;
     private Ellipse collisionEllipse;
@@ -49,7 +51,7 @@ public class AreaObject implements Renderable {
     public double getYMap() {
         return this.ymap;
     }
-    public int getCollisionRadius() {
+    public double getCollisionRadius() {
         return this.collisionRadius;
     }
     public double getWidth() { return this.width; }
@@ -65,7 +67,7 @@ public class AreaObject implements Renderable {
         System.out.println(width);
         this.height = (float)this.spriteImg.getHeight();
         System.out.println(height);
-        collisionRadius = 16;
+        //collisionRadius = 16;
     }
 
     public void render(GraphicsContext gc) {
@@ -78,6 +80,15 @@ public class AreaObject implements Renderable {
         ymap = (float)this.gameState.world.area.getTileMap().getY();
     }
     private void renderSprite(GraphicsContext gc) {
+        /*//render with x/y in top left
+        gc.drawImage(
+                this.spriteImg,
+                (x + xmap) * getScale(),
+                (y + ymap) * getScale(),
+                width*getScale(),
+                height*getScale()
+        );*/
+        //render with x/y in center of sprite
         gc.drawImage(
                 this.spriteImg,
                 (x + xmap - width / 2.0) * getScale(),
@@ -88,11 +99,23 @@ public class AreaObject implements Renderable {
     }
     private void renderCollisionGeometry(GraphicsContext gc) {
         gc.setStroke(Color.RED);
+        //render with x/y at topleft of oval xy tangents
+        /*
         gc.strokeOval(
-                ((this.x + xmap + (width/2.0)) -((width-collisionRadius)/2.0)-collisionRadius)*getScale(),
+                (this.x + xmap) * getScale(),
+                (this.y + ymap) * getScale(),
+                //((this.x + xmap + (width/2.0)) -((width-collisionRadius)/2.0)-collisionRadius)*getScale(),
+                //((this.y + ymap + (height/2.0))- ((height-collisionRadius)/2.0) - collisionRadius)*getScale(),
+                collisionRadius * getScale(),
+                collisionRadius * getScale()
+        );*/
+        //render with oval center at x/y
+        gc.strokeOval(
+                ((this.x + xmap + (width/2.0)) - ((width-collisionRadius)/2.0)-collisionRadius)*getScale(),
                 ((this.y + ymap + (height/2.0))- ((height-collisionRadius)/2.0) - collisionRadius)*getScale(),
                 collisionRadius * getScale(),
-                collisionRadius * getScale());
+                collisionRadius * getScale()
+        );
 
     }
 }

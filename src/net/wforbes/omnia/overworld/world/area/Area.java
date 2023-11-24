@@ -50,7 +50,7 @@ public class Area {
         this.areaObjectController.init();
         //this.initAreaObjects();
         this.initEntities();
-        this.world.player.setPosition(50,50);
+        this.world.player.setPosition(200,150);
         //this.initNPCs();
     }
 

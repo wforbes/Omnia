@@ -30,7 +30,6 @@ public class Player extends Mob {
     private HarvestController harvestController;
 
     public Player(OverworldState gameState, String name) {
-
         super(gameState, name, 0.5, true);
         this.nameColor = Color.BLUE;
     }

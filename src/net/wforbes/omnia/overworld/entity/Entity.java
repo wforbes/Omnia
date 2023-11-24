@@ -16,7 +16,7 @@ public abstract class Entity implements Renderable {
     public abstract double getY();
     public abstract String getName();
     public abstract int getCollisionBoxWidth();
-    public abstract int getCollisionRadius();
+    public abstract double getCollisionRadius();
 
     public abstract void init();
     public abstract void init(int xPos, int yPos);

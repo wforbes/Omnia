@@ -15,6 +15,7 @@ public class Shrub extends Flora {
         this.loadSprite(SHRUBS_SPRITE_DIR+"Bush_blue_flowers3.png");
         this.x = x;
         this.y = y;
+        this.collisionRadius = 16;
     }
 
     public Shrub(OverworldState gameState, String spriteName, float x, float y) {
@@ -24,5 +25,18 @@ public class Shrub extends Flora {
     }
 
     public void init() {}
+    @Override
+    public double getX() {
+        return this.x;
+    }
+    @Override
+    public double getY() {
+        return this.y;
+    }
+
+    @Override
+    public double getCollisionRadius() {
+        return this.collisionRadius;
+    }
 
 }

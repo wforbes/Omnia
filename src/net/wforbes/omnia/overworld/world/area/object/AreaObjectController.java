@@ -27,8 +27,32 @@ public class AreaObjectController {
         this.areaObjects.add(
             new Shrub(
                 this.area.getWorld().gameState,
-                100, 100
+                20, 20
             )
+        );
+        this.areaObjects.add(
+                new Shrub(
+                        this.area.getWorld().gameState,
+                        120, 20
+                )
+        );
+        this.areaObjects.add(
+                new Shrub(
+                        this.area.getWorld().gameState,
+                        20, 120
+                )
+        );
+        this.areaObjects.add(
+                new Shrub(
+                        this.area.getWorld().gameState,
+                        120, 120
+                )
+        );
+        this.areaObjects.add(
+                new Tree(
+                        this.area.getWorld().gameState,
+                        60, 60
+                )
         );
         /*
         this.areaObjects.add(
