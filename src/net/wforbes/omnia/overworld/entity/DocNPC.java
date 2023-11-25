@@ -32,7 +32,8 @@ public class DocNPC extends NPC {
         // nopes
     }
 
-    public void init(int xPos, int yPos) {
+    public void init(double xPos, double yPos) {
+        super.init(xPos, yPos);
         this.setPosition(xPos, yPos);
         this.movementController.setMovementSpace(this.x-40, this.y-40, this.x+40, this.y+40);
         this.movementController.setMovementType(MovementController.MOVEMENT_PACE_VERTICAL);

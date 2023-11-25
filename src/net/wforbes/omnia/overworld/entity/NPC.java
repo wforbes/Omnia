@@ -19,6 +19,11 @@ public abstract class NPC extends Mob {
         movementController = new MovementController(this);
     }
 
+    public void init(double x, double y) {
+        super.init(x, y);
+        System.out.println("NPC initialized");
+    }
+
     public void update() {
         super.update();
         this.movementController.update();

@@ -82,8 +82,8 @@ public class EntityTargetCircle {
                 gc.setGlobalAlpha(1.0);
             }
             Entity e = entityEffectController.getEntity();
-            xMapDiff = (e.getX() + ((Mob) e).getXMap() - ((Mob) e).getWidth() / 2.0);
-            yMapDiff = (e.getY() + ((Mob) e).getYMap() - ((Mob) e).getHeight() / 2.0) + (((Mob) e).getHeight() / 3.5);
+            xMapDiff = (e.getX() + ((Mob) e).getXMap() + (((Mob) e).getWidth() / 2.0));
+            yMapDiff = (e.getY() + ((Mob) e).getYMap()) + (((Mob) e).getHeight() / 1.25);
 
             gc.strokeOval(
                     (c.getCenterX() + xMapDiff * getScale()) - (c.getRadius() * getScale()) / 2.0,

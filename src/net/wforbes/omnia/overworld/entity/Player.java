@@ -31,6 +31,7 @@ public class Player extends Mob {
 
     public Player(OverworldState gameState, String name) {
         super(gameState, name, 0.5, true);
+        this.width = this.height = 16;
         this.nameColor = Color.BLUE;
     }
 
@@ -39,7 +40,6 @@ public class Player extends Mob {
     }
 
     public void init() {
-        this.width = this.height = 16;
         this.numFrames = new int[]{3, 3, 3, 3, 3, 3, 3, 3};
         this.loadSprites(OverworldState.SPRITE_DIR + "player1_pokemon.gif");
         this.facingDir = FACING_S;
@@ -54,7 +54,10 @@ public class Player extends Mob {
         //  put item into player inventory
     }
 
-    public void init(int xPos, int yPos) {}
+    public void init(double xPos, double yPos) {
+        super.init(xPos, yPos);
+        this.setPosition(xPos, yPos);
+    }
 
     public TargetController getTargetController() {
         return this.targetController;
@@ -64,6 +67,7 @@ public class Player extends Mob {
     }
 
     public void update() {
+        super.update();
         checkCommands();
         checkMovement();
         movementAnimation.update();

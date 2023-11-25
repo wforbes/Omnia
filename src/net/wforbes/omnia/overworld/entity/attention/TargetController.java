@@ -14,16 +14,6 @@ public class TargetController {
     public void handleEntityTargeting(MouseEvent event, List<Entity> entities, EffectController ec) {
         //poll for area entities
         for(Entity e : entities) {
-            /* debug here
-            if (e.getName().equals("ENTITY NAME")) {
-                System.out.println(
-                    e.getName() + "xymapRadius: " +
-                    " | (" + (e.getX() + ((Mob) e).getXMap() - ((Mob) e).getWidth() / 2.0) * OmniaFX.getScale() +
-                    ", " + (e.getY() + ((Mob) e).getYMap() - ((Mob) e).getHeight() / 2.0) * OmniaFX.getScale() + ")"
-                );
-                System.out.println("XY Dist Sqrt: " + xyDistRadius);
-                System.out.println("Entity/Cursor collision calc :" + cursorEntityCollisionDist);
-            }*/
             // if the distance between the edge of the radi are less than the distance within
             //  the radi combined, the user has clicked the entity
             if ((getXYMapCollsionRadius(event, e, ec)) <= (getCursorEntityCollisionDist(e, ec))) {
@@ -47,9 +37,9 @@ public class TargetController {
     private double getXYMapCollsionRadius(MouseEvent event, Entity e, EffectController effectController) {
         // x and y distance between click event and the entity, considering tilemap offset and scaling
         double xDist = (event.getX()
-                - (e.getX()+ ((Mob) e).getXMap() - ((Mob) e).getWidth() / 2.0) * getScale());
+                - (e.getX()+ ((Mob) e).getXMap() + ((Mob)e).getCollisionBaseX()) * getScale());
         double yDist = (event.getY()
-                - (e.getY() + ((Mob) e).getYMap() - ((Mob) e).getHeight() / 2.0) * getScale());
+                - (e.getY() + ((Mob) e).getYMap() + ((Mob)e).getCollisionBaseY()) * getScale());
         // equation of circle around click point, plus ClickCircle radius size
         return (Math.sqrt((xDist * xDist) + (yDist * yDist))/2.0)
                 + effectController.getClickCircle().getCircleRadius();

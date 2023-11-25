@@ -19,5 +19,5 @@ public abstract class Flora extends AreaObject implements Harvestable {
         super(gameState, path, x, y);
     }
 
-
+    //public void init(double x, double y) {}
 }

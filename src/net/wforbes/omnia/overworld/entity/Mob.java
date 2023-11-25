@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.FontWeight;
@@ -19,7 +20,6 @@ import net.wforbes.omnia.overworld.entity.effect.EntityEffectController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 import net.wforbes.omnia.overworld.world.area.object.AreaObject;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
-import net.wforbes.omnia.overworld.world.area.object.flora.tree.Tree;
 
 import java.util.ArrayList;
 
@@ -33,7 +33,7 @@ public abstract class Mob extends Entity {
     protected Image spriteSheet;
     private ArrayList<Image[]> sprites;
     protected int width, height;
-
+    double x, y, baseY;
     double xmap, ymap;//current area map position
     protected double speed;
     protected double runSpeedMod = 1.5;
@@ -69,13 +69,18 @@ public abstract class Mob extends Entity {
     protected Text nameText;
     protected Font nameFont;
     private Timeline nameColorTimeline;
+    public OverworldState gameState;
+    private double collision_baseX;
+    private double collision_baseY;
+    private Point2D collision_baseCenterPnt;
+    private Circle collision_baseCircle;
 
     public Mob(OverworldState gameState, String name, double speed, boolean player) {
         super(gameState);
+        this.gameState = gameState;
         this.isPlayer = player;
         this.name = name;
         this.speed = speed;
-        this.collisionRadius = 12;
         this.movementController = new MovementController(this);
         this.nameFont = Font.font("Century Gothic", FontWeight.BOLD, 22);
         this.nameText = new Text(this.getName());
@@ -94,16 +99,15 @@ public abstract class Mob extends Entity {
         this.speed = speed;
         this.movementController = new MovementController(this);
     }
-
     @Override
     public String getName() {
         return this.name;
     }
     public double getX() {
-        return this.x + this.width/2.0;
+        return this.x - this.width/2.0;
     }
     public double getY() {
-        return this.y + this.height/2.0;
+        return this.y - this.height/2.0;
     }
     public Point2D getLocationPoint() {
         return new Point2D(this.x + this.width/2.0, this.y + this.height/2.0);
@@ -116,6 +120,25 @@ public abstract class Mob extends Entity {
     public double getYMap() {
         return this.ymap;
     }
+    public double getBaseY() { return this.baseY; }
+    public double getRenderX() {
+        return this.renderX;
+    }
+    public double getRenderY() {
+        return this.renderY;
+    }
+    public double getRenderXMap() {
+        return this.renderXMap;
+    }
+    public double getRenderYMap() {
+        return this.renderYMap;
+    }
+    public double getRenderWidth() {
+        return this.renderWidth;
+    }
+    public double getRenderHeight() {
+        return this.renderHeight;
+    }
     public int getFacingDir() {
         return this.facingDir;
     }
@@ -125,14 +148,36 @@ public abstract class Mob extends Entity {
     public MovementAnimation getMovementAnimation() {
         return this.movementAnimation;
     }
+    public int getCollisionBoxWidth() { return this.collisionBoxWidth; }
+    public double getCollisionRadius() { return this.collisionRadius; }
+    public double getCollisionBaseX() { return this.collision_baseX; }
+    public double getCollisionBaseY() { return this.collision_baseY; }
+    public AreaObject getCollidingAreaObject() {
+        return this.collidingAreaObject;
+    }
+    public void addHarvestMaterialsToInventory(Flora flora) {
+        System.out.println("TODO: add harvest materials to inventory");
+    }
     public void setRunning(boolean run) {
         this.isRunning = run;
+    }
+
+    protected void init(double xPos, double yPos) {
+        this.initCollisionShape();
+
+    }
+    private void initCollisionShape() {
+        this.collision_baseX = 3;
+        this.collision_baseY = this.height - 5;
+        this.baseY = this.collision_baseY;
+        this.collisionRadius = 10;
+        this.collision_baseCenterPnt = new Point2D(collision_baseX, collision_baseY);
+        this.collision_baseCircle = new Circle(collision_baseX, collision_baseY, collisionRadius);
     }
 
     void loadSprites(String path) {
         this.spriteSheet = new Image(getClass().getResourceAsStream(path));
         this.sprites = new ArrayList<>();
-
         for(int i = 0; i < numFrames.length; i++) {
             Image[] images = new Image[numFrames[i]];
             for (int j = 0; j < numFrames[i]; j++) {
@@ -184,15 +229,6 @@ public abstract class Mob extends Entity {
     public boolean hasCollided(double xa, double ya) {
         return isOccupied(xa, ya);
     }
-    public int getCollisionBoxWidth() { return this.collisionBoxWidth; }
-    public double getCollisionRadius() { return this.collisionRadius; }
-    public AreaObject getCollidingAreaObject() {
-        return this.collidingAreaObject;
-    }
-
-    public void addHarvestMaterialsToInventory(Flora flora) {
-        System.out.println("TODO: add harvest materials to inventory");
-    }
 
     protected boolean isOccupied(double xa, double ya) {
         //TODO: simplify this to iterate through area Renderables
@@ -214,36 +250,25 @@ public abstract class Mob extends Entity {
                 }
             }
         }
-        // LOL put this collision check somewhere with better access to new terrain items
-        //for (ActionableObject ao : gameState.world.area.getTerrainController().getFloraController().getBushes()) {
+
         for (AreaObject ao : gameState.world.area.getAreaObjects()) {
-            if (ao instanceof Tree) {
-                /*
-                System.out.println("Tree x/y: " +
-                        (ao.getX() + ao.getWidth()/2.0) + "/" +
-                        (ao.getY() + ao.getHeight()/2.0)
-                );*/
-            }
+
             //original pattern
-            double xDist = (this.getX()+xa - (ao.getX() + ao.getWidth()/2.0));
-            double yDist = (this.getY()+ya - (ao.getY() + ao.getHeight()/2.0));
+            double xDist = (this.getX()+xa+collision_baseX - this.collisionRadius/2.0) - (ao.getX()+ao.getCollisionBaseX());
+            double yDist = (this.getY()+ya+collision_baseY - this.collisionRadius/3.0) - (ao.getY()+ao.getCollisionBaseY());
+            if (this.getName() == "Will") {
+                System.out.println("MobY / AOY: " + (this.getY() + ya + collision_baseY - this.collisionRadius/3.0) + " / " + (ao.getY() + ao.getCollisionBaseY()));
+                if (this.getY()+ya+collision_baseY > ao.getY()+ao.getCollisionBaseY()) {
+                    //TODO: this shows the diff points need moved into the center of the collision ovals
+                    System.out.println("BELOW");
+                } else {
+                    System.out.println("ABOVE");
+                }
+            }
             if(Math.sqrt((xDist*xDist) + (yDist*yDist)) <= (collisionRadius/2.0+ao.getCollisionRadius()/2.0)) {
                 this.collidingAreaObject = ao;
                 return true;
             }
-            /*
-            double thisCenterX = (this.getX()+this.getWidth()/2.0)+xa;
-            double thisCenterY = (this.getY()+this.getHeight()/2.0)+ya;
-            double aoCenterX = ao.getX() - (ao.getWidth()/2.0);
-            double aoCenterY = ao.getY() - (ao.getHeight()/2.0);
-            double xDist = (thisCenterX - aoCenterX);
-            //double xDist = (this.getX() + xa - (ao.getX() + ao.getWidth()/2.0 - ao.getCollisionRadius()/2.0));
-            double yDist = (thisCenterY - aoCenterY);
-            //double yDist = (this.getY() + ya - (ao.getY() + ao.getHeight()/2.0 - ao.getCollisionRadius()/2.0));
-            if(Math.sqrt(xDist*xDist+yDist*yDist) < (collisionRadius+ao.getCollisionRadius())) {
-                this.collidingAreaObject = ao;
-                return true;
-            }*/
         }
         this.collidingAreaObject = null;
         return false;
@@ -331,7 +356,6 @@ public abstract class Mob extends Entity {
                 y + ymap - height/2.5 > OmniaFX.getHeight();
     }
 
-    //public abstract void init();
     private boolean isTargeted;
     public boolean isTargeted() {
         return this.isTargeted;
@@ -387,6 +411,10 @@ public abstract class Mob extends Entity {
 
     public void update() {
         this.attentionController.update();
+        this.recalculateBaseY();
+    }
+    private void recalculateBaseY() {
+        this.baseY = ((this.getY() + ymap) + this.collision_baseY);
     }
 
     public void render(GraphicsContext gc) {
@@ -467,6 +495,20 @@ public abstract class Mob extends Entity {
     }
     private void renderCollisionGeometry(GraphicsContext gc) {
         gc.setStroke(Color.RED);
+
+        //render new mini-map style collision
+        gc.strokeOval(
+        (this.x+ xmap) + this.collision_baseX,
+        (this.y + ymap) + this.collision_baseY,
+            collisionRadius,
+            collisionRadius-4
+        );
+        gc.strokeOval(
+                ((this.getX() + xmap) + this.collision_baseX)*getScale(),
+                ((this.getY() + ymap) + this.collision_baseY)*getScale(),
+                collisionRadius * getScale(),
+                (collisionRadius-4)*getScale()
+        );
         //render with x/y at topleft of oval xy tangents
         /*gc.strokeOval(
             (this.x + xmap + (this.width/2.0)-(collisionRadius/2.0))*getScale(),
@@ -475,12 +517,13 @@ public abstract class Mob extends Entity {
             collisionRadius * getScale()
         );*/
         //render with x/y at oval center
+        /*
         gc.strokeOval(
                 ((this.x + xmap + (width/2.0))-((width-collisionRadius)/2.0)-collisionRadius)*getScale(),
                 ((this.y + ymap + (height/2.0))-((height-collisionRadius)/2.0) - collisionRadius)*getScale(),
                 collisionRadius * getScale(),
                 collisionRadius * getScale()
-        );
+        );*/
     }
 
     public void teardown() {

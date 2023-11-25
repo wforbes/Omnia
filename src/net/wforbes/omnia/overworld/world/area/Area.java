@@ -2,6 +2,7 @@ package net.wforbes.omnia.overworld.world.area;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import net.wforbes.omnia.gameFX.rendering.Renderable;
 import net.wforbes.omnia.overworld.entity.DocNPC;
 import net.wforbes.omnia.overworld.entity.Entity;
@@ -15,14 +16,15 @@ import net.wforbes.omnia.overworld.world.area.tile.TileMap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Area {
+import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
+public class Area {
     private final AreaObjectController areaObjectController;
     private World world;
     private TileMap tileMap;
     public List<Entity> entities;
-    public int TEST_NPC_XPOS = 200;
-    public int TEST_NPC_YPOS = 200;
+    public double TEST_NPC_XPOS = 200;
+    public double TEST_NPC_YPOS = 200;
     public EffectController effectController;
     public List<AreaObject> areaObjects;
 
@@ -50,7 +52,7 @@ public class Area {
         this.areaObjectController.init();
         //this.initAreaObjects();
         this.initEntities();
-        this.world.player.setPosition(200,150);
+        this.world.player.init(200,150);
         //this.initNPCs();
     }
 
@@ -58,6 +60,7 @@ public class Area {
 
     private void initEntities() {
         NPC testNPC = new DocNPC(world.gameState);
+        System.out.println("testNPC: " + testNPC.movementController);
         testNPC.init(TEST_NPC_XPOS, TEST_NPC_YPOS);
         this.addEntity(testNPC);
         /*
@@ -77,10 +80,6 @@ public class Area {
     }
 
     public void handleCanvasClick(MouseEvent event) {
-        /*
-        System.out.println("getX/Y: " + event.getX() + ", " + event.getY());
-        System.out.println("sceneX/Y: " + event.getSceneX() + ", " + event.getSceneY());
-         */
         System.out.println("area.handleCanvasClick event: " + event);
 
     }
@@ -90,10 +89,18 @@ public class Area {
         for(Entity e: this.entities) {
             e.update();
         }
+        this.areaObjectController.update();
     }
 
     public void render(GraphicsContext gc) {
         this.tileMap.render(gc);
+        if (world.gameState.collisionGeometryVisible()) {
+            gc.setFill(Color.BLACK);
+            gc.fillRect(0, 0,
+                    (double) this.getTileMap().getWidth() / getScale(),
+                    (double) this.getTileMap().getHeight() / getScale()
+            );
+        }
         this.renderRenderables(gc);
         this.effectController.render(gc);
     }
@@ -110,9 +117,9 @@ public class Area {
         renderables.addAll(this.entities);
         renderables.addAll(this.areaObjectController.getAreaObjects());
         renderables.sort((e1, e2) -> {
-            if (e1.getY() == e2.getY()) {
+            if (e1.getBaseY() == e2.getBaseY()) {
                 return 0;
-            } else if (e1.getY() > e2.getY()) {
+            } else if (e1.getBaseY() > e2.getBaseY()) {
                 return 1;
             } else {
                 return -1;
