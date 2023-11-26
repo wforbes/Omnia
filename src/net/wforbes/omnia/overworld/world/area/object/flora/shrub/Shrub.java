@@ -1,5 +1,7 @@
 package net.wforbes.omnia.overworld.world.area.object.flora.shrub;
 
+import javafx.geometry.Point2D;
+import javafx.scene.shape.Circle;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
 
@@ -24,19 +26,27 @@ public class Shrub extends Flora {
         this.y = y;
     }
 
-    public void init() {}
-    @Override
-    public double getX() {
-        return this.x;
-    }
-    @Override
-    public double getY() {
-        return this.y;
+    public void init() {
+        this.initCollisionShape();
     }
 
     @Override
     public double getCollisionRadius() {
         return this.collisionRadius;
+    }
+
+    public void init(double x, double y) {
+        this.initCollisionShape();
+    }
+
+    private void initCollisionShape() {
+        this.collision_baseX = -2; //(w/2)-??
+        System.out.println("shrub init h: " + this.height);
+        this.collision_baseY = 7; //h-spriteOffsetY-??
+        this.baseY = this.collision_baseY;
+        this.collisionRadius = 17;
+        this.collision_baseCenterPnt = new Point2D(collision_baseX, collision_baseY);
+        this.collision_baseCircle = new Circle(collision_baseX, collision_baseY, collisionRadius);
     }
 
 }

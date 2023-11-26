@@ -24,10 +24,10 @@ public class AreaObjectController {
 
     public void init() {
         this.areaObjects = new ArrayList<>();
-        /*this.areaObjects.add(
+        this.areaObjects.add(
             new Shrub(
                 this.area.getWorld().gameState,
-                20, 20
+                20, 500
             )
         );
         this.areaObjects.add(
@@ -45,9 +45,9 @@ public class AreaObjectController {
         this.areaObjects.add(
                 new Shrub(
                         this.area.getWorld().gameState,
-                        120, 120
+                        120, 175
                 )
-        );*/
+        );
         this.areaObjects.add(
                 new Tree(
                         this.area.getWorld().gameState,
@@ -55,14 +55,14 @@ public class AreaObjectController {
                         175, 175
                 )
         );
-        /*
+
         this.areaObjects.add(
                 new Tree(
                         this.area.getWorld().gameState,
                         "fixed_Tree1",
-                        200, 100
+                        420, 100
                 )
-        );*/
+        );
         for (AreaObject ao: this.areaObjects) {
             ao.init();
         }

@@ -252,20 +252,10 @@ public abstract class Mob extends Entity {
         }
 
         for (AreaObject ao : gameState.world.area.getAreaObjects()) {
-
-            //original pattern
             double xDist = (this.getX()+xa+collision_baseX - this.collisionRadius/2.0) - (ao.getX()+ao.getCollisionBaseX());
             double yDist = (this.getY()+ya+collision_baseY - this.collisionRadius/3.0) - (ao.getY()+ao.getCollisionBaseY());
-            if (this.getName() == "Will") {
-                System.out.println("MobY / AOY: " + (this.getY() + ya + collision_baseY - this.collisionRadius/3.0) + " / " + (ao.getY() + ao.getCollisionBaseY()));
-                if (this.getY()+ya+collision_baseY > ao.getY()+ao.getCollisionBaseY()) {
-                    //TODO: this shows the diff points need moved into the center of the collision ovals
-                    System.out.println("BELOW");
-                } else {
-                    System.out.println("ABOVE");
-                }
-            }
-            if(Math.sqrt((xDist*xDist) + (yDist*yDist)) <= (collisionRadius/2.0+ao.getCollisionRadius()/2.0)) {
+            boolean collided = Math.sqrt((xDist*xDist) + (yDist*yDist)) < ((collisionRadius-2)/2.0+(ao.getCollisionRadius()-3)/2.0);
+            if(collided) {
                 this.collidingAreaObject = ao;
                 return true;
             }
@@ -430,7 +420,7 @@ public abstract class Mob extends Entity {
             );
         }*/
 
-        if(!offScreen()) {
+        if(!this.offScreen()) {
             this.renderBackgroundEffects(gc);
             this.renderSprite(gc);
 
@@ -497,12 +487,15 @@ public abstract class Mob extends Entity {
         gc.setStroke(Color.RED);
 
         //render new mini-map style collision
-        gc.strokeOval(
-        (this.x+ xmap) + this.collision_baseX,
-        (this.y + ymap) + this.collision_baseY,
-            collisionRadius,
-            collisionRadius-4
-        );
+        if(!this.offScreen()) {
+            gc.strokeOval(
+                    (this.x+ xmap) + this.collision_baseX,
+                    (this.y + ymap) + this.collision_baseY,
+                    collisionRadius,
+                    collisionRadius-4
+            );
+        }
+
         gc.strokeOval(
                 ((this.getX() + xmap) + this.collision_baseX)*getScale(),
                 ((this.getY() + ymap) + this.collision_baseY)*getScale(),

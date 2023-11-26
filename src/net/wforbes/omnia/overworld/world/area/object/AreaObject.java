@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
+import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameFX.rendering.Renderable;
 import net.wforbes.omnia.gameState.OverworldState;
 
@@ -136,6 +137,14 @@ public class AreaObject implements Renderable {
         xmap = (float)this.gameState.world.area.getTileMap().getX();
         ymap = (float)this.gameState.world.area.getTileMap().getY();
     }
+
+    protected boolean offScreen() {
+        return x + xmap + width < 0 ||
+                x + xmap - width/2.5 > OmniaFX.getWidth() ||
+                y + ymap + height < 0 ||
+                y + ymap - height/2.5 > OmniaFX.getHeight();
+    }
+
     private void renderSprite(GraphicsContext gc) {
         /*//render with x/y in top left
         gc.drawImage(
@@ -156,18 +165,20 @@ public class AreaObject implements Renderable {
     }
     private void renderCollisionGeometry(GraphicsContext gc) {
         gc.setStroke(Color.RED);
-        gc.strokeOval(
-                (this.getX() + xmap) + this.collision_baseX + 8,
-                (this.getY() + ymap) + this.collision_baseY + 8,
-                collisionRadius,
-                collisionRadius-8
-        );
-        gc.strokeOval(
-                ((this.getX() + xmap) + this.collision_baseX)*getScale(),
-                ((this.getY() + ymap) + this.collision_baseY)*getScale(),
-                collisionRadius * getScale(),
-                (collisionRadius-8)*getScale()
-        );
+        if(!this.offScreen()) {
+            gc.strokeOval(
+                    (this.getX() + xmap) + this.collision_baseX + 8,
+                    (this.getY() + ymap) + this.collision_baseY + 8,
+                    collisionRadius,
+                    collisionRadius - (collisionRadius / 2.5)
+            );
+            gc.strokeOval(
+                    ((this.getX() + xmap) + this.collision_baseX) * getScale(),
+                    ((this.getY() + ymap) + this.collision_baseY) * getScale(),
+                    collisionRadius * getScale(),
+                    (collisionRadius - (collisionRadius / 2.5)) * getScale()
+            );
+        }
         //render with x/y at topleft of oval xy tangents
         /*
         gc.strokeOval(

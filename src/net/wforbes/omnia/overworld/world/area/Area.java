@@ -3,6 +3,7 @@ package net.wforbes.omnia.overworld.world.area;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameFX.rendering.Renderable;
 import net.wforbes.omnia.overworld.entity.DocNPC;
 import net.wforbes.omnia.overworld.entity.Entity;
@@ -96,10 +97,16 @@ public class Area {
         this.tileMap.render(gc);
         if (world.gameState.collisionGeometryVisible()) {
             gc.setFill(Color.BLACK);
-            gc.fillRect(0, 0,
-                    (double) this.getTileMap().getWidth() / getScale(),
-                    (double) this.getTileMap().getHeight() / getScale()
+            gc.setGlobalAlpha(0.5);
+            double miniMapWidth = (double) this.getTileMap().getWidth() / (getScale()*2);
+            double miniMapHeight = (double) this.getTileMap().getWidth() / (getScale()*2);
+            gc.fillRect(
+                    0,
+                    0,
+                    OmniaFX.getWidth() + OmniaFX.getWidth()/8.25,
+                    OmniaFX.getHeight() + OmniaFX.getHeight()/8.25
             );
+            gc.setGlobalAlpha(1);
         }
         this.renderRenderables(gc);
         this.effectController.render(gc);
