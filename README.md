@@ -87,18 +87,88 @@ to dialog.~~
 * [X] ~~**Improve chat window features** - Add a key/focus flow to quickly press Enter, start typing a chat message, send 
 the message and keep playing quickly.~~
 * [X] ~~**Implement Player running** - Pressing the SHIFT key while moving increases movement and animation speed.~~
-* [ ] **Add Pause feature and menu** - Add the pause menu from the Top-Down engine.
-* [ ] **Add collidable environment structures** - Add a layer of objects that render over the ground tiles which mobs 
-    collide with. 
-* [ ] **Implement water tiles** - Add animated water tiles from the Top-Down engine. When a mob enters these tiles they 
-    should appear to be submerged.
-* [ ] **Slow swimming speed** - While a mob is moving through water, their movement speed should be reduced.
-* [ ] **Add simple settings window** - Add a simple GUI settings window with the ability to change Player movement keybinds
-* [ ] **Refine mob collision boundaries** - Modify the mob's collision boundaries
-* [ ] **Create GUI window hierarchy** - The most recently interacted with or opened GUI windows should appear on top of 
-others to emulate windows in an operating system.
+* [X] ~~**Add Pause feature and menu** - Add the pause menu from the Top-Down engine.~~
+
+Well that was fun... but I have to focus on my full time job and finishing my college degree. Expecting to come back to 
+this project in a couple years to keep working on it.
+
 ---
-### Engine Improvements and Homework (Feb 2021) v0.0.3
+### Return to 'Overworld' (2023)
+#### Continuing to mess around with this project when I need to relax/procrastinate
+ (procrastination example: making this to-do list)
+
+- **Miscellaneous**
+    * [X] **Add Clickable Chat/Dialog Links** - Add links in the quest dialog that gets printed in the chat window to more 
+    easily respond to quest text.
+    * [X] **Refine mob collision boundaries** - Improve the mob's collision boundaries.
+    * [ ] **Compensate for diagonal speed increase** - add a speed modifier for diagonal movement to normalize it
+    with cardinal movement  
+    * [ ] **Create GUI window hierarchy** - The most recently interacted with or opened GUI windows should appear on top of
+        others to emulate windows in an operating system.
+      * [ ] **Path finding**
+        * [X] **Click to move** - Try implementing a click to move system with simple path finding
+        * [ ] **Scripted NPC movement** - Use path finding logic to script NPC movement
+        * [ ] **Scripted Player movement** - Use path finding logic to script Player movement
+        * [ ] **NPC following** - Use path finding logic to implement NPCs being able to follow Player and other NPCs
+
+- **Environment Structures/Objects**
+  * [ ] **Add collidable environment structures** - Add a layer of objects that render over the ground tiles which mobs 
+      collide with.
+    * [ ] **Add static environment objects** - Add decorative collidable env objects.
+    * [X] **Add interactable environment objects** - Add collidable environment objects that player can interacted with.
+      * [ ] **Openable Containers**: Add some chests/furniture that can be 'opened' and fed into Inventory System and Quest System.
+        * [ ] **Key Locked Containers**: Add a locked attribute to containers, restricting them from being opened without
+        the player having the right 'key' item
+        * [ ] **Puzzle Locked Containers**: Add a puzzle system that is presented to the player when attempting to open
+        this type of container. Puzzles might be combination, pattern, lock-picking,  
+      * [ ] **Gathering Nodes**: Add nodes that can be interacted with and despawn/respawn.
+        * [X] **Harvesting**: Add some plants that can be 'harvested' and get basic skill timers going.
+          * [X] **Basic Gather Timers**: Get the basic skill timers to keep for harvesting
+          * [X] **GUI: Skill Timer**: Show a little pop-up progress indicator while gathering.
+          * [ ] **Persist node gather progress**: Save the players harvesting progress between cancels/interruptions.
+          * [ ] **Add Gather looting**: (F/S 'Simple Inventory') Node loot tables, transfer of loot from node to player inventory.
+          * [ ] **'Despawn' node after gather completes**: Display some kind of empty graphic in its place, stop interactivity.
+          * [ ] **'Respawn' node**: Add respawn timer for each node, after which the node respawns to be gatherable again.
+        * [ ] **Mining**: Add some rocks/minerals that can be 'mined'.
+        * [ ] **Logging**: Add some trees that can be 'chopped' and fed into the Gathering/Inventory systems
+    * [ ] **Add enterable buildings** - Add building structures that can be entered when player steps into it's 'door'
+
+- **Inventory**
+  * [ ] **Simple inventory feature** - Add very basic simple inventory system to get it started
+    * [ ] **GUI: Basic 'Bag'** - Add window with item slots to represent the characters held items
+    * [ ] **GUI: Item Window** - Add window that displays item details which opens from item slot icon
+    * [ ] **Item list** - Add a short list of items, figure out the best way to persist it.
+    * [ ] **Loot Table** - Add a feature that entities/objects can use to define their loot possibilities.
+    * [ ] **Persist Held Items** - Save the player's items between game closing/opening.
+    * [ ] **Consider a save feature** - do we need that yet?...
+
+* [X] **Projectiles**: Add a basic projectile that shoots out of the player in their facing direction
+  * [ ] **Hitting Mobs/Objects**: Projectiles affect Mobs and Objects that collide with them - doing damage, nudging it,
+    or just annoying them... depending on what is projected and what is hit.
+  * [ ] **Shooting/Throwing**: Add weapon based projectiles that interact with player inventory,
+  requiring a range weapon, expending ammo, etc. 
+
+
+* [ ] **Spell system** : Add some basic GUI to scribe/memorize/cast, basic logic to cast and land, and start figuring it out
+  * [ ] **Particles / Effects**
+      - Particle Sprites
+      - Rendered
+      - Glitch/Distortions
+
+- **Settings**
+  * [ ] **Simple settings window** - Add a simple GUI settings window with the ability to change Player keybinds
+    * [ ] **Persist Settings** - Save the player's settings between game closing/opening.
+
+- **Water**
+  * [ ] **Implement water tiles** - Add animated water tiles from the Top-Down engine. When a mob enters these tiles they 
+      should appear to be submerged.
+    * [ ] **Slow swimming speed** - While a mob is moving through water, their movement speed should be reduced.
+    * [ ] **Fishing** - Add basic fishing gathering skill that requires player to be near water, triggers a timer, and
+    randomly transfers fishing loot into the Players inventory.
+
+---
+## Concepts, plans, ideas ...
+### Engine Improvements and Homework
 #### Resizing the game & starting real documentation
 * [ ] **Scale and Resize the game**
     * [ ] **Enable Full Screen Mode**: The game application should run in Full Screen Mode and play well in all common 16:9 
@@ -116,15 +186,111 @@ others to emulate windows in an operating system.
     * [ ] **Redesign visuals**: Redesign to reflect what was discovered in the design document
     * [ ] **Add Info/About page**
 * [ ] **Create ALOT of pixel art**: Draw and create and then draw some more.
-* [ ] **Experiments: Overworld Movement**: 
-* [ ] **Experiments: Overworld Combat**
 * [ ] **Backlog**: Experiment with anything from the backlog that seems interesting.
 
 ---
-### Quest System (Mar 2021) v0.0.3
-#### Add a simple quest system - inspired by mmos like WoW and Everquest
+### Inventory System
+* [ ] **Inventory Window**: The user can open a GUI Inventory Window which display slots which may be occupied with items,
+  represented by icon sprites
+* [ ] **Moving items**: The user can pick up and move items with the cursor by clicking them
+    * [ ] **Slot Item Pickup**: Left-clicking an item in an inventory slot removes the item from the slot and places it on the
+      cursor - carried on the lower right corner of the cursor
+    * [ ] **Slot Item Drop**: Left-clicking an empty inventory slot when there's an item on the cursor places it in the slot,
+      removing it from the cursor
+    * [ ] **Item Slot/Cursor Swap**: Left-clicking an empty inventory slot when there is another item on the cursor swaps the
+      item in the slot with the item on the cursor
+* [ ] **Deleting items**: The user can click a 'Destroy' button in the Inventory Window which will delete the item carried on
+  the cursor
+* [ ] **Stacking items**: Some items can be stacked with items of the same type
+    * [ ] **Stack count**: Stacking items are displayed with the stack quantity number shown over the lower right corner of the
+      item sprite
+    * [ ] **Stack pickup**: Picking up a stacked item with more than one in the stack opens a quantity selection window to choose
+      how much of the stack to pick up, clicking OK places the chosen quantity on the cursor
+    * [ ] **Stack fill**: Placing a stacked item in a slot with the same item type fills the stack in the slot with as much as it can
+    * [ ] **Stack drop**: Placing a stacked item in an empty slot moves the whole stack into that empty slot
+* [ ] **Item Inspection**: The user can see details about items like their description, effects, and stats by opening the Item Inspection Window
+* [ ] **Item Activation**: Some items can be right-clicked to activate them
+    * [ ] **Usable Items**: When activated, a usable item triggers an effect specific to the item
+    * [ ] **Consumable Items**: (food, drink, magic item) When activated, a consumable item triggers an effect and it's 'use count'
+      is decremented, once the 'use count' reaches zero, it's removed/destroyed
+    * [ ] **Readable Items**: (books, scrolls, notes, documents) When activated, a readable item opens a Reading Window that displays
+      the text or image content of that item
+    * [ ] **Container Items**: (bags, backpacks, satchels) When activated, a container item opens a small inventory window with that
+      container's available slots. Containers essentially expand the player's inventory to hold more items. Items can be
+      added/removed from these slots the same way the inventory window's slots do. Closing this window and reopening it persists
+      these items in the correct slots.
+* [ ] **Equipable Items**
+    * [ ] **Equipable Item Slots**:Equipable items can be placed into normal inventory slots but can only placed into their designated
+    * [ ] **Slot Types**:
+        - Worn/Clothing/Armor: left earring, neck, head, face, right earring, back, shoulder, right wrist, hand, right ring,
+          feet, legs, left right, waist, left wrist, arms, chest
+        - Held/Weapon/Shield: Right hand, Left hand, range, ammo
+* [ ] **Item Weights**: Items each have a 'weight' attribute which, when they occupy the player's inventory, are added to a total weight
+  being held by the player that displays in the Inventory Window
+* [ ] **Ground Items**: Items can be dropped on and picked up from the ground
+    * [ ] **Dropping Items**: Left-clicking on the map with an item on the cursor will place an item icon on the ground near the player
+    * [ ] **Picking Up Items**: Left-clicking on an item icon on the ground places it on the cursor and opens the inventory window
+        * [ ] **Optional**: Left-clicking on an item icon on the ground will automatically place it in the first available inventory slot
+
+
+* [ ] **Currency**: Because this is Capitalism, baby!
+
+
+* [ ] **Vendor System**: Add a system that allows the user to buy items from and sell items to
+  Vendor NPCs by deducting or adding currency in exchange for items in the player's inventory.
+
+---
+## Combat Systems
+
+* [ ] **Combat System**:
+    * [ ] **Enemy Mob**: Add Enemy Mob that's collidable with attacks
+        * [ ] **Attack button**: When the "A" button is pressed, an attack action occurs.
+        * [ ] **Emit Attack**: When an attack action occurs, a 170 degree triangle region is 'swept' for a collision check
+        * [ ] **Receive Attack**: If an enemy's hitbox has collided with the attack, register that the attack happened.
+        * [ ] **Notify Attack Landing**: When the attack happens, display a message in the chat window to notify that
+          the attack landed
+        * [ ] **Aggro Range**: Add enemy aggro range, when the player enters it - the enemy is flagged as 'attacking'
+        * [ ] **Enemy Attack**: Add enemy melee attack, when the player is in melee range the enemy should swing at them using
+          the same mechanics as player attacks
+        * [ ] **Enemy Combat Movement**: Enable enemy movement to pursue the player directly.
+        * [ ] **Enemy Combat AI**: Give the enemy AI techniques to fight with.
+        * [ ] **Damage numbers**: Render damage numbers on the canvas near the associated Mob.
+
+
+* [ ] **Player 'Action' Movement**:
+    * [ ] **Strafing**: move sideways while continuing to face a forward direction
+    * [ ] **Jumping**: scale a jumpable structure
+    * [ ] **Falling**: jump/fall down ledges
+    * [ ] **Dodging**: jump, dive and roll to avoid combat elements (melee, projectile, spells)
+    * [ ] **Dashing**: move rapidly forward for a moment to close distance quickly
+
+
+* [ ] **Skills System**: trade skills, gathering skills, combat skills, spell skills, etc. - leveling them up increases
+  the reward/outcome/result of the activity
+
+
+* [ ] **Class System**: (limits your skills, spells, armor, etc. to a chosen class)
+
+
+* [ ] **NPC party system**: (mercenaries and stuff)
+
+
+* [ ] **Health/damage system**:
+
+
+* [ ] **Player Vitals Status UI**:
+
+
+* [ ] **Player Leveling/Experience System**:
+
+
+* [ ] **Player Statistics System**:
+
+
+---
+### Quest System
 * [ ] **Start a quest through dialog**: The player can gain a quest through dialog with an NPC that is assigned and 
-persisted in memory until completed 
+persisted in memory until completed.
     * [ ] **Quest is added to Quest GUI**: Quest assignment adds the quest to the active quests in the Quest Journal
 * [ ] **Quest Journal Window**: The Quest Journal window displays all the player's active quests and details
     * [ ] **Quest List**: The active quests are displayed in a list on the window
@@ -149,109 +315,53 @@ notified and the Journal is updated
     mark/Question mark above head
 
 ---
-### Inventory System (Apr 2021) v0.0.4
-#### Add an inventory system - inspired by mmos like WoW and Everquest
-* [ ] **Inventory Window**: The user can open a GUI Inventory Window which display slots which may be occupied with items, 
- 		represented by icon sprites
-* [ ] **Moving items**: The user can pick up and move items with the cursor by clicking them
-    * [ ] **Slot Item Pickup**: Left-clicking an item in an inventory slot removes the item from the slot and places it on the
-        cursor - carried on the lower right corner of the cursor
-    * [ ] **Slot Item Drop**: Left-clicking an empty inventory slot when there's an item on the cursor places it in the slot, 
-        removing it from the cursor
-    * [ ] **Item Slot/Cursor Swap**: Left-clicking an empty inventory slot when there is another item on the cursor swaps the 
-        item in the slot with the item on the cursor
-* [ ] **Deleting items**: The user can click a 'Destroy' button in the Inventory Window which will delete the item carried on 
-    the cursor
-* [ ] **Stacking items**: Some items can be stacked with items of the same type
-    * [ ] **Stack count**: Stacking items are displayed with the stack quantity number shown over the lower right corner of the
-        item sprite
-    * [ ] **Stack pickup**: Picking up a stacked item with more than one in the stack opens a quantity selection window to choose
-        how much of the stack to pick up, clicking OK places the chosen quantity on the cursor
-    * [ ] **Stack fill**: Placing a stacked item in a slot with the same item type fills the stack in the slot with as much as it can
-    * [ ] **Stack drop**: Placing a stacked item in an empty slot moves the whole stack into that empty slot
-* [ ] **Item Inspection**: The user can see details about items like their description, effects, and stats by opening the Item Inspection Window
-* [ ] **Item Activation**: Some items can be right-clicked to activate them
-    * [ ] **Usable Items**: When activated, a usable item triggers an effect specific to the item
-    * [ ] **Consumable Items**: (food, drink, magic item) When activated, a consumable item triggers an effect and it's 'use count' 
-        is decremented, once the 'use count' reaches zero, it's removed/destroyed
-    * [ ] **Readable Items**: (books, scrolls, notes, documents) When activated, a readable item opens a Reading Window that displays
-        the text or image content of that item
-    * [ ] **Container Items**: (bags, backpacks, satchels) When activated, a container item opens a small inventory window with that 
-        container's available slots. Containers essentially expand the player's inventory to hold more items. Items can be 
-        added/removed from these slots the same way the inventory window's slots do. Closing this window and reopening it persists 
-        these items in the correct slots.
-* [ ] **Equipable Items**
-    * [ ] **Equipable Item Slots**:Equipable items can be placed into normal inventory slots but can only placed into their designated 
-    * [ ] **Slot Types**:
-        - Worn/Clothing/Armor: left earring, neck, head, face, right earring, back, shoulder, right wrist, hand, right ring,
-                feet, legs, left right, waist, left wrist, arms, chest
-        - Held/Weapon/Shield: Right hand, Left hand, range, ammo
-* [ ] **Item Weights**: Items each have a 'weight' attribute which, when they occupy the player's inventory, are added to a total weight
-        being held by the player that displays in the Inventory Window
-* [ ] **Ground Items**: Items can be dropped on and picked up from the ground
-    * [ ] **Dropping Items**: Left-clicking on the map with an item on the cursor will place an item icon on the ground near the player
-    * [ ] **Picking Up Items**: Left-clicking on an item icon on the ground places it on the cursor and opens the inventory window
-        * [ ] **Optional**: Left-clicking on an item icon on the ground will automatically place it in the first available inventory slot
+### And like... everything else...
 
----
-## Unscheduled Backlog
-#### Overworld
-* [ ] **Combat System**:
-    * [ ] **Enemy Mob**: Add Enemy Mob that's collidable with attacks
-        * [ ] **Attack button**: When the "A" button is pressed, an attack action occurs. 
-        * [ ] **Emit Attack**: When an attack action occurs, a 170 degree triangle region is 'swept' for a collision check
-        * [ ] **Receive Attack**: If an enemy's hitbox has collided with the attack, register that the attack happened.
-        * [ ] **Notify Attack Landing**: When the attack happens, display a message in the chat window to notify that 
-        the attack landed
-        * [ ] **Aggro Range**: Add enemy aggro range, when the player enters it - the enemy is flagged as 'attacking'
-        * [ ] **Enemy Attack**: Add enemy melee attack, when the player is in melee range the enemy should swing at them using 
-        the same mechanics as player attacks
-        * [ ] **Enemy Combat Movement**: Enable enemy movement to pursue the player directly.
-        * [ ] **Enemy Combat AI**: Give the enemy AI techniques to fight with.
-        * [ ] **Damage numbers**: Render damage numbers on the canvas near the associated Mob.
-* [ ] **Player 'Action' Movement**:
-    * [ ] **Strafing**: move sideways while continuing to face a forward direction
-    * [ ] **Jumping**: scale a jumpable structure
-    * [ ] **Falling**: jump/fall down ledges
-    * [ ] **Dodging**: jump, dive and roll to avoid combat elements (melee, projectile, spells)
-    * [ ] **Dashing**: move rapidly forward for a moment to close distance quickly 
-* [ ] **Entrance/Exit Doors**: 
+* [ ] **Entrance/Exit Doors**:
+
 * [ ] **Create first interior area**:
+
 * [ ] **Game Command System**:
+
 * [ ] **Experiment with chat bubbles**: Test ideas on adding a chat bubble above the player when they "/say" something
+
 * [ ] **Finishing conversations open new ones**: Finishing a conversation should cause them to start a 
         different conversation the next time they are spoken to.
-* [ ] **Merchant System**: Add a system that allows the user to buy items from and sell items to 
-        Merchant NPCs by deducting or adding currency in exchange for items in the player's inventory.
-* [ ] **NPC party system**:
-* [ ] **Health/damage system**:
-* [ ] **Player Vitals Status UI**:
-* [ ] **Player Leveling/Experience System**:
-* [ ] **Player Statistics System**:
-* [ ] **Skills System**:
-* [ ] **Class System**:
+  * [ ] **NPC favor system**: Talking to NPCs increase their favor toward you, slightly modifying overall faction for
+  whatever group the NPC is a part of.
+  * [ ] **NPC faction system**: Completing certain quests, killing certain NPCs/enemies, and doing other actions can
+  increase your faction level toward a group of NPCs. Higher/Lower faction alters the way group members react to the player.
+
+
 * [ ] **Mini-Map**: The nearest section of the Area is displayed in a miniature format with the 
         player's location and other noteworthy locations indicated with icons
+
+
 * [ ] **World Map**:
     - The player can open a large GUI window that displays a map of the Area, zoom out to access 
         the map of the world, or zoom in from world or move over from surrounding Areas.
     - Landmarks and other important locations are indicated on the Area maps, major landmarks 
         are indicated on the world map
+
+
 * [ ] **Game Time**
     - Day/Night cycle
     * [ ] **NPC time of day location change**: Depending on the game time, static NPCs should appear in a different 
             static location. If they are pacing/wandering they should move to a different location and pace/wander there.
     * [ ] **NPC conversations change with game time**: Depending on the game time, the NPC should react to 
     chat conversation differently.
+
+
 * [ ] **Worn Item visuals**
+
+
 * [ ] **Held Items/Weapon visuals**
-* [ ] **Projectiles**
-* [ ] **Particles / Effects**
-    - Particle Sprites
-    - Rendered
-    - Glitch/Distortions
-* [ ] **Spell system**
-* [ ] **Time Speed Changes**: Slow down or speed up immediate time spans
+
+
+* [ ] **Time Speed Changes**: Slow down or speed up immediate time spans... reverse time like Jonathan Blow? be a Time
+Wizard n get all freaky....
+
+
 * [ ] **Dynamic Structures**
     - Movable Structures: Player can push or pull structures to a different place on the tilemap
         - Push boxes and stones like in Zelda
@@ -262,7 +372,9 @@ notified and the Journal is updated
     - Interactive Structures: Pressing an interact button changes their state
     - Opening Gates: interacting with a switch or button opens
     - Placable Structures: Player can build/place tear-down/pickup a structure on the tilemap
-* [ ] **Vehicles**:
+
+
+* [ ] **Vehicles**: ? I have no idea how this would work
 
 #### Platformer
 - Review systems and features from Overworld to add to Platformer
@@ -330,9 +442,6 @@ Bust-a-Move, Tetris, Bomberman, Minesweeper, etc.
 ---
 ## Experimental / Research
 
-### C++ Rewrite
-* [ ] **Build C++ Version**: Recreate basic game features in C++ and compare the process with working in Java 
-
 ### Networking
 * [ ] **Client-to-Client Networking**: Add the networking classes from vanZeben's tutorials and successfully network two
 game clients on two different PCs over LAN and WAN. Experiment with different configurations and implementations.
@@ -345,9 +454,9 @@ explore ways that real-life accomplishments recorded in Lvlz.app can be applied 
 ### Game Ports and Libraries
 * [ ] **Research Android Port**: Research and experiment with porting the game to Android
 * [ ] **Research browser port or JavaScript rewrite**: Research and experiment with porting/rewriting the game to JavaScript for the browser
-* [ ] **Research Java game libraries**: Research and experiment with game libraries like [FXGL](http://almasb.github.io/FXGL/), [LWJGL](https://lwjgl.org), 
+* [ ] **Research Java game libraries**: Research and experiment with game libraries like [FXGL](http://almasb.github.io/FXGL/), [LWJGL](https://lwjgl.org),
 and others.
----
+* [ ] **Build C++ Version**: Start recreating basic game features in C++ and compare the process with working in Java
 ---
 
 **Project History:** 
