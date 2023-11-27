@@ -1,5 +1,6 @@
 package net.wforbes.omnia.overworld.controls;
 
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.gameFX.controls.mouse.MouseController;
 import net.wforbes.omnia.gameState.OverworldState;
@@ -14,11 +15,18 @@ public class OverworldMouseController extends MouseController {
     public void handleCanvasClick(MouseEvent event) {
         //TODO: effectController pivot point away from Area and into GUI
         gameState.world.area.effectController.handleCanvasClick(event);
-        gameState.world.player.getTargetController().handleEntityTargeting(
-            event,
-            gameState.world.area.entities,
-            gameState.world.area.effectController
-        );
+        if ((event.getButton() == MouseButton.PRIMARY)) {
+            gameState.world.player.getTargetController().handleEntityTargeting(
+                event,
+                gameState.world.area.entities,
+                gameState.world.area.effectController
+            );
+        }
+        if ((event.getButton() == MouseButton.SECONDARY)) {
+            gameState.world.player.getPathfindController().movePlayer(event);
+        }
+
+
         gameState.gui.handleCanvasClick(event);
     }
 

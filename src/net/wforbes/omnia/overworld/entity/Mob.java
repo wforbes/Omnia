@@ -18,6 +18,7 @@ import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.AttentionController;
 import net.wforbes.omnia.overworld.entity.effect.EntityEffectController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
+import net.wforbes.omnia.overworld.entity.pathfind.PathfindController;
 import net.wforbes.omnia.overworld.world.area.object.AreaObject;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
 
@@ -74,6 +75,10 @@ public abstract class Mob extends Entity {
     private double collision_baseY;
     private Point2D collision_baseCenterPnt;
     private Circle collision_baseCircle;
+    protected PathfindController pathfindController;
+    public PathfindController getPathfindController() {
+        return this.pathfindController;
+    }
 
     public Mob(OverworldState gameState, String name, double speed, boolean player) {
         super(gameState);
@@ -89,6 +94,7 @@ public abstract class Mob extends Entity {
         this.initNameAnimation();
         this.attentionController = new AttentionController(this);
         this.entityEffectController = new EntityEffectController(this);
+        this.pathfindController = new PathfindController(this);
     }
 
     public Mob(OverworldState gameState, String name, Point2D startPos, double speed) {
@@ -106,6 +112,8 @@ public abstract class Mob extends Entity {
     public double getX() {
         return this.x - this.width/2.0;
     }
+    public double getXActual() { return this.x; }
+    public double getYActual() { return this.y; }
     public double getY() {
         return this.y - this.height/2.0;
     }
@@ -190,8 +198,10 @@ public abstract class Mob extends Entity {
     public void move(double xa, double ya) {
         //sets sprite image directionality
         if(xa != 0 && ya != 0){
+            //this.speed = 0.375; //TODO: find a clever way to compensate for diagonal speed increase
             moveDiagonal(xa, ya);
         }else{
+            //this.speed = 0.5;
             moveCardinal(xa, ya);
         }
 

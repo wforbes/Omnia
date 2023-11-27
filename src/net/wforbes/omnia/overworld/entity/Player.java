@@ -9,6 +9,7 @@ import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.TargetController;
 import net.wforbes.omnia.overworld.entity.action.harvest.HarvestController;
+import net.wforbes.omnia.overworld.entity.pathfind.PathfindController;
 import net.wforbes.omnia.overworld.entity.projectile.ProjectileController;
 
 public class Player extends Mob {
@@ -48,6 +49,7 @@ public class Player extends Mob {
         this.targetController = new TargetController();//TODO: pass this to targetController for player references
         this.projectileController = new ProjectileController(this);
         this.harvestController = new HarvestController(this);
+
         //TODO: user hits harvest button, gui shows gather timer bar,
         //  render empty gather node,
         //  start regrow timer on node,
@@ -70,6 +72,9 @@ public class Player extends Mob {
         super.update();
         checkCommands();
         checkMovement();
+        if (this.pathfindController.isPathing()) {
+            checkPathing();
+        }
         movementAnimation.update();
         checkActions();
         gameState.gui.getDevWindow().setPlayerMapPos(this.x, this.y);
@@ -89,6 +94,18 @@ public class Player extends Mob {
 
     private boolean dashReady() {
         return gameState.getTickCount() - lastDashTick > dashDelay || lastDashTick == 0;
+    }
+
+    private void checkPathing() {
+        if (!this.pathfindController.isPathing()) return;
+        double[] nextMove = this.pathfindController.getNextMove(this.getXActual(), this.getYActual());
+        if (nextMove == null) {
+            this.pathfindController.setIsPathing(false);
+            return;
+        }
+        this.isMoving = true;
+        move(nextMove[0], nextMove[1]);
+        this.cancelStationaryActions();
     }
 
     private void checkMovement() {
@@ -118,7 +135,6 @@ public class Player extends Mob {
         ) {
             xa++;
         }
-
         if(xa != 0 || ya != 0) {
             if (gameState.keyboardController.isKeyDown(KeyCode.SHIFT)) {
                 this.setRunning(true);
@@ -132,8 +148,10 @@ public class Player extends Mob {
                 ya *= dashDistance * tileSize;
                 lastDashTick = gameState.getTickCount();
             }
-            move(xa, ya);
+            if(this.pathfindController.isPathing()) System.out.println("Canceling pathing");
+            this.pathfindController.cancelPathing();
             isMoving = true;
+            move(xa, ya);
             this.cancelStationaryActions();
         } else {
             isMoving = false;
