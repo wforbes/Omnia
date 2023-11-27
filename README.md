@@ -2,7 +2,7 @@
 Retro 2D Role-Playing Video Game targeted for the PC, Mac, Linux, and Android. 
 Written using Java and JavaFX.
 
-(Readme last updated: 1/19/2020)
+(Readme last updated: 11/27/23)
 
 ![Screenshots of Omnia version 0.0.1](https://wforbes.net/wp-content/uploads/2020/12/screens_v0-0-1-1024x762.png)
 
