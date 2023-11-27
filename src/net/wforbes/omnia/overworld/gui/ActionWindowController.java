@@ -110,11 +110,11 @@ public class ActionWindowController {
     private void relocateWindow() {
         Renderable m = this.actor;
 
-        /* reimplement with Renderable gets
+        // reimplement with Renderable gets
         gui.actionWindowPanel.relocate(
-                ((m.getX() + m.getXMap())* getScale()) - 10, //- this.windowPanel.getLayoutBounds().getWidth() / 2.0,
+                ((m.getX() + m.getXMap()) * getScale()) - (m.getWidth()/3.0) * getScale(), //- this.windowPanel.getLayoutBounds().getWidth() / 2.0,
                 (m.getY() + m.getYMap())* getScale() - this.windowPanel.getLayoutBounds().getHeight() * 1.5
-        );*/
+        );
     }
 
     public void startAction(String actionGerund, double initialProgress, Renderable actor/*Actionable target*/) {
