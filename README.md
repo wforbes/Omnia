@@ -4,7 +4,7 @@ Written using Java and JavaFX.
 
 (Readme last updated: 11/27/23)
 
-![Screenshots of Omnia version 0.0.1](https://github.com/wforbes/Omnia/blob/master/press/screens_v0-0-1.png)
+![Screenshots of Omnia version 0.0.1](https://raw.githubusercontent.com/wforbes/Omnia/master/press/screens_v0-0-1.png)
 
 ## Project
 Omnia is a 2D 'Retro' Role-Playing Game with multiple game perspectives (Top-Down, Platformer, Turn-Based, Puzzle, etc),
