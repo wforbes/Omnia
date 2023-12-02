@@ -61,6 +61,18 @@ public class WindowDisplayController {
             this.gui.setGUIHasFocus(newValue);
         });
 
+        ToggleButton inventoryBtn = new ToggleButton("Inventory");
+        inventoryBtn.setFont(buttonFont);
+        inventoryBtn.setFocusTraversable(true);
+        inventoryBtn.setOnMouseClicked(event -> {
+            this.gui.toggleInventoryWindowVisible();
+            event.consume();
+        });
+        inventoryBtn.focusedProperty().addListener((observableValue, oldValue, newValue) -> {
+            this.gui.setGUIHasFocus(newValue);
+        });
+
+        //TODO: implement settings window
         ToggleButton settingsBtn = new ToggleButton("Settings");
         settingsBtn.setFont(buttonFont);
         settingsBtn.setFocusTraversable(true);
@@ -72,7 +84,7 @@ public class WindowDisplayController {
             this.gui.setGUIHasFocus(newValue);
         });
 
-        buttonContainer.getChildren().addAll(chatBtn, devBtn);
+        buttonContainer.getChildren().addAll(chatBtn, devBtn, inventoryBtn);
         //GUIController.configureBorder(titledPane);
         titledPane.setContent(buttonContainer);
         return titledPane;
