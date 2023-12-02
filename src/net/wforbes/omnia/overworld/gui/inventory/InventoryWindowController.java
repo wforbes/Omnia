@@ -4,6 +4,7 @@ import javafx.geometry.Dimension2D;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -70,17 +71,19 @@ public class InventoryWindowController {
         this.slotPane = new GridPane();
         this.slotArray = new ArrayList<>();
         for(int i = 0; i < 16; i++) {
-            Rectangle r = new Rectangle(50, 50, Color.BLUE);
-            int finalI = i;
-            r.setOnMouseClicked(event -> {
-               System.out.println("Clicked slot #" + finalI);
-            });
-            this.slotArray.add(r);
+            InventorySlot slot = new InventorySlot(i);
+            int fI = i;
+            slot.getDisplayGraphic().setOnMouseClicked(event -> this.handleSlotClick(event, fI));
+            this.slotArray.add(slot.getDisplayGraphic());
             this.slotPane.add(this.slotArray.get(i),(i%4), (i/4));
         }
         this.slotPane.setHgap(5);
         this.slotPane.setVgap(5);
         //this.slotPane.setPadding(new Insets(10, 10, 10, 10));
+    }
+
+    private void handleSlotClick(MouseEvent event, int slotNum) {
+        System.out.println("Clicked inventory slot #"+slotNum);
     }
 
     private void createInventoryVerticalContainer() {
