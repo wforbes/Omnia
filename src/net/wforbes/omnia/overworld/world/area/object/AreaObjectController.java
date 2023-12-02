@@ -3,7 +3,9 @@ package net.wforbes.omnia.overworld.world.area.object;
 import javafx.geometry.Point2D;
 import net.wforbes.omnia.overworld.world.area.Area;
 import net.wforbes.omnia.overworld.world.area.object.flora.shrub.Shrub;
+import net.wforbes.omnia.overworld.world.area.object.flora.shrub.ShrubType;
 import net.wforbes.omnia.overworld.world.area.object.flora.tree.Tree;
+import net.wforbes.omnia.overworld.world.area.object.flora.tree.TreeType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +47,14 @@ public class AreaObjectController {
         this.areaObjects.add(
                 new Shrub(
                         this.area.getWorld().gameState,
+                        ShrubType.GENERA.BLUEBERRY,
                         120, 175
                 )
         );
         this.areaObjects.add(
                 new Tree(
                         this.area.getWorld().gameState,
-                        "fixed_Tree1",
+                        TreeType.GENERA.OAK,
                         175, 175
                 )
         );

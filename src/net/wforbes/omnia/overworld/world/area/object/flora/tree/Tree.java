@@ -4,6 +4,7 @@ import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Circle;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.overworld.gui.loot.Loot;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
 
 import java.util.HashMap;
@@ -15,6 +16,7 @@ public class Tree extends Flora {
     //fixed_Tree1
     //31,66
     //30x15
+    private Loot loot;
 
     public Tree(OverworldState gameState) {
         super(gameState);
@@ -26,6 +28,15 @@ public class Tree extends Flora {
         this.x = x;
         this.y = y;
         //this.collisionRadius = 60;
+    }
+
+    public Tree(OverworldState gameState, TreeType.GENERA type, float x, float y) {
+        super(gameState, x, y);
+        TreeType treeType = new TreeType(type);
+        this.loot = treeType.getLootInstance();
+        this.loadSprite(TREES_SPRITE_DIR+treeType.getSpriteFile());
+        this.x = x;
+        this.y = y;
     }
 
     public Tree(OverworldState gameState, String spriteName, float x, float y) {
@@ -53,5 +64,19 @@ public class Tree extends Flora {
         this.collisionRadius = 21;
         this.collision_baseCenterPnt = new Point2D(collision_baseX, collision_baseY);
         this.collision_baseCircle = new Circle(collision_baseX, collision_baseY, collisionRadius);
+    }
+
+    public void completeHarvest() {
+        System.out.println("Tree.completeHarvest");
+        this.completeAction();
+    }
+
+    public void completeAction() {
+        System.out.println("Tree.completeAction");
+    }
+
+    public Loot getLoot() {
+        System.out.println("Tree.getLoot");
+        return this.loot;
     }
 }

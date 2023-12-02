@@ -3,6 +3,7 @@ package net.wforbes.omnia.overworld.entity.action.harvest;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.Mob;
 import net.wforbes.omnia.overworld.entity.action.ActionController;
+import net.wforbes.omnia.overworld.gui.loot.Loot;
 import net.wforbes.omnia.overworld.world.area.object.AreaObject;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
 
@@ -21,19 +22,29 @@ public class HarvestController extends ActionController {
             System.out.println("Nothing nearby to Harvest");
             return;
         }
-        if (!(target instanceof Harvestable)) {
+        if ((target instanceof Harvestable)) {
+            this.harvestTarget = (Harvestable)target;
+            this.startAction();
+        } else {
             System.out.println("Is not Harvestable: " + target);
-            return;
         }
-        this.startAction();
     }
 
     @Override
     protected void completeAction() {
         System.out.println("HarvestController.completeAction");
+        if (this.harvestTarget == null) {
+            System.out.println("lost harvestTarget before completeAction...");
+            return;
+        }
+        this.lootHarvest();
+        this.harvestTarget.completeAction();
     }
 
-    private void transferHarvestMaterials(Flora flora) {
+    private void lootHarvest() {
+        System.out.println("HarvestController.lootHarvest");
+        Loot harvestedLoot = this.harvestTarget.getLoot();
+        System.out.println("Harvested Loot:" + harvestedLoot.toString());
         //this.owner.addHarvestMaterialsToInventory(flora);
     }
 

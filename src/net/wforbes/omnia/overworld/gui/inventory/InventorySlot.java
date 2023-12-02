@@ -22,7 +22,7 @@ public class InventorySlot {
         this.slotRect.getStyleClass().add("inv-slot");
 
         //this.displayImage = new Image(getClass().getResource("/overworld/inventory/icons/ingredients/1.png").toExternalForm());
-        //this.displayGraphic.setFill(new ImagePattern(this.displayImage));
+        //this.slotRect.setFill(new ImagePattern(this.displayImage));
     }
 
     public Rectangle getDisplayGraphic() {

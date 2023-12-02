@@ -51,7 +51,6 @@ public class ActionController {
                     this.owner.gameState.gui.getActionWindow().completeAction();
                     this.isPerforming = false;
                     this.actionTimer = 0;
-                    //TODO: this.transferHarvestMaterials(this.harvestTarget);
                     this.completeAction();
                     this.actionTarget = null;
 
@@ -70,6 +69,7 @@ public class ActionController {
         }
     }
 
+    // should be overwritten by child specifying the type of action
     protected void completeAction() {
         System.out.println("ActionController.completeAction");
     }
