@@ -8,13 +8,14 @@ import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.Player;
 import net.wforbes.omnia.overworld.gui.inventory.InventoryWindowController;
+//import net.wforbes.omnia.overworld.gui.loot.LootWindowController;
 import net.wforbes.omnia.u.W;
 
 import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
 public class GUIController {
-    public OverworldState gameState;
 
+    public OverworldState gameState;
     private boolean guiHasFocus;
     private WindowDragger windowDragger;
     private WindowDisplayController windowDisplayController;
@@ -32,11 +33,11 @@ public class GUIController {
 
     private final InventoryWindowController inventoryWindowController;
     private Node inventoryWindowPanel;
-    private boolean inventoryWindowVisible;
+
+    //private final LootWindowController lootWindowController;
 
     public static double OPACITY_MAX = 0.5;
-
-
+    
     public GUIController(OverworldState state) {
         this.gameState = state;
         this.guiHasFocus = false;
@@ -67,14 +68,12 @@ public class GUIController {
         actionWindowVisible = false;
 
         this.inventoryWindowController = new InventoryWindowController(this);
-        inventoryWindowPanel = windowDragger.makeDraggableByTitleRegion(
-                inventoryWindowController.getWindowPanel()
-        );
-        inventoryWindowPanel.relocate(OmniaFX.getScaledWidth()
-                - inventoryWindowController.getWindowWidth() - 50, 0
-        );
-        inventoryWindowVisible = false;
 
+
+
+        /*
+        this.lootWindowController = new LootWindowController(this);
+        */
 
         windowDisplayController = new WindowDisplayController(this);
         windowDisplayPanel = windowDragger.makeDraggableByTitleRegion(
@@ -102,6 +101,15 @@ public class GUIController {
     public void setGUIHasFocus(boolean focused) {
         this.guiHasFocus = focused;
     }
+
+    public Pane getPanelsPane() {
+        return this.panelsPane;
+    }
+
+    public WindowDragger getWindowDragger() {
+        return this.windowDragger;
+    }
+
     public DevWindowController getDevWindow() {
         return this.devWindowController;
     }
@@ -140,16 +148,7 @@ public class GUIController {
     }
 
     public void toggleInventoryWindowVisible() {
-        inventoryWindowVisible = !inventoryWindowVisible;
-        if(inventoryWindowVisible) {
-            panelsPane.getChildren().add(inventoryWindowPanel);
-            //W.takeFocus(getInventoryWindow().getWindowPanel());
-            //getInventoryWindow().setActiveThenFadeOut();
-        } else {
-            panelsPane.getChildren().remove(inventoryWindowPanel);
-            //refocus canvas when chatWindow is closed
-            gameState.getManager().getGameController().gameCanvas.requestFocus();
-        }
+        this.inventoryWindowController.toggleVisible();
     }
 
     public void update() {

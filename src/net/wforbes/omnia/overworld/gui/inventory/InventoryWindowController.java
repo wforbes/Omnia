@@ -1,39 +1,41 @@
 package net.wforbes.omnia.overworld.gui.inventory;
 
+import javafx.event.EventType;
 import javafx.geometry.Dimension2D;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.overworld.gui.DragResizer;
 import net.wforbes.omnia.overworld.gui.GUIController;
+import net.wforbes.omnia.overworld.gui.TitledWindowController;
 import net.wforbes.omnia.u.W;
 
 import java.util.ArrayList;
 
-public class InventoryWindowController {
+public class InventoryWindowController extends TitledWindowController {
 
     public Dimension2D windowSize = new Dimension2D(200, 200);
     private static final int SLOTAREA_FLOW_WIDTH = 200;
     private static final int SLOTAREA_FLOW_HEIGHT = 200;
-    private final GUIController gui;
-    private final String windowTitle;
     private final Font tooltipFont;
-    private TitledPane titledPane;
-    private Node inventoryPanel;
     private VBox inventoryVerticalContainer;
     private GridPane slotPane;
     private ArrayList<Rectangle> slotArray;
 
     public InventoryWindowController(GUIController gui) {
-        this.gui = gui;
-        this.windowTitle = "Inventory";
+        super(gui, "Inventory");
         this.tooltipFont = new Font("Century Gothic", 18);
+        this.windowPanel.relocate(OmniaFX.getScaledWidth()
+                - this.getWindowWidth() - 50, 0
+        );
     }
 
     public double getWindowWidth() {
@@ -43,35 +45,24 @@ public class InventoryWindowController {
         return this.windowSize.getHeight();
     }
 
-    public Node getWindowPanel() {
-        if(inventoryPanel == null) {
-            this.inventoryPanel = createInventoryPanel();
-        }
-        return inventoryPanel;
-    }
-
-    private Node createInventoryPanel() {
+    @Override
+    protected Node createWindow() {
         this.createTitledPane();
         this.createSlotPane();
-        this.createInventoryVerticalContainer();
+        this.createVerticalContainer(this.slotPane);
         titledPane.setContent(inventoryVerticalContainer);
+        titledPane.setOnMouseClicked(event -> {
+            W.takeFocus(titledPane);
+        });
         DragResizer.makeResizable(this.titledPane);
         return titledPane;
-    }
-
-    private void createTitledPane() {
-        this.titledPane = new TitledPane();
-        this.titledPane.setText(this.windowTitle);
-        this.titledPane.setCollapsible(false);
-        this.titledPane.setMinSize(SLOTAREA_FLOW_WIDTH, SLOTAREA_FLOW_HEIGHT);
-        this.titledPane.setOpacity(GUIController.OPACITY_MAX);
     }
 
     private void createSlotPane() {
         this.slotPane = new GridPane();
         this.slotArray = new ArrayList<>();
         for(int i = 0; i < 16; i++) {
-            InventorySlot slot = new InventorySlot(i);
+            InventoryItemSlot slot = new InventoryItemSlot(i);
             int fI = i;
             slot.getDisplayGraphic().setOnMouseClicked(event -> this.handleSlotClick(event, fI));
             this.slotArray.add(slot.getDisplayGraphic());
@@ -86,8 +77,10 @@ public class InventoryWindowController {
         System.out.println("Clicked inventory slot #"+slotNum);
     }
 
-    private void createInventoryVerticalContainer() {
+    private void createVerticalContainer(GridPane slotPane) {
         inventoryVerticalContainer = new VBox();
         inventoryVerticalContainer.getChildren().addAll(slotPane);
     }
+
+
 }

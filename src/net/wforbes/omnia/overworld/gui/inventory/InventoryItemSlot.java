@@ -2,17 +2,15 @@ package net.wforbes.omnia.overworld.gui.inventory;
 
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
-public class InventorySlot {
+public class InventoryItemSlot {
     private final int slotNum;
     private final Rectangle slotRect;
     //private Image displayImage;
 
-    public InventorySlot(int slotNum) {
+    public InventoryItemSlot(int slotNum) {
         this.slotNum = slotNum;
         this.slotRect = new Rectangle(50, 50);
         this.slotRect.setArcWidth(10.0);

@@ -34,6 +34,7 @@ public class WindowDragger {
                 dragContext.initialTranslateY =
                         node.getTranslateY();
                 //}
+                event.consume();
             }
         });
         wrapGroup.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
@@ -66,7 +67,8 @@ public class WindowDragger {
     private boolean targetIsTitleRegion(EventTarget target) {
         String titleClass = "class javafx.scene.control.skin.TitledPaneSkin$TitleRegion";
         return target.getClass().toString().equals(titleClass) || // anywhere on title region except title Text
-                (target instanceof Node && ((Node) target).getParent().getClass().toString().equals(titleClass));// title Text
+                (target instanceof Node && ((Node) target).getParent().getClass().toString().equals(titleClass)) || // title Text
+                (target instanceof Node && ((Node) target).getParent().getParent().getParent().getClass().toString().equals(titleClass)); // borderpane label title Text
     }
 
     public void teardown() {
