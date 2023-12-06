@@ -10,13 +10,15 @@ import javafx.scene.layout.BorderPane;
 public class TitledWindowController {
     protected final GUIController gui;
     protected final String windowTitle;
+    private final String windowId;
     protected Node windowPanel;
     protected TitledPane titledPane;
     protected boolean visible;
-    public TitledWindowController(GUIController gui, String windowTitle) {
+    public TitledWindowController(GUIController gui, String windowId, String windowTitle) {
         this.visible = false;
         this.gui = gui;
         this.windowTitle = windowTitle;
+        this.windowId = windowId;
         this.windowPanel = gui.getWindowDragger().makeDraggableByTitleRegion(
                 this.getWindowPanel()
         );
@@ -51,6 +53,10 @@ public class TitledWindowController {
         this.titledPane.setCollapsible(false);
         //this.titledPane.setMinSize(SLOTAREA_FLOW_WIDTH, SLOTAREA_FLOW_HEIGHT);
         this.titledPane.setOpacity(GUIController.OPACITY_MAX);
+    }
+
+    public boolean isVisible() {
+        return this.visible;
     }
 
     public void toggleVisible() {

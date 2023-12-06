@@ -111,7 +111,7 @@ public class DevWindowController {
         VBox.setVgrow(horizontalLayoutContainer, Priority.ALWAYS); //TODO:
         verticalLayoutContainer.getChildren().addAll(horizontalLayoutContainer);
         VBox.setVgrow(verticalLayoutContainer, Priority.ALWAYS); //TODO:
-        DragResizer.makeResizable(verticalLayoutContainer);
+        DragResizer.makeResizable(verticalLayoutContainer, gui);
         this.titledPane.setContent(verticalLayoutContainer);
         this.setWindowFadeTransitions();
         return titledPane;

@@ -8,6 +8,7 @@ import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.Player;
 import net.wforbes.omnia.overworld.gui.inventory.InventoryWindowController;
+import net.wforbes.omnia.overworld.gui.item.ItemCursorController;
 import net.wforbes.omnia.overworld.gui.loot.LootWindowController;
 import net.wforbes.omnia.u.W;
 
@@ -33,8 +34,9 @@ public class GUIController {
 
     private final InventoryWindowController inventoryWindowController;
     private Node inventoryWindowPanel;
-
     private final LootWindowController lootWindowController;
+
+    private final ItemCursorController itemCursorController;
 
     public static double OPACITY_MAX = 0.5;
 
@@ -49,6 +51,7 @@ public class GUIController {
                 chatWindowController.getWindowPanel()
         );
         chatWindowPanel.relocate(0, OmniaFX.getScaledHeight() - chatWindowController.getWindowHeight());
+        chatWindowPanel.setId("chat");
         chatWindowVisible = false;
 
         this.devWindowController = new DevWindowController(this);
@@ -59,17 +62,19 @@ public class GUIController {
                 - devWindowController.getWindowHeight() - 50
                 - chatWindowController.getWindowHeight()
         );
+        chatWindowPanel.setId("dev");
         devWindowVisible = false;
 
         this.actionWindowController = new ActionWindowController(this);
         actionWindowPanel = windowDragger.makeDraggableByTitleRegion(
                 actionWindowController.getWindowPanel()
         );
+        chatWindowPanel.setId("action");
         actionWindowVisible = false;
 
         this.inventoryWindowController = new InventoryWindowController(this);
-
         this.lootWindowController = new LootWindowController(this);
+        this.itemCursorController = new ItemCursorController(this);
 
         windowDisplayController = new WindowDisplayController(this);
         windowDisplayPanel = windowDragger.makeDraggableByTitleRegion(
@@ -79,7 +84,6 @@ public class GUIController {
         panelsPane.setStyle("-fx-background-color: rgba(0,100,100,0.5);-fx-background-radius:10;");
         panelsPane.setPrefSize(0.1,0.1);
         panelsPane.getChildren().addAll(windowDisplayPanel);
-
     }
 
     public void init() {
@@ -113,6 +117,7 @@ public class GUIController {
     public ActionWindowController getActionWindow() { return this.actionWindowController; }
     public InventoryWindowController getInventoryWindow() { return this.inventoryWindowController; }
     public LootWindowController getLootWindow() { return this.lootWindowController; }
+    public ItemCursorController getItemCursorController() { return this.itemCursorController; }
     public void handleCanvasClick(MouseEvent event) {
         this.devWindowController.handleCanvasClick(event);
     }

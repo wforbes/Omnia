@@ -31,7 +31,7 @@ public class InventoryWindowController extends TitledWindowController {
     private ArrayList<Rectangle> slotArray;
 
     public InventoryWindowController(GUIController gui) {
-        super(gui, "Inventory");
+        super(gui, "inventory", "Inventory");
         this.tooltipFont = new Font("Century Gothic", 18);
         this.windowPanel.relocate(OmniaFX.getScaledWidth()
                 - this.getWindowWidth() - 50, 0
@@ -54,7 +54,7 @@ public class InventoryWindowController extends TitledWindowController {
         titledPane.setOnMouseClicked(event -> {
             W.takeFocus(titledPane);
         });
-        DragResizer.makeResizable(this.titledPane);
+        DragResizer.makeResizable(this.titledPane, this.gui);
         return titledPane;
     }
 

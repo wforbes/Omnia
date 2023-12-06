@@ -64,9 +64,6 @@ public class GameController implements Initializable {
 
 
         this.gameBorder.setPickOnBounds(false);
-        this.gameBorder.setOnMouseMoved(event -> {
-            //gsm.getCurrentState().handleCanvasMouseMove(event);
-        });
         this.gameBorder.setOnMouseClicked(event -> {
             System.out.println("Border Got A Click! " + event.toString());
             gameCanvas.requestFocus();//regain canvas focus when clicking outside of UI windows

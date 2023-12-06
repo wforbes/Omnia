@@ -64,7 +64,7 @@ public class ActionWindowController {
         //VBox.setVgrow(horizontalLayoutContainer, Priority.ALWAYS); //TODO:
         //verticalLayoutContainer.getChildren().addAll(horizontalLayoutContainer);
         //VBox.setVgrow(verticalLayoutContainer, Priority.ALWAYS); //TODO:
-        DragResizer.makeResizable(horizontalLayoutContainer);
+        DragResizer.makeResizable(horizontalLayoutContainer, this.gui);
         this.titledPane.getChildren().add(horizontalLayoutContainer);
         //this.titledPane.setContent(verticalLayoutContainer);
         this.titledPane.setOpacity(1.0);

@@ -7,6 +7,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.ImagePattern;
@@ -38,7 +40,7 @@ public class LootWindowController extends TitledWindowController {
 
 
     public LootWindowController(GUIController gui) {
-        super(gui, "Loot");
+        super(gui, "loot", "Loot");
         windowPanel.relocate(OmniaFX.getScaledWidth()
                 - this.getWindowWidth() - 250, 0
         );
@@ -59,6 +61,13 @@ public class LootWindowController extends TitledWindowController {
         }
 
         if (this.visible) {
+            if (!this.gui.getInventoryWindow().isVisible()) {
+                this.gui.getInventoryWindow().toggleVisible();
+            }
+            if (!this.gui.getItemCursorController().isVisible()) {
+                this.gui.getItemCursorController().toggleVisible();
+            }
+
             System.out.println("Harvested Loot:" + loot.toString());
             this.focusedLoot = loot;
             for (int i = 0; i < this.focusedLoot.getItems().size(); i++) {
@@ -86,6 +95,12 @@ public class LootWindowController extends TitledWindowController {
             for (int i = 0; i < this.itemSlotArray.size(); i++) {
                 this.itemSlotArray.get(i).setDisplayToEmpty();
             }
+            if (this.gui.getInventoryWindow().isVisible()) {
+                this.gui.getInventoryWindow().toggleVisible();
+            }
+            if (this.gui.getItemCursorController().isVisible()) {
+                this.gui.getItemCursorController().toggleVisible();
+            }
         }
     }
 
@@ -99,7 +114,7 @@ public class LootWindowController extends TitledWindowController {
         titledPane.setOnMouseClicked(event -> {
             W.takeFocus(titledPane);
         });
-        DragResizer.makeResizable(this.titledPane);
+        DragResizer.makeResizable(this.titledPane, this.gui);
         return titledPane;
     }
 
@@ -159,6 +174,32 @@ public class LootWindowController extends TitledWindowController {
     private void handleSlotClick(MouseEvent event, int slotNum) {
         System.out.println("Clicked loot window slot #"+slotNum);
         System.out.println(this.itemSlotArray.get(slotNum).getContainedItem().getName());
+        if (
+            event.getButton() == MouseButton.PRIMARY
+        ) {
+            // put item icon on mouse cursor
+        }
+
+        if (
+            event.getButton() == MouseButton.PRIMARY &&
+            gui.gameState.keyboardController.isKeyDown(KeyCode.ALT)
+        ) {
+            // move item to player's inventory
+        }
+
+        if (
+            true // hold right mouse button for 1 second
+        ) {
+            // open item window
+            // close item window when mouse button releases
+        }
+
+        if (
+            event.getButton() == MouseButton.SECONDARY &&
+            gui.gameState.keyboardController.isKeyDown(KeyCode.ALT)
+        ) {
+            // open item window
+        }
     }
 
     private void createVerticalContainer() {

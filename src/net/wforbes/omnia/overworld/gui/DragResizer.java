@@ -1,6 +1,8 @@
 package net.wforbes.omnia.overworld.gui;
 
 import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 
@@ -23,12 +25,15 @@ public class DragResizer {
 
     private boolean dragging;
 
-    private DragResizer(Region region) {
+    private GUIController gui;
+
+    private DragResizer(Region region, GUIController gui) {
         this.region = region;
+        this.gui = gui;
     }
 
-    public static void makeResizable(Region region) {
-        final DragResizer resizer = new DragResizer(region);
+    public static void makeResizable(Region region, GUIController gui) {
+        final DragResizer resizer = new DragResizer(region, gui);
 
         region.setOnMousePressed(event -> resizer.mousePressed(event));
         region.setOnMouseDragged(event -> resizer.mouseDragged(event));
@@ -134,11 +139,16 @@ public class DragResizer {
             if (draggableZoneX) {//TODO: add negX cursor
                 region.setCursor(Cursor.E_RESIZE);
             }
-
-
-        } else {
-            region.setCursor(Cursor.DEFAULT);
+            return;
         }
+
+        // if holding an item on the cursor, display the item icon
+        Image icon = gui.getItemCursorController().getItemIcon();
+        if (icon != null) {
+            region.setCursor(new ImageCursor(icon));
+            return;
+        }
+        region.setCursor(Cursor.DEFAULT);
     }
 
     protected boolean isInDraggableZone(MouseEvent event) {
@@ -151,7 +161,7 @@ public class DragResizer {
 
     protected void mouseReleased(MouseEvent event) {
         dragging = false;
-        region.setCursor(Cursor.DEFAULT);
+        //region.setCursor(Cursor.DEFAULT); //TODO: may not be needed here
     }
 }
 //NOTE: study https://github.com/varren/JavaFX-Resizable-Draggable-Node/blob/master/src/sample/DragResizeMod.java

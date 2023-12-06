@@ -132,7 +132,7 @@ public class ChatWindowController {
         this.createChatVerticalContainer();
         this.setWindowFadeTransitions();
         titledPane.setContent(chatVerticalContainer);
-        DragResizer.makeResizable(titledPane);
+        DragResizer.makeResizable(titledPane, gui);
         return titledPane;
     }
 
