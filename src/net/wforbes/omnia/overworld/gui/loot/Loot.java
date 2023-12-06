@@ -14,6 +14,10 @@ public class Loot {
         this.items = items;
     }
 
+    public ArrayList<Item> getItems() {
+        return this.items;
+    }
+
     public String toString() {
         if (this.items.isEmpty()) {
             return super.toString();

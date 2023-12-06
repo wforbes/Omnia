@@ -51,9 +51,12 @@ public class Player extends Mob {
         this.harvestController = new HarvestController(this);
 
         //TODO: user hits harvest button, gui shows gather timer bar,
+        //  show loot window
+        //      put item into player inventory
+        //      OR keep item on node
         //  render empty gather node,
         //  start regrow timer on node,
-        //  put item into player inventory
+
     }
 
     public void init(double xPos, double yPos) {

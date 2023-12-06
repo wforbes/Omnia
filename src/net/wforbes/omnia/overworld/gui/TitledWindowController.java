@@ -40,7 +40,7 @@ public class TitledWindowController {
         Label titleLbl = new Label(this.windowTitle);
         Button closeBtn = new Button("X");
         closeBtn.setOnMouseClicked(event -> {
-            this.gui.toggleInventoryWindowVisible();
+            this.toggleVisible();
             event.consume();
         });
         borderPane.setCenter(titleLbl);

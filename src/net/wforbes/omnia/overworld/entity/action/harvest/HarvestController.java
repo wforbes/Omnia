@@ -47,8 +47,7 @@ public class HarvestController extends ActionController {
         if (harvestedLoot == null) {
             System.out.println("There was nothing to harvest");
         }
-        System.out.println("Harvested Loot:" + harvestedLoot.toString());
-        //this.owner.addHarvestMaterialsToInventory(flora);
+        this.owner.gameState.gui.getLootWindow().show(harvestedLoot);
     }
 
     public void cancelHarvesting() {

@@ -20,4 +20,8 @@ public class ItemIcon {
             this.displayImage = new Image(getClass().getResource("/overworld/inventory/icons/plants/sticks.png").toExternalForm());
         }
     }
+
+    public Image getDisplayImage() {
+        return this.displayImage;
+    }
 }

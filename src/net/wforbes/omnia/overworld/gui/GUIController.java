@@ -8,7 +8,7 @@ import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.Player;
 import net.wforbes.omnia.overworld.gui.inventory.InventoryWindowController;
-//import net.wforbes.omnia.overworld.gui.loot.LootWindowController;
+import net.wforbes.omnia.overworld.gui.loot.LootWindowController;
 import net.wforbes.omnia.u.W;
 
 import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
@@ -34,10 +34,10 @@ public class GUIController {
     private final InventoryWindowController inventoryWindowController;
     private Node inventoryWindowPanel;
 
-    //private final LootWindowController lootWindowController;
+    private final LootWindowController lootWindowController;
 
     public static double OPACITY_MAX = 0.5;
-    
+
     public GUIController(OverworldState state) {
         this.gameState = state;
         this.guiHasFocus = false;
@@ -69,11 +69,7 @@ public class GUIController {
 
         this.inventoryWindowController = new InventoryWindowController(this);
 
-
-
-        /*
         this.lootWindowController = new LootWindowController(this);
-        */
 
         windowDisplayController = new WindowDisplayController(this);
         windowDisplayPanel = windowDragger.makeDraggableByTitleRegion(
@@ -116,6 +112,7 @@ public class GUIController {
     public ChatWindowController getChatWindow() { return this.chatWindowController; }
     public ActionWindowController getActionWindow() { return this.actionWindowController; }
     public InventoryWindowController getInventoryWindow() { return this.inventoryWindowController; }
+    public LootWindowController getLootWindow() { return this.lootWindowController; }
     public void handleCanvasClick(MouseEvent event) {
         this.devWindowController.handleCanvasClick(event);
     }

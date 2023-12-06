@@ -47,4 +47,6 @@ public class Item {
     public int getId() {
         return this.id;
     }
+
+    public ItemIcon getIcon() { return this.icon; }
 }

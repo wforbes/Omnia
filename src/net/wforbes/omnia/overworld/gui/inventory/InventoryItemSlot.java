@@ -4,11 +4,13 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import net.wforbes.omnia.overworld.gui.item.Item;
 
 public class InventoryItemSlot {
     private final int slotNum;
     private final Rectangle slotRect;
     //private Image displayImage;
+    private Item containedItem;
 
     public InventoryItemSlot(int slotNum) {
         this.slotNum = slotNum;
@@ -25,5 +27,17 @@ public class InventoryItemSlot {
 
     public Rectangle getDisplayGraphic() {
         return this.slotRect;
+    }
+
+    public void setContainedItem(Item item) {
+        this.containedItem = item;
+    }
+
+    public Item getContainedItem() {
+        return this.containedItem;
+    }
+
+    public void setDisplayToEmpty() {
+        this.slotRect.setFill(null);
     }
 }
