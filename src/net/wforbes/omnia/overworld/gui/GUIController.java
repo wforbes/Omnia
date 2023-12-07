@@ -89,9 +89,12 @@ public class GUIController {
     public void init() {
         this.gameState.getManager().getGameController().getGameBorderPane().setTop(panelsPane);
         Platform.runLater(()-> {
+            windowDisplayPanel.relocate(10,10);
+            /*
             windowDisplayPanel.relocate(
                     OmniaFX.getScaledWidth()/2.0
                             - windowDisplayPanel.getLayoutBounds().getWidth()/2.0,10);
+             */
         });
     }
 
