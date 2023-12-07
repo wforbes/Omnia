@@ -2,14 +2,16 @@ package net.wforbes.omnia.overworld.gui.inventory;
 
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import net.wforbes.omnia.overworld.gui.item.Item;
 
 public class InventoryItemSlot {
     private final int slotNum;
     private final Rectangle slotRect;
-    //private Image displayImage;
+    private Image displayImage;
     private Item containedItem;
 
     public InventoryItemSlot(int slotNum) {
@@ -20,9 +22,6 @@ public class InventoryItemSlot {
         InnerShadow innerShadow = new InnerShadow(BlurType.THREE_PASS_BOX, Color.DARKGRAY, 5.0, 0.1, -1, -1);
         this.slotRect.setEffect(innerShadow);
         this.slotRect.getStyleClass().add("inv-slot");
-
-        //this.displayImage = new Image(getClass().getResource("/overworld/inventory/icons/ingredients/1.png").toExternalForm());
-        //this.slotRect.setFill(new ImagePattern(this.displayImage));
     }
 
     public Rectangle getDisplayGraphic() {
@@ -30,14 +29,28 @@ public class InventoryItemSlot {
     }
 
     public void setContainedItem(Item item) {
+        System.out.println("setContainedItem: " + item);
         this.containedItem = item;
+        //TODO: figure out displayGraphic situation
+        this.displayImage = this.containedItem.getIcon().getDisplayImage();
+        this.slotRect.setFill(new ImagePattern(this.displayImage));
+        System.out.println("Results...");
+        System.out.println(this.containedItem);
+        System.out.println(this.displayImage);
+        System.out.println(this.slotRect);
     }
 
     public Item getContainedItem() {
         return this.containedItem;
     }
 
+    public void removeItemFromSlot() {
+        this.containedItem = null;
+        this.setDisplayToEmpty();
+    }
+
     public void setDisplayToEmpty() {
+        this.displayImage = null;
         this.slotRect.setFill(null);
     }
 }

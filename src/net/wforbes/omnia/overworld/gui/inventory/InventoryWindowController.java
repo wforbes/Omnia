@@ -16,6 +16,7 @@ import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.overworld.gui.DragResizer;
 import net.wforbes.omnia.overworld.gui.GUIController;
 import net.wforbes.omnia.overworld.gui.TitledWindowController;
+import net.wforbes.omnia.overworld.gui.item.Item;
 import net.wforbes.omnia.u.W;
 
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ public class InventoryWindowController extends TitledWindowController {
     private final Font tooltipFont;
     private VBox inventoryVerticalContainer;
     private GridPane slotPane;
-    private ArrayList<Rectangle> slotArray;
+    private ArrayList<Rectangle> displaySlotArray;
+    private ArrayList<InventoryItemSlot> itemSlotArray;
 
     public InventoryWindowController(GUIController gui) {
         super(gui, "inventory", "Inventory");
@@ -60,21 +62,45 @@ public class InventoryWindowController extends TitledWindowController {
 
     private void createSlotPane() {
         this.slotPane = new GridPane();
-        this.slotArray = new ArrayList<>();
+        this.displaySlotArray = new ArrayList<>();
+        this.itemSlotArray = new ArrayList<>();
         for(int i = 0; i < 16; i++) {
             InventoryItemSlot slot = new InventoryItemSlot(i);
             int fI = i;
             slot.getDisplayGraphic().setOnMouseClicked(event -> this.handleSlotClick(event, fI));
-            this.slotArray.add(slot.getDisplayGraphic());
-            this.slotPane.add(this.slotArray.get(i),(i%4), (i/4));
+            this.displaySlotArray.add(slot.getDisplayGraphic());
+            this.slotPane.add(this.displaySlotArray.get(i),(i%4), (i/4));
+            this.itemSlotArray.add(i, new InventoryItemSlot(i));
         }
         this.slotPane.setHgap(5);
         this.slotPane.setVgap(5);
-        //this.slotPane.setPadding(new Insets(10, 10, 10, 10));
     }
 
     private void handleSlotClick(MouseEvent event, int slotNum) {
         System.out.println("Clicked inventory slot #"+slotNum);
+        System.out.println("displaySlotArray contents: " + this.displaySlotArray.get(slotNum));
+        System.out.println("itemSlotArray contents: " + this.itemSlotArray.get(slotNum).getContainedItem());
+        //TODO: handle possible error state where itemSlotArray doesn't have this index populated
+        if (this.itemSlotArray.get(slotNum) == null) return;
+
+        Item cursorItem = this.gui.getItemCursorController().putdownHeldItem();
+        if (cursorItem != null) {
+            this.itemSlotArray.get(slotNum).setContainedItem(cursorItem);
+            this.setAndRefreshDisplay(slotNum);
+        }
+    }
+
+    private void setAndRefreshDisplay(int slotNum) {
+        // remove display for this slot using graphic rectangle reference array
+        this.slotPane.getChildren().remove(this.displaySlotArray.get(slotNum));
+        // add new display graphic at correct col/row for slotNum
+        this.slotPane.add(
+            this.itemSlotArray.get(slotNum).getDisplayGraphic(),
+            slotNum%4, slotNum/4
+        );
+        // set new display graphic rectangle in array to reference later
+        this.displaySlotArray.set(slotNum, itemSlotArray.get(slotNum).getDisplayGraphic());
+
     }
 
     private void createVerticalContainer(GridPane slotPane) {

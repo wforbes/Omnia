@@ -11,6 +11,7 @@ public class ItemCursorController {
     //private Pane pane;
     //private Node windowPanel;
     private Image itemIcon;
+    private Item heldItem;
 
     public ItemCursorController(GUIController gui) {
         this.visible = false;
@@ -31,6 +32,22 @@ public class ItemCursorController {
         return this.visible;
     }
 
+    public void pickupItem(Item item) {
+        this.heldItem = item;
+        this.itemIcon = item.getIcon().getDisplayImage();
+        this.visible = true;
+        // display itemIcon as the cursor on GameController.Scene
+        this.gui.getPanelsPane().getScene().setCursor(
+                new ImageCursor(this.itemIcon)
+        );
+        // display the itemIcon as the cursor on each GUI window
+        this.gui.getPanelsPane().getChildren().forEach(node -> {
+            node.setCursor(
+                    new ImageCursor(itemIcon)
+            );
+        });
+    }
+
     public void show() {
         System.out.println("ItemCursorController.show: " + this.visible);
         if (!this.visible) {
@@ -47,6 +64,18 @@ public class ItemCursorController {
                 );
             });
         }
+    }
+
+    public Item putdownHeldItem() {
+        this.gui.getPanelsPane().getScene().setCursor(Cursor.DEFAULT);
+        this.gui.getPanelsPane().getChildren().forEach(node -> {
+            node.setCursor(Cursor.DEFAULT);
+        });
+        this.visible = false;
+        this.itemIcon = null;
+        Item returnItem = this.heldItem;
+        this.heldItem = null;
+        return returnItem;
     }
 
     public void close() {

@@ -64,9 +64,10 @@ public class LootWindowController extends TitledWindowController {
             if (!this.gui.getInventoryWindow().isVisible()) {
                 this.gui.getInventoryWindow().toggleVisible();
             }
+            /*
             if (!this.gui.getItemCursorController().isVisible()) {
                 this.gui.getItemCursorController().toggleVisible();
-            }
+            }*/
 
             System.out.println("Harvested Loot:" + loot.toString());
             this.focusedLoot = loot;
@@ -98,9 +99,10 @@ public class LootWindowController extends TitledWindowController {
             if (this.gui.getInventoryWindow().isVisible()) {
                 this.gui.getInventoryWindow().toggleVisible();
             }
+            /*
             if (this.gui.getItemCursorController().isVisible()) {
                 this.gui.getItemCursorController().toggleVisible();
-            }
+            }*/
         }
     }
 
@@ -174,10 +176,12 @@ public class LootWindowController extends TitledWindowController {
     private void handleSlotClick(MouseEvent event, int slotNum) {
         System.out.println("Clicked loot window slot #"+slotNum);
         System.out.println(this.itemSlotArray.get(slotNum).getContainedItem().getName());
-        if (
-            event.getButton() == MouseButton.PRIMARY
-        ) {
+        Item slotItem = this.itemSlotArray.get(slotNum).getContainedItem();
+        if (slotItem == null) return;
+        if (event.getButton() == MouseButton.PRIMARY) {
             // put item icon on mouse cursor
+            this.gui.getItemCursorController().pickupItem(slotItem);
+            this.itemSlotArray.get(slotNum).removeItemFromSlot();
         }
 
         if (
