@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -60,6 +61,11 @@ public class InventoryWindowController extends TitledWindowController {
         return titledPane;
     }
 
+    private void createVerticalContainer(GridPane slotPane) {
+        inventoryVerticalContainer = new VBox();
+        inventoryVerticalContainer.getChildren().addAll(slotPane);
+    }
+
     private void createSlotPane() {
         this.slotPane = new GridPane();
         this.displaySlotArray = new ArrayList<>();
@@ -82,12 +88,23 @@ public class InventoryWindowController extends TitledWindowController {
         System.out.println("itemSlotArray contents: " + this.itemSlotArray.get(slotNum).getContainedItem());
         //TODO: handle possible error state where itemSlotArray doesn't have this index populated
         if (this.itemSlotArray.get(slotNum) == null) return;
-
-        Item cursorItem = this.gui.getItemCursorController().putdownHeldItem();
-        if (cursorItem != null) {
-            this.itemSlotArray.get(slotNum).setContainedItem(cursorItem);
-            this.setAndRefreshDisplay(slotNum);
+        System.out.println("No key is pressed: " + gui.gameState.keyboardController.noKeyIsPressed());
+        if (
+            event.getButton() == MouseButton.PRIMARY
+            && gui.gameState.keyboardController.noKeyIsPressed()
+        ) {
+            if (this.gui.getItemCursorController().isHoldingItem()) {
+                this.itemSlotArray.get(slotNum).setContainedItem(
+                        this.gui.getItemCursorController().putdownHeldItem()
+                );
+                this.setAndRefreshDisplay(slotNum);
+                return;
+            }
         }
+
+        //if () {
+
+        //}
     }
 
     private void setAndRefreshDisplay(int slotNum) {
@@ -103,9 +120,17 @@ public class InventoryWindowController extends TitledWindowController {
 
     }
 
-    private void createVerticalContainer(GridPane slotPane) {
-        inventoryVerticalContainer = new VBox();
-        inventoryVerticalContainer.getChildren().addAll(slotPane);
+    public boolean autoAddItemToInventory(Item item) {
+        int emptySlot = -1;
+        for (int i = 0; i < this.itemSlotArray.size(); i++) {
+            if (this.itemSlotArray.get(i).getContainedItem() == null) {
+                emptySlot = i;
+                this.itemSlotArray.get(emptySlot).setContainedItem(item);
+                this.setAndRefreshDisplay(emptySlot);
+                break;
+            }
+        }
+        return emptySlot != -1;
     }
 
 

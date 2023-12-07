@@ -64,12 +64,8 @@ public class LootWindowController extends TitledWindowController {
             if (!this.gui.getInventoryWindow().isVisible()) {
                 this.gui.getInventoryWindow().toggleVisible();
             }
-            /*
-            if (!this.gui.getItemCursorController().isVisible()) {
-                this.gui.getItemCursorController().toggleVisible();
-            }*/
-
-            System.out.println("Harvested Loot:" + loot.toString());
+            if (loot == null) return; //TODO: "there was nothing to harvest" message
+            //System.out.println("Harvested Loot:" + loot);
             this.focusedLoot = loot;
             for (int i = 0; i < this.focusedLoot.getItems().size(); i++) {
                 this.itemSlotArray.get(i).setContainedItem(this.focusedLoot.getItems().get(i));
@@ -178,17 +174,46 @@ public class LootWindowController extends TitledWindowController {
         System.out.println(this.itemSlotArray.get(slotNum).getContainedItem().getName());
         Item slotItem = this.itemSlotArray.get(slotNum).getContainedItem();
         if (slotItem == null) return;
-        if (event.getButton() == MouseButton.PRIMARY) {
-            // put item icon on mouse cursor
-            this.gui.getItemCursorController().pickupItem(slotItem);
-            this.itemSlotArray.get(slotNum).removeItemFromSlot();
+        if (
+            event.getButton() == MouseButton.PRIMARY
+            && gui.gameState.keyboardController.noKeyIsPressed()
+        ) {
+            // put item icon on mouse cursor, if there's room
+            if (!this.gui.getItemCursorController().isHoldingItem()) {
+                this.gui.getItemCursorController().pickupItem(slotItem);
+                this.itemSlotArray.get(slotNum).removeItemFromSlot();
+                return;
+            }
+            System.out.println("TODO: show warning that item is already being held");
+            return;
         }
 
         if (
             event.getButton() == MouseButton.PRIMARY &&
             gui.gameState.keyboardController.isKeyDown(KeyCode.ALT)
         ) {
-            // move item to player's inventory
+            // automatically move item to player's inventory
+            boolean moved = this.gui.getInventoryWindow().autoAddItemToInventory(
+                this.itemSlotArray.get(slotNum).getContainedItem()
+            );
+            if (moved) {
+                this.itemSlotArray.get(slotNum).removeItemFromSlot();
+                return;
+            }
+            // if there was no room, try to put the item on the cursor
+            if (!this.gui.getItemCursorController().isHoldingItem()) {
+                this.gui.getItemCursorController().pickupItem(slotItem);
+                this.itemSlotArray.get(slotNum).removeItemFromSlot();
+                return;
+            }
+            System.out.println("TODO: show warning that the inventory is full");
+        }
+
+        if (
+            event.getButton() == MouseButton.SECONDARY &&
+            gui.gameState.keyboardController.isKeyDown(KeyCode.ALT)
+        ) {
+            // open item window
         }
 
         if (
@@ -198,12 +223,7 @@ public class LootWindowController extends TitledWindowController {
             // close item window when mouse button releases
         }
 
-        if (
-            event.getButton() == MouseButton.SECONDARY &&
-            gui.gameState.keyboardController.isKeyDown(KeyCode.ALT)
-        ) {
-            // open item window
-        }
+
     }
 
     private void createVerticalContainer() {

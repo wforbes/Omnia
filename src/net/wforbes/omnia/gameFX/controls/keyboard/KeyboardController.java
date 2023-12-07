@@ -44,6 +44,10 @@ public abstract class KeyboardController {
         return keyboard.keysDown.get(key);
     }
 
+    public boolean noKeyIsPressed() {
+        return !keyboard.keysDown.containsValue(true);
+    }
+
     public void handleKeyPressed(KeyEvent event) {
         if(!keyboard.keysDown.get(event.getCode())) {
             keyboard.keysDown.replace(event.getCode(), true);

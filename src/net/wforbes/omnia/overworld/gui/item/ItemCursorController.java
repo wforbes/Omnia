@@ -28,8 +28,8 @@ public class ItemCursorController {
         }
     }
 
-    public boolean isVisible() {
-        return this.visible;
+    public boolean isHoldingItem() {
+        return this.heldItem != null;
     }
 
     public void pickupItem(Item item) {
@@ -123,6 +123,12 @@ public class ItemCursorController {
         this.pane.getChildren().add(testRect);
         this.pane.setOpacity(1.0);
         return pane;
-    }*/
+    }
+
+    public boolean isVisible() {
+        return this.visible;
+    }
+
+    */
 
 }
