@@ -126,7 +126,8 @@ this project in a couple years to keep working on it.
           * [X] **Basic Gather Timers**: Get the basic skill timers to keep for harvesting
           * [X] **GUI: Skill Timer**: Show a little pop-up progress indicator while gathering.
           * [ ] **Persist node gather progress**: Save the players harvesting progress between cancels/interruptions.
-          * [ ] **Add Gather looting**: (F/S 'Simple Inventory') Node loot tables, transfer of loot from node to player inventory.
+          * [X] **Add Gather looting**: (F/S 'Simple Inventory') Node loot tables, transfer of loot from node to player inventory.
+          * [X] **Loot Table** - Add a feature that entities/objects can use to define their loot possibilities.
           * [ ] **'Despawn' node after gather completes**: Display some kind of empty graphic in its place, stop interactivity.
           * [ ] **'Respawn' node**: Add respawn timer for each node, after which the node respawns to be gatherable again.
         * [ ] **Mining**: Add some rocks/minerals that can be 'mined'.
@@ -135,10 +136,9 @@ this project in a couple years to keep working on it.
 
 - **Inventory**
   * [ ] **Simple inventory feature** - Add very basic simple inventory system to get it started
-    * [ ] **GUI: Basic 'Bag'** - Add window with item slots to represent the characters held items
+    * [X] **GUI: Basic 'Bag'** - Add window with item slots to represent the characters held items
     * [ ] **GUI: Item Window** - Add window that displays item details which opens from item slot icon
-    * [ ] **Item list** - Add a short list of items, figure out the best way to persist it.
-    * [ ] **Loot Table** - Add a feature that entities/objects can use to define their loot possibilities.
+    * [X] **Item list** - Add a short list of items, figure out the best way to persist it.
     * [ ] **Persist Held Items** - Save the player's items between game closing/opening.
     * [ ] **Consider a save feature** - do we need that yet?...
 
