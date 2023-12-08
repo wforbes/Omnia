@@ -171,9 +171,12 @@ public class LootWindowController extends TitledWindowController {
 
     private void handleSlotClick(MouseEvent event, int slotNum) {
         System.out.println("Clicked loot window slot #"+slotNum);
-        System.out.println(this.itemSlotArray.get(slotNum).getContainedItem().getName());
         Item slotItem = this.itemSlotArray.get(slotNum).getContainedItem();
-        if (slotItem == null) return;
+        if (slotItem == null) {
+            System.out.println("WARN: There's no item in that item slot");
+            return;
+        }
+        System.out.println(this.itemSlotArray.get(slotNum).getContainedItem().getName());
         if (
             event.getButton() == MouseButton.PRIMARY
             && gui.gameState.keyboardController.noKeyIsPressed()
@@ -182,9 +185,18 @@ public class LootWindowController extends TitledWindowController {
             if (!this.gui.getItemCursorController().isHoldingItem()) {
                 this.gui.getItemCursorController().pickupItem(slotItem);
                 this.itemSlotArray.get(slotNum).removeItemFromSlot();
+                this.slotPane.getChildren().remove(this.displaySlotArray.get(slotNum));
+                this.itemSlotArray.get(slotNum).getDisplayGraphic().setOnMouseClicked(
+                    e -> this.handleSlotClick(e, slotNum)
+                );
+
+                this.slotPane.add(
+                    this.itemSlotArray.get(slotNum).getDisplayGraphic(),
+                    slotNum%2, slotNum/2
+                );
                 return;
             }
-            System.out.println("TODO: show warning that item is already being held");
+            System.out.println("WARN: an item is already being held on cursor");
             return;
         }
 

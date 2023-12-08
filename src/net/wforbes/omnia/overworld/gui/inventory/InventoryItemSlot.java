@@ -51,6 +51,8 @@ public class InventoryItemSlot {
 
     public void setDisplayToEmpty() {
         this.displayImage = null;
-        this.slotRect.setFill(null);
+        this.slotRect.setFill(Color.BLACK);
+        InnerShadow innerShadow = new InnerShadow(BlurType.THREE_PASS_BOX, Color.DARKGRAY, 5.0, 0.1, -1, -1);
+        this.slotRect.setEffect(innerShadow);
     }
 }

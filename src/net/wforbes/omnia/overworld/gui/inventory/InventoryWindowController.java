@@ -94,12 +94,27 @@ public class InventoryWindowController extends TitledWindowController {
             && gui.gameState.keyboardController.noKeyIsPressed()
         ) {
             if (this.gui.getItemCursorController().isHoldingItem()) {
-                this.itemSlotArray.get(slotNum).setContainedItem(
-                        this.gui.getItemCursorController().putdownHeldItem()
-                );
+                Item heldItem = this.gui.getItemCursorController().putdownHeldItem();
+                Item slotItem = this.itemSlotArray.get(slotNum).getContainedItem();
+                if (slotItem != null) {
+                    this.gui.getItemCursorController().pickupItem(slotItem);
+                }
+                this.itemSlotArray.get(slotNum).setContainedItem(heldItem);
                 this.setAndRefreshDisplay(slotNum);
                 return;
             }
+            Item slotItem = this.itemSlotArray.get(slotNum).getContainedItem();
+            if (slotItem == null) return;
+            this.gui.getItemCursorController().pickupItem(slotItem);
+            this.itemSlotArray.get(slotNum).removeItemFromSlot();
+            this.slotPane.getChildren().remove(this.displaySlotArray.get(slotNum));
+            this.itemSlotArray.get(slotNum).getDisplayGraphic().setOnMouseClicked(
+                e -> this.handleSlotClick(e, slotNum)
+            );
+            this.slotPane.add(
+                    this.itemSlotArray.get(slotNum).getDisplayGraphic(),
+                    slotNum%4, slotNum/4
+            );
         }
 
         //if () {
@@ -108,13 +123,28 @@ public class InventoryWindowController extends TitledWindowController {
     }
 
     private void setAndRefreshDisplay(int slotNum) {
+        /*
+        System.out.println("setAndRefreshDisplay: " + slotNum);
+        for (Node n: this.slotPane.getChildren()) {
+            System.out.println(n);
+        }
+        System.out.println("Removing from slotPane, slot#"+slotNum);
+        */
         // remove display for this slot using graphic rectangle reference array
         this.slotPane.getChildren().remove(this.displaySlotArray.get(slotNum));
+        /*
+        for (Node n: this.slotPane.getChildren()) {
+            System.out.println(n);
+        }*/
+
+        this.itemSlotArray.get(slotNum).getDisplayGraphic().setOnMouseClicked(event -> this.handleSlotClick(event, slotNum));
         // add new display graphic at correct col/row for slotNum
+        //System.out.println("Adding at column/row: " + slotNum%4 + " " + slotNum/4);
         this.slotPane.add(
             this.itemSlotArray.get(slotNum).getDisplayGraphic(),
             slotNum%4, slotNum/4
         );
+        //this.slotPane.getChildren().get(slotNum).setOnMouseClicked(event -> this.handleSlotClick(event, slotNum));
         // set new display graphic rectangle in array to reference later
         this.displaySlotArray.set(slotNum, itemSlotArray.get(slotNum).getDisplayGraphic());
 
