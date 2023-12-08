@@ -7,6 +7,9 @@ import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.gui.loot.Loot;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 
 public class Tree extends Flora {
@@ -32,9 +35,11 @@ public class Tree extends Flora {
 
     public Tree(OverworldState gameState, TreeType.GENERA type, float x, float y) {
         super(gameState, x, y);
-        TreeType treeType = new TreeType(type);
-        this.loot = treeType.getLootInstance();
-        this.loadSprite(TREES_SPRITE_DIR+treeType.getSpriteFile());
+        String sprite_dir = this.getSpriteDirFromDB();
+        TreeType treeType = new TreeType(type, this.gameState.db);
+        this.loot = treeType.getRandomLootInstance(this.gameState.db);
+        //TODO: update db to include trailing slash in sprite_dir
+        this.loadSprite(sprite_dir+"/"+treeType.getSpriteFile());
         this.x = x;
         this.y = y;
     }
@@ -64,6 +69,20 @@ public class Tree extends Flora {
         this.collisionRadius = 21;
         this.collision_baseCenterPnt = new Point2D(collision_baseX, collision_baseY);
         this.collision_baseCircle = new Circle(collision_baseX, collision_baseY, collisionRadius);
+    }
+
+    private String getSpriteDirFromDB() {
+        String sql = "SELECT sprite_dir FROM flora WHERE name='tree' LIMIT 1;";
+        try {
+            Statement statement = this.gameState.db.connection.createStatement();
+            ResultSet results = statement.executeQuery(sql);
+            results.next();
+            System.out.println(results.getString("sprite_dir"));
+            return results.getString("sprite_dir");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return "";
     }
 
     public void completeHarvest() {

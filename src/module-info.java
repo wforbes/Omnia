@@ -9,6 +9,7 @@ module net.wforbes.gameFX {
     requires com.almasb.fxgl.all;
     requires javafx.web;
     requires jdk.jsobject;
+    requires java.sql;
 
     opens net.wforbes.omnia.gameFX to javafx.graphics;
     opens net.wforbes.omnia.gameFX.controllers to javafx.fxml;

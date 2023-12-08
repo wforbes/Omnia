@@ -16,7 +16,7 @@ import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
 public class AreaObject implements Renderable {
 
-    private final OverworldState gameState;
+    protected final OverworldState gameState;
     protected float x, y, xmap, ymap, width, height;
     protected double baseY;
     protected double collisionRadius;

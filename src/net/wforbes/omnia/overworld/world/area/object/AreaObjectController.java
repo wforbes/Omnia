@@ -29,42 +29,45 @@ public class AreaObjectController {
         this.areaObjects.add(
             new Shrub(
                 this.area.getWorld().gameState,
+                ShrubType.GENERA.BLUEBERRY,
                 20, 500
             )
         );
         this.areaObjects.add(
-                new Shrub(
-                        this.area.getWorld().gameState,
-                        120, 20
-                )
+            new Shrub(
+                this.area.getWorld().gameState,
+                ShrubType.GENERA.BLUEBERRY,
+                120, 20
+            )
         );
         this.areaObjects.add(
-                new Shrub(
-                        this.area.getWorld().gameState,
-                        20, 120
-                )
+            new Shrub(
+                this.area.getWorld().gameState,
+                ShrubType.GENERA.BLUEBERRY,
+                20, 120
+            )
         );
         this.areaObjects.add(
-                new Shrub(
-                        this.area.getWorld().gameState,
-                        ShrubType.GENERA.BLUEBERRY,
-                        120, 175
-                )
+            new Shrub(
+                this.area.getWorld().gameState,
+                ShrubType.GENERA.BLUEBERRY,
+                120, 175
+            )
         );
         this.areaObjects.add(
-                new Tree(
-                        this.area.getWorld().gameState,
-                        TreeType.GENERA.OAK,
-                        175, 175
-                )
+            new Tree(
+                this.area.getWorld().gameState,
+                TreeType.GENERA.OAK,
+                175, 175
+            )
         );
 
         this.areaObjects.add(
-                new Tree(
-                        this.area.getWorld().gameState,
-                        "fixed_Tree1",
-                        420, 100
-                )
+            new Tree(
+                this.area.getWorld().gameState,
+                TreeType.GENERA.OAK,
+                420, 100
+            )
         );
         for (AreaObject ao: this.areaObjects) {
             ao.init();
@@ -91,6 +94,7 @@ public class AreaObjectController {
             this.areaObjects.add(
                     new Shrub(
                             this.area.getWorld().gameState,
+                            ShrubType.GENERA.BLUEBERRY,
                             (float)randPnt.getX(),
                             (float)randPnt.getY()
                     )

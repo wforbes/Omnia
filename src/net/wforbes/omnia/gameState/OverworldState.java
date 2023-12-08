@@ -3,6 +3,7 @@ package net.wforbes.omnia.gameState;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import net.wforbes.omnia.db.Database;
 import net.wforbes.omnia.gameFX.controls.keyboard.KeyboardController;
 import net.wforbes.omnia.overworld.controls.OverworldKeyboardController;
 import net.wforbes.omnia.gameFX.controls.mouse.MouseController;
@@ -31,6 +32,8 @@ public class OverworldState extends GameState {
     private boolean isExiting = false;
     private boolean previouslyExited;
 
+    public Database db;
+
     public OverworldState(GameStateManager gsm) {
         this.setup(gsm);
     }
@@ -45,7 +48,10 @@ public class OverworldState extends GameState {
         this.world.setPlayer(player);
         this.gui = new GUIController(this);
         this.menuController = new MenuController(gsm);
-
+        this.db = new Database();
+        if (db.connect()) {
+            System.out.println("Db connected successfully");
+        }
     }
 
     private void resurrect(GameStateManager gsm) {

@@ -6,6 +6,10 @@ import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.gui.loot.Loot;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class Shrub extends Flora {
 
     private Loot loot;
@@ -13,28 +17,27 @@ public class Shrub extends Flora {
 
     public Shrub(OverworldState gameState, ShrubType.GENERA type, float x, float y) {
         super(gameState, x, y);
-        ShrubType shrubType = new ShrubType(type);
-        // set loot based on shrubType loot table
-        this.loot = shrubType.getLootInstance();
-        this.loadSprite(SHRUBS_SPRITE_DIR+shrubType.getSpriteFile());
+        String sprite_dir = this.getSpriteDirFromDB();
+        ShrubType shrubType = new ShrubType(type, this.gameState.db);
+        this.loot = shrubType.getRandomLootInstance(this.gameState.db);
+        //TODO: update db to include trailing slash in sprite_dir
+        this.loadSprite(sprite_dir+"/"+shrubType.getSpriteFile());
         this.x = x;
         this.y = y;
         this.collisionRadius = 16;
     }
 
-    public Shrub(OverworldState gameState, float x, float y) {
-        super(gameState, x, y);
-        //no type specified... Loot should contain leaves and sticks
-        this.loadSprite(SHRUBS_SPRITE_DIR+"Bush_blue_flowers3.png");
-        this.x = x;
-        this.y = y;
-        this.collisionRadius = 16;
-    }
-
-    public Shrub(OverworldState gameState, String spriteName, float x, float y) {
-        super(gameState, SHRUBS_SPRITE_DIR+"/"+spriteName+".png", x, y);
-        this.x = x;
-        this.y = y;
+    private String getSpriteDirFromDB() {
+        String sql = "SELECT sprite_dir FROM flora WHERE name='shrub' LIMIT 1;";
+        try {
+            Statement statement = this.gameState.db.connection.createStatement();
+            ResultSet results = statement.executeQuery(sql);
+            results.next();
+            return results.getString("sprite_dir");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return "";
     }
 
     public void init() {
