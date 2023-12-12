@@ -84,6 +84,7 @@ public class AreaObjectController {
         for (AreaObject ao: this.areaObjects) {
             ao.update();
         }
+        this.areaObjects.removeIf(AreaObject::isFlaggedForDespawn);
     }
 
     public void initRANDOM() {

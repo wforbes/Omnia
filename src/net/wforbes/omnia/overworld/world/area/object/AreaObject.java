@@ -33,6 +33,8 @@ public class AreaObject implements Renderable {
     protected Image spriteImg;
     private Ellipse collisionEllipse;
 
+    protected boolean flaggedForDespawn = false;
+
     /*public AreaObject(OverworldState gameState) {
         this.gameState = gameState;
     }*/
@@ -126,6 +128,10 @@ public class AreaObject implements Renderable {
 
     public void update() {
         this.recalculateBaseY();
+    }
+
+    public boolean isFlaggedForDespawn() {
+        return this.flaggedForDespawn;
     }
 
     private void recalculateBaseY() {

@@ -8,7 +8,6 @@ import net.wforbes.omnia.overworld.world.area.object.AreaObject;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
 
 public class HarvestController extends ActionController {
-
     private Harvestable harvestTarget;
 
     public HarvestController(Entity owner) {
@@ -16,7 +15,7 @@ public class HarvestController extends ActionController {
     }
 
     public void harvestMaterials() {
-        if (this.actionIsReady()) return;
+        if (this.actionNotReady()) return;
         AreaObject target = ((Mob)this.owner).getCollidingAreaObject();
         if (target == null) {
             System.out.println("Nothing nearby to Harvest");
@@ -24,6 +23,10 @@ public class HarvestController extends ActionController {
         }
         if ((target instanceof Harvestable)) {
             this.harvestTarget = (Harvestable)target;
+            if (this.harvestTarget.isHarvested()) {
+                this.lootHarvest();
+                return;
+            }
             this.startAction();
         } else {
             System.out.println("Is not Harvestable: " + target);
@@ -47,7 +50,7 @@ public class HarvestController extends ActionController {
         if (harvestedLoot == null) {
             System.out.println("There was nothing to harvest");
         }
-        this.owner.gameState.gui.getLootWindow().show(harvestedLoot);
+        this.owner.gameState.gui.getLootWindow().show(this.harvestTarget);
     }
 
     public void cancelHarvesting() {

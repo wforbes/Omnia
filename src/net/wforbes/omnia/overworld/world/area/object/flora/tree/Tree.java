@@ -4,7 +4,9 @@ import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Circle;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.overworld.gui.item.Item;
 import net.wforbes.omnia.overworld.gui.loot.Loot;
+import net.wforbes.omnia.overworld.gui.loot.LootTimer;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
 
 import java.sql.ResultSet;
@@ -39,6 +41,7 @@ public class Tree extends Flora {
         String sprite_dir = this.getSpriteDirFromDB();
         TreeType treeType = new TreeType(type, this.gameState.db);
         this.loot = treeType.getRandomLootInstance(this.gameState.db);
+        this.lootTimer = new LootTimer(this);
         //TODO: update db to include trailing slash in sprite_dir
         this.loadSprite(sprite_dir+"/"+treeType.getSpriteFile());
         this.x = x;
@@ -92,6 +95,11 @@ public class Tree extends Flora {
         this.completeAction();
     }
 
+    @Override
+    public boolean isHarvested() {
+        return this.harvested;
+    }
+
     public void completeAction() {
         System.out.println("Tree.completeAction");
     }
@@ -99,5 +107,29 @@ public class Tree extends Flora {
     public Loot getLoot() {
         System.out.println("Tree.getLoot");
         return this.loot;
+    }
+
+    @Override
+    public void returnLoot(Loot loot) {
+        if (loot.getItems().isEmpty()) {
+            System.out.println("No loot returned to tree.");
+            this.lootTimer.start(100);
+            return;
+        }
+        System.out.println("Setting tree loot: ");
+        for (Item item : loot.getItems()) {
+            System.out.println(item.getName());
+        }
+        this.lootTimer.start(0);
+        this.loot = loot;
+    }
+    public void notifyLootTimerDone() {
+        System.out.println("Tree loot timer done");
+        this.flaggedForDespawn = true;
+    }
+    @Override
+    public void update() {
+        super.update();
+        this.lootTimer.update();
     }
 }

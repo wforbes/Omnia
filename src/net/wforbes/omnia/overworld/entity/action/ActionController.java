@@ -17,7 +17,7 @@ public class ActionController {
         this.actionGerund = actionGerund;
     }
 
-    protected boolean actionIsReady() {
+    protected boolean actionNotReady() {
         // TODO: you're already harvesting message
         // TODO: you have x seconds until you can harvest again
         return this.cooldownTimer != 0 || this.isPerforming;
@@ -53,7 +53,6 @@ public class ActionController {
                     this.actionTimer = 0;
                     this.completeAction();
                     this.actionTarget = null;
-
                 }
             }
         }

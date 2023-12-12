@@ -128,7 +128,8 @@ this project in a couple years to keep working on it.
           * [ ] **Persist node gather progress**: Save the players harvesting progress between cancels/interruptions.
           * [X] **Add Gather looting**: (F/S 'Simple Inventory') Node loot tables, transfer of loot from node to player inventory.
           * [X] **Loot Table** - Add a feature that entities/objects can use to define their loot possibilities.
-          * [ ] **'Despawn' node after gather completes**: Display some kind of empty graphic in its place, stop interactivity.
+          * [X] **Persist Node loot** - persist the node's gathered items state between multiple harvests
+          * [X] **'Despawn' node after gather completes**: Display some kind of empty graphic in its place, stop interactivity.
           * [ ] **'Respawn' node**: Add respawn timer for each node, after which the node respawns to be gatherable again.
         * [ ] **Mining**: Add some rocks/minerals that can be 'mined'.
         * [ ] **Logging**: Add some trees that can be 'chopped' and fed into the Gathering/Inventory systems

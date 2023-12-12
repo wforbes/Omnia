@@ -1,5 +1,6 @@
 package net.wforbes.omnia.overworld.gui.loot;
 
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Cursor;
@@ -14,6 +15,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.overworld.entity.action.Lootable;
 import net.wforbes.omnia.overworld.gui.DragResizer;
 import net.wforbes.omnia.overworld.gui.GUIController;
 import net.wforbes.omnia.overworld.gui.TitledWindowController;
@@ -37,6 +39,7 @@ public class LootWindowController extends TitledWindowController {
     private Button lootAllBtn;
     private boolean lootAllBtnFocused;
     private Loot focusedLoot;
+    private Lootable lootTarget;
 
 
     public LootWindowController(GUIController gui) {
@@ -53,7 +56,7 @@ public class LootWindowController extends TitledWindowController {
         return this.windowSize.getHeight();
     }
 
-    public void show(Loot loot) {
+    public void show(Lootable lootTarget) {
         System.out.println("LootWindowController.show");
         if (!this.visible) {
             this.visible = true;
@@ -64,14 +67,15 @@ public class LootWindowController extends TitledWindowController {
             if (!this.gui.getInventoryWindow().isVisible()) {
                 this.gui.getInventoryWindow().toggleVisible();
             }
-            if (loot == null) return; //TODO: "there was nothing to harvest" message
+            if (lootTarget.getLoot() == null || lootTarget.getLoot().getItems().isEmpty()) return;
             //System.out.println("Harvested Loot:" + loot);
-            this.focusedLoot = loot;
-            for (int i = 0; i < this.focusedLoot.getItems().size(); i++) {
-                this.itemSlotArray.get(i).setContainedItem(this.focusedLoot.getItems().get(i));
+            //this.focusedLoot = lootTarget.getLoot();
+            this.lootTarget = lootTarget;
+            for (int i = 0; i < this.lootTarget.getLoot().getItems().size(); i++) {
+                this.itemSlotArray.get(i).setContainedItem(this.lootTarget.getLoot().getItems().get(i));
                 //this.displaySlotArray.add(this.itemSlotArray.get(i).getDisplayGraphic());
                 this.displaySlotArray.get(i).setFill(
-                        new ImagePattern(this.focusedLoot.getItems().get(i).getIcon().getDisplayImage())
+                        new ImagePattern(this.lootTarget.getLoot().getItems().get(i).getIcon().getDisplayImage())
                 );
             }
 
@@ -88,6 +92,7 @@ public class LootWindowController extends TitledWindowController {
         //this.gui.toggleLootWindowVisible();
         if (this.visible) {
             this.visible = false;
+            this.endLootSession();
             this.gui.getPanelsPane().getChildren().remove(windowPanel);
             for (int i = 0; i < this.itemSlotArray.size(); i++) {
                 this.itemSlotArray.get(i).setDisplayToEmpty();
@@ -159,12 +164,14 @@ public class LootWindowController extends TitledWindowController {
         lowerCloseBtn = new Button("Close");
         this.lowerCloseBtnFocused = lowerCloseBtn.focusedProperty().getValue();
         lowerCloseBtn.focusedProperty().addListener((observableValue, oldValue, newValue) -> {
+            this.toggleVisible();
             this.gui.setGUIHasFocus(newValue);
         });
         lowerCloseBtn.setOnMouseClicked(event -> {
-            this.toggleVisible();
+            this.close();
             event.consume();
         });
+        lowerCloseBtn.setOnMousePressed(Event::consume);
 
         buttonHorizontalContainer.getChildren().addAll(lootAllBtn, lowerCloseBtn);
     }
@@ -241,5 +248,19 @@ public class LootWindowController extends TitledWindowController {
     private void createVerticalContainer() {
         lootVerticalContainer = new VBox();
         lootVerticalContainer.getChildren().addAll(this.slotPane, this.buttonHorizontalContainer);
+    }
+
+    private void endLootSession() {
+        if (this.lootTarget == null) return;
+        ArrayList<Item> items = new ArrayList<>();
+        System.out.println("Returning items to loot target:");
+        for (InventoryItemSlot inventoryItemSlot : this.itemSlotArray) {
+            if (inventoryItemSlot.getContainedItem() != null) {
+                System.out.println(inventoryItemSlot.getContainedItem().toString());
+                items.add(inventoryItemSlot.getContainedItem());
+            }
+        }
+        this.lootTarget.returnLoot(new Loot(items));
+        this.lootTarget = null;
     }
 }

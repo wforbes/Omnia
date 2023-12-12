@@ -4,4 +4,6 @@ import net.wforbes.omnia.overworld.gui.loot.Loot;
 
 public interface Lootable {
     Loot getLoot();
+    void returnLoot(Loot loot);
+    void notifyLootTimerDone();
 }

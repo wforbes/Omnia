@@ -3,7 +3,9 @@ package net.wforbes.omnia.overworld.world.area.object.flora.shrub;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Circle;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.overworld.gui.item.Item;
 import net.wforbes.omnia.overworld.gui.loot.Loot;
+import net.wforbes.omnia.overworld.gui.loot.LootTimer;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
 
 import java.sql.ResultSet;
@@ -11,7 +13,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Shrub extends Flora {
-
     private Loot loot;
     protected static final String SHRUBS_SPRITE_DIR = FLORA_SPRITE_DIR + "shrubs/";
 
@@ -20,6 +21,7 @@ public class Shrub extends Flora {
         String sprite_dir = this.getSpriteDirFromDB();
         ShrubType shrubType = new ShrubType(type, this.gameState.db);
         this.loot = shrubType.getRandomLootInstance(this.gameState.db);
+        this.lootTimer = new LootTimer(this);
         //TODO: update db to include trailing slash in sprite_dir
         this.loadSprite(sprite_dir+"/"+shrubType.getSpriteFile());
         this.x = x;
@@ -68,11 +70,43 @@ public class Shrub extends Flora {
         this.completeAction();
     }
 
+    @Override
+    public boolean isHarvested() {
+        return this.harvested;
+    }
+
     public void completeAction() {
         System.out.println("Shrub.completeAction");
+        this.harvested = true;
     }
     public Loot getLoot() {
         System.out.println("Shrub.getLoot");
+        for (Item item : loot.getItems()) {
+            System.out.println(item.getName());
+        }
         return this.loot;
+    }
+
+    public void returnLoot(Loot loot) {
+        if (loot.getItems().isEmpty()) {
+            System.out.println("No loot returned to shrub.");
+            this.lootTimer.start(10);
+            return;
+        }
+        System.out.println("Setting shrub loot: ");
+        for (Item item : loot.getItems()) {
+            System.out.println(item.getName());
+        }
+        this.lootTimer.start(0);
+        this.loot = loot;
+    }
+    public void notifyLootTimerDone() {
+        System.out.println("Shrub loot timer done");
+        this.flaggedForDespawn = true;
+    }
+    @Override
+    public void update() {
+        super.update();
+        this.lootTimer.update();
     }
 }
