@@ -531,15 +531,18 @@ public abstract class Mob extends Entity {
 
     public void teardown() {
         this.name = null;
-        this.movementController.teardown();
-        this.movementController = null;
         this.nameFont = null;
         this.nameText = null;
-        this.attentionController.teardown();
-        this.attentionController = null;
-        this.entityEffectController.teardown();
-        this.entityEffectController = null;
         this.spriteSheet = null;
         this.sprites = null;
+        if (this.attentionController != null) {
+            this.attentionController.teardown();
+            this.attentionController = null;
+        }
+        if (this.entityEffectController != null) {
+            this.entityEffectController.teardown();
+            this.entityEffectController = null;
+        }
+
     }
 }

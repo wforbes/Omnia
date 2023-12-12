@@ -15,6 +15,7 @@ import net.wforbes.omnia.overworld.world.area.object.AreaObjectController;
 import net.wforbes.omnia.overworld.world.area.tile.TileMap;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
@@ -27,7 +28,6 @@ public class Area {
     public double TEST_NPC_XPOS = 200;
     public double TEST_NPC_YPOS = 200;
     public EffectController effectController;
-    public List<AreaObject> areaObjects;
 
     public Area(World world) {
         this.world = world;
@@ -44,47 +44,30 @@ public class Area {
         this.entities.add(entity);
     }
     public List<Entity> getEntities() { return this.entities; }
-
     public List<AreaObject> getAreaObjects() { return this.areaObjectController.getAreaObjects(); }
-
+    public void handleCanvasClick(MouseEvent event) {
+        System.out.println("area.handleCanvasClick event: " + event);
+    }
     public void init() {
         this.initTileMap();
         this.effectController.init();
         this.areaObjectController.init();
-        //this.initAreaObjects();
         this.initEntities();
         this.world.player.init(200,150);
-        //this.initNPCs();
     }
-
-    private void initAreaObjects() {}
-
-    private void initEntities() {
-        NPC testNPC = new DocNPC(world.gameState);
-        System.out.println("testNPC: " + testNPC.movementController);
-        testNPC.init(TEST_NPC_XPOS, TEST_NPC_YPOS);
-        this.addEntity(testNPC);
-        /*
-        for(Entity e : this.entities) {
-            e.init();
-        }*/
-    }
-
     private void initTileMap() {
         this.tileMap = new TileMap(this, 32);
         this.tileMap.loadMapFromImageFile("/overworld/tile/maps/areamap0.gif");
         this.tileMap.loadTilesFromMapImage();
-        //this.tileMap.loadTileSprites("/overworld/tile/areatiles0.gif");
         this.tileMap.loadTileSprites("/overworld/tile/tiles2.gif");
         this.tileMap.setPosition(0, 0);
         this.tileMap.setTween(0.06);
     }
-
-    public void handleCanvasClick(MouseEvent event) {
-        System.out.println("area.handleCanvasClick event: " + event);
-
+    private void initEntities() {
+        NPC testNPC = new DocNPC(world.gameState);
+        testNPC.init(TEST_NPC_XPOS, TEST_NPC_YPOS);
+        this.addEntity(testNPC);
     }
-
     public void update() {
         this.tileMap.update(world.player);
         for(Entity e: this.entities) {
@@ -92,14 +75,14 @@ public class Area {
         }
         this.areaObjectController.update();
     }
-
     public void render(GraphicsContext gc) {
         this.tileMap.render(gc);
         if (world.gameState.collisionGeometryVisible()) {
             gc.setFill(Color.BLACK);
             gc.setGlobalAlpha(0.5);
-            double miniMapWidth = (double) this.getTileMap().getWidth() / (getScale()*2);
-            double miniMapHeight = (double) this.getTileMap().getWidth() / (getScale()*2);
+            //TODO: idea = create designated minimap controller and pass it data to render
+            //  double miniMapWidth = (double) this.getTileMap().getWidth() / (getScale()*2);
+            //  double miniMapHeight = (double) this.getTileMap().getWidth() / (getScale()*2);
             gc.fillRect(
                     0,
                     0,
@@ -111,9 +94,7 @@ public class Area {
         this.renderRenderables(gc);
         this.effectController.render(gc);
     }
-
     private void renderRenderables(GraphicsContext gc) {
-        //this.sortEntitiesByYPos();
         ArrayList<Renderable> renderables = this.getSortedRenderableList();
         for (Renderable r : renderables) {
             r.render(gc);
@@ -123,37 +104,9 @@ public class Area {
         ArrayList<Renderable> renderables = new ArrayList<>();
         renderables.addAll(this.entities);
         renderables.addAll(this.areaObjectController.getAreaObjects());
-        renderables.sort((e1, e2) -> {
-            if (e1.getBaseY() == e2.getBaseY()) {
-                return 0;
-            } else if (e1.getBaseY() > e2.getBaseY()) {
-                return 1;
-            } else {
-                return -1;
-            }
-        });
+        renderables.sort(Comparator.comparingDouble(Renderable::getBaseY));
         return renderables;
     }
-
-    private void renderEntities(GraphicsContext gc) {
-        this.sortEntitiesByYPos();
-        for (Entity e : this.entities) {
-            e.render(gc);
-        }
-    }
-
-    private void sortEntitiesByYPos() {
-        entities.sort((e1, e2) -> {
-            if (e1.getY() == e2.getY()) {
-                return 0;
-            } else if (e1.getY() > e2.getY()) {
-                return 1;
-            } else {
-                return -1;
-            }
-        });
-    }
-
     public void teardown() {
         this.world = null;
         for (Entity e : this.entities) {

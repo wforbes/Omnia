@@ -1,6 +1,7 @@
 package net.wforbes.omnia.overworld.world.area.object;
 
 import javafx.geometry.Point2D;
+import net.wforbes.omnia.db.AreaObjectDBA;
 import net.wforbes.omnia.overworld.world.area.Area;
 import net.wforbes.omnia.overworld.world.area.object.flora.shrub.Shrub;
 import net.wforbes.omnia.overworld.world.area.object.flora.shrub.ShrubType;
@@ -13,11 +14,16 @@ import java.util.Random;
 
 public class AreaObjectController {
     private final Area area;
+    //private final AreaObjectDBA areaObjectDBA;
     private List<AreaObject> areaObjects;
 
     public AreaObjectController(Area area) {
         //TODO: add concept of regions where flora is acceptable to grow
         this.area = area;
+        /*
+        this.areaObjectDBA = new AreaObjectDBA(
+            this.area.getWorld().getGameState().getDb()
+        );*/
     }
 
     public List<AreaObject> getAreaObjects() {
@@ -28,35 +34,35 @@ public class AreaObjectController {
         this.areaObjects = new ArrayList<>();
         this.areaObjects.add(
             new Shrub(
-                this.area.getWorld().gameState,
+                this.area.getWorld().getGameState(),
                 ShrubType.GENERA.BLUEBERRY,
                 20, 500
             )
         );
         this.areaObjects.add(
             new Shrub(
-                this.area.getWorld().gameState,
+                this.area.getWorld().getGameState(),
                 ShrubType.GENERA.BLUEBERRY,
                 120, 20
             )
         );
         this.areaObjects.add(
             new Shrub(
-                this.area.getWorld().gameState,
+                this.area.getWorld().getGameState(),
                 ShrubType.GENERA.BLUEBERRY,
                 20, 120
             )
         );
         this.areaObjects.add(
             new Shrub(
-                this.area.getWorld().gameState,
+                this.area.getWorld().getGameState(),
                 ShrubType.GENERA.BLUEBERRY,
                 120, 175
             )
         );
         this.areaObjects.add(
             new Tree(
-                this.area.getWorld().gameState,
+                this.area.getWorld().getGameState(),
                 TreeType.GENERA.OAK,
                 175, 175
             )
@@ -64,7 +70,7 @@ public class AreaObjectController {
 
         this.areaObjects.add(
             new Tree(
-                this.area.getWorld().gameState,
+                this.area.getWorld().getGameState(),
                 TreeType.GENERA.OAK,
                 420, 100
             )

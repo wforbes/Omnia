@@ -36,10 +36,6 @@ public class Player extends Mob {
         this.nameColor = Color.BLUE;
     }
 
-    public Player(OverworldState gameState, String name, Point2D startPos) {
-        super(gameState, name, startPos, 0.5);
-    }
-
     public void init() {
         this.numFrames = new int[]{3, 3, 3, 3, 3, 3, 3, 3};
         this.loadSprites(OverworldState.SPRITE_DIR + "player1_pokemon.gif");
@@ -203,8 +199,13 @@ public class Player extends Mob {
         this.width = this.height = 16;
         this.numFrames = null;
         this.spriteSheet = null;
-        this.targetController.teardown();
-        this.targetController = null;
-        this.projectileController.teardown();
+        if (this.targetController != null) {
+            this.targetController.teardown();
+            this.targetController = null;
+        }
+        if (this.projectileController != null) {
+            this.projectileController.teardown();
+            this.projectileController = null;
+        }
     }
 }

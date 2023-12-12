@@ -21,9 +21,10 @@ public class Tree extends Flora {
     //30x15
     private Loot loot;
 
+    /*
     public Tree(OverworldState gameState) {
         super(gameState);
-    }
+    }*/
 
     public Tree(OverworldState gameState, float x, float y) {
         super(gameState, x, y);
@@ -44,12 +45,13 @@ public class Tree extends Flora {
         this.y = y;
     }
 
+    /*
     public Tree(OverworldState gameState, String spriteName, float x, float y) {
         super(gameState, TREES_SPRITE_DIR+spriteName+".png", x, y);
         System.out.println(spriteName);
         this.x = x;
         this.y = y;
-    }
+    }*/
 
     @Override
     public void init() {

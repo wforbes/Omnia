@@ -1,6 +1,6 @@
 package net.wforbes.omnia.overworld.entity;
 
-import javafx.geometry.Point2D;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import net.wforbes.omnia.gameState.OverworldState;
@@ -12,11 +12,7 @@ public abstract class NPC extends Mob {
     public NPC(OverworldState gameState, String name, double speed) {
         super(gameState, name, speed, false);
         this.nameColor = Color.LIGHTBLUE;
-        movementController = new MovementController(this);
-    }
-    public NPC(OverworldState gameState, String name, Point2D startPos, double speed) {
-        super(gameState, name, startPos, speed);
-        movementController = new MovementController(this);
+        this.movementController = new MovementController(this);
     }
 
     public void init(double x, double y) {
@@ -50,4 +46,10 @@ public abstract class NPC extends Mob {
     }
     protected abstract void handleGreetings(Mob senderMob, String chatMsg);
     protected abstract void handleQuests(Mob senderMob, String chatMsg);
+
+    public void teardown() {
+        super.teardown();
+        this.movementController.teardown();
+        this.movementController = null;
+    }
 }

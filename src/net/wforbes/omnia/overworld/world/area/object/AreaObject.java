@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
+import net.wforbes.omnia.db.AreaObjectDBA;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameFX.rendering.Renderable;
 import net.wforbes.omnia.gameState.OverworldState;
@@ -17,6 +18,7 @@ import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 public class AreaObject implements Renderable {
 
     protected final OverworldState gameState;
+    protected final AreaObjectDBA areaObjectDBA;
     protected float x, y, xmap, ymap, width, height;
     protected double baseY;
     protected double collisionRadius;
@@ -27,25 +29,27 @@ public class AreaObject implements Renderable {
 
     protected double baseXToHeightRatio;
 
+    protected String sprite_path;
     protected Image spriteImg;
     private Ellipse collisionEllipse;
 
-    public AreaObject(OverworldState gameState) {
+    /*public AreaObject(OverworldState gameState) {
         this.gameState = gameState;
-    }
+    }*/
 
     public AreaObject(OverworldState gameState, float x, float y) {
         this.gameState = gameState;
         this.x = x;
         this.y = y;
+        this.areaObjectDBA = new AreaObjectDBA(this.gameState.db);
     }
 
-    public AreaObject(OverworldState gameState, String path, float x, float y) {
+    /*public AreaObject(OverworldState gameState, String path, float x, float y) {
         this.gameState = gameState;
         this.loadSprite(path);
         this.x = x;
         this.y = y;
-    }
+    }*/
 
     public double getX() {
         return this.x - this.width/2.0;

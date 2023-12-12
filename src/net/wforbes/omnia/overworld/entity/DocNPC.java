@@ -44,7 +44,7 @@ public class DocNPC extends NPC {
     }
 
     public void setAttentionFocus(Mob senderMob) {
-        W.out(this.getName() + " setting attention focus on " + senderMob.getName());
+        //W.out(this.getName() + " setting attention focus on " + senderMob.getName());
         this.movementController.standAndFace(senderMob.getLocationPoint());
         this.attentionController.startFocusing(senderMob);
     }

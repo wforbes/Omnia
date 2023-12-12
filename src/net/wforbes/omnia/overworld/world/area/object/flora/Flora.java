@@ -8,16 +8,16 @@ public abstract class Flora extends AreaObject implements Harvestable {
 
     protected static final String FLORA_SPRITE_DIR = "/overworld/terrain/flora/";
 
-    public Flora(OverworldState gameState) {
+    /*public Flora(OverworldState gameState) {
         super(gameState);
-    }
+    }*/
     public Flora(OverworldState gameState, float x, float y) {
         super(gameState, x, y);
     }
 
-    public Flora(OverworldState gameState, String path, float x, float y) {
+    /*public Flora(OverworldState gameState, String path, float x, float y) {
         super(gameState, path, x, y);
-    }
+    }*/
 
     //public void init(double x, double y) {}
 }
