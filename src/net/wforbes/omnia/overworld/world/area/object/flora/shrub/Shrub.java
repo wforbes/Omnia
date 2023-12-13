@@ -13,51 +13,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Shrub extends Flora {
-    private Loot loot;
-    protected static final String SHRUBS_SPRITE_DIR = FLORA_SPRITE_DIR + "shrubs/";
 
-    public Shrub(OverworldState gameState, ShrubType.GENERA type, float x, float y) {
+    public Shrub(OverworldState gameState, ShrubType.TYPES type, float x, float y) {
         super(gameState, x, y);
-        String sprite_dir = this.getSpriteDirFromDB();
-        ShrubType shrubType = new ShrubType(type, this.gameState.db);
-        this.loot = shrubType.getRandomLootInstance(this.gameState.db);
+        String sprite_dir = this.getSpriteDirFromDB("shrub");
+        this.areaObjectType = new ShrubType(type, this.gameState.db);
+        this.generateAndSetLoot();
         this.lootTimer = new LootTimer(this);
         //TODO: update db to include trailing slash in sprite_dir
-        this.loadSprite(sprite_dir+"/"+shrubType.getSpriteFile());
+        this.loadSprite(sprite_dir+"/"+areaObjectType.getSpriteFile());
         this.x = x;
         this.y = y;
         this.collisionRadius = 16;
     }
 
-    private String getSpriteDirFromDB() {
-        String sql = "SELECT sprite_dir FROM flora WHERE name='shrub' LIMIT 1;";
-        try {
-            Statement statement = this.gameState.db.connection.createStatement();
-            ResultSet results = statement.executeQuery(sql);
-            results.next();
-            return results.getString("sprite_dir");
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-        return "";
-    }
-
-    public void init() {
-        this.initCollisionShape();
-    }
-
-    @Override
-    public double getCollisionRadius() {
-        return this.collisionRadius;
-    }
-
-    public void init(double x, double y) {
-        this.initCollisionShape();
-    }
-
-    private void initCollisionShape() {
+    protected void initCollisionShape() {
         this.collision_baseX = -2; //(w/2)-??
-        System.out.println("shrub init h: " + this.height);
+        //System.out.println("shrub init h: " + this.height);
         this.collision_baseY = 7; //h-spriteOffsetY-??
         this.baseY = this.collision_baseY;
         this.collisionRadius = 17;
@@ -65,48 +37,17 @@ public class Shrub extends Flora {
         this.collision_baseCircle = new Circle(collision_baseX, collision_baseY, collisionRadius);
     }
 
-    public void completeHarvest() {
-        System.out.println("Shrub.completeHarvest");
-        this.completeAction();
-    }
-
     @Override
-    public boolean isHarvested() {
-        return this.harvested;
-    }
-
-    public void completeAction() {
-        System.out.println("Shrub.completeAction");
-        this.harvested = true;
-    }
-    public Loot getLoot() {
-        System.out.println("Shrub.getLoot");
-        for (Item item : loot.getItems()) {
-            System.out.println(item.getName());
-        }
-        return this.loot;
-    }
-
-    public void returnLoot(Loot loot) {
-        if (loot.getItems().isEmpty()) {
-            System.out.println("No loot returned to shrub.");
-            this.lootTimer.start(10);
-            return;
-        }
-        System.out.println("Setting shrub loot: ");
-        for (Item item : loot.getItems()) {
-            System.out.println(item.getName());
-        }
-        this.lootTimer.start(0);
+    public void setLoot(Loot loot) {
         this.loot = loot;
     }
-    public void notifyLootTimerDone() {
-        System.out.println("Shrub loot timer done");
-        this.flaggedForDespawn = true;
-    }
+
     @Override
-    public void update() {
-        super.update();
-        this.lootTimer.update();
+    protected void spawn() {
+        super.spawn();
+        this.resetHarvestState();
+        this.generateAndSetLoot();
     }
+
+
 }

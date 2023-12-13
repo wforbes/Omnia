@@ -57,6 +57,5 @@ public class HarvestController extends ActionController {
         if (!this.isPerforming) return;
         System.out.println("Harvesting cancelled");
         super.cancelAction();
-
     }
 }

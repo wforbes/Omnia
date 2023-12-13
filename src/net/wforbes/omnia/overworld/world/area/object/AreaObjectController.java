@@ -35,35 +35,35 @@ public class AreaObjectController {
         this.areaObjects.add(
             new Shrub(
                 this.area.getWorld().getGameState(),
-                ShrubType.GENERA.BLUEBERRY,
+                ShrubType.TYPES.BLUEBERRY,
                 20, 500
             )
         );
         this.areaObjects.add(
             new Shrub(
                 this.area.getWorld().getGameState(),
-                ShrubType.GENERA.BLUEBERRY,
+                ShrubType.TYPES.BLUEBERRY,
                 120, 20
             )
         );
         this.areaObjects.add(
             new Shrub(
                 this.area.getWorld().getGameState(),
-                ShrubType.GENERA.BLUEBERRY,
+                ShrubType.TYPES.BLUEBERRY,
                 20, 120
             )
         );
         this.areaObjects.add(
             new Shrub(
                 this.area.getWorld().getGameState(),
-                ShrubType.GENERA.BLUEBERRY,
+                ShrubType.TYPES.BLUEBERRY,
                 120, 175
             )
         );
         this.areaObjects.add(
             new Tree(
                 this.area.getWorld().getGameState(),
-                TreeType.GENERA.OAK,
+                TreeType.TYPES.OAK,
                 175, 175
             )
         );
@@ -71,7 +71,7 @@ public class AreaObjectController {
         this.areaObjects.add(
             new Tree(
                 this.area.getWorld().getGameState(),
-                TreeType.GENERA.OAK,
+                TreeType.TYPES.OAK,
                 420, 100
             )
         );
@@ -84,7 +84,7 @@ public class AreaObjectController {
         for (AreaObject ao: this.areaObjects) {
             ao.update();
         }
-        this.areaObjects.removeIf(AreaObject::isFlaggedForDespawn);
+        //this.areaObjects.removeIf(AreaObject::isFlaggedForDespawn);
     }
 
     public void initRANDOM() {
@@ -101,7 +101,7 @@ public class AreaObjectController {
             this.areaObjects.add(
                     new Shrub(
                             this.area.getWorld().gameState,
-                            ShrubType.GENERA.BLUEBERRY,
+                            ShrubType.TYPES.BLUEBERRY,
                             (float)randPnt.getX(),
                             (float)randPnt.getY()
                     )

@@ -33,11 +33,11 @@ public class AreaObject implements Renderable {
     protected Image spriteImg;
     private Ellipse collisionEllipse;
 
+    protected boolean spawned = true;
     protected boolean flaggedForDespawn = false;
-
-    /*public AreaObject(OverworldState gameState) {
-        this.gameState = gameState;
-    }*/
+    protected ObjectSpawnTimer spawnTimer = new ObjectSpawnTimer(this);
+    protected AreaObjectType areaObjectType;
+    protected boolean waitingToSpawn;
 
     public AreaObject(OverworldState gameState, float x, float y) {
         this.gameState = gameState;
@@ -45,13 +45,6 @@ public class AreaObject implements Renderable {
         this.y = y;
         this.areaObjectDBA = new AreaObjectDBA(this.gameState.db);
     }
-
-    /*public AreaObject(OverworldState gameState, String path, float x, float y) {
-        this.gameState = gameState;
-        this.loadSprite(path);
-        this.x = x;
-        this.y = y;
-    }*/
 
     public double getX() {
         return this.x - this.width/2.0;
@@ -79,6 +72,35 @@ public class AreaObject implements Renderable {
     }
     public double getWidth() { return this.width; }
     public double getHeight() { return this.height; }
+
+    public boolean isSpawned() {
+        return this.spawned;
+    }
+    public void despawn() {
+        this.spawned = false;
+        this.spawnTimer.start();
+        //this.x = this.y = -100;
+    }
+    public void notifySpawnTimerDone() {
+        System.out.println(this + " spawn timer done");
+        if (this.spawnWouldCollide()) {
+            this.waitingToSpawn = true;
+            return;
+        }
+        this.waitingToSpawn = false;
+        this.spawn();
+    }
+
+    private boolean spawnWouldCollide () {
+        return this.gameState.getWorld().getCurrentArea().spawnSpaceIsBlocked(
+            this.x, this.y, this.collision_baseX, this.collision_baseY, this.collisionRadius
+        );
+    }
+
+    protected void spawn() {
+        if (this.isSpawned()) return;
+        this.spawned = true;
+    }
 
     public void init(double x, double y) {}
     public void init() {}
@@ -127,11 +149,15 @@ public class AreaObject implements Renderable {
     }
 
     public void update() {
-        this.recalculateBaseY();
-    }
-
-    public boolean isFlaggedForDespawn() {
-        return this.flaggedForDespawn;
+        if (this.isSpawned()) {
+            this.recalculateBaseY();
+            return;
+        }
+        if (this.waitingToSpawn) {
+            this.notifySpawnTimerDone();
+            return;
+        }
+        this.spawnTimer.update();
     }
 
     private void recalculateBaseY() {
@@ -165,6 +191,7 @@ public class AreaObject implements Renderable {
                 height*getScale()
         );*/
         //render with x/y in center of sprite
+        if (!this.isSpawned()) return;
         gc.drawImage(
                 this.spriteImg,
                 (this.getX() + xmap) * getScale(),
@@ -175,7 +202,7 @@ public class AreaObject implements Renderable {
     }
     private void renderCollisionGeometry(GraphicsContext gc) {
         gc.setStroke(Color.RED);
-        if(!this.offScreen()) {
+        if(!this.offScreen() || this.isSpawned()) {
             gc.strokeOval(
                     (this.getX() + xmap) + this.collision_baseX + 8,
                     (this.getY() + ymap) + this.collision_baseY + 8,

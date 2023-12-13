@@ -6,22 +6,24 @@ public class LootTimer {
     public Lootable owner;
     public boolean isRunning = false;
     public int lootTime = 0;
-    public int lootTimeDuration = 10000;
+    public int lootTimeDuration = 2000;
     public LootTimer(Lootable owner) {
         this.owner = owner;
     }
-    public void start(int startTime) {
-        if (this.isRunning && startTime != 0) {
-            System.out.println("LootTimer setting to " + startTime);
-            this.lootTime = 1;
-            this.lootTimeDuration = startTime;
-            return;
-        }
-        System.out.println("LootTimer start");
-        this.lootTime = startTime;
-        this.lootTimeDuration = startTime != 0 ? startTime : this.lootTimeDuration;
+
+    //
+    public void start() {
+        System.out.println("LootTimer start for " + this.owner);
+        this.lootTime = this.lootTime != 0 ? 0 : this.lootTime;
         this.isRunning = true;
         this.lootTime++;
+    }
+
+    public void endEarly() {
+        if (this.isRunning) {
+            this.lootTime = this.lootTimeDuration;
+        }
+        this.owner.notifyLootTimerDone();
     }
 
     public void update() {
@@ -38,7 +40,7 @@ public class LootTimer {
                 this.isRunning = false;
                 this.lootTime = 0;
                 this.owner.notifyLootTimerDone();
-                this.owner = null;
+                //this.owner = null;
             }
         }
     }

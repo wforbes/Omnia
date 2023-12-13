@@ -262,6 +262,7 @@ public abstract class Mob extends Entity {
         }
 
         for (AreaObject ao : gameState.world.area.getAreaObjects()) {
+            if (!ao.isSpawned()) continue;
             double xDist = (this.getX()+xa+collision_baseX - this.collisionRadius/2.0) - (ao.getX()+ao.getCollisionBaseX());
             double yDist = (this.getY()+ya+collision_baseY - this.collisionRadius/3.0) - (ao.getY()+ao.getCollisionBaseY());
             boolean collided = Math.sqrt((xDist*xDist) + (yDist*yDist)) < ((collisionRadius-2)/2.0+(ao.getCollisionRadius()-3)/2.0);

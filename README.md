@@ -107,6 +107,7 @@ this project in a couple years to keep working on it.
         others to emulate windows in an operating system.
       * [ ] **Path finding**
         * [X] **Click to move** - Try implementing a click to move system with simple path finding
+        * [ ] **Advanced Pathing** - Implement an A* based path finding algorithm that can avoid collision
         * [ ] **Scripted NPC movement** - Use path finding logic to script NPC movement
         * [ ] **Scripted Player movement** - Use path finding logic to script Player movement
         * [ ] **NPC following** - Use path finding logic to implement NPCs being able to follow Player and other NPCs
@@ -130,7 +131,7 @@ this project in a couple years to keep working on it.
           * [X] **Loot Table** - Add a feature that entities/objects can use to define their loot possibilities.
           * [X] **Persist Node loot** - persist the node's gathered items state between multiple harvests
           * [X] **'Despawn' node after gather completes**: Display some kind of empty graphic in its place, stop interactivity.
-          * [ ] **'Respawn' node**: Add respawn timer for each node, after which the node respawns to be gatherable again.
+          * [X] **'Respawn' node**: Add respawn timer for each node, after which the node respawns to be gatherable again.
         * [ ] **Mining**: Add some rocks/minerals that can be 'mined'.
         * [ ] **Logging**: Add some trees that can be 'chopped' and fed into the Gathering/Inventory systems
     * [ ] **Add enterable buildings** - Add building structures that can be entered when player steps into it's 'door'
@@ -150,11 +151,15 @@ this project in a couple years to keep working on it.
   requiring a range weapon, expending ammo, etc. 
 
 
-* [ ] **Spell system** : Add some basic GUI to scribe/memorize/cast, basic logic to cast and land, and start figuring it out
+- **Spell system** : , basic logic to cast and land, and start figuring it out
+  * [ ] **Spell Book GUI**: Add some basic GUI to scribe/memorize spells to/from
+  * [ ] **Spell Cast GUI**: Add some basic GUI to cast spells from
   * [ ] **Particles / Effects**
-      - Particle Sprites
-      - Rendered
-      - Glitch/Distortions
+    - Particle Sprites
+    - Rendered
+    - Glitch/Distortions
+  * [ ] **Dimensional Shifting**
+    - Explore the idea of casting a spell that "shifts" the player into another dimension, causing the World and its entities/objects to look different and other previously unseen/uncollidable entities/object to appear 
 
 - **Settings**
   * [ ] **Simple settings window** - Add a simple GUI settings window with the ability to change Player keybinds

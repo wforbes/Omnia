@@ -68,6 +68,40 @@ public class Area {
         testNPC.init(TEST_NPC_XPOS, TEST_NPC_YPOS);
         this.addEntity(testNPC);
     }
+
+    public boolean spawnSpaceIsBlocked(double x, double y, double collisionBaseX, double collisionBaseY, double collisionRadius) {
+        //TODO: Mostly COPYPASTA FROM MOB... combine into a better system
+        //TODO: simplify this to iterate through area Renderables
+        for(Entity e : entities) {
+            System.out.println(e.getName());
+            double xDist = (x - e.getX());
+            double yDist = (y - e.getY());
+            System.out.println(xDist + ", " + yDist);
+            System.out.println(Math.floor(Math.sqrt((xDist*xDist) + (yDist*yDist))) + ", " + Math.floor(collisionRadius/2.0+e.getCollisionRadius()/2.0));
+            if (
+                Math.floor(Math.sqrt((xDist*xDist) + (yDist*yDist)))+collisionRadius <= Math.floor(collisionRadius/2.0+e.getCollisionRadius()/2.0)
+                || Math.floor(Math.sqrt((xDist*xDist) + (yDist*yDist)))-collisionRadius <= Math.floor(collisionRadius/2.0+e.getCollisionRadius()/2.0)
+            ) {
+                return true;
+            }
+        }
+
+        for (AreaObject ao : getAreaObjects()) {
+            if (!ao.isSpawned()) continue;
+            System.out.println(ao);
+            double xDist = (x+collisionBaseX - collisionRadius/2.0) - (ao.getX()+ao.getCollisionBaseX());
+            double yDist = (y+collisionBaseY - collisionRadius/3.0) - (ao.getY()+ao.getCollisionBaseY());
+            boolean collided =
+                    Math.sqrt((xDist*xDist) + (yDist*yDist))+collisionRadius < ((collisionRadius-2)/2.0+(ao.getCollisionRadius()-3)/2.0)
+                    || Math.sqrt((xDist*xDist) + (yDist*yDist)) < ((collisionRadius-2)/2.0+(ao.getCollisionRadius()-3)/2.0)-collisionRadius;
+            if (collided) {
+                return true;
+            }
+        }
+        System.out.println("spawnSpaceIsBlocked: false");
+        return false;
+    }
+
     public void update() {
         this.tileMap.update(world.player);
         for(Entity e: this.entities) {
