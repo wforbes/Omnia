@@ -7,11 +7,18 @@ public class MovementAnimation {
     Mob mover;
     private Image[] frames;//holds all the frames for the animation
     private int currentFrame;// keeps track of the current frame
+    private Image[] c_frames;
+    private int c_currentFrame;
+    private long c_startTime;
+    private long c_animationDelay;
+    private long combatDelay = 1000;
+    private long lastCombatHit = 0;
+    private boolean c_playedOnce;
 
     private int facingDir;
     private boolean isMoving;
 
-    private long startTime; //?? research
+    private long startTime;
     private long delay; //how long between each frame
 
     private boolean playedOnce;//useful for attacking animations where it only happens once
@@ -40,8 +47,15 @@ public class MovementAnimation {
         startTime = System.nanoTime();
         playedOnce = false;
     }
+    public void setCombatFrames(Image[] frames){
+        this.c_frames = frames;
+        c_currentFrame = 0;
+        c_startTime = System.nanoTime();
+        c_playedOnce = false;
+    }
 
     public void setDelay(long d){ delay = d;}
+    public void setCombatDelay(long d){ c_animationDelay = d;}
     public void setFrame(int i){ currentFrame = i;}
 
     public void update(){
@@ -58,11 +72,35 @@ public class MovementAnimation {
         } else {
             currentFrame = 0;
         }
+        if (this.mover.isAttacking()) {//TODO: Move to CombatAnimation?
+            if (this.lastCombatHit == 0 || (System.nanoTime() - this.lastCombatHit)/1000000 > this.combatDelay) {
+                long elapsed = (System.nanoTime() - c_startTime) / 1000000;//how long its been since the last frame has come up
+                if (elapsed > c_animationDelay) {
+                    c_currentFrame++;//move on to the next frame
+                    c_startTime = System.nanoTime();//reset the start time!
+                }
+                if (c_currentFrame == c_frames.length) {//if true then we went out of bounds
+                    c_currentFrame = 1;
+                    c_playedOnce = true;
+                    this.lastCombatHit = System.nanoTime();
+                }
+            } else {
+                currentFrame = 0;
+            }
+
+
+        }
     }
 
     public int getFrame(){ return currentFrame; }
 
-    public Image getImage(){ return frames[currentFrame]; }//this will get the image that we need to draw
+    //this will get the image that we need to draw
+    public Image getImage(){
+        return frames[currentFrame];
+    }
+    public Image getCombatImage(){
+        return c_frames[c_currentFrame];
+    }
 
     public boolean hasPlayedOnce(){ return playedOnce; }
 

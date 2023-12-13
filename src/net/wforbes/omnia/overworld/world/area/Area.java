@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameFX.rendering.Renderable;
 import net.wforbes.omnia.overworld.entity.DocNPC;
+import net.wforbes.omnia.overworld.entity.Enemy;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.NPC;
 import net.wforbes.omnia.overworld.world.World;
@@ -27,6 +28,8 @@ public class Area {
     public List<Entity> entities;
     public double TEST_NPC_XPOS = 200;
     public double TEST_NPC_YPOS = 200;
+    public double TEST_ENEMY_XPOS = 140;
+    public double TEST_ENEMY_YPOS = 140;
     public EffectController effectController;
 
     public Area(World world) {
@@ -67,6 +70,10 @@ public class Area {
         NPC testNPC = new DocNPC(world.gameState);
         testNPC.init(TEST_NPC_XPOS, TEST_NPC_YPOS);
         this.addEntity(testNPC);
+
+        Enemy testEnemy = new Enemy(world.gameState, "A Procyon");
+        testEnemy.init(TEST_ENEMY_XPOS, TEST_ENEMY_YPOS);
+        this.addEntity(testEnemy);
     }
 
     public boolean spawnSpaceIsBlocked(double x, double y, double collisionBaseX, double collisionBaseY, double collisionRadius) {

@@ -12,6 +12,7 @@ public abstract class NPC extends Mob {
     public NPC(OverworldState gameState, String name, double speed) {
         super(gameState, name, speed, false);
         this.nameColor = Color.LIGHTBLUE;
+        this.nameFlashColor = Color.AQUA;
         this.movementController = new MovementController(this);
     }
 

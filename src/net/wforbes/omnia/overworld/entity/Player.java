@@ -13,7 +13,7 @@ import net.wforbes.omnia.overworld.entity.pathfind.PathfindController;
 import net.wforbes.omnia.overworld.entity.projectile.ProjectileController;
 
 public class Player extends Mob {
-    protected String spriteSheetPath = "/overworld/sprites/player1_pokemon.gif";
+    protected String spriteSheetPath = "/overworld/sprites/player1_pokemon_v2.gif";
     private double lastInputTick = 0;
     private int lastInputCommandTick = 0;
 
@@ -30,15 +30,18 @@ public class Player extends Mob {
     private ProjectileController projectileController;
     private HarvestController harvestController;
 
+
     public Player(OverworldState gameState, String name) {
         super(gameState, name, 0.5, true);
         this.width = this.height = 16;
         this.nameColor = Color.BLUE;
+        this.nameFlashColor = Color.LIGHTBLUE;
     }
 
     public void init() {
         this.numFrames = new int[]{3, 3, 3, 3, 3, 3, 3, 3};
-        this.loadSprites(OverworldState.SPRITE_DIR + "player1_pokemon.gif");
+        this.combatNumFrames = new int[]{4, 4, 4, 4, 4, 4, 4, 4};
+        this.loadSprites(OverworldState.SPRITE_DIR + "player1_pokemon_v3.gif");
         this.facingDir = FACING_S;
         movementAnimation = new MovementAnimation(this);
         this.setAnimationDirection(facingDir);
@@ -82,12 +85,25 @@ public class Player extends Mob {
         this.harvestController.update();
     }
 
+    private int keydownCooldown = 50;
+    private int keydownTime = 0;
     private void checkActions() {
         if (gameState.keyboardController.isKeyDown(KeyCode.DIGIT1)) {
             this.projectileController.fireProjectile();
         }
         if (gameState.keyboardController.isKeyDown(KeyCode.H)) {
             this.harvestController.harvestMaterials();
+        }
+        if (gameState.keyboardController.isKeyDown(KeyCode.BACK_QUOTE)) {
+            if (keydownTime == 0) {
+                this.attacking = !this.attacking; //TODO: Move to CombatController
+                this.keydownTime++;
+            }
+        }
+        if (keydownTime > 0 && keydownTime <= keydownCooldown) {
+            keydownTime++;
+        } else {
+            keydownTime = 0;
         }
     }
 

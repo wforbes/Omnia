@@ -37,6 +37,7 @@ public abstract class Mob extends Entity {
     double x, y, baseY;
     double xmap, ymap;//current area map position
     protected double speed;
+    protected double combatSpeed; //TODO: Move to CombatController
     protected double runSpeedMod = 1.5;
     protected boolean isMoving;
     protected boolean isRunning;
@@ -46,6 +47,7 @@ public abstract class Mob extends Entity {
     //numFrames: each index is a sprite row,
     //  each value is the number of animation frames
     int[] numFrames;
+    int[] combatNumFrames;
     MovementAnimation movementAnimation;
     //TODO: consider an enum to store facing directions
     //TODO: consider utility class to contain directions
@@ -67,6 +69,7 @@ public abstract class Mob extends Entity {
     public boolean isColliding;
     private AreaObject collidingAreaObject;
     protected Color nameColor;
+    protected Color nameFlashColor;
     protected Text nameText;
     protected Font nameFont;
     private Timeline nameColorTimeline;
@@ -76,8 +79,15 @@ public abstract class Mob extends Entity {
     private Point2D collision_baseCenterPnt;
     private Circle collision_baseCircle;
     protected PathfindController pathfindController;
+    private ArrayList<Image[]> combatSprites;
+
     public PathfindController getPathfindController() {
         return this.pathfindController;
+    }
+
+    protected boolean attacking = false;//TODO: Move to CombatController
+    public boolean isAttacking() {
+        return this.attacking;//TODO: Move to CombatController
     }
 
     public Mob(OverworldState gameState, String name, double speed, boolean player) {
@@ -86,6 +96,7 @@ public abstract class Mob extends Entity {
         this.isPlayer = player;
         this.name = name;
         this.speed = speed;
+        this.combatSpeed = 0.6; //TODO: Move to CombatController
         this.movementController = new MovementController(this);
         this.nameFont = Font.font("Century Gothic", FontWeight.BOLD, 22);
         this.nameText = new Text(this.getName());
@@ -192,6 +203,14 @@ public abstract class Mob extends Entity {
                 images[j] = new WritableImage(spriteSheet.getPixelReader(), j*width, i*height, width, height);
             }
             sprites.add(images);
+        }
+        this.combatSprites = new ArrayList<>();
+        for (int i = 0; i < combatNumFrames.length; i++) { //sprite image sheet row?
+            Image[] c_images = new Image[combatNumFrames[i]];
+            for (int j = 0; j < combatNumFrames[i]; j++) {//sprite image sheet column?
+                c_images[j] = new WritableImage(spriteSheet.getPixelReader(), (j+2)*width, i*height, width, height);
+            }
+            combatSprites.add(c_images);
         }
     }
 
@@ -302,12 +321,16 @@ public abstract class Mob extends Entity {
     void setAnimationDirection(int dir) {
         movementAnimation.setFacingDir(dir);
         movementAnimation.setFrames(sprites.get(dir));
+        movementAnimation.setCombatFrames(combatSprites.get(dir));
         movementAnimation.setDelay((long)(100 / this.speed));
+        movementAnimation.setCombatDelay((long)(100 / this.combatSpeed));
     }
     public void updateAnimationDirection() {
         movementAnimation.setFacingDir(facingDir);
         movementAnimation.setFrames(sprites.get(facingDir));
+        movementAnimation.setCombatFrames(combatSprites.get(facingDir));
         movementAnimation.setDelay((long)(100/this.speed));
+        movementAnimation.setCombatDelay((long)(100 / this.combatSpeed));
     }
 
     private void moveCardinal(double xa, double ya){
@@ -378,8 +401,8 @@ public abstract class Mob extends Entity {
     public void initNameAnimation() {
         this.nameText.setX(20);
         this.nameText.setY(100);
-        var color1 = Color.LIGHTBLUE;
-        var color2 = Color.BLUE;
+        Color color1 = Color.WHITE;
+        Color color2 = Color.BLACK;
         nameText.setFill(color1);
         /*
         text.setStyle("-fx-font-family: serif; -fx-font-size: 42;"
@@ -464,6 +487,16 @@ public abstract class Mob extends Entity {
                 width * getScale(),
                 height * getScale()
         );*/
+        if (this.isAttacking()) {
+            gc.drawImage(
+                    movementAnimation.getCombatImage(),
+                    (x + xmap - width / 2.0) * getScale(),
+                    (y + ymap - height / 2.0) * getScale(),
+                    width * getScale(),
+                    height * getScale()
+            );
+            return;
+        }
         //render with x/y in center of sprite
         gc.drawImage(
                 movementAnimation.getImage(),
@@ -478,7 +511,7 @@ public abstract class Mob extends Entity {
     private void renderName(GraphicsContext gc) {
         if (this.isTargeted && this.nameColorTimeline.getStatus() == Animation.Status.RUNNING) {
             gc.setFill(this.nameText.getFill());
-            gc.setFont(nameText.getFont());
+            gc.setFont(this.nameText.getFont());
             gc.fillText(
                     nameText.getText(),
                     ((this.x + xmap) * getScale()) - nameText.getLayoutBounds().getWidth() / 2.0,

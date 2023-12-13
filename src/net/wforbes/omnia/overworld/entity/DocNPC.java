@@ -19,8 +19,9 @@ public class DocNPC extends NPC {
         super(gameState, "Doc",0.25);
         this.width = this.height = 16;
         this.numFrames = new int[]{3,3,3,3};
+        this.combatNumFrames = new int[]{3,3,3,3};//TODO: UNUSED SO FAR
         this.loadSprites(OverworldState.SPRITE_DIR + "doc_pokemon.gif");
-        movementAnimation = new MovementAnimation(this);
+        this.movementAnimation = new MovementAnimation(this);
         this.facingDir = FACING_S;
         this.setAnimationDirection(facingDir);
         this.attentionController.setAttentionSpan(30);

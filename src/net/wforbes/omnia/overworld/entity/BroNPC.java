@@ -21,6 +21,7 @@ public class BroNPC extends NPC {
         this.width = this.height = 16;
         this.width = this.height = 16;
         this.numFrames = new int[]{3,3,3,3};
+        this.combatNumFrames = new int[]{3,3,3,3};//TODO: UNUSED SO FAR
         //this.loadSprites(OverworldState.SPRITE_DIR + "bro_pokemon.gif");
         this.facingDir = FACING_S;
         movementAnimation = new MovementAnimation(this);
