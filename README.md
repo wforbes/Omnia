@@ -98,15 +98,15 @@ this project in a couple years to keep working on it.
  (procrastination example: making this to-do list)
 
 - **Miscellaneous**
-    * [X] **Add Clickable Chat/Dialog Links** - Add links in the quest dialog that gets printed in the chat window to more 
-    easily respond to quest text.
-    * [X] **Refine mob collision boundaries** - Improve the mob's collision boundaries.
+    * [X] ~~**Add Clickable Chat/Dialog Links** - Add links in the quest dialog that gets printed in the chat window to more 
+    easily respond to quest text.~~
+    * [X] ~~**Refine mob collision boundaries** - Improve the mob's collision boundaries.~~
     * [ ] **Compensate for diagonal speed increase** - add a speed modifier for diagonal movement to normalize it
     with cardinal movement  
     * [ ] **Create GUI window hierarchy** - The most recently interacted with or opened GUI windows should appear on top of
         others to emulate windows in an operating system.
       * [ ] **Path finding**
-        * [X] **Click to move** - Try implementing a click to move system with simple path finding
+        * [X] ~~**Click to move** - Try implementing a click to move system with simple path finding~~
         * [ ] **Advanced Pathing** - Implement an A* based path finding algorithm that can avoid collision
         * [ ] **Scripted NPC movement** - Use path finding logic to script NPC movement
         * [ ] **Scripted Player movement** - Use path finding logic to script Player movement
@@ -116,40 +116,61 @@ this project in a couple years to keep working on it.
   * [ ] **Add collidable environment structures** - Add a layer of objects that render over the ground tiles which mobs 
       collide with.
     * [ ] **Add static environment objects** - Add decorative collidable env objects.
-    * [X] **Add interactable environment objects** - Add collidable environment objects that player can interacted with.
+    * [X] ~~**Add interactable environment objects** - Add collidable environment objects that player can interacted with.~~
       * [ ] **Openable Containers**: Add some chests/furniture that can be 'opened' and fed into Inventory System and Quest System.
         * [ ] **Key Locked Containers**: Add a locked attribute to containers, restricting them from being opened without
         the player having the right 'key' item
         * [ ] **Puzzle Locked Containers**: Add a puzzle system that is presented to the player when attempting to open
         this type of container. Puzzles might be combination, pattern, lock-picking,  
       * [ ] **Gathering Nodes**: Add nodes that can be interacted with and despawn/respawn.
-        * [X] **Harvesting**: Add some plants that can be 'harvested' and get basic skill timers going.
-          * [X] **Basic Gather Timers**: Get the basic skill timers to keep for harvesting
-          * [X] **GUI: Skill Timer**: Show a little pop-up progress indicator while gathering.
+        * [ ] **Harvesting**
+          * [X] ~~**Initial**: Add some plants that can be 'harvested' and get basic skill timers going.~~
+          * [X] ~~**Basic Gather Timers**: Get the basic skill timers to keep for harvesting~~
+          * [X] ~~**GUI: Skill Timer**: Show a little pop-up progress indicator while gathering.~~
           * [ ] **Persist node gather progress**: Save the players harvesting progress between cancels/interruptions.
-          * [X] **Add Gather looting**: (F/S 'Simple Inventory') Node loot tables, transfer of loot from node to player inventory.
-          * [X] **Loot Table** - Add a feature that entities/objects can use to define their loot possibilities.
-          * [X] **Persist Node loot** - persist the node's gathered items state between multiple harvests
-          * [X] **'Despawn' node after gather completes**: Display some kind of empty graphic in its place, stop interactivity.
-          * [X] **'Respawn' node**: Add respawn timer for each node, after which the node respawns to be gatherable again.
+          * [X] ~~**Add Gather looting**: (F/S 'Simple Inventory') Node loot tables, transfer of loot from node to player inventory.~~
+          * [X] ~~**Loot Table** - Add a feature that entities/objects can use to define their loot possibilities.~~
+          * [X] ~~**Persist Node loot** - persist the node's gathered items state between multiple harvests.~~
+          * [X] ~~**'Despawn' node after gather completes**: Display some kind of empty graphic in its place, stop interactivity.~~
+          * [X] ~~**'Respawn' node**: Add respawn timer for each node, after which the node respawns to be gatherable again.~~
+          * [ ] **Randomize node locations**: Add ranges that certain nodes may be able to spawn, avoiding overlap/collision
         * [ ] **Mining**: Add some rocks/minerals that can be 'mined'.
-        * [ ] **Logging**: Add some trees that can be 'chopped' and fed into the Gathering/Inventory systems
+        * [ ] **Logging**: Add some trees that can be 'chopped'.
+      * [ ] **Gathering Skill**: Add an initial skill system that restricts the ability to gather nodes before learning the skill.
+      * [ ] **Gathering Tools**: Add tool items that are required to perform a gathering skill.
+        * [ ] **Improved Tools**: Using a tool with a higher gather skill statistic improves gather speed and loot yield.
     * [ ] **Add enterable buildings** - Add building structures that can be entered when player steps into it's 'door'
 
 - **Inventory**
   * [ ] **Simple inventory feature** - Add very basic simple inventory system to get it started
-    * [X] **GUI: Basic 'Bag'** - Add window with item slots to represent the characters held items
+    * [X] ~~**GUI: Basic 'Bag'** - Add window with item slots to represent the characters held items~~
     * [ ] **GUI: Item Window** - Add window that displays item details which opens from item slot icon
-    * [X] **Item list** - Add a short list of items, figure out the best way to persist it.
+    * [X] ~~**Item list** - Add a short list of items, figure out the best way to persist it.~~
     * [ ] **Persist Held Items** - Save the player's items between game closing/opening.
     * [ ] **Consider a save feature** - do we need that yet?...
 
-* [X] **Projectiles**: Add a basic projectile that shoots out of the player in their facing direction
+- **Enemy Basics**
+    * [X] ~~**Initial**: Add a prototype enemy to serve for building other systems around.~~
+    * [ ] **Aggro/Dumb Pursuit**: Add simple system for an enemy to aggro the player and pursue/follow it.
+
+- **Melee Combat**
+    * [ ] **Combat Animation**: Add a simple system for handling the visual animation of attacking
+    * [ ] **Damage and Health**: Add a simple system for handling giving/taking damage from Player to an Enemy
+    * [ ] **Target Window**: Add GUI that displays the target's health level
+    * [ ] **Player Window**: Add GUI that displays the Player's health level
+    * [ ] **Enemy Attacks**: Add the ability for the Enemy to attack the Player and deal damage to it
+    * [ ] **Enemy Death**: Add sprites/animation and logic for the Enemy to die when it runs out of HP.
+    * [ ] **Enemy Loot**: Add ability for Player to loot a dead enemy
+    * [ ] **Enemy Corpse Despawn**
+    * [ ] **Enemy Respawn**
+    * [ ] **Multiple Enemies**    
+
+- **Projectiles** 
+  * [X] **Initial**: Add a basic projectile that shoots out of the player in their facing direction
   * [ ] **Hitting Mobs/Objects**: Projectiles affect Mobs and Objects that collide with them - doing damage, nudging it,
     or just annoying them... depending on what is projected and what is hit.
-  * [ ] **Shooting/Throwing**: Add weapon based projectiles that interact with player inventory,
-  requiring a range weapon, expending ammo, etc. 
-
+    * [ ] **Shooting/Throwing**: Add weapon based projectiles that interact with player inventory,
+    requiring a range weapon, expending ammo, etc.
 
 - **Spell system** : , basic logic to cast and land, and start figuring it out
   * [ ] **Spell Book GUI**: Add some basic GUI to scribe/memorize spells to/from
@@ -171,6 +192,10 @@ this project in a couple years to keep working on it.
     * [ ] **Slow swimming speed** - While a mob is moving through water, their movement speed should be reduced.
     * [ ] **Fishing** - Add basic fishing gathering skill that requires player to be near water, triggers a timer, and
     randomly transfers fishing loot into the Players inventory.
+
+---
+## Bugs
+- Due to x/y coords being fudged around for radial collision when working on areaobjects, the NPC attention turn during quest conversation is off in the X+ and Y+ directions
 
 ---
 ## Concepts, plans, ideas ...
