@@ -127,7 +127,7 @@ this project in a couple years to keep working on it.
           * [X] ~~**Initial**: Add some plants that can be 'harvested' and get basic skill timers going.~~
           * [X] ~~**Basic Gather Timers**: Get the basic skill timers to keep for harvesting~~
           * [X] ~~**GUI: Skill Timer**: Show a little pop-up progress indicator while gathering.~~
-          * [ ] **Persist node gather progress**: Save the players harvesting progress between cancels/interruptions.
+          * [X] ~~**Persist node gather progress**: Save the players harvesting progress between cancels/interruptions.~~
           * [X] ~~**Add Gather looting**: (F/S 'Simple Inventory') Node loot tables, transfer of loot from node to player inventory.~~
           * [X] ~~**Loot Table** - Add a feature that entities/objects can use to define their loot possibilities.~~
           * [X] ~~**Persist Node loot** - persist the node's gathered items state between multiple harvests.~~
