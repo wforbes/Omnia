@@ -14,7 +14,7 @@ import java.sql.Statement;
 
 public class Shrub extends Flora {
 
-    public Shrub(OverworldState gameState, ShrubType.TYPES type, float x, float y) {
+    public Shrub(OverworldState gameState, ShrubType.TYPES type, int x, int y) {
         super(gameState, x, y);
         String sprite_dir = this.getSpriteDirFromDB("shrub");
         this.areaObjectType = new ShrubType(type, this.gameState.db);

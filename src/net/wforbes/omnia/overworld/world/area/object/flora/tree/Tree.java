@@ -20,7 +20,7 @@ public class Tree extends Flora {
     //31,66
     //30x15
 
-    public Tree(OverworldState gameState, TreeType.TYPES type, float x, float y) {
+    public Tree(OverworldState gameState, TreeType.TYPES type, int x, int y) {
         super(gameState, x, y);
         String sprite_dir = this.getSpriteDirFromDB("tree");
         this.areaObjectType = new TreeType(type, this.gameState.db);
@@ -34,7 +34,7 @@ public class Tree extends Flora {
 
     protected void initCollisionShape() {
         this.collision_baseX = 21; //(w/2)-??
-        System.out.println("tree init h: " + this.height);
+        //System.out.println("tree init h: " + this.height);
         this.collision_baseY = this.height-14-1; //h-spriteOffsetY-??
         this.baseY = this.collision_baseY;
         this.collisionRadius = 21;

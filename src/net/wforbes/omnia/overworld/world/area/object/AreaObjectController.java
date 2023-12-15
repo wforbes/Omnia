@@ -2,6 +2,7 @@ package net.wforbes.omnia.overworld.world.area.object;
 
 import javafx.geometry.Point2D;
 import net.wforbes.omnia.db.AreaObjectDBA;
+import net.wforbes.omnia.gameFX.rendering.Renderable;
 import net.wforbes.omnia.overworld.world.area.Area;
 import net.wforbes.omnia.overworld.world.area.object.flora.shrub.Shrub;
 import net.wforbes.omnia.overworld.world.area.object.flora.shrub.ShrubType;
@@ -32,6 +33,10 @@ public class AreaObjectController {
 
     public void init() {
         this.areaObjects = new ArrayList<>();
+        System.out.println(this.area.getAreaMaxX() + ", " + this.area.getAreaMaxY());
+        this.addShrubsInRandomLoc(70, this.area.getAreaMaxX(), this.area.getAreaMaxY());
+        this.addTreesInRandomLoc(10, this.area.getAreaMaxX(), this.area.getAreaMaxY());
+        /*
         this.areaObjects.add(
             new Shrub(
                 this.area.getWorld().getGameState(),
@@ -74,10 +79,11 @@ public class AreaObjectController {
                 TreeType.TYPES.OAK,
                 420, 100
             )
-        );
+        );*/
         for (AreaObject ao: this.areaObjects) {
             ao.init();
         }
+        System.out.println("AreaObjectController initialized!");
     }
 
     public void update() {
@@ -87,36 +93,58 @@ public class AreaObjectController {
         //this.areaObjects.removeIf(AreaObject::isFlaggedForDespawn);
     }
 
-    public void initRANDOM() {
-        int numBushes = 50;
-        this.areaObjects = new ArrayList<>();
+    public void addShrubsInRandomLoc(int population, int xRange, int yRange) {
         Random rand = new Random();
-        List<Point2D> usedPnts = new ArrayList<>();
-        for (int i = 0; i < numBushes; i++) {
-            Point2D randPnt = this.generateRandomXY(rand, 240);
-            while (this.randomPointAlreadyUsed(randPnt, usedPnts)) {
+        int checkX = 32,checkY = 32;
+        //List<Point2D> usedPnts = new ArrayList<>();
+        for (int i = 0; i < population; i++) {
+            Point2D randPnt = this.generateRandomXY(rand, xRange, yRange);
+            while (this.randomPointAlreadyUsed(randPnt, checkX, checkY)) {
                 //System.out.println("regenerating random point for idx " + i);
-                randPnt = this.generateRandomXY(rand, 240);
+                randPnt = this.generateRandomXY(rand, xRange, yRange);
             }
             this.areaObjects.add(
                     new Shrub(
                             this.area.getWorld().gameState,
                             ShrubType.TYPES.BLUEBERRY,
-                            (float)randPnt.getX(),
-                            (float)randPnt.getY()
+                            (int)randPnt.getX(),
+                            (int)randPnt.getY()
                     )
             );
-            usedPnts.add(randPnt);
+            //usedPnts.add(randPnt);
         }
-        System.out.println("AreaObjectController initialized!");
-    }
-    private Point2D generateRandomXY(Random rand, int range) {
-        return new Point2D(Math.abs(rand.nextDouble() * range), Math.abs(rand.nextDouble() * range));
     }
 
-    private boolean randomPointAlreadyUsed (Point2D randPnt, List<Point2D> usedPnts) {
+    public void addTreesInRandomLoc(int population, int xRange, int yRange) {
+        Random rand = new Random();
+        int checkX = 64, checkY = 64;
+        for (int i = 0; i < population; i++) {
+            Point2D randPnt = this.generateRandomXY(rand, xRange, yRange);
+            while (this.randomPointAlreadyUsed(randPnt, checkX, checkY)) {
+                //System.out.println("regenerating random point for idx " + i);
+                randPnt = this.generateRandomXY(rand, xRange, yRange);
+            }
+            this.areaObjects.add(
+                    new Tree(
+                            this.area.getWorld().gameState,
+                            TreeType.TYPES.OAK,
+                            (int)randPnt.getX(),
+                            (int)randPnt.getY()
+                    )
+            );
+        }
+    }
+
+    private Point2D generateRandomXY(Random rand, int xRange, int yRange) {
+        return new Point2D(
+            Math.abs(rand.nextInt(xRange + 1)),
+            Math.abs(rand.nextInt(yRange + 1))
+        );
+    }
+
+    private boolean randomPointAlreadyUsed (Point2D randPnt, int checkX, int checkY) {
         //System.out.println("randomPointAlreadyUsed");
-        for (Point2D p: usedPnts) {
+        for (Renderable renderable: this.area.getSortedRenderableList()) {
             /*debuggos
             System.out.println("absVal pX: " + Math.abs(p.getX()));
             System.out.println("absVal rpX: " + Math.abs(randPnt.getX()));
@@ -128,12 +156,9 @@ public class AreaObjectController {
                     + (Math.abs(p.getY()) - Math.abs(randPnt.getY())) + "( "
                     + (Math.abs(p.getY()) - Math.abs(randPnt.getY()) < 72) + ")"
             );*/
-            if (Math.abs(p.getX() - randPnt.getX()) < 16
-                    && Math.abs(p.getY() - randPnt.getY()) < 16
-                    && Math.abs(randPnt.getX() - this.area.getWorld().player.getX() + (this.area.getWorld().player.getWidth()/2.0)) < 32
-                    && Math.abs(randPnt.getY() - this.area.getWorld().player.getY() + (this.area.getWorld().player.getHeight()/2.0)) < 32
-                    && Math.abs(randPnt.getX() - this.area.TEST_NPC_XPOS - (this.area.getWorld().player.getWidth()/2.0)) < 32
-                    && Math.abs(randPnt.getY() - this.area.TEST_NPC_YPOS - (this.area.getWorld().player.getHeight()/2.0)) < 32
+
+            if (Math.abs(renderable.getX() - randPnt.getX()) < checkX
+                && Math.abs(renderable.getY() - randPnt.getY()) < checkY
             ) {
                 return true;
             }

@@ -19,7 +19,8 @@ public class AreaObject implements Renderable {
 
     protected final OverworldState gameState;
     protected final AreaObjectDBA areaObjectDBA;
-    protected float x, y, xmap, ymap, width, height;
+    protected int x, y;
+    protected float xmap, ymap, width, height;
     protected double baseY;
     protected double collisionRadius;
     protected double collision_baseX;
@@ -39,7 +40,7 @@ public class AreaObject implements Renderable {
     protected AreaObjectType areaObjectType;
     protected boolean waitingToSpawn;
 
-    public AreaObject(OverworldState gameState, float x, float y) {
+    public AreaObject(OverworldState gameState, int x, int y) {
         this.gameState = gameState;
         this.x = x;
         this.y = y;

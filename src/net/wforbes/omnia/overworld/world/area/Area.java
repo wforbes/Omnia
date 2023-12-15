@@ -41,6 +41,12 @@ public class Area {
     public TileMap getTileMap() {
         return this.tileMap;
     }
+    public int getAreaMaxX() {
+        return this.tileMap.getWidth();
+    }
+    public int getAreaMaxY() {
+        return this.tileMap.getHeight();
+    }
     public void addEntity(Entity entity) {
         this.entities.add(entity);
     }
@@ -139,7 +145,7 @@ public class Area {
             r.render(gc);
         }
     }
-    private ArrayList<Renderable> getSortedRenderableList() {
+    public ArrayList<Renderable> getSortedRenderableList() {
         ArrayList<Renderable> renderables = new ArrayList<>();
         renderables.addAll(this.entities);
         renderables.addAll(this.areaObjectController.getAreaObjects());

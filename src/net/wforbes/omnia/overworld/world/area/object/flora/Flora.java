@@ -18,7 +18,7 @@ public abstract class Flora extends AreaObject implements Harvestable {
     protected LootTimer lootTimer;
     protected Loot loot;
 
-    public Flora(OverworldState gameState, float x, float y) {
+    public Flora(OverworldState gameState, int x, int y) {
         super(gameState, x, y);
     }
 
