@@ -21,10 +21,6 @@ public class Player extends Mob {
     private int dashDelay = 120;
     private int lastDashTick = 0;
 
-    private double scale = 1;
-    private double collisionBoxWidth;
-    private double collisionBoxHeight;
-
     protected int currentAction;
     private TargetController targetController;
     private ProjectileController projectileController;

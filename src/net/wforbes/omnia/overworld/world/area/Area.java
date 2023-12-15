@@ -5,8 +5,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameFX.rendering.Renderable;
+import net.wforbes.omnia.overworld.entity.Procyon;
 import net.wforbes.omnia.overworld.entity.DocNPC;
-import net.wforbes.omnia.overworld.entity.Enemy;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.NPC;
 import net.wforbes.omnia.overworld.world.World;
@@ -18,8 +18,6 @@ import net.wforbes.omnia.overworld.world.area.tile.TileMap;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
-import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
 public class Area {
     private final AreaObjectController areaObjectController;
@@ -71,7 +69,7 @@ public class Area {
         testNPC.init(TEST_NPC_XPOS, TEST_NPC_YPOS);
         this.addEntity(testNPC);
 
-        Enemy testEnemy = new Enemy(world.gameState, "A Procyon");
+        Procyon testEnemy = new Procyon(world.gameState, "A Procyon");
         testEnemy.init(TEST_ENEMY_XPOS, TEST_ENEMY_YPOS);
         this.addEntity(testEnemy);
     }

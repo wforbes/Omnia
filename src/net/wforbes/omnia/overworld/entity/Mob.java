@@ -30,7 +30,6 @@ public abstract class Mob extends Entity {
 
     protected AttentionController attentionController;
     protected String name;
-    protected String spriteSheetPath;
     protected Image spriteSheet;
     private ArrayList<Image[]> sprites;
     protected int width, height;
@@ -62,10 +61,7 @@ public abstract class Mob extends Entity {
     public MovementController movementController;
     private EntityEffectController entityEffectController;
     public boolean isPlayer; //TODO: remove - for testing
-    protected int collisionHeightOffset;
-    protected int collisionRadius;
-    protected int collisionBoxWidth;
-    protected int collisionBoxHeight;
+    protected double collisionRadius;
     public boolean isColliding;
     private AreaObject collidingAreaObject;
     protected Color nameColor;
@@ -76,10 +72,10 @@ public abstract class Mob extends Entity {
     public OverworldState gameState;
     private double collision_baseX;
     private double collision_baseY;
-    private Point2D collision_baseCenterPnt;
-    private Circle collision_baseCircle;
     protected PathfindController pathfindController;
     private ArrayList<Image[]> combatSprites;
+    private Circle collision_baseCircle;
+    private Point2D collision_baseCenterPnt;
 
     public PathfindController getPathfindController() {
         return this.pathfindController;
@@ -168,9 +164,36 @@ public abstract class Mob extends Entity {
         return this.movementAnimation;
     }
     public int getCollisionBoxWidth() { return this.collisionBoxWidth; }
+    public int getCollisionBoxHeight() { return this.collisionBoxHeight; }
     public double getCollisionRadius() { return this.collisionRadius; }
+    public void setCollisionRadius(int radius) { this.collisionRadius = radius; }
     public double getCollisionBaseX() { return this.collision_baseX; }
+    public void setCollisionBaseX(double x) { this.collision_baseX = x; }
     public double getCollisionBaseY() { return this.collision_baseY; }
+    public void setCollisionBaseY(double y) { this.collision_baseY = y; }
+    public void setCollisionBaseCenterPnt(Point2D centerPnt) { this.collision_baseCenterPnt = centerPnt; }
+    public void setCollisionBaseCircle(Circle baseCircle) { this.collision_baseCircle = baseCircle; }
+    public int getCollisionXOffset() {
+        return this.collisionXOffset;
+    }
+    public void setCollisionXOffset(int offset) {
+        this.collisionXOffset = offset;
+    }
+    public int getCollisionYOffset() {
+        return this.collisionYOffset;
+    }
+    public void setCollisionYOffset(int offset) {
+        this.collisionYOffset = offset;
+    }
+    public void setCollisionBoxWidth(int boxWidth) {
+        this.collisionBoxWidth = boxWidth;
+    }
+    public void setCollisionBoxHeight(int boxHeight) {
+        this.collisionBoxHeight = boxHeight;
+    }
+
+
+    public void setBaseY(double y) { this.baseY = y; }
     public AreaObject getCollidingAreaObject() {
         return this.collidingAreaObject;
     }
@@ -186,12 +209,21 @@ public abstract class Mob extends Entity {
 
     }
     private void initCollisionShape() {
-        this.collision_baseX = 3;
-        this.collision_baseY = this.height - 5;
+        //entity/areaobject collision
+        //this.collisionBoxWidth = this.width/2;
+        //this.collisionBoxHeight = this.height/2;
+        this.collision_baseX = 3;//3;
+        this.collision_baseY = this.height-5;//this.height - 5;
         this.baseY = this.collision_baseY;
         this.collisionRadius = 10;
         this.collision_baseCenterPnt = new Point2D(collision_baseX, collision_baseY);
         this.collision_baseCircle = new Circle(collision_baseX, collision_baseY, collisionRadius);
+
+        //entity/entity collision
+        this.setCollisionXOffset(2);
+        this.setCollisionYOffset(8);
+        this.setCollisionBoxWidth(12);
+        this.setCollisionBoxHeight(8);
     }
 
     void loadSprites(String path) {
@@ -263,20 +295,21 @@ public abstract class Mob extends Entity {
         //TODO: simplify this to iterate through area Renderables
         for(Entity e : gameState.world.area.entities) {
             if(!e.getName().equals(this.name)) {
-                /* AABB Collision
+                /* AABB Collision */
                 if (
-                        this.x + xa < e.getX()+collisionBoxWidth &&
-                        this.x + xa + collisionBoxWidth > e.getX() &&
-                        this.y + ya < e.getY()+collisionBoxHeight &&
-                        this.y + ya + collisionBoxHeight >  e.getY()
+                    (this.getX()) + xa + collisionXOffset < e.getX()+e.getCollisionBoxWidth()+e.getCollisionXOffset() &&
+                    this.getX() + xa + collisionBoxWidth + collisionXOffset > e.getX() + e.getCollisionXOffset() &&
+                    this.getY() + ya + collisionYOffset < e.getY()+e.getCollisionBoxHeight()+e.getCollisionYOffset() &&
+                    this.getY() + ya + collisionBoxHeight + collisionYOffset >  e.getY() + e.getCollisionYOffset()
                 ) {
                     return true;
-                }*/
-                double xDist = (this.getX()+xa - e.getX());
-                double yDist = (this.getY()+ya - e.getY());
-                if(Math.sqrt((xDist*xDist) + (yDist*yDist)) <= (collisionRadius/2.0+e.getCollisionRadius()/2.0)) {
-                    return true;
                 }
+                /*
+                double xDist = (this.getX()+xa+collision_baseX - this.collisionRadius/2.0) - (e.getX()+collision_baseX - this.collisionRadius/2.0);
+                double yDist = (this.getY()+ya+collision_baseY - this.collisionRadius/2.0) - (e.getY()+collision_baseY - this.collisionRadius/2.0);
+                if(Math.sqrt((xDist*xDist) + (yDist*yDist)) < ((e.getCollisionRadius())/2.0)+(this.getCollisionRadius())/2.0) {
+                    return true;
+                }*/
             }
         }
 
@@ -532,20 +565,40 @@ public abstract class Mob extends Entity {
 
         //render new mini-map style collision
         if(!this.offScreen()) {
-            gc.strokeOval(
+
+            gc.strokeOval(//this is kinda broken on entities right now
                     (this.x+ xmap) + this.collision_baseX,
                     (this.y + ymap) + this.collision_baseY,
                     collisionRadius,
                     collisionRadius-4
             );
+            gc.strokeRect(
+                    ((this.getX() + xmap + collisionXOffset)),
+                    ((this.getY() + ymap) + collisionYOffset),
+                    (this.collisionBoxWidth),
+                    (this.collisionBoxHeight)
+            );
         }
-
+        gc.strokeRect(
+                ((this.getX() + xmap + collisionXOffset))*getScale(),
+            ((this.getY() + ymap + collisionYOffset))*getScale(),
+            (this.collisionBoxWidth)*getScale(),
+            (this.collisionBoxHeight)*getScale());
+        gc.setStroke(Color.BLUE);
+        /*
+        gc.strokeRect( //show actual x/y point
+                ((this.getX() + xmap))*getScale(),
+                ((this.getY() + ymap))*getScale(),
+                (2)*getScale(),
+                (2)*getScale());
+        // I don't remember what this is...
         gc.strokeOval(
                 ((this.getX() + xmap) + this.collision_baseX)*getScale(),
                 ((this.getY() + ymap) + this.collision_baseY)*getScale(),
                 collisionRadius * getScale(),
                 (collisionRadius-4)*getScale()
-        );
+        );*/
+
         //render with x/y at topleft of oval xy tangents
         /*gc.strokeOval(
             (this.x + xmap + (this.width/2.0)-(collisionRadius/2.0))*getScale(),
