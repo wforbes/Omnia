@@ -11,7 +11,7 @@ public class HarvestController extends ActionController {
     private Harvestable harvestTarget;
 
     public HarvestController(Entity owner) {
-        super(owner, "Harvest");
+        super(owner, "Harvest", true);
     }
 
     public void harvestMaterials() {

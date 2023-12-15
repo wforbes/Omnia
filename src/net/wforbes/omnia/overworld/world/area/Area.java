@@ -78,11 +78,11 @@ public class Area {
         //TODO: Mostly COPYPASTA FROM MOB... combine into a better system
         //TODO: simplify this to iterate through area Renderables
         for(Entity e : entities) {
-            System.out.println(e.getName());
+            //System.out.println(e.getName());
             double xDist = (x - e.getX());
             double yDist = (y - e.getY());
-            System.out.println(xDist + ", " + yDist);
-            System.out.println(Math.floor(Math.sqrt((xDist*xDist) + (yDist*yDist))) + ", " + Math.floor(collisionRadius/2.0+e.getCollisionRadius()/2.0));
+            //System.out.println(xDist + ", " + yDist);
+            //System.out.println(Math.floor(Math.sqrt((xDist*xDist) + (yDist*yDist))) + ", " + Math.floor(collisionRadius/2.0+e.getCollisionRadius()/2.0));
             if (
                 Math.floor(Math.sqrt((xDist*xDist) + (yDist*yDist)))+collisionRadius <= Math.floor(collisionRadius/2.0+e.getCollisionRadius()/2.0)
                 || Math.floor(Math.sqrt((xDist*xDist) + (yDist*yDist)))-collisionRadius <= Math.floor(collisionRadius/2.0+e.getCollisionRadius()/2.0)
@@ -93,7 +93,7 @@ public class Area {
 
         for (AreaObject ao : getAreaObjects()) {
             if (!ao.isSpawned()) continue;
-            System.out.println(ao);
+            //System.out.println(ao);
             double xDist = (x+collisionBaseX - collisionRadius/2.0) - (ao.getX()+ao.getCollisionBaseX());
             double yDist = (y+collisionBaseY - collisionRadius/3.0) - (ao.getY()+ao.getCollisionBaseY());
             boolean collided =
@@ -103,7 +103,7 @@ public class Area {
                 return true;
             }
         }
-        System.out.println("spawnSpaceIsBlocked: false");
+        //System.out.println("spawnSpaceIsBlocked: false");
         return false;
     }
 

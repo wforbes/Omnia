@@ -14,6 +14,7 @@ import java.sql.Statement;
 public abstract class Flora extends AreaObject implements Harvestable {
     protected static final String FLORA_SPRITE_DIR = "/overworld/terrain/flora/";
     protected boolean harvested = false;
+    protected float harvestProgress = 0;
     protected LootTimer lootTimer;
     protected Loot loot;
 

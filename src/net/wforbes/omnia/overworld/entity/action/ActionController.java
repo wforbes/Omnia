@@ -12,9 +12,18 @@ public class ActionController {
     protected int actionTimer = 0;
     private Actionable actionTarget;
 
+    protected double progress = 0;
+    protected boolean continuable = false;
+
     public ActionController(Entity owner, String actionGerund) {
         this.owner = owner;
         this.actionGerund = actionGerund;
+    }
+
+    public ActionController(Entity owner, String actionGerund, boolean continuable) {
+        this.owner = owner;
+        this.actionGerund = actionGerund;
+        this.continuable = continuable;
     }
 
     protected boolean actionNotReady() {
@@ -24,6 +33,9 @@ public class ActionController {
     }
 
     protected void startAction() {
+        if (this.continuable && this.progress > 0) {
+            this.actionTimer = (int) Math.floor(this.progress * (double)this.actionDuration);
+        }
         this.cooldownTimer = 0;
         this.isPerforming = true;
         this.owner.gameState.gui.getActionWindow().startAction(
@@ -42,6 +54,9 @@ public class ActionController {
                             "action timer (mod10): " +
                                     ((float)this.actionTimer / (float)this.actionDuration)
                     );
+                    if (this.continuable) {
+                        this.progress = (double) this.actionTimer / (double) this.actionDuration;
+                    }
                     this.owner.gameState.gui.getActionWindow().updateAction(
                             (double)this.actionTimer / (double)this.actionDuration
                     );
@@ -51,6 +66,7 @@ public class ActionController {
                     this.owner.gameState.gui.getActionWindow().completeAction();
                     this.isPerforming = false;
                     this.actionTimer = 0;
+                    if (this.continuable) this.progress = 0;
                     this.completeAction();
                     this.actionTarget = null;
                 }
