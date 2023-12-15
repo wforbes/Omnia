@@ -1,15 +1,15 @@
-package net.wforbes.omnia.overworld.entity;
+package net.wforbes.omnia.overworld.entity.mob.player;
 
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
-import net.wforbes.omnia.overworld.entity.attention.TargetController;
+import net.wforbes.omnia.overworld.entity.attention.PlayerTargetController;
 import net.wforbes.omnia.overworld.entity.action.harvest.HarvestController;
-import net.wforbes.omnia.overworld.entity.pathfind.PathfindController;
+import net.wforbes.omnia.overworld.entity.mob.Mob;
 import net.wforbes.omnia.overworld.entity.projectile.ProjectileController;
 
 public class Player extends Mob {
@@ -22,7 +22,7 @@ public class Player extends Mob {
     private int lastDashTick = 0;
 
     protected int currentAction;
-    private TargetController targetController;
+    private PlayerTargetController targetController;
     private ProjectileController projectileController;
     private HarvestController harvestController;
 
@@ -30,8 +30,19 @@ public class Player extends Mob {
     public Player(OverworldState gameState, String name) {
         super(gameState, name, 0.5, true);
         this.width = this.height = 16;
+        this.meleeReach = 4;
         this.nameColor = Color.BLUE;
         this.nameFlashColor = Color.LIGHTBLUE;
+    }
+
+    @Override
+    public Entity getTarget() {
+        return this.targetController.getTarget();
+    }
+
+    @Override
+    public void setTarget(Entity e) {
+        this.targetController.setTarget(e);
     }
 
     public void init() {
@@ -41,7 +52,7 @@ public class Player extends Mob {
         this.facingDir = FACING_S;
         movementAnimation = new MovementAnimation(this);
         this.setAnimationDirection(facingDir);
-        this.targetController = new TargetController();//TODO: pass this to targetController for player references
+        this.targetController = new PlayerTargetController(this);
         this.projectileController = new ProjectileController(this);
         this.harvestController = new HarvestController(this);
 
@@ -59,7 +70,12 @@ public class Player extends Mob {
         this.setPosition(xPos, yPos);
     }
 
-    public TargetController getTargetController() {
+    @Override
+    public boolean hasAttentionOnSomething() {
+        return false;
+    }
+
+    public PlayerTargetController getTargetController() {
         return this.targetController;
     }
     public ProjectileController getProjectileController() {
@@ -83,6 +99,9 @@ public class Player extends Mob {
 
     private int keydownCooldown = 50;
     private int keydownTime = 0;
+    private boolean lastUpdateHandled = true;
+    private int updateCount = 0;
+    private int lastUpdateCounted = 0;
     private void checkActions() {
         if (gameState.keyboardController.isKeyDown(KeyCode.DIGIT1)) {
             this.projectileController.fireProjectile();
@@ -90,17 +109,10 @@ public class Player extends Mob {
         if (gameState.keyboardController.isKeyDown(KeyCode.H)) {
             this.harvestController.harvestMaterials();
         }
-        if (gameState.keyboardController.isKeyDown(KeyCode.BACK_QUOTE)) {
-            if (keydownTime == 0) {
-                this.attacking = !this.attacking; //TODO: Move to CombatController
-                this.keydownTime++;
-            }
-        }
-        if (keydownTime > 0 && keydownTime <= keydownCooldown) {
-            keydownTime++;
-        } else {
-            keydownTime = 0;
-        }
+    }
+
+    public void handleAttackKeyPress() {
+        this.combatController.toggleAttacking();
     }
 
     private boolean dashReady() {

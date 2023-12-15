@@ -1,7 +1,7 @@
 package net.wforbes.omnia.overworld.entity.projectile;
 
 import javafx.scene.canvas.GraphicsContext;
-import net.wforbes.omnia.overworld.entity.Player;
+import net.wforbes.omnia.overworld.entity.mob.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;

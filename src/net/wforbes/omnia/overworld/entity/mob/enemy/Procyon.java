@@ -1,18 +1,19 @@
-package net.wforbes.omnia.overworld.entity;
+package net.wforbes.omnia.overworld.entity.mob.enemy;
 
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import net.wforbes.omnia.gameState.OverworldState;
-import net.wforbes.omnia.overworld.entity.Enemy;
+import net.wforbes.omnia.overworld.entity.mob.enemy.Enemy;
 
 public class Procyon extends Enemy {
     public Procyon(OverworldState gameState, String name) {
         super(gameState, name, OverworldState.SPRITE_DIR + "attack_test1.gif", 24, 23);
         //this.width = 24; this.height = 23;
+
         this.nameColor = Color.DARKRED;
         this.nameFlashColor = Color.RED;
-        this.attentionController.setAttentionSpan(30);
+        this.enemyTargetController.setAttentionSpan(30);
     }
     @Override
     public void init(double xPos, double yPos) {
@@ -25,6 +26,7 @@ public class Procyon extends Enemy {
         this.setCollisionYOffset(14);
         this.setCollisionBoxWidth(12);
         this.setCollisionBoxHeight(8);
+        this.meleeReach = 4; //TODO: COMBAT - where should this really go?
 
         //entity/areaobject collision
         this.setCollisionBaseX(7);

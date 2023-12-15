@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import net.wforbes.omnia.overworld.entity.Entity;
-import net.wforbes.omnia.overworld.entity.Mob;
+import net.wforbes.omnia.overworld.entity.mob.Mob;
 
 import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 

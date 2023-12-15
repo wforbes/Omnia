@@ -6,13 +6,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
-import net.wforbes.omnia.overworld.entity.Player;
 import net.wforbes.omnia.overworld.gui.inventory.InventoryWindowController;
 import net.wforbes.omnia.overworld.gui.item.ItemCursorController;
 import net.wforbes.omnia.overworld.gui.loot.LootWindowController;
 import net.wforbes.omnia.u.W;
-
-import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
 public class GUIController {
 

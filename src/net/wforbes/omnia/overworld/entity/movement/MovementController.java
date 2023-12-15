@@ -2,7 +2,7 @@ package net.wforbes.omnia.overworld.entity.movement;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
-import net.wforbes.omnia.overworld.entity.Mob;
+import net.wforbes.omnia.overworld.entity.mob.Mob;
 
 public class MovementController {
     protected Mob mover;

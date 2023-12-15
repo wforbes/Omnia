@@ -1,11 +1,10 @@
 package net.wforbes.omnia.overworld.entity.action.harvest;
 
 import net.wforbes.omnia.overworld.entity.Entity;
-import net.wforbes.omnia.overworld.entity.Mob;
+import net.wforbes.omnia.overworld.entity.mob.Mob;
 import net.wforbes.omnia.overworld.entity.action.ActionController;
 import net.wforbes.omnia.overworld.gui.loot.Loot;
 import net.wforbes.omnia.overworld.world.area.object.AreaObject;
-import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
 
 public class HarvestController extends ActionController {
     private Harvestable harvestTarget;

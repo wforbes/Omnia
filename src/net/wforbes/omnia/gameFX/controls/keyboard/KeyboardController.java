@@ -50,6 +50,7 @@ public abstract class KeyboardController {
 
     public void handleKeyPressed(KeyEvent event) {
         if(!keyboard.keysDown.get(event.getCode())) {
+            //System.out.println(event);
             keyboard.keysDown.replace(event.getCode(), true);
         }
         this.keyPressedHook(event);

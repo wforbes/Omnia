@@ -1,7 +1,7 @@
 package net.wforbes.omnia.overworld.entity.animation;
 
 import javafx.scene.image.Image;
-import net.wforbes.omnia.overworld.entity.Mob;
+import net.wforbes.omnia.overworld.entity.mob.Mob;
 
 public class MovementAnimation {
     Mob mover;
@@ -72,7 +72,7 @@ public class MovementAnimation {
         } else {
             currentFrame = 0;
         }
-        if (this.mover.isAttacking()) {//TODO: Move to CombatAnimation?
+        if (this.mover.getCombatController().isAttacking()) {//TODO: Move to CombatAnimation?
             if (this.lastCombatHit == 0 || (System.nanoTime() - this.lastCombatHit)/1000000 > this.combatDelay) {
                 long elapsed = (System.nanoTime() - c_startTime) / 1000000;//how long its been since the last frame has come up
                 if (elapsed > c_animationDelay) {
@@ -82,13 +82,12 @@ public class MovementAnimation {
                 if (c_currentFrame == c_frames.length) {//if true then we went out of bounds
                     c_currentFrame = 1;
                     c_playedOnce = true;
+                    this.mover.getCombatController().handleMeleeTrigger();
                     this.lastCombatHit = System.nanoTime();
                 }
             } else {
                 currentFrame = 0;
             }
-
-
         }
     }
 

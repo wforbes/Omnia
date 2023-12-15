@@ -1,9 +1,8 @@
 package net.wforbes.omnia.overworld.entity.attention;
 
 import net.wforbes.omnia.overworld.entity.Entity;
-import net.wforbes.omnia.u.W;
 
-public class AttentionController {
+public class NPCTargetController extends TargetController {
     protected Entity owner;
     protected Entity target;
     protected int attentionSpan;
@@ -11,8 +10,8 @@ public class AttentionController {
     private int startFocusTime;
     private int secondsUntilAttentionFree;
 
-    public AttentionController(Entity owner) {
-        this.owner = owner;
+    public NPCTargetController(Entity owner) {
+        super(owner);
     }
 
     /**

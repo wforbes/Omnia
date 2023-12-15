@@ -8,7 +8,7 @@ import net.wforbes.omnia.gameFX.controls.keyboard.KeyboardController;
 import net.wforbes.omnia.overworld.controls.OverworldKeyboardController;
 import net.wforbes.omnia.gameFX.controls.mouse.MouseController;
 import net.wforbes.omnia.overworld.controls.OverworldMouseController;
-import net.wforbes.omnia.overworld.entity.Player;
+import net.wforbes.omnia.overworld.entity.mob.player.Player;
 import net.wforbes.omnia.overworld.gui.GUIController;
 import net.wforbes.omnia.overworld.gui.menu.MenuController;
 import net.wforbes.omnia.overworld.world.World;

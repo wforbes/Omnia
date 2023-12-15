@@ -10,7 +10,11 @@ public abstract class Entity implements Renderable {
     public Entity(OverworldState gameState) {
         this.gameState = gameState;
     }
-
+    public abstract Entity getCollidingEntity();
+    public abstract Entity getTarget();
+    public abstract void setTarget(Entity e);
+    public abstract boolean isInMeleeRange(Entity e);
+    public abstract int getMeleeReach();
     public abstract String getName();
     protected int collisionXOffset;
     protected int collisionYOffset;

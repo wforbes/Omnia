@@ -34,8 +34,8 @@ public class AreaObjectController {
     public void init() {
         this.areaObjects = new ArrayList<>();
         System.out.println(this.area.getAreaMaxX() + ", " + this.area.getAreaMaxY());
-        this.addShrubsInRandomLoc(70, this.area.getAreaMaxX(), this.area.getAreaMaxY());
-        this.addTreesInRandomLoc(10, this.area.getAreaMaxX(), this.area.getAreaMaxY());
+        this.addShrubsInRandomLoc(100, this.area.getAreaMaxX(), this.area.getAreaMaxY());
+        this.addTreesInRandomLoc(30, this.area.getAreaMaxX(), this.area.getAreaMaxY());
         /*
         this.areaObjects.add(
             new Shrub(

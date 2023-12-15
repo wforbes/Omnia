@@ -1,14 +1,13 @@
 package net.wforbes.omnia.overworld.entity.pathfind;
 
 import javafx.geometry.Point2D;
-import net.wforbes.omnia.overworld.entity.Mob;
+import net.wforbes.omnia.overworld.entity.mob.Mob;
 
 import javafx.scene.input.MouseEvent;
 
 import java.awt.geom.Line2D;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 
 import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 

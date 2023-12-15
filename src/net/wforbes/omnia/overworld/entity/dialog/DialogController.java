@@ -1,8 +1,8 @@
 package net.wforbes.omnia.overworld.entity.dialog;
 
 import net.wforbes.omnia.overworld.entity.Entity;
-import net.wforbes.omnia.overworld.entity.Mob;
-import net.wforbes.omnia.overworld.entity.NPC;
+import net.wforbes.omnia.overworld.entity.mob.Mob;
+import net.wforbes.omnia.overworld.entity.mob.npc.NPC;
 import net.wforbes.omnia.overworld.gui.ChatWindowController;
 import net.wforbes.omnia.overworld.world.World;
 

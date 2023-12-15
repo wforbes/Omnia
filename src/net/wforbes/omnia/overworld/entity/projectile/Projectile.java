@@ -1,14 +1,11 @@
 package net.wforbes.omnia.overworld.entity.projectile;
 
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.overworld.entity.Entity;
-import net.wforbes.omnia.overworld.entity.Mob;
-import net.wforbes.omnia.overworld.entity.Player;
+import net.wforbes.omnia.overworld.entity.mob.Mob;
 import net.wforbes.omnia.overworld.world.area.tile.TileMap;
-import net.wforbes.omnia.u.W;
 
 import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 

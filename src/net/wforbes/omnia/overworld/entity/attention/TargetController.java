@@ -2,7 +2,7 @@ package net.wforbes.omnia.overworld.entity.attention;
 
 import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.overworld.entity.Entity;
-import net.wforbes.omnia.overworld.entity.Mob;
+import net.wforbes.omnia.overworld.entity.mob.Mob;
 import net.wforbes.omnia.overworld.world.area.effect.EffectController;
 
 import java.util.List;
@@ -11,19 +11,19 @@ import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
 public class TargetController {
 
-    public void handleEntityTargeting(MouseEvent event, List<Entity> entities, EffectController ec) {
-        //poll for area entities
-        for(Entity e : entities) {
-            // if the distance between the edge of the radi are less than the distance within
-            //  the radi combined, the user has clicked the entity
-            if ((getXYMapCollsionRadius(event, e, ec)) <= (getCursorEntityCollisionDist(e, ec))) {
-                //System.out.println("Clicked on " + e.getName());
-                ((Mob) e).setTargeted(true); // set the entity as targeted
-            } else if (((Mob) e).isTargeted()){
-                // otherwise ensure entity is no longer targeted
-                ((Mob) e).setTargeted(false);
-            }
-        }
+    protected final Entity owner;
+    protected Entity target;
+
+    public TargetController(Entity owner) {
+        this.owner = owner;
+    }
+
+    public void setTarget(Entity e) {
+        this.target = e;
+    }
+
+    public Entity getTarget() {
+        return this.target;
     }
 
     /**
@@ -34,7 +34,7 @@ public class TargetController {
      * @param   Entity      the entity being checked for collision
      * @return  the linear distance from the click event and the entity
      */
-    private double getXYMapCollsionRadius(MouseEvent event, Entity e, EffectController effectController) {
+    protected double getXYMapCollsionRadius(MouseEvent event, Entity e, EffectController effectController) {
         // x and y distance between click event and the entity, considering tilemap offset and scaling
         double xDist = (event.getX()
                 - (e.getX()+ ((Mob) e).getXMap() + ((Mob)e).getCollisionBaseX()) * getScale());
@@ -51,7 +51,7 @@ public class TargetController {
      * @param   Entity  entity to check
      * @return double
      */
-    private double getCursorEntityCollisionDist(Entity e, EffectController effectController) {
+    protected double getCursorEntityCollisionDist(Entity e, EffectController effectController) {
         return (effectController.getClickCircle().getCircleRadius()*2.0)
                 + (e.getCollisionRadius()*2.0);
     }

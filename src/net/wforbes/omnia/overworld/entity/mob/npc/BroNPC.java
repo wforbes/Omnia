@@ -1,9 +1,10 @@
-package net.wforbes.omnia.overworld.entity;
+package net.wforbes.omnia.overworld.entity.mob.npc;
 
-import javafx.geometry.Point2D;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
-import net.wforbes.omnia.overworld.entity.attention.AttentionController;
+import net.wforbes.omnia.overworld.entity.attention.NPCTargetController;
+import net.wforbes.omnia.overworld.entity.mob.Mob;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 
 import java.util.Arrays;
@@ -14,7 +15,7 @@ public class BroNPC extends NPC {
         "yo", "sup", "hey"
     };
 
-    private AttentionController attentionController;
+    private NPCTargetController attentionController;
 
     public BroNPC(OverworldState gameState, String name, double speed) {
         super(gameState, name, speed);
@@ -23,7 +24,7 @@ public class BroNPC extends NPC {
         this.numFrames = new int[]{3,3,3,3};
         this.combatNumFrames = new int[]{3,3,3,3};//TODO: UNUSED SO FAR
         //this.loadSprites(OverworldState.SPRITE_DIR + "bro_pokemon.gif");
-        this.facingDir = FACING_S;
+        this.facingDir = Mob.FACING_S;
         movementAnimation = new MovementAnimation(this);
         //npcDialog = new BroDialog();
         this.setAnimationDirection(facingDir);
@@ -37,6 +38,11 @@ public class BroNPC extends NPC {
     }
 
     public void init(int xPos, int yPos) {}
+
+    @Override
+    public boolean hasAttentionOnSomething() {
+        return false;
+    }
 
     public void update() { super.update(); }
 

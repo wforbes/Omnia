@@ -1,4 +1,4 @@
-package net.wforbes.omnia.overworld.entity;
+package net.wforbes.omnia.overworld.entity.mob;
 
 import javafx.animation.*;
 import javafx.geometry.Point2D;
@@ -14,8 +14,10 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
-import net.wforbes.omnia.overworld.entity.attention.AttentionController;
+import net.wforbes.omnia.overworld.entity.attention.NPCTargetController;
+import net.wforbes.omnia.overworld.entity.combat.CombatController;
 import net.wforbes.omnia.overworld.entity.effect.EntityEffectController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 import net.wforbes.omnia.overworld.entity.pathfind.PathfindController;
@@ -27,14 +29,13 @@ import java.util.ArrayList;
 import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
 public abstract class Mob extends Entity {
-
-    protected AttentionController attentionController;
+    //protected AttentionController attentionController;
     protected String name;
     protected Image spriteSheet;
     private ArrayList<Image[]> sprites;
     protected int width, height;
-    double x, y, baseY;
-    double xmap, ymap;//current area map position
+    protected double x, y, baseY;
+    protected double xmap, ymap;//current area map position
     protected double speed;
     protected double combatSpeed; //TODO: Move to CombatController
     protected double runSpeedMod = 1.5;
@@ -45,9 +46,9 @@ public abstract class Mob extends Entity {
                             //4-nw, 5-ne, 6-sw, 7-se
     //numFrames: each index is a sprite row,
     //  each value is the number of animation frames
-    int[] numFrames;
-    int[] combatNumFrames;
-    MovementAnimation movementAnimation;
+    protected int[] numFrames;
+    protected int[] combatNumFrames;
+    protected MovementAnimation movementAnimation;
     //TODO: consider an enum to store facing directions
     //TODO: consider utility class to contain directions
     public static final int FACING_N = 0;
@@ -76,15 +77,13 @@ public abstract class Mob extends Entity {
     private ArrayList<Image[]> combatSprites;
     private Circle collision_baseCircle;
     private Point2D collision_baseCenterPnt;
-
     public PathfindController getPathfindController() {
         return this.pathfindController;
     }
 
-    protected boolean attacking = false;//TODO: Move to CombatController
-    public boolean isAttacking() {
-        return this.attacking;//TODO: Move to CombatController
-    }
+    protected CombatController combatController;
+    private Entity collidingEntity;
+    protected int meleeReach;
 
     public Mob(OverworldState gameState, String name, double speed, boolean player) {
         super(gameState);
@@ -99,9 +98,9 @@ public abstract class Mob extends Entity {
         this.nameText.setFont(nameFont);
         this.nameText.setFontSmoothingType(FontSmoothingType.LCD);
         this.initNameAnimation();
-        this.attentionController = new AttentionController(this);
         this.entityEffectController = new EntityEffectController(this);
         this.pathfindController = new PathfindController(this);
+        this.combatController = new CombatController(this);
     }
 
     public Mob(OverworldState gameState, String name, Point2D startPos, double speed) {
@@ -191,11 +190,26 @@ public abstract class Mob extends Entity {
     public void setCollisionBoxHeight(int boxHeight) {
         this.collisionBoxHeight = boxHeight;
     }
-
-
     public void setBaseY(double y) { this.baseY = y; }
     public AreaObject getCollidingAreaObject() {
         return this.collidingAreaObject;
+    }
+    public Entity getCollidingEntity() { return this.collidingEntity; }
+    public CombatController getCombatController() { return this.combatController; }
+    public int getMeleeReach() {
+        return this.meleeReach;
+    }
+
+    public boolean isInMeleeRange(Entity e) {
+        if (
+            this.getX() - this.meleeReach < e.getX() + e.getWidth() &&
+            this.getX() + this.meleeReach + this.getWidth() > e.getX() &&
+            this.getY() - this.meleeReach < e.getY() + e.getHeight() &&
+            this.getY() + this.meleeReach + this.getHeight() >  e.getY()
+        ) {
+            return true;
+        }
+        return false;
     }
     public void addHarvestMaterialsToInventory(Flora flora) {
         System.out.println("TODO: add harvest materials to inventory");
@@ -226,7 +240,7 @@ public abstract class Mob extends Entity {
         this.setCollisionBoxHeight(8);
     }
 
-    void loadSprites(String path) {
+    protected void loadSprites(String path) {
         this.spriteSheet = new Image(getClass().getResourceAsStream(path));
         this.sprites = new ArrayList<>();
         for(int i = 0; i < numFrames.length; i++) {
@@ -283,9 +297,7 @@ public abstract class Mob extends Entity {
         }
     }
 
-    public boolean hasAttentionOnSomething() {
-        return this.attentionController.getIsFocusing();
-    }
+    public abstract boolean hasAttentionOnSomething();
 
     public boolean hasCollided(double xa, double ya) {
         return isOccupied(xa, ya);
@@ -302,6 +314,7 @@ public abstract class Mob extends Entity {
                     this.getY() + ya + collisionYOffset < e.getY()+e.getCollisionBoxHeight()+e.getCollisionYOffset() &&
                     this.getY() + ya + collisionBoxHeight + collisionYOffset >  e.getY() + e.getCollisionYOffset()
                 ) {
+                    this.collidingEntity = e;
                     return true;
                 }
                 /*
@@ -312,6 +325,7 @@ public abstract class Mob extends Entity {
                 }*/
             }
         }
+        this.collidingEntity = null;
 
         for (AreaObject ao : gameState.world.area.getAreaObjects()) {
             if (!ao.isSpawned()) continue;
@@ -351,7 +365,7 @@ public abstract class Mob extends Entity {
         this.isMoving = moving;
     }
 
-    void setAnimationDirection(int dir) {
+    protected void setAnimationDirection(int dir) {
         movementAnimation.setFacingDir(dir);
         movementAnimation.setFrames(sprites.get(dir));
         movementAnimation.setCombatFrames(combatSprites.get(dir));
@@ -467,7 +481,8 @@ public abstract class Mob extends Entity {
     }
 
     public void update() {
-        this.attentionController.update();
+        //this.attentionController.update();
+        this.combatController.update();
         this.recalculateBaseY();
     }
     private void recalculateBaseY() {
@@ -520,7 +535,7 @@ public abstract class Mob extends Entity {
                 width * getScale(),
                 height * getScale()
         );*/
-        if (this.isAttacking()) {
+        if (this.combatController.isAttacking()) {
             gc.drawImage(
                     movementAnimation.getCombatImage(),
                     (x + xmap - width / 2.0) * getScale(),
@@ -565,7 +580,6 @@ public abstract class Mob extends Entity {
 
         //render new mini-map style collision
         if(!this.offScreen()) {
-
             gc.strokeOval(//this is kinda broken on entities right now
                     (this.x+ xmap) + this.collision_baseX,
                     (this.y + ymap) + this.collision_baseY,
@@ -584,7 +598,12 @@ public abstract class Mob extends Entity {
             ((this.getY() + ymap + collisionYOffset))*getScale(),
             (this.collisionBoxWidth)*getScale(),
             (this.collisionBoxHeight)*getScale());
-        gc.setStroke(Color.BLUE);
+        gc.setStroke(Color.WHITE);
+        gc.strokeRect(
+                ((this.getXActual() + xmap - (this.width/2.0)))*getScale(),
+                ((this.getYActual() + ymap - (this.height/2.0)))*getScale(),
+                (this.width)*getScale(),
+                (this.height)*getScale());
         /*
         gc.strokeRect( //show actual x/y point
                 ((this.getX() + xmap))*getScale(),
@@ -622,10 +641,6 @@ public abstract class Mob extends Entity {
         this.nameText = null;
         this.spriteSheet = null;
         this.sprites = null;
-        if (this.attentionController != null) {
-            this.attentionController.teardown();
-            this.attentionController = null;
-        }
         if (this.entityEffectController != null) {
             this.entityEffectController.teardown();
             this.entityEffectController = null;

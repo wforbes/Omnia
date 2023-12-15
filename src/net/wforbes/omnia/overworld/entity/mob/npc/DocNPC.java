@@ -1,11 +1,12 @@
-package net.wforbes.omnia.overworld.entity;
+package net.wforbes.omnia.overworld.entity.mob.npc;
 
 import javafx.geometry.Point2D;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.dialog.NPCDialog.DocDialog;
+import net.wforbes.omnia.overworld.entity.mob.Mob;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
-import net.wforbes.omnia.u.W;
 
 import java.util.Arrays;
 
@@ -22,10 +23,15 @@ public class DocNPC extends NPC {
         this.combatNumFrames = new int[]{3,3,3,3};//TODO: UNUSED SO FAR
         this.loadSprites(OverworldState.SPRITE_DIR + "doc_pokemon.gif");
         this.movementAnimation = new MovementAnimation(this);
-        this.facingDir = FACING_S;
+        this.facingDir = Mob.FACING_S;
         this.setAnimationDirection(facingDir);
-        this.attentionController.setAttentionSpan(30);
+        this.npcTargetController.setAttentionSpan(30);
         npcDialog = new DocDialog();
+    }
+
+    @Override
+    public Entity getCollidingEntity() {
+        return null; //TODO
     }
 
     @Override
@@ -47,7 +53,7 @@ public class DocNPC extends NPC {
     public void setAttentionFocus(Mob senderMob) {
         //W.out(this.getName() + " setting attention focus on " + senderMob.getName());
         this.movementController.standAndFace(senderMob.getLocationPoint());
-        this.attentionController.startFocusing(senderMob);
+        this.npcTargetController.startFocusing(senderMob);
     }
 
     private boolean hasTriggerPhrase(String str) {

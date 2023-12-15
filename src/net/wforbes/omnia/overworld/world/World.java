@@ -2,7 +2,7 @@ package net.wforbes.omnia.overworld.world;
 
 import javafx.scene.canvas.GraphicsContext;
 import net.wforbes.omnia.gameState.OverworldState;
-import net.wforbes.omnia.overworld.entity.Player;
+import net.wforbes.omnia.overworld.entity.mob.player.Player;
 import net.wforbes.omnia.overworld.entity.dialog.DialogController;
 import net.wforbes.omnia.overworld.world.area.Area;
 
