@@ -2,7 +2,7 @@
 Retro 2D Role-Playing Video Game targeted for the PC, Mac, Linux, and Android. 
 Written using Java and JavaFX.
 
-(Readme last updated: 11/27/23)
+(Readme last updated: 12/17/23)
 
 ![Screenshots of Omnia version 0.0.1](https://raw.githubusercontent.com/wforbes/Omnia/master/press/screens_v0-0-1.png)
 
@@ -160,7 +160,7 @@ this project in a couple years to keep working on it.
     * [ ] **Target Window**: Add GUI that displays the target's health level
     * [ ] **Player Window**: Add GUI that displays the Player's health level
     * [ ] **Enemy Attacks**: Add the ability for the Enemy to attack the Player and deal damage to it
-    * [ ] **Enemy Death**: Add sprites/animation and logic for the Enemy to die when it runs out of HP.
+    * [X] ~~**Enemy Death**: Add sprites/animation and logic for the Enemy to die when it runs out of HP.~~
     * [ ] **Enemy Loot**: Add ability for Player to loot a dead enemy
     * [ ] **Enemy Corpse Despawn**
     * [ ] **Enemy Respawn**
