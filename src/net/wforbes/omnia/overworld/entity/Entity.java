@@ -8,7 +8,7 @@ import net.wforbes.omnia.overworld.entity.combat.stat.StatController;
 
 public abstract class Entity implements Renderable {
     public OverworldState gameState;
-
+    protected boolean spawned;
     public Entity(OverworldState gameState) {
         this.gameState = gameState;
     }
@@ -17,6 +17,7 @@ public abstract class Entity implements Renderable {
     public abstract void setTarget(Entity e);
     public abstract boolean isInMeleeRange(Entity e);
     public abstract int getMeleeReach();
+    public abstract boolean isOnScreen();
     public StatController statController;
     public abstract StatController getStatController();
     public abstract int getMaxMeleeDamage();
@@ -24,6 +25,8 @@ public abstract class Entity implements Renderable {
     public abstract void receiveMeleeDamage(int dmg, Entity dealer);
     public abstract int getCurrentHealth();
     public abstract int getMaxHealth();
+    public abstract void kill(Entity killer);
+    public abstract boolean isDead();
     public abstract String getName();
     public abstract Text getNameText();
     protected int collisionXOffset;

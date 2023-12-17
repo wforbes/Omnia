@@ -28,6 +28,7 @@ public class DocNPC extends NPC {
         this.setAnimationDirection(facingDir);
         this.npcTargetController.setAttentionSpan(30);
         npcDialog = new DocDialog();
+        this.mobType = "doc";
     }
 
     @Override

@@ -43,11 +43,9 @@ public class Shrub extends Flora {
     }
 
     @Override
-    protected void spawn() {
+    public void spawn() {
         super.spawn();
         this.resetHarvestState();
         this.generateAndSetLoot();
     }
-
-
 }

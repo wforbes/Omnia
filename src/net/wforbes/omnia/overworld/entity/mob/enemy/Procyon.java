@@ -18,6 +18,7 @@ public class Procyon extends Enemy {
         this.nameColor = Color.DARKRED;
         this.nameFlashColor = Color.RED;
         this.enemyTargetController.setAttentionSpan(30);
+        this.mobType = "procyon";
     }
     @Override
     public void init(double xPos, double yPos) {

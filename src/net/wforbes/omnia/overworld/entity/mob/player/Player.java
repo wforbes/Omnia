@@ -36,6 +36,7 @@ public class Player extends Mob {
         this.meleeReach = 4;
         this.nameColor = Color.BLUE;
         this.nameFlashColor = Color.LIGHTBLUE;
+        this.mobType = "player";
     }
 
     @Override

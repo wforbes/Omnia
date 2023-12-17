@@ -9,6 +9,8 @@ public class MovementController {
     private int[] xya = new int[3];
     private Rectangle2D movementSpace;
     private int movementType;
+
+    //TODO: convert movement types to enum
     public static int MOVEMENT_STAND = 0;
     public static int MOVEMENT_PACE_VERTICAL = 1;
 
@@ -35,6 +37,7 @@ public class MovementController {
     }
 
     public void update() {
+        if (this.mover.isDead()) return;
         switch(movementType) {
             case 0:
                 this.standStill();

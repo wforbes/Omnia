@@ -22,7 +22,9 @@ import net.wforbes.omnia.overworld.entity.combat.stat.StatController;
 import net.wforbes.omnia.overworld.entity.effect.EntityEffectController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 import net.wforbes.omnia.overworld.entity.pathfind.PathfindController;
+import net.wforbes.omnia.overworld.gui.HealthbarController;
 import net.wforbes.omnia.overworld.world.area.object.AreaObject;
+import net.wforbes.omnia.overworld.world.area.object.corpse.MobCorpse;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
 
 import java.util.ArrayList;
@@ -78,6 +80,9 @@ public abstract class Mob extends Entity {
     private ArrayList<Image[]> combatSprites;
     private Circle collision_baseCircle;
     private Point2D collision_baseCenterPnt;
+    private Image corpseSprite;
+    private MobCorpse mobCorpse;
+
     public PathfindController getPathfindController() {
         return this.pathfindController;
     }
@@ -85,6 +90,11 @@ public abstract class Mob extends Entity {
     protected CombatController combatController;
     private Entity collidingEntity;
     protected int meleeReach;
+    private boolean dead;
+    protected String mobType; //TODO: string to coordinate loot, update this with new db struct
+    public boolean isDead() {
+        return this.dead;
+    }
 
     public Mob(OverworldState gameState, String name, double speed, boolean player, MobStats stats) {
         super(gameState);
@@ -104,15 +114,8 @@ public abstract class Mob extends Entity {
         this.combatController = new CombatController(this);
         this.statController = new StatController(
             this, stats);
-    }
-
-    public Mob(OverworldState gameState, String name, Point2D startPos, double speed) {
-        super(gameState);
-        this.name = name;
-        this.x = startPos.getX();
-        this.y = startPos.getY();
-        this.speed = speed;
-        this.movementController = new MovementController(this);
+        this.statController.setHealthbarController(new HealthbarController(this.gameState.gui, this));
+        this.dead = false;
     }
     @Override
     public String getName() {
@@ -225,7 +228,7 @@ public abstract class Mob extends Entity {
         return this.statController.getMaxMeleeDmg();
     }
     public void receiveMeleeDamage(int dmg, Entity dealer) {
-        this.statController.receiveMeleeDamage(dmg);
+        this.statController.receiveMeleeDamage(dmg, dealer);
     }
     public int getCurrentHealth() {
         return this.statController.getCurrentHealth();
@@ -233,6 +236,38 @@ public abstract class Mob extends Entity {
     public int getMaxHealth() {
         return this.statController.getMaxHealth();
     }
+    public void kill(Entity killer) {
+        this.dead = true;
+        this.becomeCorpse();
+        this.becomeSpirit();
+        //TODO: give combat experience to killer
+        this.despawn();
+    }
+
+    private void becomeCorpse() {
+        this.mobCorpse = new MobCorpse(
+            this.gameState,
+            this.mobType,
+            this.corpseSprite,
+            (int)this.getXActual(), (int)this.getYActual()
+        );
+        this.mobCorpse.spawn();
+    }
+
+    private void becomeSpirit() {
+        this.gameState.getWorld().getCurrentArea().getEntities().remove(this);
+        this.gameState.getWorld().getCurrentArea().getSpirits().add(this);
+    }
+
+    private void despawn() {
+        this.spawned = false;
+        this.statController.getHealthbarController().toggleHealthbarVisible();
+    }
+
+    public boolean isSpawned() {
+        return spawned;
+    }
+
     public void addHarvestMaterialsToInventory(Flora flora) {
         System.out.println("TODO: add harvest materials to inventory");
     }
@@ -242,7 +277,7 @@ public abstract class Mob extends Entity {
 
     protected void init(double xPos, double yPos) {
         this.initCollisionShape();
-
+        this.spawned = true;
     }
     private void initCollisionShape() {
         //entity/areaobject collision
@@ -280,6 +315,7 @@ public abstract class Mob extends Entity {
             }
             combatSprites.add(c_images);
         }
+        this.corpseSprite = new WritableImage(spriteSheet.getPixelReader(), 0, numFrames.length*height, width, height);
     }
 
     public void move(double xa, double ya) {
@@ -448,6 +484,9 @@ public abstract class Mob extends Entity {
                 y + ymap + height < 0 ||
                 y + ymap - height/2.5 > OmniaFX.getHeight();
     }
+    public boolean isOnScreen() {
+        return !this.offScreen();
+    }
 
     private boolean isTargeted;
     public boolean isTargeted() {
@@ -527,10 +566,10 @@ public abstract class Mob extends Entity {
         if(!this.offScreen()) {
             this.renderBackgroundEffects(gc);
             this.renderSprite(gc);
-
+            /*
             if(gameState.mobNamesVisible()) {
                 this.renderName(gc);
-            }
+            }*/
             if(gameState.collisionGeometryVisible()) {
                 this.renderCollisionGeometry(gc);
             }
@@ -541,6 +580,7 @@ public abstract class Mob extends Entity {
     }
     private boolean rendered = false;
     private void renderSprite(GraphicsContext gc) {
+        if (!this.isSpawned()) return;
         /* use to debug position data from first render
         if (!rendered) {
             System.out.println(this.getName() + " renderedX: " + (x + xmap - width / 2.0) * getScale());
@@ -557,23 +597,23 @@ public abstract class Mob extends Entity {
                 width * getScale(),
                 height * getScale()
         );*/
-        if (this.combatController.isAttacking()) {
+        if (this.combatController.isAttacking() && this.combatController.shouldHit()) {
             gc.drawImage(
-                    movementAnimation.getCombatImage(),
-                    (x + xmap - width / 2.0) * getScale(),
-                    (y + ymap - height / 2.0) * getScale(),
-                    width * getScale(),
-                    height * getScale()
+                movementAnimation.getCombatImage(),
+                (x + xmap - width / 2.0) * getScale(),
+                (y + ymap - height / 2.0) * getScale(),
+                width * getScale(),
+                height * getScale()
             );
             return;
         }
         //render with x/y in center of sprite
         gc.drawImage(
-                movementAnimation.getImage(),
-                (x + xmap - width / 2.0) * getScale(),
-                (y + ymap - height / 2.0) * getScale(),
-                width * getScale(),
-                height * getScale()
+            movementAnimation.getImage(),
+            (x + xmap - width / 2.0) * getScale(),
+            (y + ymap - height / 2.0) * getScale(),
+            width * getScale(),
+            height * getScale()
         );
     }
 

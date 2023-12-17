@@ -24,6 +24,7 @@ public class Area {
     private World world;
     private TileMap tileMap;
     public List<Entity> entities;
+    public List<Entity> spirits;
     public double TEST_NPC_XPOS = 200;
     public double TEST_NPC_YPOS = 200;
     public double TEST_ENEMY_XPOS = 140;
@@ -33,6 +34,7 @@ public class Area {
     public Area(World world) {
         this.world = world;
         this.entities = new ArrayList<>();
+        this.spirits = new ArrayList<>();
         this.areaObjectController = new AreaObjectController(this);
         this.effectController = new EffectController(this);
     }
@@ -52,6 +54,7 @@ public class Area {
     }
     public List<Entity> getEntities() { return this.entities; }
     public List<AreaObject> getAreaObjects() { return this.areaObjectController.getAreaObjects(); }
+    public List<Entity> getSpirits() { return this.spirits; }
     public void handleCanvasClick(MouseEvent event) {
         System.out.println("area.handleCanvasClick event: " + event);
     }
@@ -151,6 +154,7 @@ public class Area {
         ArrayList<Renderable> renderables = new ArrayList<>();
         renderables.addAll(this.entities);
         renderables.addAll(this.areaObjectController.getAreaObjects());
+        renderables.addAll(this.areaObjectController.getCorpses());
         renderables.sort(Comparator.comparingDouble(Renderable::getBaseY));
         return renderables;
     }

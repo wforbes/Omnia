@@ -1,5 +1,8 @@
 package net.wforbes.omnia.overworld.gui;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -10,6 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import net.wforbes.omnia.gameFX.rendering.Renderable;
 import net.wforbes.omnia.overworld.entity.Entity;
+
+import java.text.DecimalFormat;
 
 import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
@@ -22,11 +27,14 @@ public class HealthbarController {
     private boolean isVisible = false;
     private Text nameText;
     private Label nameLabel;
+    private ProgressIndicator progressIndicator;
+    private Label progressLabel;
 
     public HealthbarController(GUIController gui, Entity owner) {
         this.gui = gui;
         this.owner = owner;
-        this.getWindowPanel();
+        this.getWindowPanel(); //create window for the first time
+        this.initStartingHealth();
     }
 
     public Node getWindowPanel() {
@@ -41,10 +49,28 @@ public class HealthbarController {
         this.pane = this.createWindowPane();
         this.nameLabel = new Label(this.owner.getName());
         this.nameLabel.setStyle("-fx-font-weight: 700");
+
         this.progressBar = new ProgressBar();
         this.progressBar.getStyleClass().add("health-progress-bar");
+        this.progressLabel = new Label();
+        this.progressBar.progressProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov, Number oldVal, Number newVal) {
+                double value = newVal.doubleValue()*100;
+                DecimalFormat df = new DecimalFormat(
+                        (value > 99) ? "###.#"
+                            : (value > 9.9999999999) ? "##.#"
+                            : "#.#"
+                );
+                progressLabel.setText(df.format(value)+"%");
+            }
+        });
+        HBox hb = new HBox();
+        hb.setSpacing(5);
+        hb.setAlignment(Pos.CENTER);
+        hb.getChildren().addAll(this.progressBar, this.progressLabel);
+
         VBox verticalLayoutContainer = new VBox();
-        verticalLayoutContainer.getChildren().addAll(this.nameLabel, this.progressBar);
+        verticalLayoutContainer.getChildren().addAll(this.nameLabel, hb);
         this.pane.getChildren().add(verticalLayoutContainer);
         this.pane.setOpacity(1.0);
         return pane;
@@ -73,14 +99,19 @@ public class HealthbarController {
 
     public void toggleHealthbarVisible() {
         System.out.println("toggleHealthbarVisible");
+        System.out.println("isVisible: " + this.isVisible);
         this.isVisible = !this.isVisible;
-        if(this.isVisible) {
+        if (this.isVisible) {
             this.relocateWindow();
-            //gui.panelsPane.getChildren().add(gui.actionWindowPanel);
-            gui.addHealthbarPane(this);
+            if (!gui.getPanelsPane().getChildren().contains(this.getWindowPanel())) {
+                gui.panelsPane.getChildren().add(this.getWindowPanel());
+            }
+            //gui.addHealthbarPane(this);
         } else {
-            //gui.panelsPane.getChildren().remove(gui.actionWindowPanel);
-            gui.removeHealthbarPane(this);
+            if (gui.panelsPane.getChildren().contains(this.windowPanel)) {
+                gui.panelsPane.getChildren().remove(this.windowPanel);
+            }
+            //gui.removeHealthbarPane(this);
             //refocus canvas when actionWindow is closed
            // gui.gameState.getManager().getGameController().gameCanvas.requestFocus();
         }
@@ -92,19 +123,38 @@ public class HealthbarController {
 
     public void update() {
         if (
+            ((!this.owner.isOnScreen() && this.isVisible)
+            || (this.owner.isOnScreen() && !this.isVisible))
+            && this.gui != null
+        ) {
+            this.toggleHealthbarVisible();
+        }
+        /*
+        if (
             ( this.isVisible && this.isFullHealth() )
             || (!this.isVisible && !this.isFullHealth())
         ) {
             this.toggleHealthbarVisible();
-        }
-        if (this.owner != null && this.isVisible) {
+        }*/
+        //if (this.owner != null && this.isVisible) {
+        if (this.owner != null && this.owner.isOnScreen()) {
             this.relocateWindow();
         }
     }
 
-    public void updateHealth(double progress) {
+    public void initStartingHealth() {
+        this.progressBar.setProgress(
+            (double)this.owner.getCurrentHealth() / (double)this.owner.getMaxHealth()
+        );
+    }
 
-        this.progressBar.setProgress(progress);
+    public void updateHealth(double progress) {
+        System.out.println(progress);
+        if (progress > 0.0) {
+            this.progressBar.setProgress(progress);
+            return;
+        }
+        this.progressBar.setProgress(0);
     }
 
     private void relocateWindow() {

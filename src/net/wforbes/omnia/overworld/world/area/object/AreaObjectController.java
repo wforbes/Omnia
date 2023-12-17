@@ -17,6 +17,7 @@ public class AreaObjectController {
     private final Area area;
     //private final AreaObjectDBA areaObjectDBA;
     private List<AreaObject> areaObjects;
+    private List<AreaObject> corpses;
 
     public AreaObjectController(Area area) {
         //TODO: add concept of regions where flora is acceptable to grow
@@ -30,12 +31,18 @@ public class AreaObjectController {
     public List<AreaObject> getAreaObjects() {
         return this.areaObjects;
     }
+    public List<AreaObject> getCorpses() { return this.corpses; }
 
     public void init() {
+        this.corpses = new ArrayList<>();
         this.areaObjects = new ArrayList<>();
-        System.out.println(this.area.getAreaMaxX() + ", " + this.area.getAreaMaxY());
+        //System.out.println(this.area.getAreaMaxX() + ", " + this.area.getAreaMaxY());
         this.addShrubsInRandomLoc(100, this.area.getAreaMaxX(), this.area.getAreaMaxY());
         this.addTreesInRandomLoc(30, this.area.getAreaMaxX(), this.area.getAreaMaxY());
+        for (AreaObject ao: this.areaObjects) {
+            ao.init();
+        }
+        System.out.println("AreaObjectController initialized!");
         /*
         this.areaObjects.add(
             new Shrub(
@@ -80,15 +87,16 @@ public class AreaObjectController {
                 420, 100
             )
         );*/
-        for (AreaObject ao: this.areaObjects) {
-            ao.init();
-        }
-        System.out.println("AreaObjectController initialized!");
     }
 
     public void update() {
         for (AreaObject ao: this.areaObjects) {
             ao.update();
+        }
+        if (!this.corpses.isEmpty()) {
+            for (AreaObject c : this.corpses) {
+                c.update();
+            }
         }
         //this.areaObjects.removeIf(AreaObject::isFlaggedForDespawn);
     }

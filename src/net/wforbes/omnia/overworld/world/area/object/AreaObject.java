@@ -102,7 +102,7 @@ public class AreaObject implements Renderable {
         );
     }
 
-    protected void spawn() {
+    public void spawn() {
         if (this.isSpawned()) return;
         this.spawned = true;
     }
@@ -184,7 +184,7 @@ public class AreaObject implements Renderable {
                 y + ymap - height/2.5 > OmniaFX.getHeight();
     }
 
-    private void renderSprite(GraphicsContext gc) {
+    protected void renderSprite(GraphicsContext gc) {
         /*//render with x/y in top left
         gc.drawImage(
                 this.spriteImg,

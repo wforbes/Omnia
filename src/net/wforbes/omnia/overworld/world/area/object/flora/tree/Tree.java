@@ -48,7 +48,7 @@ public class Tree extends Flora {
     }
 
     @Override
-    protected void spawn() {
+    public void spawn() {
         super.spawn();
         this.generateAndSetLoot();
     }

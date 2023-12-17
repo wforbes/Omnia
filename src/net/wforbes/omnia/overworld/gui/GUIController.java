@@ -90,7 +90,8 @@ public class GUIController {
         List<Entity> areaEntities = this.gameState.getWorld().getCurrentArea().getEntities();
         for (Entity ae : areaEntities) {
             //System.out.println("init healthbar for " + ae.getName());
-            ae.statController.setHealthbarController(new HealthbarController(this, ae));
+            //ae.statController.setHealthbarController(new HealthbarController(this, ae));
+            panelsPane.getChildren().add(ae.statController.getHealthbarController().getWindowPanel());
         }
     }
 

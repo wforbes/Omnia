@@ -28,6 +28,7 @@ public class BroNPC extends NPC {
         movementAnimation = new MovementAnimation(this);
         //npcDialog = new BroDialog();
         this.setAnimationDirection(facingDir);
+        this.mobType = "bro";
     }
 
     @Override

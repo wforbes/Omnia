@@ -17,15 +17,30 @@ public class CombatController {
     }
 
     public void update() {
+        if (this.owner.getTarget() != null && this.owner.getTarget().isDead()) {
+            this.attacking = false;
+            this.owner.setTarget(null);
+            return;
+        }
     }
     public boolean isAttacking() {
         return this.attacking;
     }
+
     public void handleMeleeTrigger() {
-        System.out.println(this.owner.getTarget().getName());
-        //System.out.println("CC.meleeHit on " + this.owner.getCollidingEntity().getName()); //TODO: proximity-based attacks
+        //System.out.println(this.owner.getTarget().getName());
+        //System.out.println("CC.meleeHit on " + this.owner.getCollidingEntity().getName()); //TODO: check/handle proximity-based attacks
         Entity target = this.owner.getTarget();
-        if (this.owner.isInMeleeRange(target)) {//TODO: 12/15 refactor then continue with Target based attacks
+        if (this.owner.equals(target)) {
+            System.out.println(this.owner.getName() + " is attacking themself...");
+            return;
+        }
+        if (this.owner.isInMeleeRange(target)) {
+            if (target.isDead()) {
+                this.owner.setTarget(null);
+                //System.out.println(this.owner.getName() + " hit " + target.getName() + "... but nothing happened.");
+                return;
+            }
             this.meleeHit(target);
         }
     }
