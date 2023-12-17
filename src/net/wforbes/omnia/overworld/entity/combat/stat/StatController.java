@@ -1,23 +1,30 @@
-package net.wforbes.omnia.overworld.entity.combat.vital;
+package net.wforbes.omnia.overworld.entity.combat.stat;
 
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.gui.HealthbarController;
 
-public class VitalController {
+public class StatController {
     private final Entity owner;
     private int maxHealth;
     private int currentHealth;
     private HealthbarController healthbarController;
 
-    public VitalController(Entity owner, int maxHealth) {
+    private int maxMeleeDmg;
+    private float meleeAccuracy = 0.75F;
+
+    public StatController(Entity owner, MobStats stats) {
         this.owner = owner;
-        this.maxHealth = maxHealth;
-        this.currentHealth = maxHealth;
+        this.maxHealth = stats.maxHealth;
+        this.currentHealth = stats.maxHealth;
+        this.maxMeleeDmg = stats.maxMeleeDmg;
+        this.meleeAccuracy = stats.meleeAccuracy;
     }
 
     public void receiveMeleeDamage(int dmg) {
         this.currentHealth -= dmg;
-        System.out.println(this.owner.getName() + " took " + dmg + " points of damage!");
+        if (dmg != 0) {
+            System.out.println(this.owner.getName() + " took " + dmg + " points of damage!");
+        }
         this.healthbarController.updateHealth(
             this.getCurrentHealthPct()
         );
@@ -36,6 +43,14 @@ public class VitalController {
     public void setHealthbarController(HealthbarController hc) {
         System.out.println("setHealthbarController");
         this.healthbarController = hc;
+    }
+
+    public int getMaxMeleeDmg() {
+        return this.maxMeleeDmg;
+    }
+
+    public float getMeleeAccuracy() {
+        return this.meleeAccuracy;
     }
 
     public void update() {

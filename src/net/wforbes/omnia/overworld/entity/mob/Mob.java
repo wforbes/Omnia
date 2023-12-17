@@ -17,7 +17,8 @@ import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.combat.CombatController;
-import net.wforbes.omnia.overworld.entity.combat.vital.VitalController;
+import net.wforbes.omnia.overworld.entity.combat.stat.MobStats;
+import net.wforbes.omnia.overworld.entity.combat.stat.StatController;
 import net.wforbes.omnia.overworld.entity.effect.EntityEffectController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 import net.wforbes.omnia.overworld.entity.pathfind.PathfindController;
@@ -85,7 +86,7 @@ public abstract class Mob extends Entity {
     private Entity collidingEntity;
     protected int meleeReach;
 
-    public Mob(OverworldState gameState, String name, double speed, boolean player) {
+    public Mob(OverworldState gameState, String name, double speed, boolean player, MobStats stats) {
         super(gameState);
         this.gameState = gameState;
         this.isPlayer = player;
@@ -101,7 +102,8 @@ public abstract class Mob extends Entity {
         this.entityEffectController = new EntityEffectController(this);
         this.pathfindController = new PathfindController(this);
         this.combatController = new CombatController(this);
-        this.vitalController = new VitalController(this, 100);
+        this.statController = new StatController(
+            this, stats);
     }
 
     public Mob(OverworldState gameState, String name, Point2D startPos, double speed) {
@@ -213,16 +215,24 @@ public abstract class Mob extends Entity {
         return false;
     }
 
+    public StatController getStatController() {
+        return this.statController;
+    }
+    public float getMeleeAccuracy() {
+        return this.statController.getMeleeAccuracy();
+    }
+    public int getMaxMeleeDamage() {
+        return this.statController.getMaxMeleeDmg();
+    }
     public void receiveMeleeDamage(int dmg, Entity dealer) {
-        this.vitalController.receiveMeleeDamage(dmg);
+        this.statController.receiveMeleeDamage(dmg);
     }
     public int getCurrentHealth() {
-        return this.vitalController.getCurrentHealth();
+        return this.statController.getCurrentHealth();
     }
     public int getMaxHealth() {
-        return this.vitalController.getMaxHealth();
+        return this.statController.getMaxHealth();
     }
-
     public void addHarvestMaterialsToInventory(Flora flora) {
         System.out.println("TODO: add harvest materials to inventory");
     }
@@ -493,7 +503,7 @@ public abstract class Mob extends Entity {
     }
 
     public void update() {
-        this.vitalController.update();
+        this.statController.update();
         this.combatController.update();
         this.recalculateBaseY();
     }

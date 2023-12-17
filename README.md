@@ -154,8 +154,9 @@ this project in a couple years to keep working on it.
     * [ ] **Aggro/Dumb Pursuit**: Add simple system for an enemy to aggro the player and pursue/follow it.
 
 - **Melee Combat**
-    * [ ] **Combat Animation**: Add a simple system for handling the visual animation of attacking
-    * [ ] **Damage and Health**: Add a simple system for handling giving/taking damage from Player to an Enemy
+    * [X] ~~**Combat Animation**: Add a simple system for handling the visual animation of attacking~~
+    * [X] ~~**Damage and Health**: Add a simple system for handling giving/taking damage from Player to an Enemy~~
+    * [X] ~~**Mob Healthbar Window**: Add GUI that displays a mob's health level above their sprite~~
     * [ ] **Target Window**: Add GUI that displays the target's health level
     * [ ] **Player Window**: Add GUI that displays the Player's health level
     * [ ] **Enemy Attacks**: Add the ability for the Enemy to attack the Player and deal damage to it

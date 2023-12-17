@@ -9,6 +9,7 @@ import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.PlayerTargetController;
 import net.wforbes.omnia.overworld.entity.action.harvest.HarvestController;
+import net.wforbes.omnia.overworld.entity.combat.stat.MobStats;
 import net.wforbes.omnia.overworld.entity.mob.Mob;
 import net.wforbes.omnia.overworld.entity.projectile.ProjectileController;
 
@@ -28,7 +29,9 @@ public class Player extends Mob {
 
 
     public Player(OverworldState gameState, String name) {
-        super(gameState, name, 0.5, true);
+        super(gameState, name, 0.5, true, new MobStats(
+                1000, 50, 0.75F
+        ));
         this.width = this.height = 16;
         this.meleeReach = 4;
         this.nameColor = Color.BLUE;

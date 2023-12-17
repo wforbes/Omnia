@@ -4,6 +4,7 @@ import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.NPCTargetController;
+import net.wforbes.omnia.overworld.entity.combat.stat.MobStats;
 import net.wforbes.omnia.overworld.entity.mob.Mob;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 
@@ -18,8 +19,7 @@ public class BroNPC extends NPC {
     private NPCTargetController attentionController;
 
     public BroNPC(OverworldState gameState, String name, double speed) {
-        super(gameState, name, speed);
-        this.width = this.height = 16;
+        super(gameState, name, speed, new MobStats(1000, 50, 0.65F));
         this.width = this.height = 16;
         this.numFrames = new int[]{3,3,3,3};
         this.combatNumFrames = new int[]{3,3,3,3};//TODO: UNUSED SO FAR

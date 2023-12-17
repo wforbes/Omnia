@@ -12,7 +12,6 @@ import net.wforbes.omnia.overworld.gui.item.ItemCursorController;
 import net.wforbes.omnia.overworld.gui.loot.LootWindowController;
 import net.wforbes.omnia.u.W;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GUIController {
@@ -91,7 +90,7 @@ public class GUIController {
         List<Entity> areaEntities = this.gameState.getWorld().getCurrentArea().getEntities();
         for (Entity ae : areaEntities) {
             //System.out.println("init healthbar for " + ae.getName());
-            ae.vitalController.setHealthbarController(new HealthbarController(this, ae));
+            ae.statController.setHealthbarController(new HealthbarController(this, ae));
         }
     }
 

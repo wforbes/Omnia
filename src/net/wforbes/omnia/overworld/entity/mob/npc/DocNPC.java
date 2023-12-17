@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
+import net.wforbes.omnia.overworld.entity.combat.stat.MobStats;
 import net.wforbes.omnia.overworld.entity.dialog.NPCDialog.DocDialog;
 import net.wforbes.omnia.overworld.entity.mob.Mob;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
@@ -17,7 +18,7 @@ public class DocNPC extends NPC {
     };
 
     public DocNPC(OverworldState gameState) {
-        super(gameState, "Doc",0.25);
+        super(gameState, "Doc",0.25, new MobStats(1000, 50, 0.65F));
         this.width = this.height = 16;
         this.numFrames = new int[]{3,3,3,3};
         this.combatNumFrames = new int[]{3,3,3,3};//TODO: UNUSED SO FAR

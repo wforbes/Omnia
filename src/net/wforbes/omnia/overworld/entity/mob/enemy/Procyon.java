@@ -4,11 +4,15 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.overworld.entity.combat.stat.MobStats;
 import net.wforbes.omnia.overworld.entity.mob.enemy.Enemy;
 
 public class Procyon extends Enemy {
     public Procyon(OverworldState gameState, String name) {
-        super(gameState, name, OverworldState.SPRITE_DIR + "attack_test1.gif", 24, 23);
+        super(gameState, name,
+            OverworldState.SPRITE_DIR + "attack_test1.gif", 24, 23,
+            new MobStats(1000, 50, 0.65F)
+        );
         //this.width = 24; this.height = 23;
 
         this.nameColor = Color.DARKRED;

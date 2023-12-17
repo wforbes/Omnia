@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.attention.NPCTargetController;
+import net.wforbes.omnia.overworld.entity.combat.stat.MobStats;
 import net.wforbes.omnia.overworld.entity.mob.Mob;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 
@@ -13,8 +14,8 @@ public abstract class NPC extends Mob {
     protected StringBuilder chatBuilder;
     protected NPCTargetController npcTargetController;
     protected int lastChatTick = 0;
-    public NPC(OverworldState gameState, String name, double speed) {
-        super(gameState, name, speed, false);
+    public NPC(OverworldState gameState, String name, double speed, MobStats stats) {
+        super(gameState, name, speed, false, stats);
         this.meleeReach = 4;
         this.nameColor = Color.LIGHTBLUE;
         this.nameFlashColor = Color.AQUA;

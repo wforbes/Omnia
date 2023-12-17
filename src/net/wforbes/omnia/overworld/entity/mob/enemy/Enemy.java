@@ -5,16 +5,17 @@ import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.EnemyTargetController;
+import net.wforbes.omnia.overworld.entity.combat.stat.MobStats;
 import net.wforbes.omnia.overworld.entity.mob.Mob;
 
 public class Enemy extends Mob {
 
     protected final EnemyTargetController enemyTargetController;
 
-    public Enemy(OverworldState gameState, String name, String spritePath, double width, double height) {
-        super(gameState, name, 0.45, false);
-        this.width = 24;
-        this.height = 23;
+    public Enemy(OverworldState gameState, String name, String spritePath, int width, int height, MobStats stats) {
+        super(gameState, name, 0.45, false, stats);
+        this.width = width;
+        this.height = height;
         this.nameColor = Color.DARKRED;
         this.nameFlashColor = Color.RED;
         this.numFrames = new int[]{3, 3, 3, 3};
