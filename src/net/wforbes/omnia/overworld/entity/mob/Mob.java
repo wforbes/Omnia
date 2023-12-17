@@ -16,8 +16,8 @@ import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
-import net.wforbes.omnia.overworld.entity.attention.NPCTargetController;
 import net.wforbes.omnia.overworld.entity.combat.CombatController;
+import net.wforbes.omnia.overworld.entity.combat.vital.VitalController;
 import net.wforbes.omnia.overworld.entity.effect.EntityEffectController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 import net.wforbes.omnia.overworld.entity.pathfind.PathfindController;
@@ -101,6 +101,7 @@ public abstract class Mob extends Entity {
         this.entityEffectController = new EntityEffectController(this);
         this.pathfindController = new PathfindController(this);
         this.combatController = new CombatController(this);
+        this.vitalController = new VitalController(this, 100);
     }
 
     public Mob(OverworldState gameState, String name, Point2D startPos, double speed) {
@@ -211,6 +212,17 @@ public abstract class Mob extends Entity {
         }
         return false;
     }
+
+    public void receiveMeleeDamage(int dmg, Entity dealer) {
+        this.vitalController.receiveMeleeDamage(dmg);
+    }
+    public int getCurrentHealth() {
+        return this.vitalController.getCurrentHealth();
+    }
+    public int getMaxHealth() {
+        return this.vitalController.getMaxHealth();
+    }
+
     public void addHarvestMaterialsToInventory(Flora flora) {
         System.out.println("TODO: add harvest materials to inventory");
     }
@@ -481,7 +493,7 @@ public abstract class Mob extends Entity {
     }
 
     public void update() {
-        //this.attentionController.update();
+        this.vitalController.update();
         this.combatController.update();
         this.recalculateBaseY();
     }
@@ -555,8 +567,13 @@ public abstract class Mob extends Entity {
         );
     }
 
+    public Text getNameText() {
+        return this.nameText;
+    }
 
     private void renderName(GraphicsContext gc) {
+        //TODO: move name text into healthbar controller
+        //  and convert into a more general namePlate class
         if (this.isTargeted && this.nameColorTimeline.getStatus() == Animation.Status.RUNNING) {
             gc.setFill(this.nameText.getFill());
             gc.setFont(this.nameText.getFont());

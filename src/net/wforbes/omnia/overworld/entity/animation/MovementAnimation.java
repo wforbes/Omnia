@@ -72,23 +72,24 @@ public class MovementAnimation {
         } else {
             currentFrame = 0;
         }
-        if (this.mover.getCombatController().isAttacking()) {//TODO: Move to CombatAnimation?
+
             if (this.lastCombatHit == 0 || (System.nanoTime() - this.lastCombatHit)/1000000 > this.combatDelay) {
-                long elapsed = (System.nanoTime() - c_startTime) / 1000000;//how long its been since the last frame has come up
-                if (elapsed > c_animationDelay) {
-                    c_currentFrame++;//move on to the next frame
-                    c_startTime = System.nanoTime();//reset the start time!
-                }
-                if (c_currentFrame == c_frames.length) {//if true then we went out of bounds
-                    c_currentFrame = 1;
-                    c_playedOnce = true;
-                    this.mover.getCombatController().handleMeleeTrigger();
-                    this.lastCombatHit = System.nanoTime();
+                if (this.mover.getCombatController().isAttacking() && this.mover.getCombatController().shouldHit()) {
+                    long elapsed = (System.nanoTime() - c_startTime) / 1000000;//how long its been since the last frame has come up
+                    if (elapsed > c_animationDelay) {
+                        c_currentFrame++;//move on to the next frame
+                        c_startTime = System.nanoTime();//reset the start time!
+                    }
+                    if (c_currentFrame == c_frames.length) {//if true then we went out of bounds
+                        c_currentFrame = 1;
+                        c_playedOnce = true;
+                        this.mover.getCombatController().handleMeleeTrigger();
+                        this.lastCombatHit = System.nanoTime();
+                    }
                 }
             } else {
                 currentFrame = 0;
             }
-        }
     }
 
     public int getFrame(){ return currentFrame; }

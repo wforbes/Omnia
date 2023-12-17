@@ -58,7 +58,7 @@ public class HUD {
 	public void draw(FXGraphics2D fxg){
 		fxg.drawImage(image, 0, 10, width * OmniaFX.getScale(), height * OmniaFX.getScale(), null);
 		fxg.setFont(new Font("Century Gothic", Font.PLAIN, (14 * fxScale))); //TODO: possible bug with size of this font?
-		System.out.println(fxg.getFont().getSize());
+		//System.out.println(fxg.getFont().getSize());
 		//fxg.setFont(this.font);
 		fxg.drawString(player.getHealth() + " / " + player.getMaxHealth(), 25*OmniaFX.getScale(), 25*OmniaFX.getScale());
 		//fxg.drawString((player.getFire() / 100) + " / " + (player.getMaxFire() / 100), 25*OmniaFX.getScale(), 45*OmniaFX.getScale());

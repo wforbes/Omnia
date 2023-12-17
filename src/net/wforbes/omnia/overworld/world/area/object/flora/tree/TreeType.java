@@ -25,14 +25,14 @@ public class TreeType extends AreaObjectType {
         this.spriteFile = this.getSpriteFileFromDB(db);
     }
     public String getSpriteFileFromDB(Database db) {
-        System.out.println(this.type);
+        //System.out.println(this.type);
         String sql = "SELECT sprite_filename from flora_type WHERE genera='"+this.type+"';";
         try (
                 Statement statement = db.connection.createStatement();
                 ResultSet results = statement.executeQuery(sql)
         ) {
             results.next();
-            System.out.println(results.getString("sprite_filename"));
+            //System.out.println(results.getString("sprite_filename"));
             return results.getString("sprite_filename");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());

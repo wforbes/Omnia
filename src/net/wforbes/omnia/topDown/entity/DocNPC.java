@@ -69,7 +69,7 @@ public class DocNPC extends NPC{
         String response = DIALOG.get(chatMsg.toLowerCase());
         try { // using a map here kinda sucks...
             // this just needs an actual quest/dialog system
-            System.out.println(response);
+            //System.out.println(response);
         } catch (Exception ex) {
             System.out.println("handleQuests exception: " + ex.getMessage());
         }

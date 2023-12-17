@@ -11,6 +11,7 @@ public interface Renderable {
     double getXMap();
     double getYMap();
     double getBaseY();
+    int getCollisionXOffset();
     double getRenderX();
     double getRenderY();
     double getRenderXMap();

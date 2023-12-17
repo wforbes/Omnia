@@ -1,8 +1,10 @@
 package net.wforbes.omnia.overworld.entity;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.text.Text;
 import net.wforbes.omnia.gameFX.rendering.Renderable;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.overworld.entity.combat.vital.VitalController;
 
 public abstract class Entity implements Renderable {
     public OverworldState gameState;
@@ -15,7 +17,12 @@ public abstract class Entity implements Renderable {
     public abstract void setTarget(Entity e);
     public abstract boolean isInMeleeRange(Entity e);
     public abstract int getMeleeReach();
+    public VitalController vitalController;
+    public abstract void receiveMeleeDamage(int dmg, Entity dealer);
+    public abstract int getCurrentHealth();
+    public abstract int getMaxHealth();
     public abstract String getName();
+    public abstract Text getNameText();
     protected int collisionXOffset;
     protected int collisionYOffset;
     public abstract int getCollisionXOffset();

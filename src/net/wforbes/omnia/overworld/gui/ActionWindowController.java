@@ -176,7 +176,6 @@ public class ActionWindowController {
         if (this.actor != null && this.isVisible) {
             this.relocateWindow();
         }
-
     }
 
     private void updateCompleteState() {

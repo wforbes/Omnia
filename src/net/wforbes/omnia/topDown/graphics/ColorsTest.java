@@ -18,7 +18,7 @@ public class ColorsTest {
         Screen sets (color >> (sheet pixel & 255)
          */
         int playerColor = getColor(-1, 100, 005, 543);
-        System.out.println(playerColor);
+        //System.out.println(playerColor);
         /*
         for(int i = 0; i < this.sheet.pixels.length; i++) {
             System.out.println(this.sheet.pixels[i]);

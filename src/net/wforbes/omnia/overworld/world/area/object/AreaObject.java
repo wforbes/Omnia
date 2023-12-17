@@ -17,6 +17,10 @@ import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
 public class AreaObject implements Renderable {
 
+    public int getCollisionXOffset() {
+        return 0; //TODO: convert area objects to rectangular collision?
+    }
+
     protected final OverworldState gameState;
     protected final AreaObjectDBA areaObjectDBA;
     protected int x, y;
@@ -113,9 +117,7 @@ public class AreaObject implements Renderable {
                 )
         );
         this.width = (float)this.spriteImg.getWidth();
-        System.out.println(width);
         this.height = (float)this.spriteImg.getHeight();
-        System.out.println(height);
         //collisionRadius = 16;
     }
 

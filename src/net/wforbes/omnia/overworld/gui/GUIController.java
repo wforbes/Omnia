@@ -6,10 +6,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
+import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.gui.inventory.InventoryWindowController;
 import net.wforbes.omnia.overworld.gui.item.ItemCursorController;
 import net.wforbes.omnia.overworld.gui.loot.LootWindowController;
 import net.wforbes.omnia.u.W;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GUIController {
 
@@ -83,6 +87,14 @@ public class GUIController {
         panelsPane.getChildren().addAll(windowDisplayPanel);
     }
 
+    public void initEntityGUI() {
+        List<Entity> areaEntities = this.gameState.getWorld().getCurrentArea().getEntities();
+        for (Entity ae : areaEntities) {
+            //System.out.println("init healthbar for " + ae.getName());
+            ae.vitalController.setHealthbarController(new HealthbarController(this, ae));
+        }
+    }
+
     public void init() {
         this.gameState.getManager().getGameController().getGameBorderPane().setTop(panelsPane);
         Platform.runLater(()-> {
@@ -151,6 +163,14 @@ public class GUIController {
 
     public void toggleInventoryWindowVisible() {
         this.inventoryWindowController.toggleVisible();
+    }
+
+    public void addHealthbarPane(HealthbarController hc) {
+        this.panelsPane.getChildren().add(hc.getWindowPanel());
+    }
+
+    public void removeHealthbarPane(HealthbarController hc) {
+        this.panelsPane.getChildren().remove(hc.getWindowPanel());
     }
 
     public void update() {

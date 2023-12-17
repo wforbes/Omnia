@@ -78,6 +78,8 @@ public class Area {
         Procyon testEnemy = new Procyon(world.gameState, "A Procyon");
         testEnemy.init(TEST_ENEMY_XPOS, TEST_ENEMY_YPOS);
         this.addEntity(testEnemy);
+
+        this.getWorld().getGameState().gui.initEntityGUI();
     }
 
     public boolean spawnSpaceIsBlocked(double x, double y, double collisionBaseX, double collisionBaseY, double collisionRadius) {

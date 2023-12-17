@@ -23,7 +23,7 @@ public abstract class Flora extends AreaObject implements Harvestable {
     }
 
     public void init() {
-        System.out.println(this + " initialized");
+        //System.out.println(this + " initialized");
         this.initCollisionShape();
     }
     protected abstract void initCollisionShape();
