@@ -23,7 +23,7 @@ public class OverworldMouseController extends MouseController {
             );
         }
         if ((event.getButton() == MouseButton.SECONDARY)) {
-            gameState.world.player.getPathfindController().movePlayer(event);
+            gameState.world.player.getPathfindController().moveToClick(event);
         }
 
 

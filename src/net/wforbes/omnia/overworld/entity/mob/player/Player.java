@@ -11,6 +11,7 @@ import net.wforbes.omnia.overworld.entity.attention.PlayerTargetController;
 import net.wforbes.omnia.overworld.entity.action.harvest.HarvestController;
 import net.wforbes.omnia.overworld.entity.combat.stat.MobStats;
 import net.wforbes.omnia.overworld.entity.mob.Mob;
+import net.wforbes.omnia.overworld.entity.pathfind.PlayerPathfindController;
 import net.wforbes.omnia.overworld.entity.projectile.ProjectileController;
 
 public class Player extends Mob {
@@ -37,6 +38,7 @@ public class Player extends Mob {
         this.nameColor = Color.BLUE;
         this.nameFlashColor = Color.LIGHTBLUE;
         this.mobType = "player";
+        this.pathfindController = new PlayerPathfindController(this);
     }
 
     @Override

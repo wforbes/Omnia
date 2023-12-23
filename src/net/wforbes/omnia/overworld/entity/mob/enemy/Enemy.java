@@ -7,6 +7,7 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.Entity;
@@ -15,6 +16,8 @@ import net.wforbes.omnia.overworld.entity.attention.EnemyTargetController;
 import net.wforbes.omnia.overworld.entity.combat.stat.MobStats;
 import net.wforbes.omnia.overworld.entity.mob.Mob;
 import net.wforbes.omnia.overworld.entity.mob.player.Player;
+import net.wforbes.omnia.overworld.entity.movement.MovementController;
+import net.wforbes.omnia.overworld.entity.pathfind.EnemyPathfindController;
 
 import java.awt.*;
 
@@ -47,11 +50,13 @@ public class Enemy extends Mob {
         this.combatNumFrames = new int[]{3, 3, 3, 3};
         this.loadSprites(spritePath);
         this.movementAnimation = new MovementAnimation(this);
-        this.facingDir = FACING_S;
+        this.facingDir = FACING_W;
         this.fovRange = 75.0;
+        this.speed = 0.3;
         this.setAnimationDirection(facingDir);
         this.enemyTargetController = new EnemyTargetController(this);
-        //this.npcTargetController.setAttentionSpan(30);
+        this.pathfindController = new EnemyPathfindController(this);
+        this.enemyTargetController.setAttentionSpan(720);
     }
 
     /*
@@ -83,23 +88,22 @@ public class Enemy extends Mob {
     @Override
     public void update() {
         super.update();
+        this.movementController.update();
+        this.movementAnimation.update();
         if (!isAggroed) {
             this.checkAggroTriggers();
+        } else {
+            this.setAggroFOV();
         }
     }
 
     private void checkAggroTriggers() {
         this.checkAggroFOV();
     }
-    private boolean printed2 = false;
     private void checkAggroFOV() {
         this.setAggroFOV();
         Point2D p = this.gameState.getWorld().getPlayerLocation();
-        if (!this.printed2) {
-            System.out.println("polyPoints length: " + fovPolyPoints.length);
-            this.printed2 = true;
-        }
-        //Player p = this.gameState.getPlayer();
+        //System.out.println("polyPoints length: " + fovPolyPoints.length);
         int i;
         int j;
         boolean result = false;
@@ -112,9 +116,28 @@ public class Enemy extends Mob {
                 result = !result;
             }
         }
-        if (result) {
-            System.out.println("Within aggro fov");
+        if (result && !isAggroed) {
+            this.startAggro(this.gameState.getPlayer());
         }
+        //System.out.println("Aggro trigger fov");
+    }
+
+    private void startAggro(Entity target) {
+        this.isAggroed = true;
+        this.setTarget(target);
+        this.movementController.setMovementType(
+                MovementController.MOVEMENT_FOLLOW_TARGET
+        );
+        this.pathfindController.moveToPoint(
+                new Point2D(target.getXActual(), target.getYActual())
+        );
+    }
+
+    private void stopAggro() {
+        this.isAggroed = false;
+        this.movementController.setMovementType(
+                MovementController.MOVEMENT_STAND
+        );
     }
 
     private void setAggroFOV() {
@@ -196,17 +219,14 @@ public class Enemy extends Mob {
                 this.fovEdgePoints[1].getX(),
                 this.fovEdgePoints[1].getY()
         );
-        if (!this.printed1) {
-            System.out.println("FOV points: \n" +
-                "(" + this.fovPolyPoints[0].getX() + ", " + this.fovPolyPoints[0].getY() + ")\n" +
-                "(" + this.fovPolyPoints[1].getX() + ", " + this.fovPolyPoints[1].getY() + ")\n" +
-                "(" + this.fovPolyPoints[2].getX() + ", " + this.fovPolyPoints[2].getY() + ")\n" +
-                "(" + this.fovPolyPoints[3].getX() + ", " + this.fovPolyPoints[3].getY() + ")"
-            );
-            this.printed1 = true;
-        }
+        /*
+        System.out.println("FOV polygon points: \n" +
+            "(" + this.fovPolyPoints[0].getX() + ", " + this.fovPolyPoints[0].getY() + ")\n" +
+            "(" + this.fovPolyPoints[1].getX() + ", " + this.fovPolyPoints[1].getY() + ")\n" +
+            "(" + this.fovPolyPoints[2].getX() + ", " + this.fovPolyPoints[2].getY() + ")\n" +
+            "(" + this.fovPolyPoints[3].getX() + ", " + this.fovPolyPoints[3].getY() + ")"
+        );*/
     }
-    private boolean printed1 = false;
 
     private void clearFOVVars() {
         this.xFP = 0.0;
@@ -232,7 +252,7 @@ public class Enemy extends Mob {
 
     @Override
     public boolean hasAttentionOnSomething() {
-        return false;
+        return this.isAggroed;
     }
 
     public void render(GraphicsContext gc) {
@@ -305,5 +325,15 @@ public class Enemy extends Mob {
                 (fovPolyPoints[0].getY()+ymap)* getScale()
         );
 
+        gc.setFill(Color.BLACK);
+        gc.strokeText(
+            "isMoving: " + this.isMoving + "\n" +
+            "isPathing: " + this.pathfindController.isPathing() + "\n" +
+            "isAggroed: " + this.isAggroed + "\n" +
+            "lastNextMove: " + this.pathfindController.getLastNextMove()[0] + ", " + this.pathfindController.getLastNextMove()[0] + "\n" +
+            "lastMethod: " + this.lastMethod,
+            10, 200
+        );
     }
+
 }

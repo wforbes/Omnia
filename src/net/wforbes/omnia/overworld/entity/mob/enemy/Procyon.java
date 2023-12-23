@@ -14,11 +14,11 @@ public class Procyon extends Enemy {
             new MobStats(1000, 50, 0.65F)
         );
         //this.width = 24; this.height = 23;
-
         this.nameColor = Color.DARKRED;
         this.nameFlashColor = Color.RED;
         this.enemyTargetController.setAttentionSpan(30);
         this.mobType = "procyon";
+        this.movementController.setMovementSpace(this.x-10, this.y-10, this.x+10, this.y+10);
     }
     @Override
     public void init(double xPos, double yPos) {

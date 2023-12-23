@@ -2,6 +2,7 @@ package net.wforbes.omnia.overworld.entity.movement;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
+import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.mob.Mob;
 
 public class MovementController {
@@ -11,9 +12,9 @@ public class MovementController {
     private int movementType;
 
     //TODO: convert movement types to enum
-    public static int MOVEMENT_STAND = 0;
-    public static int MOVEMENT_PACE_VERTICAL = 1;
-
+    public static final int MOVEMENT_STAND = 0;
+    public static final int MOVEMENT_PACE_VERTICAL = 1;
+    public static final int MOVEMENT_FOLLOW_TARGET = 2;
     private long waitCount = 0;
     private boolean moveReady = false;
     private boolean waitingToPace = false;
@@ -44,11 +45,47 @@ public class MovementController {
                 break;
             case 1:
                 this.paceVertically(5, 10, (int)movementSpace.getMinY(), (int)movementSpace.getMaxY());
+                break;
+            case 2:
+                this.followTarget();
+                break;
+            default:
+                break;
         }
     }
 
+    protected void followTarget() {
+        this.mover.lastMethod = "followTarget";
+        if (this.mover.getTarget() == null) {
+            this.standStill();
+            return;
+        }
+        Entity target = this.mover.getTarget();
+        this.mover.getPathfindController().moveToPoint(
+            new Point2D(target.getXActual(), target.getYActual())
+        );
+        double[] nextMove = this.mover.getPathfindController().getNextMove(
+            this.mover.getXActual(), this.mover.getYActual()
+        );
+        if (nextMove == null || (nextMove[0] == 0 && nextMove[1] == 0)) {
+            this.mover.getPathfindController().setIsPathing(false);
+            this.mover.setMoving(false);
+            this.standStill();
+            return;
+        }
+        this.mover.setMoving(true);
+        this.mover.move(nextMove[0], nextMove[1]);
+        //TODO: this.cancelStationaryActions();
+    }
+
     protected void standStill() {
-        if (this.mover.hasAttentionOnSomething()) return;
+        this.mover.lastMethod = "standStill";
+        if (this.mover.hasAttentionOnSomething()) {
+            this.mover.lastMethod = "standStill.hasAttentionOnSomething check";
+            this.mover.setMoving(false);
+            this.mover.getMovementAnimation().setIsMoving(false);
+            return;
+        }
 
         if(waitingToPace) {
             this.tryToMoveInFacingDir();
@@ -60,6 +97,7 @@ public class MovementController {
     }
 
     private void tryToMoveInFacingDir() {
+        this.mover.lastMethod = "tryToMoveInFacingDir";
         if(this.mover.getFacingDir() == 0) {
             this.xya = new int[]{0, -1, 0};
         } else if(this.mover.getFacingDir() == 1){
@@ -69,6 +107,7 @@ public class MovementController {
     }
 
     private void resumePacing() {
+        this.mover.lastMethod = "resumePacing";
         this.setMovementType(1);
         this.waitingToPace = false;
         this.mover.setMoving(true);

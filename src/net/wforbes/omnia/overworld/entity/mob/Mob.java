@@ -22,6 +22,7 @@ import net.wforbes.omnia.overworld.entity.combat.stat.StatController;
 import net.wforbes.omnia.overworld.entity.effect.EntityEffectController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 import net.wforbes.omnia.overworld.entity.pathfind.PathfindController;
+import net.wforbes.omnia.overworld.entity.pathfind.PlayerPathfindController;
 import net.wforbes.omnia.overworld.gui.HealthbarController;
 import net.wforbes.omnia.overworld.world.area.object.AreaObject;
 import net.wforbes.omnia.overworld.world.area.object.corpse.MobCorpse;
@@ -110,12 +111,12 @@ public abstract class Mob extends Entity {
         this.nameText.setFontSmoothingType(FontSmoothingType.LCD);
         this.initNameAnimation();
         this.entityEffectController = new EntityEffectController(this);
-        this.pathfindController = new PathfindController(this);
         this.combatController = new CombatController(this);
         this.statController = new StatController(
             this, stats);
         this.statController.setHealthbarController(new HealthbarController(this.gameState.gui, this));
         this.dead = false;
+        //pathfindController is implemented in parent (player/enemy)
     }
     @Override
     public String getName() {
@@ -319,14 +320,16 @@ public abstract class Mob extends Entity {
     }
 
     public void move(double xa, double ya) {
+        this.lastMethod = "move";
         //sets sprite image directionality
-        if(xa != 0 && ya != 0){
+        //if(xa != 0 && ya != 0){
             //this.speed = 0.375; //TODO: find a clever way to compensate for diagonal speed increase
-            moveDiagonal(xa, ya);
-        }else{
+            //moveDiagonal(xa, ya);
+
+        //}else{
             //this.speed = 0.5;
-            moveCardinal(xa, ya);
-        }
+        moveCardinal(xa, ya);
+       // }
 
         if (movementAnimation.getFacingDir() != facingDir)
             this.updateAnimationDirection();
@@ -439,14 +442,14 @@ public abstract class Mob extends Entity {
     }
 
     private void moveCardinal(double xa, double ya){
-        if (ya < 0)
-            facingDir = FACING_N;
-        if (ya > 0)
-            facingDir = FACING_S;
         if (xa < 0)
             facingDir = FACING_W;
         if (xa > 0)
             facingDir = FACING_E;
+        if (ya < 0)
+            facingDir = FACING_N;
+        if (ya > 0)
+            facingDir = FACING_S;
     }
     private void moveDiagonal(double xa, double ya){
         if (ya < 0 && xa  < 0)
@@ -460,6 +463,7 @@ public abstract class Mob extends Entity {
     }
 
     private void moveCoords(double xa, double ya) {
+        this.lastMethod = "moveCoords";
         this.x += xa * (speed * ((isRunning)?runSpeedMod:1));
         this.y += ya * (speed * ((isRunning)?runSpeedMod:1));
     }
@@ -578,6 +582,7 @@ public abstract class Mob extends Entity {
     private void renderBackgroundEffects(GraphicsContext gc) {
         this.entityEffectController.renderBackground(gc);
     }
+
     private boolean rendered = false;
     private void renderSprite(GraphicsContext gc) {
         if (!this.isSpawned()) return;

@@ -39,7 +39,9 @@ public abstract class Entity implements Renderable {
     public abstract int getCollisionBoxHeight();
     public abstract double getCollisionRadius();
     public abstract double getX();
+    public abstract double getXActual();
     public abstract double getY();
+    public abstract double getYActual();
     public abstract double getCollisionBaseX();
     public abstract double getCollisionBaseY();
     public abstract double getBaseY();
@@ -48,4 +50,5 @@ public abstract class Entity implements Renderable {
     public abstract void update();
     public abstract void render(GraphicsContext gc);
     public abstract void teardown();
+    public String lastMethod;
 }
