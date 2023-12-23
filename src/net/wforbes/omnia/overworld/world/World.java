@@ -1,5 +1,6 @@
 package net.wforbes.omnia.overworld.world;
 
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.mob.player.Player;
@@ -26,6 +27,8 @@ public class World {
     public void setPlayer(Player player) {
         this.player = player;
     }
+
+    public Point2D getPlayerLocation() { return new Point2D(this.player.getXActual(), this.player.getYActual()); }
     public Area getCurrentArea() { return this.area; }
 
     public void init() {
