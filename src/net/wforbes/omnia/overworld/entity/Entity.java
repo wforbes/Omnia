@@ -23,6 +23,7 @@ public abstract class Entity implements Renderable {
     public abstract int getMaxMeleeDamage();
     public abstract float getMeleeAccuracy();
     public abstract void receiveMeleeDamage(int dmg, Entity dealer);
+    public abstract void addStatChange(StatController.StatChange change);
     public abstract int getCurrentHealth();
     public abstract int getMaxHealth();
     public abstract void kill(Entity killer);

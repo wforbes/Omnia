@@ -19,6 +19,7 @@ import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.combat.CombatController;
 import net.wforbes.omnia.overworld.entity.combat.stat.MobStats;
 import net.wforbes.omnia.overworld.entity.combat.stat.StatController;
+import net.wforbes.omnia.overworld.entity.combat.stat.StatController.StatChange;
 import net.wforbes.omnia.overworld.entity.effect.EntityEffectController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 import net.wforbes.omnia.overworld.entity.pathfind.PathfindController;
@@ -81,9 +82,9 @@ public abstract class Mob extends Entity {
     private ArrayList<Image[]> combatSprites;
     private Circle collision_baseCircle;
     private Point2D collision_baseCenterPnt;
+    private ArrayList<StatChange> statChanges = new ArrayList<>();
     private Image corpseSprite;
     private MobCorpse mobCorpse;
-
     public PathfindController getPathfindController() {
         return this.pathfindController;
     }
@@ -230,6 +231,9 @@ public abstract class Mob extends Entity {
     }
     public void receiveMeleeDamage(int dmg, Entity dealer) {
         this.statController.receiveMeleeDamage(dmg, dealer);
+    }
+    public void addStatChange(StatChange change) {
+        this.statChanges.add(change);
     }
     public int getCurrentHealth() {
         return this.statController.getCurrentHealth();
@@ -500,7 +504,7 @@ public abstract class Mob extends Entity {
         if (wasTargeted && !this.isTargeted) {
             this.isTargeted = true;
             this.entityEffectController.getTargetCircle().set();
-            System.out.println(this.nameColorTimeline);
+            //System.out.println(this.nameColorTimeline);
             //this.nameColorTimeline.play();
             return;
         }
@@ -574,6 +578,7 @@ public abstract class Mob extends Entity {
             if(gameState.mobNamesVisible()) {
                 this.renderName(gc);
             }*/
+            this.renderStatChanges(gc);
             if(gameState.collisionGeometryVisible()) {
                 this.renderCollisionGeometry(gc);
             }
@@ -620,6 +625,62 @@ public abstract class Mob extends Entity {
             width * getScale(),
             height * getScale()
         );
+    }
+
+    private void renderStatChanges(GraphicsContext gc) {
+        if (!this.statChanges.isEmpty()) {
+            ArrayList<StatChange> removals = new ArrayList<>();
+            String output = "";
+            gc.setFont(Font.font("Open Sans", FontWeight.BOLD, 25));
+            for (int i = 0; i < this.statChanges.size(); i++) {
+                if (statChanges.get(i).renderProgress > 200) {
+                    statChanges.get(i).readyToRemove = true;
+                    removals.add(statChanges.get(i));
+                    continue;
+                }
+                StatChange change = this.statChanges.get(i);
+                if (change.type == StatController.STAT_CHANGE_TYPE.HEALTH) {
+                    if (change.amount < 0) {
+                        gc.setFill(Color.RED);
+                        output = change.amount+"";
+                    } else if (change.amount > 0) {
+                        gc.setFill(Color.GREEN);
+                        output = "+"+change.amount;
+                    } else {
+                        gc.setFill(Color.BLACK);
+                        output = "MISS";
+                    }
+                } else {
+                    gc.setFill(Color.BLACK);
+                    output = change.amount+"";
+                }
+                this.statChanges.get(i).renderProgress++;
+                if (this.statChanges.get(i).renderProgress > 100) {
+                    this.statChanges.get(i).opacity = 1.5
+                            - (this.statChanges.get(i).renderProgress / 200.0);
+                }
+                //System.out.println(
+                //  this.statChanges.get(i).opacity + ", " +
+                //  this.statChanges.get(i).renderProgress
+                //);
+                gc.setGlobalAlpha(
+                    this.statChanges.get(i).opacity
+                );
+
+                gc.fillText(
+                    output,
+                    (((this.getXActual() + xmap) - this.width/2.0)*getScale()) - (this.statChanges.get(i).renderProgress/2.0)/10,
+                    (((this.getYActual() + ymap))*getScale()) - this.statChanges.get(i).renderProgress/10.0
+                );
+                gc.setGlobalAlpha(1);
+            }
+            for (StatChange c : removals) {
+                if (c.readyToRemove) {
+                    //System.out.println("Removing " + c);
+                    this.statChanges.remove(c);
+                }
+            }
+        }
     }
 
     public Text getNameText() {

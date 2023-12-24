@@ -91,10 +91,10 @@ public class CombatController {
         dmg = r.nextFloat() < this.owner.getMeleeAccuracy() ? dmg : 0;
 
         if (dmg == 0) {
-            System.out.println(this.owner.getName() + " missed " + target.getName() + "!");
+            //System.out.println(this.owner.getName() + " missed " + target.getName() + "!");
         }
 
         target.receiveMeleeDamage(dmg, this.owner);
-        System.out.println(this.owner.getName() + " sees " + target.getName() + "'s current health is " + target.getCurrentHealth());
+        //System.out.println(this.owner.getName() + " sees " + target.getName() + "'s current health is " + target.getCurrentHealth());
     }
 }

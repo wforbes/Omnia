@@ -8,10 +8,29 @@ public class StatController {
     private int maxHealth;
     private int currentHealth;
     private HealthbarController healthbarController;
-
     private int maxMeleeDmg;
     private float meleeAccuracy = 0.75F;
 
+    public enum STAT_CHANGE_TYPE {
+        HEALTH, MANA
+    }
+
+    public class StatChange {
+        public STAT_CHANGE_TYPE type;
+        public int amount;
+        public int renderProgress;
+        public double opacity;
+        public boolean readyToRemove;
+        public StatChange(int amount, STAT_CHANGE_TYPE type) {
+            this.amount = amount;
+            this.type = type;
+            this.renderProgress = 0;
+            this.opacity = 1;
+            this.readyToRemove = false;
+        }
+    }
+
+    //TODO: Removal candidate
     public StatController(Entity owner, MobStats stats, HealthbarController hc) {
         this.owner = owner;
         this.maxHealth = stats.maxHealth;
@@ -33,6 +52,9 @@ public class StatController {
         this.currentHealth -= dmg;
         if (dmg != 0) {
             System.out.println(this.owner.getName() + " took " + dmg + " points of damage!");
+            this.owner.addStatChange(
+                new StatChange(-dmg, STAT_CHANGE_TYPE.HEALTH)
+            );
         }
         this.healthbarController.updateHealth(
             this.getCurrentHealthPct()

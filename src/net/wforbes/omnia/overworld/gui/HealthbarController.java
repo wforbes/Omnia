@@ -149,7 +149,7 @@ public class HealthbarController {
     }
 
     public void updateHealth(double progress) {
-        System.out.println(progress);
+        //System.out.println(progress);
         if (progress > 0.0) {
             this.progressBar.setProgress(progress);
             return;

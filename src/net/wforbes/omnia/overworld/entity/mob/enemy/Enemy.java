@@ -40,6 +40,9 @@ public class Enemy extends Mob {
     private Line[] fovEdgeLines = new Line[2];
     private Point2D[] fovPolyPoints = new Point2D[4];
 
+    private boolean shouldRenderFovPoly = false;
+    private boolean shouldRenderFovLines = false;
+
     public Enemy(OverworldState gameState, String name, String spritePath, int width, int height, MobStats stats) {
         super(gameState, name, 0.45, false, stats);
         this.width = width;
@@ -97,6 +100,15 @@ public class Enemy extends Mob {
         }
     }
 
+    public void receiveMeleeDamage(int dmg, Entity dealer) {
+        super.receiveMeleeDamage(dmg, dealer);
+        if (!this.isAggroed) {
+            this.startAggro(dealer);
+        }
+        //TODO: Consider multiple attackers, managing aggro list
+        //  'having aggro' related to being at the top of aggro list
+    }
+
     private void checkAggroTriggers() {
         this.checkAggroFOV();
     }
@@ -131,6 +143,8 @@ public class Enemy extends Mob {
         this.pathfindController.moveToPoint(
                 new Point2D(target.getXActual(), target.getYActual())
         );
+        if (!this.combatController.isAttacking())
+            this.combatController.toggleAttacking();
     }
 
     private void stopAggro() {
@@ -258,74 +272,78 @@ public class Enemy extends Mob {
     public void render(GraphicsContext gc) {
         super.render(gc);
 
-        gc.setStroke(Color.LIME);
-        gc.strokeLine(
-                (this.getXActual()+xmap)* getScale(),
-                (this.getYActual()+ymap)* getScale(),
-                (this.getXActual()+xmap+xFP+fovQEdges[0]+fovQEdges[1]+fovQEdges[2]+fovQEdges[3])* getScale(),
-                (this.getYActual()+ymap+yFP+fovQEdges[0]+fovQEdges[1]+fovQEdges[2]+fovQEdges[3])* getScale()
-        );
-        gc.strokeOval(fovLine.getEndX()*getScale(), fovLine.getEndY()*getScale(), 2, 2);
-        gc.setStroke(Color.LIGHTBLUE);
-        gc.strokeLine(
-            (this.getXActual()+xmap+xFP+fovQEdges[0]+fovQEdges[1]+fovQEdges[2]+fovQEdges[3])* getScale(),
-            (this.getYActual()+ymap+yFP+fovQEdges[0]+fovQEdges[1]+fovQEdges[2]+fovQEdges[3])* getScale(),
-            (fovEdgePoints[0].getX()+xmap)* getScale(),
-            (fovEdgePoints[0].getY()+ymap)* getScale()
-        );
+        if (this.shouldRenderFovLines) {
+            gc.setStroke(Color.LIME);
+            gc.strokeLine(
+                    (this.getXActual() + xmap) * getScale(),
+                    (this.getYActual() + ymap) * getScale(),
+                    (this.getXActual() + xmap + xFP + fovQEdges[0] + fovQEdges[1] + fovQEdges[2] + fovQEdges[3]) * getScale(),
+                    (this.getYActual() + ymap + yFP + fovQEdges[0] + fovQEdges[1] + fovQEdges[2] + fovQEdges[3]) * getScale()
+            );
+            gc.strokeOval(fovLine.getEndX() * getScale(), fovLine.getEndY() * getScale(), 2, 2);
+            gc.setStroke(Color.LIGHTBLUE);
+            gc.strokeLine(
+                    (this.getXActual() + xmap + xFP + fovQEdges[0] + fovQEdges[1] + fovQEdges[2] + fovQEdges[3]) * getScale(),
+                    (this.getYActual() + ymap + yFP + fovQEdges[0] + fovQEdges[1] + fovQEdges[2] + fovQEdges[3]) * getScale(),
+                    (fovEdgePoints[0].getX() + xmap) * getScale(),
+                    (fovEdgePoints[0].getY() + ymap) * getScale()
+            );
 
 
-        gc.setStroke(Color.gray(1));
-        gc.strokeLine(
-                (this.getXActual()+xmap)* getScale(),
-                (this.getYActual()+ymap)* getScale(),
-                (fovEdgePoints[0].getX()+xmap)* getScale(),
-                (fovEdgePoints[0].getY()+ymap)* getScale()
-        );
+            gc.setStroke(Color.gray(1));
+            gc.strokeLine(
+                    (this.getXActual() + xmap) * getScale(),
+                    (this.getYActual() + ymap) * getScale(),
+                    (fovEdgePoints[0].getX() + xmap) * getScale(),
+                    (fovEdgePoints[0].getY() + ymap) * getScale()
+            );
 
-        gc.setStroke(Color.RED);
-        gc.strokeLine(
-            (this.getXActual()+xmap)* getScale(),
-            (this.getYActual()+ymap)* getScale(),
-            (fovEdgePoints[1].getX()+xmap)* getScale(),
-            (fovEdgePoints[1].getY()+ymap)* getScale()
-        );
+            gc.setStroke(Color.RED);
+            gc.strokeLine(
+                    (this.getXActual() + xmap) * getScale(),
+                    (this.getYActual() + ymap) * getScale(),
+                    (fovEdgePoints[1].getX() + xmap) * getScale(),
+                    (fovEdgePoints[1].getY() + ymap) * getScale()
+            );
 
-        gc.setStroke(Color.PINK);
-        gc.strokeLine(
-                (this.getXActual()+xmap+xFP+fovQEdges[0]+fovQEdges[1]+fovQEdges[2]+fovQEdges[3])* getScale(),
-                (this.getYActual()+ymap+yFP+fovQEdges[0]+fovQEdges[1]+fovQEdges[2]+fovQEdges[3])* getScale(),
-                (fovEdgePoints[1].getX()+xmap)* getScale(),
-                (fovEdgePoints[1].getY()+ymap)* getScale()
-        );
+            gc.setStroke(Color.PINK);
+            gc.strokeLine(
+                    (this.getXActual() + xmap + xFP + fovQEdges[0] + fovQEdges[1] + fovQEdges[2] + fovQEdges[3]) * getScale(),
+                    (this.getYActual() + ymap + yFP + fovQEdges[0] + fovQEdges[1] + fovQEdges[2] + fovQEdges[3]) * getScale(),
+                    (fovEdgePoints[1].getX() + xmap) * getScale(),
+                    (fovEdgePoints[1].getY() + ymap) * getScale()
+            );
+        }
+        if (this.shouldRenderFovPoly) {
+            gc.setStroke(Color.POWDERBLUE);
+            gc.strokeLine(
+                    (fovPolyPoints[0].getX() + xmap) * getScale(),
+                    (fovPolyPoints[0].getY() + ymap) * getScale(),
+                    (fovPolyPoints[1].getX() + xmap) * getScale(),
+                    (fovPolyPoints[1].getY() + ymap) * getScale()
+            );
+            gc.strokeLine(
+                    (fovPolyPoints[1].getX() + xmap) * getScale(),
+                    (fovPolyPoints[1].getY() + ymap) * getScale(),
+                    (fovPolyPoints[2].getX() + xmap) * getScale(),
+                    (fovPolyPoints[2].getY() + ymap) * getScale()
+            );
+            gc.strokeLine(
+                    (fovPolyPoints[2].getX() + xmap) * getScale(),
+                    (fovPolyPoints[2].getY() + ymap) * getScale(),
+                    (fovPolyPoints[3].getX() + xmap) * getScale(),
+                    (fovPolyPoints[3].getY() + ymap) * getScale()
+            );
+            gc.strokeLine(
+                    (fovPolyPoints[3].getX()+xmap)* getScale(),
+                    (fovPolyPoints[3].getY()+ymap)* getScale(),
+                    (fovPolyPoints[0].getX()+xmap)* getScale(),
+                    (fovPolyPoints[0].getY()+ymap)* getScale()
+            );
+        }
 
-        gc.setStroke(Color.POWDERBLUE);
-        gc.strokeLine(
-                (fovPolyPoints[0].getX()+xmap)* getScale(),
-                (fovPolyPoints[0].getY()+ymap)* getScale(),
-                (fovPolyPoints[1].getX()+xmap)* getScale(),
-                (fovPolyPoints[1].getY()+ymap)* getScale()
-        );
-        gc.strokeLine(
-                (fovPolyPoints[1].getX()+xmap)* getScale(),
-                (fovPolyPoints[1].getY()+ymap)* getScale(),
-                (fovPolyPoints[2].getX()+xmap)* getScale(),
-                (fovPolyPoints[2].getY()+ymap)* getScale()
-        );
-        gc.strokeLine(
-                (fovPolyPoints[2].getX()+xmap)* getScale(),
-                (fovPolyPoints[2].getY()+ymap)* getScale(),
-                (fovPolyPoints[3].getX()+xmap)* getScale(),
-                (fovPolyPoints[3].getY()+ymap)* getScale()
-        );
-        gc.strokeLine(
-                (fovPolyPoints[3].getX()+xmap)* getScale(),
-                (fovPolyPoints[3].getY()+ymap)* getScale(),
-                (fovPolyPoints[0].getX()+xmap)* getScale(),
-                (fovPolyPoints[0].getY()+ymap)* getScale()
-        );
-
-        gc.setFill(Color.BLACK);
+        /*
+        gc.setStroke(Color.BLACK);
         gc.strokeText(
             "isMoving: " + this.isMoving + "\n" +
             "isPathing: " + this.pathfindController.isPathing() + "\n" +
@@ -333,7 +351,7 @@ public class Enemy extends Mob {
             "lastNextMove: " + this.pathfindController.getLastNextMove()[0] + ", " + this.pathfindController.getLastNextMove()[0] + "\n" +
             "lastMethod: " + this.lastMethod,
             10, 200
-        );
+        );*/
     }
 
 }
