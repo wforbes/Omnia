@@ -8,7 +8,7 @@ Written using Java and JavaFX.
 
 ## Project
 Omnia is a 2D 'Retro' Role-Playing Game with multiple game perspectives (Top-Down, Platformer, Turn-Based, Puzzle, etc),
- written in Java. I'm working on it this for the final 'capstone' project in my Computer Science degree - but also so that I can practice programming in Java, experiment with ideas, and just have fun. 
+ written in Java. I'm working on it for the final 'capstone' project in my Computer Science degree - but also so that I can practice programming in Java, experiment with ideas, and just have fun. 
 
 Instead of using a sophisticated game engine like Unreal, Unity, Godot, or GameMaker 
 I thought I would get the most out of developing the engine myself by reading/watching game tutorials/devlogs, getting 
@@ -107,10 +107,11 @@ this project in a couple years to keep working on it.
         others to emulate windows in an operating system.
       * [ ] **Path finding**
         * [X] ~~**Click to move** - Try implementing a click to move system with simple path finding~~
+        * [X] ~~**NPC following** - Use path finding logic to implement NPCs being able to follow Player and other NPCs~~
         * [ ] **Advanced Pathing** - Implement an A* based path finding algorithm that can avoid collision
         * [ ] **Scripted NPC movement** - Use path finding logic to script NPC movement
         * [ ] **Scripted Player movement** - Use path finding logic to script Player movement
-        * [ ] **NPC following** - Use path finding logic to implement NPCs being able to follow Player and other NPCs
+        
 
 - **Environment Structures/Objects**
   * [ ] **Add collidable environment structures** - Add a layer of objects that render over the ground tiles which mobs 
@@ -133,7 +134,8 @@ this project in a couple years to keep working on it.
           * [X] ~~**Persist Node loot** - persist the node's gathered items state between multiple harvests.~~
           * [X] ~~**'Despawn' node after gather completes**: Display some kind of empty graphic in its place, stop interactivity.~~
           * [X] ~~**'Respawn' node**: Add respawn timer for each node, after which the node respawns to be gatherable again.~~
-          * [ ] **Randomize node locations**: Add ranges that certain nodes may be able to spawn, avoiding overlap/collision
+          * [X] ~~**Randomize node locations**: Randomize locations nodes may be able to spawn, avoiding overlap/collision~~
+          * [ ] **Bound node spawn locations**: Add ranges that certain nodes may spawn
         * [ ] **Mining**: Add some rocks/minerals that can be 'mined'.
         * [ ] **Logging**: Add some trees that can be 'chopped'.
       * [ ] **Gathering Skill**: Add an initial skill system that restricts the ability to gather nodes before learning the skill.
@@ -151,20 +153,23 @@ this project in a couple years to keep working on it.
 
 - **Enemy Basics**
     * [X] ~~**Initial**: Add a prototype enemy to serve for building other systems around.~~
-    * [ ] **Aggro/Dumb Pursuit**: Add simple system for an enemy to aggro the player and pursue/follow it.
+    * [X] ~~**Aggro/Dumb Pursuit**: Add simple system for an enemy to aggro the player and pursue/follow it.~~
 
 - **Melee Combat**
     * [X] ~~**Combat Animation**: Add a simple system for handling the visual animation of attacking~~
     * [X] ~~**Damage and Health**: Add a simple system for handling giving/taking damage from Player to an Enemy~~
     * [X] ~~**Mob Healthbar Window**: Add GUI that displays a mob's health level above their sprite~~
-    * [ ] **Target Window**: Add GUI that displays the target's health level
-    * [ ] **Player Window**: Add GUI that displays the Player's health level
-    * [ ] **Enemy Attacks**: Add the ability for the Enemy to attack the Player and deal damage to it
+    * [X] ~~**Enemy Attacks**: Add the ability for the Enemy to attack the Player and deal damage to it~~
     * [X] ~~**Enemy Death**: Add sprites/animation and logic for the Enemy to die when it runs out of HP.~~
+    * [X] ~~**Render Combat Damage Numbers**~~
+    * [ ] **Simple Player Death**: Add simple system to handle Player death and respawn
     * [ ] **Enemy Loot**: Add ability for Player to loot a dead enemy
     * [ ] **Enemy Corpse Despawn**
     * [ ] **Enemy Respawn**
-    * [ ] **Multiple Enemies**    
+    * [ ] **Multiple Enemies**
+    * [ ] **Player Corpse Runs**
+    * [ ] **Target Window**: Add GUI that displays the target's health level
+    * [ ] **Player Window**: Add GUI that displays the Player's health level
 
 - **Projectiles** 
   * [X] **Initial**: Add a basic projectile that shoots out of the player in their facing direction
