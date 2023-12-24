@@ -18,7 +18,7 @@ public class DocNPC extends NPC {
     };
 
     public DocNPC(OverworldState gameState) {
-        super(gameState, "Doc",0.25, new MobStats(1000, 50, 0.65F));
+        super(gameState, "Doc",0.25, new MobStats(1000, 0.5F, 50, 0.65F));
         this.width = this.height = 16;
         this.numFrames = new int[]{3,3,3,3};
         this.combatNumFrames = new int[]{3,3,3,3};//TODO: UNUSED SO FAR

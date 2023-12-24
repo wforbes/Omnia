@@ -19,7 +19,7 @@ public class BroNPC extends NPC {
     private NPCTargetController attentionController;
 
     public BroNPC(OverworldState gameState, String name, double speed) {
-        super(gameState, name, speed, new MobStats(1000, 50, 0.65F));
+        super(gameState, name, speed, new MobStats(1000, 0.5F, 50, 0.65F));
         this.width = this.height = 16;
         this.numFrames = new int[]{3,3,3,3};
         this.combatNumFrames = new int[]{3,3,3,3};//TODO: UNUSED SO FAR

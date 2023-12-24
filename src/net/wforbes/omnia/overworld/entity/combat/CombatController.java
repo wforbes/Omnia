@@ -2,11 +2,14 @@ package net.wforbes.omnia.overworld.entity.combat;
 
 import net.wforbes.omnia.overworld.entity.Entity;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class CombatController {
     private final Entity owner;
     private boolean attacking;
+    private boolean inCombat;
+    private ArrayList<Entity> aggroList = new ArrayList<>();
 
     public CombatController(Entity owner) {
         this.owner = owner;
@@ -22,9 +25,32 @@ public class CombatController {
             this.owner.setTarget(null);
             return;
         }
+        if (this.aggroList.isEmpty() && this.inCombat) {
+            this.inCombat = false;
+        }
     }
     public boolean isAttacking() {
         return this.attacking;
+    }
+
+    public boolean isInCombat() { return this.inCombat; }
+
+    public void receiveMeleeDamage(int dmg, Entity dealer) {
+        if (!this.inCombat) {
+            this.inCombat = true;
+        }
+        if (!this.aggroList.contains(dealer)) {
+            this.aggroList.add(dealer);
+        }
+    }
+
+    public void notifyEnemyAggro(Entity source) {
+        if (!this.inCombat) {
+            this.inCombat = true;
+        }
+        if (!this.aggroList.contains(source)) {
+            this.aggroList.add(source);
+        }
     }
 
     public void handleMeleeTrigger() {
@@ -96,5 +122,14 @@ public class CombatController {
 
         target.receiveMeleeDamage(dmg, this.owner);
         //System.out.println(this.owner.getName() + " sees " + target.getName() + "'s current health is " + target.getCurrentHealth());
+    }
+
+    public void notifyCombatKill(Entity source) throws Exception {
+        if (!this.aggroList.contains(source)) {
+            throw new Exception("Attempting to remove entity from aggroList that wasn't set!");
+        }
+        this.aggroList.remove(source);
+
+
     }
 }

@@ -23,13 +23,13 @@ import net.wforbes.omnia.overworld.entity.combat.stat.StatController.StatChange;
 import net.wforbes.omnia.overworld.entity.effect.EntityEffectController;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 import net.wforbes.omnia.overworld.entity.pathfind.PathfindController;
-import net.wforbes.omnia.overworld.entity.pathfind.PlayerPathfindController;
 import net.wforbes.omnia.overworld.gui.HealthbarController;
 import net.wforbes.omnia.overworld.world.area.object.AreaObject;
 import net.wforbes.omnia.overworld.world.area.object.corpse.MobCorpse;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
@@ -88,8 +88,6 @@ public abstract class Mob extends Entity {
     public PathfindController getPathfindController() {
         return this.pathfindController;
     }
-
-    protected CombatController combatController;
     private Entity collidingEntity;
     protected int meleeReach;
     private boolean dead;
@@ -229,8 +227,21 @@ public abstract class Mob extends Entity {
     public int getMaxMeleeDamage() {
         return this.statController.getMaxMeleeDmg();
     }
+    public void notifyEnemyAggro(Entity source) {
+        this.combatController.notifyEnemyAggro(source);
+    }
     public void receiveMeleeDamage(int dmg, Entity dealer) {
+        this.combatController.receiveMeleeDamage(dmg, dealer);
         this.statController.receiveMeleeDamage(dmg, dealer);
+    }
+
+    public void notifyCombatKill(Entity source) {
+        try {
+            this.combatController.notifyCombatKill(source);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        this.statController.notifyCombatKill(source);
     }
     public void addStatChange(StatChange change) {
         this.statChanges.add(change);
@@ -629,6 +640,7 @@ public abstract class Mob extends Entity {
 
     private void renderStatChanges(GraphicsContext gc) {
         if (!this.statChanges.isEmpty()) {
+            Random r = new Random();
             ArrayList<StatChange> removals = new ArrayList<>();
             String output = "";
             gc.setFont(Font.font("Open Sans", FontWeight.BOLD, 25));
@@ -638,18 +650,28 @@ public abstract class Mob extends Entity {
                     removals.add(statChanges.get(i));
                     continue;
                 }
+                if (statChanges.get(i).renderProgress == 0) {
+                    statChanges.get(i).floatDir = r.nextBoolean();
+                }
                 StatChange change = this.statChanges.get(i);
                 if (change.type == StatController.STAT_CHANGE_TYPE.HEALTH) {
                     if (change.amount < 0) {
                         gc.setFill(Color.RED);
-                        output = change.amount+"";
+                        output = change.amount+"hp";
                     } else if (change.amount > 0) {
                         gc.setFill(Color.GREEN);
-                        output = "+"+change.amount;
+                        output = "+"+change.amount+"hp";
                     } else {
                         gc.setFill(Color.BLACK);
-                        output = "MISS";
+                        output = "Miss";
                     }
+                } else if (change.type == StatController.STAT_CHANGE_TYPE.EXP) {
+                    gc.setFill(Color.GOLD);
+                    output = "+"+change.amount+"xp";
+                } else if (change.type == StatController.STAT_CHANGE_TYPE.HP_REGEN) {
+                    gc.setFont(Font.font("Open Sans", FontWeight.LIGHT, 15));
+                    gc.setFill(Color.LIME);
+                    output = "+"+change.amount+"hp";
                 } else {
                     gc.setFill(Color.BLACK);
                     output = change.amount+"";
@@ -669,7 +691,9 @@ public abstract class Mob extends Entity {
 
                 gc.fillText(
                     output,
-                    (((this.getXActual() + xmap) - this.width/2.0)*getScale()) - (this.statChanges.get(i).renderProgress/2.0)/10,
+                        (change.floatDir ?
+                            (((this.getXActual() + xmap) - this.width/2.0)*getScale()) + (this.statChanges.get(i).renderProgress/2.0)/10:
+                            (((this.getXActual() + xmap) - this.width/2.0)*getScale()) - (this.statChanges.get(i).renderProgress/2.0)/10),
                     (((this.getYActual() + ymap))*getScale()) - this.statChanges.get(i).renderProgress/10.0
                 );
                 gc.setGlobalAlpha(1);

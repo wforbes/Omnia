@@ -11,7 +11,7 @@ public class Procyon extends Enemy {
     public Procyon(OverworldState gameState, String name) {
         super(gameState, name,
             OverworldState.SPRITE_DIR + "attack_test1.gif", 24, 23,
-            new MobStats(1000, 50, 0.65F)
+            new MobStats(500, 0.01F, 25, 0.65F)
         );
         //this.width = 24; this.height = 23;
         this.nameColor = Color.DARKRED;

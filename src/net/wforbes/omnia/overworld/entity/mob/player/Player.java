@@ -31,7 +31,7 @@ public class Player extends Mob {
 
     public Player(OverworldState gameState, String name) {
         super(gameState, name, 0.5, true, new MobStats(
-                1000, 50, 0.75F
+                1000, 0.01F, 50, 0.75F, 1.75F
         ));
         this.width = this.height = 16;
         this.meleeReach = 4;

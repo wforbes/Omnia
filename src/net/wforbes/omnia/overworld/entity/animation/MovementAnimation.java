@@ -25,6 +25,7 @@ public class MovementAnimation {
 
     public MovementAnimation(Mob mover){
         this.mover = mover;
+        this.combatDelay = (long) (this.combatDelay / this.mover.getStatController().getMeleeSpeed());
         playedOnce = false;
     }
 

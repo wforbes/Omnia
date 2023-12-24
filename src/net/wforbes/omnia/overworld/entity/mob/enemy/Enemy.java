@@ -137,6 +137,7 @@ public class Enemy extends Mob {
     private void startAggro(Entity target) {
         this.isAggroed = true;
         this.setTarget(target);
+        this.enemyTargetController.getTarget().notifyEnemyAggro(this);
         this.movementController.setMovementType(
                 MovementController.MOVEMENT_FOLLOW_TARGET
         );
