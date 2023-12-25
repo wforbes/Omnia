@@ -55,7 +55,6 @@ public class MovementController {
     }
 
     protected void followTarget() {
-        this.mover.lastMethod = "followTarget";
         if (this.mover.getTarget() == null) {
             this.standStill();
             return;
@@ -79,9 +78,7 @@ public class MovementController {
     }
 
     protected void standStill() {
-        this.mover.lastMethod = "standStill";
         if (this.mover.hasAttentionOnSomething()) {
-            this.mover.lastMethod = "standStill.hasAttentionOnSomething check";
             this.mover.setMoving(false);
             this.mover.getMovementAnimation().setIsMoving(false);
             return;
@@ -97,7 +94,6 @@ public class MovementController {
     }
 
     private void tryToMoveInFacingDir() {
-        this.mover.lastMethod = "tryToMoveInFacingDir";
         if(this.mover.getFacingDir() == 0) {
             this.xya = new int[]{0, -1, 0};
         } else if(this.mover.getFacingDir() == 1){
@@ -107,7 +103,6 @@ public class MovementController {
     }
 
     private void resumePacing() {
-        this.mover.lastMethod = "resumePacing";
         this.setMovementType(1);
         this.waitingToPace = false;
         this.mover.setMoving(true);

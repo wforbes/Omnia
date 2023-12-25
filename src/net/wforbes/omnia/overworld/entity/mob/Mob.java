@@ -335,7 +335,6 @@ public abstract class Mob extends Entity {
     }
 
     public void move(double xa, double ya) {
-        this.lastMethod = "move";
         //sets sprite image directionality
         //if(xa != 0 && ya != 0){
             //this.speed = 0.375; //TODO: find a clever way to compensate for diagonal speed increase
@@ -478,9 +477,12 @@ public abstract class Mob extends Entity {
     }
 
     private void moveCoords(double xa, double ya) {
-        this.lastMethod = "moveCoords";
-        this.x += xa * (speed * ((isRunning)?runSpeedMod:1));
-        this.y += ya * (speed * ((isRunning)?runSpeedMod:1));
+        double diagMod = 1;
+        if (xa !=0 && ya != 0) {
+            diagMod = 1.4;
+        }
+        this.x += (xa * (speed * ((isRunning)?runSpeedMod:1)))/diagMod;
+        this.y += (ya * (speed * ((isRunning)?runSpeedMod:1)))/diagMod;
     }
 
     public void setPosition(double x, double y) {

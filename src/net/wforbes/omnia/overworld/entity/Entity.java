@@ -56,5 +56,4 @@ public abstract class Entity implements Renderable {
     public abstract void update();
     public abstract void render(GraphicsContext gc);
     public abstract void teardown();
-    public String lastMethod;
 }

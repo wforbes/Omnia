@@ -349,8 +349,7 @@ public class Enemy extends Mob {
             "isMoving: " + this.isMoving + "\n" +
             "isPathing: " + this.pathfindController.isPathing() + "\n" +
             "isAggroed: " + this.isAggroed + "\n" +
-            "lastNextMove: " + this.pathfindController.getLastNextMove()[0] + ", " + this.pathfindController.getLastNextMove()[0] + "\n" +
-            "lastMethod: " + this.lastMethod,
+            "lastNextMove: " + this.pathfindController.getLastNextMove()[0] + ", " + this.pathfindController.getLastNextMove()[0] + "\n"
             10, 200
         );*/
     }
