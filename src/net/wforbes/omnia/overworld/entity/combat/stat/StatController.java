@@ -120,7 +120,7 @@ public class StatController {
         if (this.healthbarController != null) this.healthbarController.update();
     }
 
-    private float pendingRegenFraction = 0.0F;
+    private float pendingRegenFraction = 0.0F; //TODO: see handleHealthRegen
 
     private void handleHealthRegen() {
         if (this.currentHealth == this.maxHealth) return;
@@ -133,13 +133,22 @@ public class StatController {
                         COMBAT_REGEN_MOD : 1
                 )
         ));
-        System.out.println("attempted regen: " + Math.ceil((this.maxHealth * (this.healthRegen /
-                        ((this.owner.getCombatController().isInCombat()) ?
+        /*
+        System.out.println(
+            "attempted regen: " +
+            Math.ceil(
+                (this.maxHealth
+                    * (this.healthRegen / (
+                        (this.owner.getCombatController().isInCombat()) ?
                                 COMBAT_REGEN_MOD : 1
                         )
-                ))));
-        System.out.println("regenAmount: " + regenAmount);
-        //TODO: capture regen amounts less than 1 and accumulate them
+                    )
+                )
+            )
+        );
+         */
+        //System.out.println("regenAmount: " + regenAmount);
+        //TODO: handleHealthRegen capture regen amounts less than 1 and accumulate them
         //  until they are equal or greater than 1, at which point
         //  1 should be added to regenAmount
         /*
@@ -154,8 +163,13 @@ public class StatController {
             pendingRegenFraction = pendingRegenFraction - 1;
         }
          */
-        this.currentHealth += regenAmount;
-        System.out.println(this.owner + " regenerated " + regenAmount + " health");
+        if (this.currentHealth + regenAmount > this.maxHealth) {
+            regenAmount = this.currentHealth + regenAmount - this.maxHealth;
+            this.currentHealth = this.maxHealth;
+        } else {
+            this.currentHealth += regenAmount;
+        }
+        //System.out.println(this.owner + " regenerated " + regenAmount + " health");
         this.owner.addStatChange(new StatChange(
             regenAmount, STAT_CHANGE_TYPE.HP_REGEN
         ));
