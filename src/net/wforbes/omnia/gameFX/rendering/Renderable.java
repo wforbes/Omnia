@@ -18,7 +18,8 @@ public interface Renderable {
     double getRenderYMap();
     double getRenderWidth();
     double getRenderHeight();
-
+    int getHealthbarXOffset();
+    void setHealthbarXOffset(int offset);
 
     void update();
     void render(GraphicsContext gc);

@@ -34,6 +34,12 @@ public class Structure implements Renderable {
     private List<Point2D> polyPoints;
     private ArrayList<Line> shapeLines;
 
+    private int doorX = 33;
+    private int doorY = 76;
+
+    private int aboveDoorX = 33;
+    private int aboveDoorY = 64;
+
     public class CollisionShape {
         public List<Point2D> polyPoints = new ArrayList<>();
 
@@ -128,6 +134,16 @@ public class Structure implements Renderable {
         return 0;
     }
 
+    @Override
+    public int getHealthbarXOffset() {
+        return 0;//artifact of Renderable
+    }
+
+    @Override
+    public void setHealthbarXOffset(int offset) {
+        //artifact of Renderable
+    }
+
 
     public Polygon getCollisionPolygon() {
         return this.collisionPolygon;
@@ -219,15 +235,16 @@ public class Structure implements Renderable {
         );
         this.refreshShapeSegment(
                 47, 89,
-                47, 88
-
+                47, 75
         );
+        //entry point begin
         this.refreshShapeSegment(
-                47, 88,
-                32, 88
+                47, 75,
+                32, 75
         );
+        //entry point end
         this.refreshShapeSegment(
-                32, 88,
+                32, 75,
                 32, 89
         );
         this.refreshShapeSegment(
@@ -282,8 +299,8 @@ public class Structure implements Renderable {
             52+xmod, 88+ymod,
             52+xmod, 89+ymod,
             47+xmod, 89+ymod,
-            47+xmod, 88+ymod,
-            32+xmod, 88+ymod,
+            47+xmod, 75+ymod,
+            32+xmod, 75+ymod,
             32+xmod, 89+ymod,
             27+xmod, 89+ymod,
             27+xmod, 88+ymod,
@@ -341,11 +358,9 @@ public class Structure implements Renderable {
 
     public void renderCollisionShape(GraphicsContext gc) {
         if (this.offScreen()) return;
-        gc.setStroke(Color.RED);
-        gc.strokeRect(this.getXActual()*getScale(), this.getYActual()*getScale(), 2, 2);
         gc.setStroke(Color.POWDERBLUE);
         List<Point2D> points = this.getCollisionShape().getPolyPoints();
-        if (points.isEmpty()) return;
+        if (points.isEmpty() || !gameState.collisionGeometryVisible()) return;
         //System.out.println("rendering col shape");
 
         for (int i = 0; i < points.size(); i++) {

@@ -261,10 +261,6 @@ public class Enemy extends Mob {
         this.fovEdgeLines[1] = new Line();
     }
 
-    private void initCollisionShape() {
-        System.out.println("enemy initCollisionShape()");
-    }
-
     @Override
     public boolean hasAttentionOnSomething() {
         return this.isAggroed;

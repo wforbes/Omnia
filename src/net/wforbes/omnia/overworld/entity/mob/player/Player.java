@@ -28,7 +28,6 @@ public class Player extends Mob {
     private ProjectileController projectileController;
     private HarvestController harvestController;
 
-
     public Player(OverworldState gameState, String name) {
         super(gameState, name, 0.5, true, new MobStats(
                 1000, 0.01F, 50, 0.75F, 1.75F

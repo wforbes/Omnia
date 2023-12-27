@@ -44,6 +44,8 @@ public class AreaObject implements Renderable {
     protected AreaObjectType areaObjectType;
     protected boolean waitingToSpawn;
 
+    private int healthbarXOffset;
+
     public AreaObject(OverworldState gameState, int x, int y) {
         this.gameState = gameState;
         this.x = x;
@@ -149,6 +151,16 @@ public class AreaObject implements Renderable {
     @Override
     public double getRenderHeight() {
         return 0;
+    }
+
+    @Override
+    public int getHealthbarXOffset() {
+        return this.healthbarXOffset;
+    }
+
+    @Override
+    public void setHealthbarXOffset(int offset) {
+        this.healthbarXOffset = offset;
     }
 
     public void update() {

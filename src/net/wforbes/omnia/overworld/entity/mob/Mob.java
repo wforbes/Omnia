@@ -314,12 +314,23 @@ public abstract class Mob extends Entity {
         this.collision_baseCircle = new Circle(collision_baseX, collision_baseY, collisionRadius);
 
         //entity/entity collision
-        this.setCollisionXOffset(2);
+        this.setCollisionXOffset(4);
         this.setCollisionYOffset(8);
-        this.setCollisionBoxWidth(12);
+        this.setCollisionBoxWidth(8);
         this.setCollisionBoxHeight(8);
         this.collisionRectangle = new Rectangle(collisionBoxWidth, collisionBoxHeight);
 
+        this.setHealthbarXOffset(1);
+
+    }
+    @Override
+    public int getHealthbarXOffset() {
+        return this.healthbarXOffset;
+    }
+
+    @Override
+    public void setHealthbarXOffset(int offset) {
+        this.healthbarXOffset = offset;
     }
 
     protected void loadSprites(String path) {

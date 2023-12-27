@@ -40,5 +40,7 @@ public class Procyon extends Enemy {
         this.setCollisionRadius(10);
         this.setCollisionBaseCenterPnt(new Point2D(this.getCollisionBaseX(), this.getCollisionBaseY()));
         this.setCollisionBaseCircle(new Circle(this.getCollisionBaseX(), this.getCollisionBaseY(), collisionRadius));
+
+        this.setHealthbarXOffset(6);
     }
 }

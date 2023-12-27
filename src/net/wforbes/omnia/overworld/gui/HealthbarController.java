@@ -163,7 +163,7 @@ public class HealthbarController {
         // TODO: find best location
         this.windowPanel.relocate(
             (
-                    ((m.getX() + m.getXMap()) + m.getCollisionXOffset()*1.25) * getScale()
+                    ((m.getX() + m.getXMap()) + m.getHealthbarXOffset()*1.25) * getScale()
                 )
                 - (m.getWidth()/3.0) * getScale(), //- this.windowPanel.getLayoutBounds().getWidth() / 2.0,
                 (m.getY() + m.getYMap()) * getScale()

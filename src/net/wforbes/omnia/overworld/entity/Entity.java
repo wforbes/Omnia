@@ -44,6 +44,8 @@ public abstract class Entity implements Renderable {
     public abstract int getCollisionBoxWidth();
     public abstract int getCollisionBoxHeight();
     public abstract double getCollisionRadius();
+    public int healthbarXOffset;
+    public int healthbarYOffset;
     public abstract double getX();
     public abstract double getXActual();
     public abstract double getY();
