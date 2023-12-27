@@ -22,6 +22,7 @@ public class Structure implements Renderable {
     private final StructureType.TYPES type;
     private final int x;
     private final int y;
+    private final StructureDoor structureDoor;
     private Image spriteImg;
     private int width;
     private int height;
@@ -59,6 +60,16 @@ public class Structure implements Renderable {
         this.x = x;
         this.y = y;
         this.loadSprite("/overworld/structures/buildings/house_wide1.png");
+        this.structureDoor = new StructureDoor(
+            this,
+            type,
+            new Point2D(doorX+x, doorY+y),
+            new Point2D(aboveDoorX+x, aboveDoorY+y)
+        );
+    }
+
+    public OverworldState getGameState() {
+        return this.gameState;
     }
 
     @Override
@@ -326,6 +337,18 @@ public class Structure implements Renderable {
         this.width = (int) this.spriteImg.getWidth();
         this.height = (int) this.spriteImg.getHeight();
         System.out.println("loaded structure sprite: " + "("+width+"x"+height+")");
+    }
+    public StructureDoor getStructureDoor() {
+        return this.structureDoor;
+    }
+    public Image getDoorSprite() {
+        if (this.structureDoor == null) return null;
+        return this.structureDoor.getDoorSprite();
+    }
+
+    public Image getAboveDoorSprite() {
+        if (this.structureDoor == null) return null;
+        return this.structureDoor.getAboveDoorSprite();
     }
 
     public void render(GraphicsContext gc) {

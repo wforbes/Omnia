@@ -30,6 +30,7 @@ import net.wforbes.omnia.overworld.world.area.object.AreaObject;
 import net.wforbes.omnia.overworld.world.area.object.corpse.MobCorpse;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
 import net.wforbes.omnia.overworld.world.area.structure.Structure;
+import net.wforbes.omnia.overworld.world.area.structure.StructureDoor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public abstract class Mob extends Entity {
     private MobCorpse mobCorpse;
     private Structure collidingStructure;
     private Rectangle collisionRectangle;
-
+    private StructureDoor collidingDoor;
     public PathfindController getPathfindController() {
         return this.pathfindController;
     }
@@ -439,6 +440,19 @@ public abstract class Mob extends Entity {
         }
         this.collidingStructure = null;
 
+        if (this.isPlayer) {
+            boolean onAnyDoor = false;
+            for (StructureDoor sd : gameState.world.area.getStructureDoors()) {
+                boolean result = withinDoor(sd, xa, ya);
+                sd.setOpen(result);
+                if (result) {
+                    onAnyDoor = true;
+                    this.collidingDoor = sd;
+                }
+            }
+            if (!onAnyDoor) this.collidingDoor = null;
+        }
+
         return false;
     }
 
@@ -452,6 +466,27 @@ public abstract class Mob extends Entity {
         for (Line sl : s.getShapeLines()) {
             for (Line ml: mobLines) {
                 if (sl.getBoundsInParent().intersects(ml.getBoundsInParent())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean withinDoor(StructureDoor sd, double xa, double ya) {
+        Rectangle rect = this.collisionRectangle;
+        rect.setX(rect.getX() + xa); // predict next move
+        rect.setY(rect.getY() + ya);
+
+        ArrayList<Line> mobLines = getMobLines(rect);
+        if (sd.getShapeLines() == null) {
+            //System.out.println("Door shape lines is NULL, u dun goofed");
+            return false;
+        }
+        for (Line sl : sd.getShapeLines()) {
+            for (Line ml: mobLines) {
+                if (sl.getBoundsInParent().intersects(ml.getBoundsInParent())) {
+                    //System.out.println("colliding with door");
                     return true;
                 }
             }

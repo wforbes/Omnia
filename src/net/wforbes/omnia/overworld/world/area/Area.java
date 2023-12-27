@@ -15,6 +15,7 @@ import net.wforbes.omnia.overworld.world.area.object.AreaObject;
 import net.wforbes.omnia.overworld.world.area.object.AreaObjectController;
 import net.wforbes.omnia.overworld.world.area.structure.Structure;
 import net.wforbes.omnia.overworld.world.area.structure.StructureController;
+import net.wforbes.omnia.overworld.world.area.structure.StructureDoor;
 import net.wforbes.omnia.overworld.world.area.tile.TileMap;
 
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ public class Area {
     public List<Entity> getEntities() { return this.entities; }
     public List<AreaObject> getAreaObjects() { return this.areaObjectController.getAreaObjects(); }
     public List<Structure> getStructures() { return this.structureController.getStructures(); }
+    public List<StructureDoor> getStructureDoors() { return this.structureController.getStructureDoors(); }
     public List<Entity> getSpirits() { return this.spirits; }
     public void handleCanvasClick(MouseEvent event) {
         System.out.println("area.handleCanvasClick event: " + event);
@@ -130,6 +132,7 @@ public class Area {
             e.update();
         }
         this.areaObjectController.update();
+        this.structureController.update();
     }
     public void render(GraphicsContext gc) {
         this.tileMap.render(gc);
@@ -147,7 +150,10 @@ public class Area {
             );
             gc.setGlobalAlpha(1);
         }
+        this.structureController.renderDoorSprites(gc);
         this.renderRenderables(gc);
+        this.structureController.renderAboveDoors(gc);
+
         this.effectController.render(gc);
     }
     private void renderRenderables(GraphicsContext gc) {
