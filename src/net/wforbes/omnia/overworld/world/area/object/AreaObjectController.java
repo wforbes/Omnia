@@ -145,8 +145,8 @@ public class AreaObjectController {
 
     private Point2D generateRandomXY(Random rand, int xRange, int yRange) {
         return new Point2D(
-            Math.abs(rand.nextInt(xRange + 1)),
-            Math.abs(rand.nextInt(yRange + 1))
+            Math.abs(rand.nextInt((xRange - 80) + 1) + 80),
+            Math.abs(rand.nextInt((yRange - 80) + 1) + 80)
         );
     }
 
