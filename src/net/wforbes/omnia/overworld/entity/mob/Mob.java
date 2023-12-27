@@ -448,6 +448,9 @@ public abstract class Mob extends Entity {
                 if (result) {
                     onAnyDoor = true;
                     this.collidingDoor = sd;
+                    if (this.collidingWithAboveDoor(sd, xa, ya)) {
+                        //TODO: move to this structure's area
+                    }
                 }
             }
             if (!onAnyDoor) this.collidingDoor = null;
@@ -460,9 +463,7 @@ public abstract class Mob extends Entity {
         Rectangle rect = this.collisionRectangle;
         rect.setX(rect.getX() + xa); // predict next move
         rect.setY(rect.getY() + ya);
-
         ArrayList<Line> mobLines = getMobLines(rect);
-
         for (Line sl : s.getShapeLines()) {
             for (Line ml: mobLines) {
                 if (sl.getBoundsInParent().intersects(ml.getBoundsInParent())) {
@@ -477,18 +478,34 @@ public abstract class Mob extends Entity {
         Rectangle rect = this.collisionRectangle;
         rect.setX(rect.getX() + xa); // predict next move
         rect.setY(rect.getY() + ya);
-
         ArrayList<Line> mobLines = getMobLines(rect);
-        if (sd.getShapeLines() == null) {
+        if (sd.getDoorShapeLines() == null) {
             //System.out.println("Door shape lines is NULL, u dun goofed");
             return false;
         }
-        for (Line sl : sd.getShapeLines()) {
+        for (Line sl : sd.getDoorShapeLines()) {
             for (Line ml: mobLines) {
                 if (sl.getBoundsInParent().intersects(ml.getBoundsInParent())) {
                     //System.out.println("colliding with door");
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    private boolean collidingWithAboveDoor(StructureDoor sd, double xa, double ya) {
+        Rectangle rect = this.collisionRectangle;
+        rect.setX(rect.getX() + xa); // predict next move
+        rect.setY(rect.getY() + ya);
+        ArrayList<Line> mobLines = getMobLines(rect);
+        if (sd.getAboveDoorLine() == null) {
+            //System.out.println("Above Door Live is NULL, u dun goofed");
+            return false;
+        }
+        for (Line ml: mobLines) {
+            if (sd.getAboveDoorLine().getBoundsInParent().intersects(ml.getBoundsInParent())) {
+                return true;
             }
         }
         return false;

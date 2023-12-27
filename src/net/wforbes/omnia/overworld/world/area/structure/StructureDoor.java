@@ -4,7 +4,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Line;
-import net.wforbes.omnia.gameState.OverworldState;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -26,7 +25,8 @@ public class StructureDoor {
     private float xmap;
     private float ymap;
     private boolean open = false;
-    private ArrayList<Line> shapeLines;
+    private ArrayList<Line> doorShapeLines;
+    private Line aboveDoorLine;
 
     public StructureDoor(Structure owner, StructureType.TYPES type, Point2D doorXY, Point2D aboveDoorXY) {
         this.structure = owner;
@@ -68,18 +68,32 @@ public class StructureDoor {
 
     public void init() {
         this.refreshShapeMapping();
+        this.refreshAboveDoorLine();
     }
 
     public void update() {
         this.refreshShapeMapping();
+        this.refreshAboveDoorLine();
     }
 
-    public ArrayList<Line> getShapeLines() {
-        return this.shapeLines;
+    public ArrayList<Line> getDoorShapeLines() {
+        return this.doorShapeLines;
+    }
+
+    public Line getAboveDoorLine() {
+        return this.aboveDoorLine;
+    }
+
+    private void refreshAboveDoorLine() {
+        this.aboveDoorLine = new Line();
+        this.aboveDoorLine.setStartX(aboveDoorXY.getX()+aboveDoorWidth);
+        this.aboveDoorLine.setStartY(aboveDoorXY.getY());
+        this.aboveDoorLine.setEndX(aboveDoorXY.getX());
+        this.aboveDoorLine.setEndY(aboveDoorXY.getY()+aboveDoorHeight);
     }
 
     private void refreshShapeMapping() {
-        this.shapeLines = new ArrayList<>();
+        this.doorShapeLines = new ArrayList<>();
         this.refreshShapeSegment(
             doorXY.getX(), doorXY.getY(),
             doorXY.getX()+doorWidth, doorXY.getY()
@@ -105,7 +119,7 @@ public class StructureDoor {
         line.setEndX(x2);
         line.setEndY(y2);
         //polyPoints.add(new Point2D(x2+this.getXActual(), y2+this.getYActual()));
-        shapeLines.add(line);
+        doorShapeLines.add(line);
     }
 
     public Image getDoorSprite() {
