@@ -101,7 +101,7 @@ public class Projectile {
     }
 
     private boolean checkCollision(double xa, double ya) {
-        for(Entity e : owner.gameState.world.area.entities) {
+        for(Entity e : owner.gameState.world.getCurrentArea().entities) {
             if(!e.getName().equals(this.owner.getName())) {
                 double xDist = (this.x+xa - (e.getX() - ((Mob)e).getWidth()/2.0));
                 double yDist = (this.y+ya - (e.getY() - ((Mob)e).getHeight()/2.0));
@@ -122,7 +122,7 @@ public class Projectile {
     }
 
     private boolean checkOffMap() {
-        TileMap tileMap = this.owner.gameState.world.area.getTileMap();
+        TileMap tileMap = this.owner.gameState.world.getCurrentArea().getTileMap();
         boolean offmap = x + xmap < 0;
         if (x+xmap > tileMap.getWidth()) offmap = true;
         if (y+ymap < 0) offmap = true;
@@ -163,8 +163,8 @@ public class Projectile {
     }
 
     private void refreshMapPosition() {
-        xmap = owner.gameState.world.area.getTileMap().getX();
-        ymap = owner.gameState.world.area.getTileMap().getY();
+        xmap = owner.gameState.world.getCurrentArea().getTileMap().getX();
+        ymap = owner.gameState.world.getCurrentArea().getTileMap().getY();
     }
 
     public boolean isMarkedForTeardown() {

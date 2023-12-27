@@ -23,8 +23,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Area {
-    private final AreaObjectController areaObjectController;
-    private final StructureController structureController;
+    protected AreaObjectController areaObjectController;
+    protected StructureController structureController;
     private World world;
     private TileMap tileMap;
     public List<Entity> entities;

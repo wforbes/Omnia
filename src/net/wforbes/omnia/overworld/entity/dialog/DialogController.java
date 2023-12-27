@@ -41,7 +41,7 @@ public class DialogController {
     }
 
     public void submitChatMsg(Entity sender, String chatCmd, String chatMsg) {
-        for(Entity entity : this.world.area.getEntities()) {
+        for(Entity entity : this.world.getCurrentArea().getEntities()) {
             if(!this.areSameEntity(sender, entity) && this.areWithinAudibleRange(sender, entity)) {
                 if(entity instanceof NPC) {
                     Mob senderMob = (Mob) sender;

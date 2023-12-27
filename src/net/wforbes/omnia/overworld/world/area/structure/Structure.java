@@ -23,6 +23,7 @@ public class Structure implements Renderable {
     private final int x;
     private final int y;
     private final StructureDoor structureDoor;
+    private final StructureArea structureArea;
     private Image spriteImg;
     private int width;
     private int height;
@@ -66,6 +67,7 @@ public class Structure implements Renderable {
             new Point2D(doorX+x, doorY+y),
             new Point2D(aboveDoorX+x, aboveDoorY+y)
         );
+        this.structureArea = new StructureArea(gameState.getWorld());
     }
 
     public OverworldState getGameState() {
@@ -358,8 +360,8 @@ public class Structure implements Renderable {
     }
 
     protected void refreshMapPosition() {
-        xmap = (float)this.gameState.world.area.getTileMap().getX();
-        ymap = (float)this.gameState.world.area.getTileMap().getY();
+        xmap = (float)this.gameState.world.getCurrentArea().getTileMap().getX();
+        ymap = (float)this.gameState.world.getCurrentArea().getTileMap().getY();
     }
 
     protected boolean offScreen() {

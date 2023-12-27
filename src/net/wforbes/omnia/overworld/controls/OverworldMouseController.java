@@ -14,12 +14,12 @@ public class OverworldMouseController extends MouseController {
     @Override
     public void handleCanvasClick(MouseEvent event) {
         //TODO: effectController pivot point away from Area and into GUI
-        gameState.world.area.effectController.handleCanvasClick(event);
+        gameState.world.getCurrentArea().effectController.handleCanvasClick(event);
         if ((event.getButton() == MouseButton.PRIMARY)) {
             gameState.world.player.getTargetController().handleEntityTargeting(
                 event,
-                gameState.world.area.entities,
-                gameState.world.area.effectController
+                gameState.world.getCurrentArea().entities,
+                gameState.world.getCurrentArea().effectController
             );
         }
         if ((event.getButton() == MouseButton.SECONDARY)) {

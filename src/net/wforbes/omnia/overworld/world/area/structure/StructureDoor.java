@@ -140,8 +140,8 @@ public class StructureDoor {
     }
 
     protected void refreshMapPosition() {
-        xmap = (float)this.structure.getGameState().world.area.getTileMap().getX();
-        ymap = (float)this.structure.getGameState().world.area.getTileMap().getY();
+        xmap = (float)this.structure.getGameState().world.getCurrentArea().getTileMap().getX();
+        ymap = (float)this.structure.getGameState().world.getCurrentArea().getTileMap().getY();
     }
     public void myRenderDoor(GraphicsContext gc) {
         gc.drawImage(

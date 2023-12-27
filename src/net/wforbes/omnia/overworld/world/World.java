@@ -7,9 +7,13 @@ import net.wforbes.omnia.overworld.entity.mob.player.Player;
 import net.wforbes.omnia.overworld.entity.dialog.DialogController;
 import net.wforbes.omnia.overworld.world.area.Area;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 public class World {
     public OverworldState gameState;
-    public Area area;
+    public Area currentArea;
+    public ArrayList<Area> previousAreas;
     private DialogController dialogController;
     public Player player;
 
@@ -19,7 +23,7 @@ public class World {
         //TODO: set up areaGrid that comprises the World once
         //  multiple areas have been created
         this.dialogController = new DialogController(this);
-        this.area = new Area(this);
+        this.currentArea = new Area(this);
     }
 
     public OverworldState getGameState() { return this.gameState; }
@@ -29,19 +33,27 @@ public class World {
     }
 
     public Point2D getPlayerLocation() { return new Point2D(this.player.getXActual(), this.player.getYActual()); }
-    public Area getCurrentArea() { return this.area; }
+    public Area getCurrentArea() { return this.currentArea; }
 
     public void init() {
-        area.addEntity(this.player);
-        area.init();
+        currentArea.addEntity(this.player);
+        currentArea.init();
+    }
+
+    public void moveIntoArea(Area nextArea) {
+        Area a = this.currentArea;
+        this.previousAreas.add(a);
+        this.currentArea = nextArea;
+        //nextArea.addEntity(this.player);
+        //nextArea.init()
     }
 
     public void update() {
-        area.update();
+        currentArea.update();
     }
 
     public void render(GraphicsContext gc) {
-        area.render(gc);
+        currentArea.render(gc);
     }
 
     public void teardown() {
@@ -49,6 +61,6 @@ public class World {
         //TODO: tear down areaGrid once its implemented
         this.dialogController.teardown();
         this.dialogController = null;
-        this.area.teardown();
+        this.currentArea.teardown();
     }
 }

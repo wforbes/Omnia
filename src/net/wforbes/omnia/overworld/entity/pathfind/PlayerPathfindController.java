@@ -40,8 +40,8 @@ public class PlayerPathfindController extends PathfindController {
     private Point2D getMouseEventMapPosition(MouseEvent event) {
         //System.out.println("players x/y: "+owner.getXActual()+","+owner.getYActual());
         //System.out.println("tilemap x/y: "+owner.gameState.world.area.getTileMap().getX()+","+owner.gameState.world.area.getTileMap().getY());
-        double x = (event.getX()/getScale()) - owner.gameState.world.area.getTileMap().getX();
-        double y = (event.getY()/getScale()) - owner.gameState.world.area.getTileMap().getY();
+        double x = (event.getX()/getScale()) - owner.gameState.world.getCurrentArea().getTileMap().getX();
+        double y = (event.getY()/getScale()) - owner.gameState.world.getCurrentArea().getTileMap().getY();
         BigDecimal xBD = new BigDecimal(x).setScale(2, RoundingMode.HALF_UP);
         BigDecimal yBD = new BigDecimal(y).setScale(2, RoundingMode.HALF_UP);
         System.out.println("Figuring click's map position to be: "+xBD.doubleValue()+","+yBD.doubleValue());

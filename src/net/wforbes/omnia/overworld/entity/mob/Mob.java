@@ -402,7 +402,7 @@ public abstract class Mob extends Entity {
 
     protected boolean isOccupied(double xa, double ya) {
         //TODO: simplify this to iterate through area Renderables
-        for(Entity e : gameState.world.area.entities) {
+        for(Entity e : gameState.world.getCurrentArea().entities) {
             if(!e.getName().equals(this.name)) {
                 /* AABB Collision */
                 if (
@@ -419,7 +419,7 @@ public abstract class Mob extends Entity {
         this.collidingEntity = null;
 
         //TODO: convert AO collision to similar to structure line-based collision
-        for (AreaObject ao : gameState.world.area.getAreaObjects()) {
+        for (AreaObject ao : gameState.world.getCurrentArea().getAreaObjects()) {
             if (!ao.isSpawned()) continue;
             double xDist = (this.getX()+xa+collision_baseX - this.collisionRadius/2.0) - (ao.getX()+ao.getCollisionBaseX());
             double yDist = (this.getY()+ya+collision_baseY - this.collisionRadius/3.0) - (ao.getY()+ao.getCollisionBaseY());
@@ -431,7 +431,7 @@ public abstract class Mob extends Entity {
         }
         this.collidingAreaObject = null;
 
-        for (Structure s: gameState.world.area.getStructures()) {
+        for (Structure s: gameState.world.getCurrentArea().getStructures()) {
             boolean result = withinStructure(s, xa, ya);
             if (result) {
                 this.collidingStructure = s;
@@ -442,7 +442,7 @@ public abstract class Mob extends Entity {
 
         if (this.isPlayer) {
             boolean onAnyDoor = false;
-            for (StructureDoor sd : gameState.world.area.getStructureDoors()) {
+            for (StructureDoor sd : gameState.world.getCurrentArea().getStructureDoors()) {
                 boolean result = withinDoor(sd, xa, ya);
                 sd.setOpen(result);
                 if (result) {
@@ -625,8 +625,8 @@ public abstract class Mob extends Entity {
     }
 
     protected void refreshMapPosition() {
-        xmap = gameState.world.area.getTileMap().getX();
-        ymap = gameState.world.area.getTileMap().getY();
+        xmap = gameState.world.getCurrentArea().getTileMap().getX();
+        ymap = gameState.world.getCurrentArea().getTileMap().getY();
     }
 
     protected boolean offScreen() {

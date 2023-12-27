@@ -185,8 +185,8 @@ public class AreaObject implements Renderable {
         if (gameState.collisionGeometryVisible()) this.renderCollisionGeometry(gc);
     }
     protected void refreshMapPosition() {
-        xmap = (float)this.gameState.world.area.getTileMap().getX();
-        ymap = (float)this.gameState.world.area.getTileMap().getY();
+        xmap = (float)this.gameState.world.getCurrentArea().getTileMap().getX();
+        ymap = (float)this.gameState.world.getCurrentArea().getTileMap().getY();
     }
 
     protected boolean offScreen() {
