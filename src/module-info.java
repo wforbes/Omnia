@@ -10,6 +10,7 @@ module net.wforbes.gameFX {
     requires javafx.web;
     requires jdk.jsobject;
     requires java.sql;
+    requires annotations;
 
     opens net.wforbes.omnia.gameFX to javafx.graphics;
     opens net.wforbes.omnia.gameFX.controllers to javafx.fxml;

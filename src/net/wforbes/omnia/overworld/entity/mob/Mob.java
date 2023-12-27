@@ -7,6 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.FontWeight;
@@ -27,6 +29,8 @@ import net.wforbes.omnia.overworld.gui.HealthbarController;
 import net.wforbes.omnia.overworld.world.area.object.AreaObject;
 import net.wforbes.omnia.overworld.world.area.object.corpse.MobCorpse;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
+import net.wforbes.omnia.overworld.world.area.structure.Structure;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -85,6 +89,9 @@ public abstract class Mob extends Entity {
     private ArrayList<StatChange> statChanges = new ArrayList<>();
     private Image corpseSprite;
     private MobCorpse mobCorpse;
+    private Structure collidingStructure;
+    private Rectangle collisionRectangle;
+
     public PathfindController getPathfindController() {
         return this.pathfindController;
     }
@@ -311,6 +318,8 @@ public abstract class Mob extends Entity {
         this.setCollisionYOffset(8);
         this.setCollisionBoxWidth(12);
         this.setCollisionBoxHeight(8);
+        this.collisionRectangle = new Rectangle(collisionBoxWidth, collisionBoxHeight);
+
     }
 
     protected void loadSprites(String path) {
@@ -357,7 +366,8 @@ public abstract class Mob extends Entity {
             } else {
                 this.isColliding = true;
             }
-            if (this.isMovingDiagonally()) {
+            //if (this.isMovingDiagonally()) {
+            if (xa != 0 && ya != 0) {
                 this.attemptToSlideAgainst(xa, ya);
             }
         } else {
@@ -392,16 +402,11 @@ public abstract class Mob extends Entity {
                     this.collidingEntity = e;
                     return true;
                 }
-                /*
-                double xDist = (this.getX()+xa+collision_baseX - this.collisionRadius/2.0) - (e.getX()+collision_baseX - this.collisionRadius/2.0);
-                double yDist = (this.getY()+ya+collision_baseY - this.collisionRadius/2.0) - (e.getY()+collision_baseY - this.collisionRadius/2.0);
-                if(Math.sqrt((xDist*xDist) + (yDist*yDist)) < ((e.getCollisionRadius())/2.0)+(this.getCollisionRadius())/2.0) {
-                    return true;
-                }*/
             }
         }
         this.collidingEntity = null;
 
+        //TODO: convert AO collision to similar to structure line-based collision
         for (AreaObject ao : gameState.world.area.getAreaObjects()) {
             if (!ao.isSpawned()) continue;
             double xDist = (this.getX()+xa+collision_baseX - this.collisionRadius/2.0) - (ao.getX()+ao.getCollisionBaseX());
@@ -413,7 +418,69 @@ public abstract class Mob extends Entity {
             }
         }
         this.collidingAreaObject = null;
+
+        for (Structure s: gameState.world.area.getStructures()) {
+            boolean result = withinStructure(s, xa, ya);
+            if (result) {
+                this.collidingStructure = s;
+                return true;
+            }
+        }
+        this.collidingStructure = null;
+
         return false;
+    }
+
+    private boolean withinStructure(Structure s, double xa, double ya) {
+        Rectangle rect = this.collisionRectangle;
+        rect.setX(rect.getX() + xa); // predict next move
+        rect.setY(rect.getY() + ya);
+
+        ArrayList<Line> mobLines = getMobLines(rect);
+
+        for (Line sl : s.getShapeLines()) {
+            for (Line ml: mobLines) {
+                if (sl.getBoundsInParent().intersects(ml.getBoundsInParent())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @NotNull
+    private static ArrayList<Line> getMobLines(Rectangle rect) {
+        ArrayList<Line> mobLines = new ArrayList<>();
+
+        Line line1 = new Line();
+        line1.setStartX(rect.getX());
+        line1.setEndX(rect.getX()+ rect.getWidth());
+        line1.setStartY(rect.getY());
+        line1.setEndY(rect.getY());
+        mobLines.add(line1);
+
+        Line line2 = new Line();
+        line2.setStartX(rect.getX()+ rect.getWidth());
+        line2.setEndX(rect.getX()+ rect.getWidth());
+        line2.setStartY(rect.getY());
+        line2.setEndY(rect.getY()+ rect.getHeight());
+        mobLines.add(line2);
+
+        Line line3 = new Line();
+        line3.setStartX(rect.getX()+ rect.getWidth());
+        line3.setEndX(rect.getX());
+        line3.setStartY(rect.getY());
+        line3.setEndY(rect.getY()+ rect.getHeight());
+        mobLines.add(line3);
+
+        Line line4 = new Line();
+        line4.setStartX(rect.getX());
+        line4.setEndX(rect.getX());
+        line4.setStartY(rect.getY()+ rect.getHeight());
+        line4.setEndY(rect.getY());
+        mobLines.add(line4);
+
+        return mobLines;
     }
 
     public boolean isMovingDiagonally() {
@@ -566,9 +633,15 @@ public abstract class Mob extends Entity {
         this.statController.update();
         this.combatController.update();
         this.recalculateBaseY();
+        this.refreshCollisionRectanglePosition();
     }
     private void recalculateBaseY() {
         this.baseY = ((this.getY() + ymap) + this.collision_baseY);
+    }
+
+    public void refreshCollisionRectanglePosition() {
+        this.collisionRectangle.setX(this.getX() + collisionXOffset);
+        this.collisionRectangle.setY(this.getY() + collisionYOffset);
     }
 
     public void render(GraphicsContext gc) {
@@ -736,8 +809,20 @@ public abstract class Mob extends Entity {
     }
     private void renderCollisionGeometry(GraphicsContext gc) {
         gc.setStroke(Color.RED);
-
+        gc.strokeRect(
+            (collisionRectangle.getX()+xmap)*getScale(),
+            (collisionRectangle.getY()+ymap)*getScale(),
+            collisionRectangle.getWidth()*getScale(),
+            collisionRectangle.getHeight()*getScale()
+        );
+        gc.strokeRect(
+            (collisionRectangle.getX()+xmap)*getScale(),
+            (collisionRectangle.getY()+ymap)*getScale(),
+            2,
+            2
+        );
         //render new mini-map style collision
+        /*
         if(!this.offScreen()) {
             gc.strokeOval(//this is kinda broken on entities right now
                     (this.x+ xmap) + this.collision_baseX,
@@ -763,6 +848,9 @@ public abstract class Mob extends Entity {
                 ((this.getYActual() + ymap - (this.height/2.0)))*getScale(),
                 (this.width)*getScale(),
                 (this.height)*getScale());
+        */
+        //end actual use
+
         /*
         gc.strokeRect( //show actual x/y point
                 ((this.getX() + xmap))*getScale(),

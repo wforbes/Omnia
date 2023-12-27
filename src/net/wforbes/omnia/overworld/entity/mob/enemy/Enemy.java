@@ -354,4 +354,9 @@ public class Enemy extends Mob {
         );*/
     }
 
+    @Override
+    public void teardown() {
+        super.teardown();
+    }
+
 }

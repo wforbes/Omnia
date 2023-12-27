@@ -13,6 +13,8 @@ import net.wforbes.omnia.overworld.world.World;
 import net.wforbes.omnia.overworld.world.area.effect.EffectController;
 import net.wforbes.omnia.overworld.world.area.object.AreaObject;
 import net.wforbes.omnia.overworld.world.area.object.AreaObjectController;
+import net.wforbes.omnia.overworld.world.area.structure.Structure;
+import net.wforbes.omnia.overworld.world.area.structure.StructureController;
 import net.wforbes.omnia.overworld.world.area.tile.TileMap;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.List;
 
 public class Area {
     private final AreaObjectController areaObjectController;
+    private final StructureController structureController;
     private World world;
     private TileMap tileMap;
     public List<Entity> entities;
@@ -36,6 +39,7 @@ public class Area {
         this.entities = new ArrayList<>();
         this.spirits = new ArrayList<>();
         this.areaObjectController = new AreaObjectController(this);
+        this.structureController = new StructureController(this);
         this.effectController = new EffectController(this);
     }
 
@@ -54,6 +58,7 @@ public class Area {
     }
     public List<Entity> getEntities() { return this.entities; }
     public List<AreaObject> getAreaObjects() { return this.areaObjectController.getAreaObjects(); }
+    public List<Structure> getStructures() { return this.structureController.getStructures(); }
     public List<Entity> getSpirits() { return this.spirits; }
     public void handleCanvasClick(MouseEvent event) {
         System.out.println("area.handleCanvasClick event: " + event);
@@ -61,6 +66,7 @@ public class Area {
     public void init() {
         this.initTileMap();
         this.effectController.init();
+        this.structureController.init();
         this.areaObjectController.init();
         this.initEntities();
         this.world.player.init(200,150);
@@ -155,6 +161,7 @@ public class Area {
         renderables.addAll(this.entities);
         renderables.addAll(this.areaObjectController.getAreaObjects());
         renderables.addAll(this.areaObjectController.getCorpses());
+        renderables.addAll(this.structureController.getStructures());
         renderables.sort(Comparator.comparingDouble(Renderable::getBaseY));
         return renderables;
     }
