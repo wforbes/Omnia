@@ -101,7 +101,7 @@ this project in a couple years to keep working on it.
     * [X] ~~**Add Clickable Chat/Dialog Links** - Add links in the quest dialog that gets printed in the chat window to more 
     easily respond to quest text.~~
     * [X] ~~**Refine mob collision boundaries** - Improve the mob's collision boundaries.~~
-    * [ ] **Compensate for diagonal speed increase** - add a speed modifier for diagonal movement to normalize it
+    * [X] ~~**Compensate for diagonal speed increase** - add a speed modifier for diagonal movement to normalize it~~
     with cardinal movement  
     * [ ] **Create GUI window hierarchy** - The most recently interacted with or opened GUI windows should appear on top of
         others to emulate windows in an operating system.
@@ -141,7 +141,10 @@ this project in a couple years to keep working on it.
       * [ ] **Gathering Skill**: Add an initial skill system that restricts the ability to gather nodes before learning the skill.
       * [ ] **Gathering Tools**: Add tool items that are required to perform a gathering skill.
         * [ ] **Improved Tools**: Using a tool with a higher gather skill statistic improves gather speed and loot yield.
-    * [ ] **Add enterable buildings** - Add building structures that can be entered when player steps into it's 'door'
+    * [X] ~~**Add building structure** - Add building structures that mobs collide with that can handle a polygon shape~~ 
+      * [ ] **Add door entry point** - Add door for building structures can be entered when player steps into it's 'door'
+      * [ ] **Add Area change on door entry**
+      * [ ] **Figure out state persistence between Area changes**
 
 - **Inventory**
   * [ ] **Simple inventory feature** - Add very basic simple inventory system to get it started
