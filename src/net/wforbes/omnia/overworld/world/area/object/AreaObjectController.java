@@ -1,8 +1,7 @@
 package net.wforbes.omnia.overworld.world.area.object;
 
 import javafx.geometry.Point2D;
-import net.wforbes.omnia.db.AreaObjectDBA;
-import net.wforbes.omnia.gameFX.rendering.Renderable;
+import net.wforbes.omnia.game.rendering.Renderable;
 import net.wforbes.omnia.overworld.world.area.Area;
 import net.wforbes.omnia.overworld.world.area.object.flora.shrub.Shrub;
 import net.wforbes.omnia.overworld.world.area.object.flora.shrub.ShrubType;

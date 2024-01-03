@@ -6,10 +6,10 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.*;
-import net.wforbes.omnia.gameFX.rendering.Renderable;
+import net.wforbes.omnia.game.rendering.Renderable;
 import net.wforbes.omnia.overworld.entity.action.Actionable;
 
-import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
+import static net.wforbes.omnia.game.Game.getScale;
 
 public class ActionWindowController {
 

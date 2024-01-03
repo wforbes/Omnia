@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
-import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.world.area.Area;
 
@@ -57,8 +57,8 @@ public class TileMap {
         this.area = area;
         this.tileSize = tileSize;
 
-        this.numColsToDraw = OmniaFX.getWidth() / tileSize + tileSize * 2; //320
-        this.numRowsToDraw = OmniaFX.getHeight() / tileSize + 2; //240
+        this.numColsToDraw = Game.getWidth() / tileSize + tileSize * 2; //320
+        this.numRowsToDraw = Game.getHeight() / tileSize + 2; //240
         //this.numColsToDraw = (int)area.getWorld().getGameState().getManager().getGameController().getStageWidth() / tileSize + tileSize * 2;
         //this.numRowsToDraw = (int)area.getWorld().getGameState().getManager().getGameController().getStageHeight() / tileSize + 2;
     }
@@ -105,9 +105,9 @@ public class TileMap {
         width = (int)areaMapDimensions.getWidth() * tileSize;
         height = (int)areaMapDimensions.getHeight() * tileSize;
 
-        xmin = OmniaFX.getWidth() - width;
+        xmin = Game.getWidth() - width;
         xmax = 0;
-        ymin = OmniaFX.getHeight() - height;
+        ymin = Game.getHeight() - height;
         ymax = 0;
 
         for(int y = 0; y < mapHeight; y++){
@@ -150,8 +150,8 @@ public class TileMap {
         this.tween = tween;
     }
     public void setPosition(double x, double y){
-        double centerX = (OmniaFX.getWidth() / 2.0);
-        double centerY = (OmniaFX.getHeight() / 2.0);
+        double centerX = (Game.getWidth() / 2.0);
+        double centerY = (Game.getHeight() / 2.0);
 
         //move the x/y position of the tilemap as
         //  the difference of screen center and
@@ -201,10 +201,10 @@ public class TileMap {
                 if (col >= areaMapDimensions.getWidth()) break; //nothing else to draw
 
                 gc.drawImage(this.getTileMapSprite(col, row),
-                        (x + col * tileSize) * OmniaFX.getScale(),
-                        (y + row * tileSize) * OmniaFX.getScale(),
-                        (double)tileSize * OmniaFX.getScale(),
-                        (double)tileSize * OmniaFX.getScale()
+                        (x + col * tileSize) * Game.getScale(),
+                        (y + row * tileSize) * Game.getScale(),
+                        (double)tileSize * Game.getScale(),
+                        (double)tileSize * Game.getScale()
                 );
 
             }

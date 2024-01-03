@@ -2,13 +2,10 @@ package net.wforbes.omnia.overworld.world.area.structure;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import net.wforbes.omnia.gameFX.rendering.Renderable;
 import net.wforbes.omnia.overworld.world.area.Area;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
 
 public class StructureController {
     private final Area area;

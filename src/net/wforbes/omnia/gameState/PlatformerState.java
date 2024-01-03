@@ -4,8 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.game.Game;
-import net.wforbes.omnia.gameFX.OmniaFX;
-import net.wforbes.omnia.gameFX.controls.keyboard.KeyboardController;
+import net.wforbes.omnia.game.controls.keyboard.KeyboardController;
 import net.wforbes.omnia.menu.DeathMenu;
 import net.wforbes.omnia.menu.PauseMenu;
 import net.wforbes.omnia.platformer.entity.Enemy;
@@ -78,24 +77,14 @@ public class PlatformerState extends GameState {
         tileMap.setTween(0.06);
 
         player = new Player(tileMap, this);
-        if(gsm.usingFx)
-            player.setPosition(100,100);//set starting position
-        else
-            player.setPosition(100,100);//set starting position
+        player.setPosition(100,100);//set starting position
 
         enemies = new ArrayList<Enemy>();
         Slugger s = new Slugger(tileMap);
-        if(gsm.usingFx)
-            s.setPosition(200, 100);
-        else
-            s.setPosition(200, 100);
+        s.setPosition(200, 100);
         enemies.add(s);
 
-        if(gsm.usingFx) {
-            hud = new HUD(player, "fx");
-        } else {
-            hud = new HUD(player);
-        }
+        hud = new HUD(player, "fx");
         deathMenu = new DeathMenu(gsm);
         pauseMenu = new PauseMenu(gsm);
         //bgMusic = new AudioPlayer("/Music/bgMusic1.mp3");
@@ -104,7 +93,7 @@ public class PlatformerState extends GameState {
 
     @Override
     public void tick() {
-        this.checkKeyInput();
+        //this.checkKeyInput();
 
         player.update();
         if (player.isDead) {
@@ -115,7 +104,7 @@ public class PlatformerState extends GameState {
             }
         }
 
-        tileMap.setPosition( Game.WIDTH / 2 - player.getx(), Game.HEIGHT / 2 - player.gety() );
+        tileMap.setPosition( (double) Game.getWidth() / 2 - player.getx(), (double) Game.getHeight() / 2 - player.gety() );
 
         //set background
         bg.setPosition(tileMap.getx(), tileMap.gety());
@@ -132,19 +121,6 @@ public class PlatformerState extends GameState {
                 i--;
             }
         }
-    }
-
-    private void checkKeyInput() {
-        //NOTE: input handling done with Player class in FX
-        if (gsm.inputHandler.a.isPressed()) player.setLeft(true);
-        if (gsm.inputHandler.d.isPressed()) player.setRight(true);
-        if (gsm.inputHandler.space.isPressed()) player.setJumping(true);
-        if (gsm.inputHandler.w.isPressed()) player.setGliding(true);
-        if (gsm.inputHandler.q.isPressed()) player.setScratching();
-        if (gsm.inputHandler.e.isPressed()) player.setFiring();
-        if (gsm.inputHandler.shift.isPressed()) player.setPhasing(true);
-        if (gsm.inputHandler.m.isPressed()) spawnEnemy();
-
     }
 
     @Override
@@ -167,7 +143,7 @@ public class PlatformerState extends GameState {
             return;
         }
         player.update();
-        tileMap.setPosition( OmniaFX.getWidth() / 2 - player.getx(), OmniaFX.getHeight() / 2 - player.gety() );
+        tileMap.setPosition( Game.getWidth() / 2 - player.getx(), Game.getHeight() / 2 - player.gety() );
 
         //set background
         bg.setPosition(tileMap.getx(), tileMap.gety());
@@ -205,37 +181,6 @@ public class PlatformerState extends GameState {
         if (pauseMenu.isVisible()){
             pauseMenu.render(gc);
         }
-    }
-
-    @Override
-    public void render(Graphics2D g) {
-        //draw background
-        bg.draw(g);
-
-        //draw tilemap
-        tileMap.draw(g);
-
-        //draw player
-        player.draw(g);
-
-        //draw enemies
-        for(int i = 0; i < enemies.size(); i++){
-            enemies.get(i).draw(g);
-        }
-        //draw hud
-        hud.draw(g);
-
-        if(deathMenu.isVisible()) {
-            //deathMenu.render(g);
-        }
-
-        //draw dev disp
-        //g.drawString("player coords: " + "( " +  player.getx() + ")"+ "( " +  player.gety() + ")", 100, 100);
-        //g.drawString("scratch count: " + player.getScratchCount(), 100, 110);
-        //g.drawString("kill count: " + player.getKillCount() , 100, 120);
-        //g.drawString("enemy count: " + enemies.size(), 100, 130);
-        //g.drawString("player move speed: " + player.getMoveSpeed(), 100, 80);
-        //g.drawString("player max speed: " + player.getMaxSpeed(), 100, 90);
     }
 
     public void spawnEnemy(){

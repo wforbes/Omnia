@@ -1,7 +1,7 @@
 package net.wforbes.omnia.platformer.ui;
 
 import javafx.scene.canvas.GraphicsContext;
-import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.platformer.entity.Player;
 import org.jfree.fx.FXGraphics2D;
 
@@ -38,7 +38,7 @@ public class HUD {
 		if(!type.equals("fx"))
 			return;
 		this.player = player;
-		this.fxScale = OmniaFX.getScale();
+		this.fxScale = Game.getScale();
 		this.font = new Font("Century Gothic", Font.PLAIN, 14 * fxScale);
 		try{
 			img = new Image("/HUD/hud.gif");
@@ -56,11 +56,11 @@ public class HUD {
 	}
 
 	public void draw(FXGraphics2D fxg){
-		fxg.drawImage(image, 0, 10, width * OmniaFX.getScale(), height * OmniaFX.getScale(), null);
+		fxg.drawImage(image, 0, 10, width * Game.getScale(), height * Game.getScale(), null);
 		fxg.setFont(new Font("Century Gothic", Font.PLAIN, (14 * fxScale))); //TODO: possible bug with size of this font?
 		//System.out.println(fxg.getFont().getSize());
 		//fxg.setFont(this.font);
-		fxg.drawString(player.getHealth() + " / " + player.getMaxHealth(), 25*OmniaFX.getScale(), 25*OmniaFX.getScale());
+		fxg.drawString(player.getHealth() + " / " + player.getMaxHealth(), 25* Game.getScale(), 25* Game.getScale());
 		//fxg.drawString((player.getFire() / 100) + " / " + (player.getMaxFire() / 100), 25*OmniaFX.getScale(), 45*OmniaFX.getScale());
 	}
 	

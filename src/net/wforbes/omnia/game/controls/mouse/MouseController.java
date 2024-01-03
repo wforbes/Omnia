@@ -1,4 +1,4 @@
-package net.wforbes.omnia.gameFX.controls.mouse;
+package net.wforbes.omnia.game.controls.mouse;
 
 import javafx.scene.input.MouseEvent;
 

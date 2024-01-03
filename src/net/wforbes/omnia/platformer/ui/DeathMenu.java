@@ -6,10 +6,8 @@ import javafx.scene.text.Font;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import net.wforbes.omnia.game.Game;
-import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.GameStateManager;
 import net.wforbes.omnia.gameState.PlatformerState;
-import org.jfree.fx.FXGraphics2D;
 
 
 import java.awt.*;
@@ -34,7 +32,7 @@ public class DeathMenu {
     public DeathMenu(PlatformerState gameState) {
         this.gameState = gameState;
         visible = false;
-        this.fxScale = OmniaFX.getScale();
+        this.fxScale = Game.getScale();
         headingFont = new Font("Century Gothic", 20 * fxScale);
         awtHeadingFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 20);
         heading = "You died!";
@@ -66,49 +64,27 @@ public class DeathMenu {
     }
 
     private void checkKeyInput() {
-        if (gameState.gsm.usingFx) {
-            if(gameState.gsm.isKeyDown(KeyCode.ENTER) && keyInputReady()){
-                select();
-                lastPressTick = tickCount;
-            }
-
-            if(gameState.gsm.isKeyDown(KeyCode.UP) && keyInputReady()){
-                currentChoice--;
-                if(currentChoice == -1){
-                    currentChoice = options.length - 1;
-                }
-                lastPressTick = tickCount;
-            }
-
-            if(gameState.gsm.isKeyDown(KeyCode.DOWN) && keyInputReady()){
-                currentChoice++;
-                if(currentChoice == options.length){
-                    currentChoice = 0;
-                }
-                lastPressTick = tickCount;
-            }
-        } else {
-            if(gameState.gsm.inputHandler.enter.isPressed() && keyInputReady()){
-                select();
-                lastPressTick = tickCount;
-            }
-
-            if(gameState.gsm.inputHandler.up.isPressed() && keyInputReady()){
-                currentChoice--;
-                if(currentChoice == -1){
-                    currentChoice = options.length - 1;
-                }
-                lastPressTick = tickCount;
-            }
-
-            if(gameState.gsm.inputHandler.down.isPressed() && keyInputReady()){
-                currentChoice++;
-                if(currentChoice == options.length){
-                    currentChoice = 0;
-                }
-                lastPressTick = tickCount;
-            }
+        if(gameState.gsm.isKeyDown(KeyCode.ENTER) && keyInputReady()){
+            select();
+            lastPressTick = tickCount;
         }
+
+        if(gameState.gsm.isKeyDown(KeyCode.UP) && keyInputReady()){
+            currentChoice--;
+            if(currentChoice == -1){
+                currentChoice = options.length - 1;
+            }
+            lastPressTick = tickCount;
+        }
+
+        if(gameState.gsm.isKeyDown(KeyCode.DOWN) && keyInputReady()){
+            currentChoice++;
+            if(currentChoice == options.length){
+                currentChoice = 0;
+            }
+            lastPressTick = tickCount;
+        }
+
 
     }
 
@@ -129,23 +105,23 @@ public class DeathMenu {
 
         g.setFont(headingFont);
         g.setFill(Color.WHITE);
-        double _width = computeTextWidth(headingFont, heading, OmniaFX.getScaledWidth());
-        g.fillText(heading, OmniaFX.getScaledWidth() / 2 - _width/2, OmniaFX.getScaledHeight() / 2);
+        double _width = computeTextWidth(headingFont, heading, Game.getScaledWidth());
+        g.fillText(heading, Game.getScaledWidth() / 2 - _width/2, Game.getScaledHeight() / 2);
 
         g.setFont(optionsFont);
-        double optionsYPosStart = OmniaFX.getScaledHeight() / 2 + headingFont.getSize();
+        double optionsYPosStart = Game.getScaledHeight() / 2 + headingFont.getSize();
         double optionsPadding = optionsFont.getSize();
 
         double padSum = 0;
         for (int i = 0; i < options.length; i++) {
-            _width = computeTextWidth(optionsFont, options[i], OmniaFX.getScaledWidth());
+            _width = computeTextWidth(optionsFont, options[i], Game.getScaledWidth());
 
             if(i == currentChoice){
                 g.setFill(Color.YELLOW);
             }else{
                 g.setFill(Color.WHITE);
             }
-            g.fillText(options[i], OmniaFX.getScaledWidth() / 2 - _width / 2, optionsYPosStart + padSum);
+            g.fillText(options[i], Game.getScaledWidth() / 2 - _width / 2, optionsYPosStart + padSum);
             padSum = optionsPadding + ( optionsPadding * i+1);
         }
     }
@@ -162,32 +138,5 @@ public class DeathMenu {
         helper.setWrappingWidth((int)Math.ceil(w));
         double textWidth = Math.ceil(helper.getLayoutBounds().getWidth());
         return textWidth;
-    }
-
-    public void render(Graphics2D g) {
-
-        FontRenderContext context = g.getFontRenderContext();
-
-        g.setFont(awtHeadingFont);
-        g.setColor(java.awt.Color.WHITE);
-        int headingXPos = Game.WIDTH / 2 - (int)awtHeadingFont.getStringBounds(heading, context).getWidth() / 2;
-        int headingYPos = Game.HEIGHT / 2 - (int)awtHeadingFont.getStringBounds(heading, context).getHeight() / 2;
-        g.drawString(heading, headingXPos, headingYPos);
-
-        g.setFont(awtOptionsFont);
-        int optionsXPos = Game.WIDTH / 2 - (int)awtHeadingFont.getStringBounds(heading, context).getWidth() / 2;
-        int optionsPadding = (int)awtOptionsFont.getStringBounds(options[0], context).getHeight();
-        int optionsYPosStart = headingYPos + (int)awtOptionsFont.getStringBounds(options[0], context).getHeight();
-        int padSum = 0;
-        for (int i = 0; i < options.length; i++) {
-            if(i == currentChoice){
-                g.setColor(java.awt.Color.YELLOW);
-            }else{
-                g.setColor(java.awt.Color.WHITE);
-            }
-            g.drawString(options[i], optionsXPos, optionsYPosStart + padSum);
-            padSum = optionsPadding + ( optionsPadding * i+1);
-        }
-
     }
 }

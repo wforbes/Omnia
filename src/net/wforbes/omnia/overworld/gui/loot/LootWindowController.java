@@ -1,20 +1,16 @@
 package net.wforbes.omnia.overworld.gui.loot;
 
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.Dimension2D;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.overworld.entity.action.Lootable;
 import net.wforbes.omnia.overworld.gui.DragResizer;
 import net.wforbes.omnia.overworld.gui.GUIController;
@@ -44,7 +40,7 @@ public class LootWindowController extends TitledWindowController {
 
     public LootWindowController(GUIController gui) {
         super(gui, "loot", "Loot");
-        windowPanel.relocate(OmniaFX.getScaledWidth()
+        windowPanel.relocate(Game.getScaledWidth()
                 - this.getWindowWidth() - 250, 0
         );
     }

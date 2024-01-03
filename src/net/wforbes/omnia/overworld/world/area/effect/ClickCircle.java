@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
+import static net.wforbes.omnia.game.Game.getScale;
 
 public class ClickCircle {
     private EffectController effectController;

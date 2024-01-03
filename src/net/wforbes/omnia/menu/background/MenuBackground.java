@@ -2,7 +2,7 @@ package net.wforbes.omnia.menu.background;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.game.Game;
 
 public class MenuBackground {
     private Image image;
@@ -27,7 +27,7 @@ public class MenuBackground {
     public void update() {
         //if x is less than the width of the screen,
         //  reset x value to continue to continue animation
-        if(x <= (double)OmniaFX.getScaledWidth()*Math.signum(dx)) {
+        if(x <= (double) Game.getScaledWidth()*Math.signum(dx)) {
             x = dx;
         } else {
             x += dx;
@@ -35,12 +35,12 @@ public class MenuBackground {
     }
 
     public void render(GraphicsContext gc) {
-        gc.drawImage(image, x, y,  OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight());
+        gc.drawImage(image, x, y,  Game.getScaledWidth(), Game.getScaledHeight());
 
         if (x < 0)
-            gc.drawImage(image, x + OmniaFX.getScaledWidth(), y, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight());
+            gc.drawImage(image, x + Game.getScaledWidth(), y, Game.getScaledWidth(), Game.getScaledHeight());
 
         if (x > 0)
-            gc.drawImage(image, x - OmniaFX.getScaledWidth(), y, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight());
+            gc.drawImage(image, x - Game.getScaledWidth(), y, Game.getScaledWidth(), Game.getScaledHeight());
     }
 }

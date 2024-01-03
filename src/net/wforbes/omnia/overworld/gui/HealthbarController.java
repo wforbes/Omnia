@@ -11,12 +11,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import net.wforbes.omnia.gameFX.rendering.Renderable;
+import net.wforbes.omnia.game.rendering.Renderable;
 import net.wforbes.omnia.overworld.entity.Entity;
 
 import java.text.DecimalFormat;
 
-import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
+import static net.wforbes.omnia.game.Game.getScale;
 
 public class HealthbarController {
     private final GUIController gui;

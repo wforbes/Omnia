@@ -1,7 +1,7 @@
 package net.wforbes.omnia.overworld.world.area.structure;
 
 import javafx.scene.canvas.GraphicsContext;
-import net.wforbes.omnia.gameFX.rendering.Renderable;
+import net.wforbes.omnia.game.rendering.Renderable;
 import net.wforbes.omnia.overworld.world.World;
 import net.wforbes.omnia.overworld.world.area.Area;
 

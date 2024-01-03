@@ -1,9 +1,8 @@
-package net.wforbes.omnia.gameFX.controls.keyboard;
+package net.wforbes.omnia.game.controls.keyboard;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import net.wforbes.omnia.gameState.GameState;
-import net.wforbes.omnia.gameState.OverworldState;
 
 import java.util.HashMap;
 

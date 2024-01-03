@@ -1,4 +1,4 @@
-package net.wforbes.omnia.gameFX.animation;
+package net.wforbes.omnia.game.animation;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.DoubleProperty;
@@ -7,9 +7,6 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleLongProperty;
 
 public abstract class GameLoopTimer extends AnimationTimer {
-
-
-
     private double delta;
     private double goalFPS = 60D; //TODO: make fps adjustable
     double nsPerTick = 1000000000D / 60D;

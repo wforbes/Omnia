@@ -1,7 +1,6 @@
 package net.wforbes.omnia.platformer.tileMap;
 
 import net.wforbes.omnia.game.Game;
-import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.GameState;
 import org.jfree.fx.FXGraphics2D;
 
@@ -79,12 +78,12 @@ public class Background {
     }*/
 
     public void draw(FXGraphics2D fxg) {
-        fxg.drawImage(bufferedImage, (int)x, (int)y, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(),null);
+        fxg.drawImage(bufferedImage, (int)x, (int)y, Game.getScaledWidth(), Game.getScaledHeight(),null);
         if(x < 0)
-            fxg.drawImage(bufferedImage, (int)x + OmniaFX.getScaledWidth(), (int) y, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(), null);
+            fxg.drawImage(bufferedImage, (int)x + Game.getScaledWidth(), (int) y, Game.getScaledWidth(), Game.getScaledHeight(), null);
 
         if(x > 0)
-            fxg.drawImage(bufferedImage, (int)x - OmniaFX.getScaledWidth(), (int)y, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(), null);
+            fxg.drawImage(bufferedImage, (int)x - Game.getScaledWidth(), (int)y, Game.getScaledWidth(), Game.getScaledHeight(), null);
     }
 
     public void draw(Graphics2D g){
@@ -95,11 +94,11 @@ public class Background {
         //		the left off of the screen, we'd want to render more background to
         //		the right of the screen and vise versa.
         if(x < 0){//draw the image at the far right side of the screen
-            g.drawImage(bufferedImage, (int)x + Game.WIDTH, (int) y, null);
+            g.drawImage(bufferedImage, (int)x + Game.getWidth(), (int) y, null);
         }
         if(x > 0){//I think this should be if (x > GamePanel.WIDTH) but whatever
             //		we'll see.
-            g.drawImage(bufferedImage, (int)x - Game.WIDTH, (int)y, null);
+            g.drawImage(bufferedImage, (int)x - Game.getWidth(), (int)y, null);
             //STOPPED at 5:23AM at 30:06 of:
             //			http://www.youtube.com/watch?v=9dzhgsVaiSo
         }

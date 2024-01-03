@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameState.GameStateManager;
 import net.wforbes.omnia.gameState.MenuState;
 import net.wforbes.omnia.menu.background.MenuBackground;
@@ -30,13 +30,13 @@ public class MainMenu extends Menu {
 
     public MainMenu(MenuState state) {
         this.state = state;
-        this.fxScale = OmniaFX.getScale();
+        this.fxScale = Game.getScale();
         try {//load the background resource .gif file
             bg = new MenuBackground("/Backgrounds/menubg.gif");
         } catch(Exception e) {
             e.printStackTrace();
         }
-        bg.setVector(-0.1 * OmniaFX.getScale(), 0);//move to the left at .1 pixels
+        bg.setVector(-0.1 * Game.getScale(), 0);//move to the left at .1 pixels
 
         //font for Naturalist Engine title
         titleFont = new Font("Century Gothic", 25 * fxScale);
@@ -205,7 +205,7 @@ public class MainMenu extends Menu {
 
         Text presentsTxt = new Text("wforbes presents:");
         presentsTxt.setFont(subTitleFont2);
-        double presentsX = ((OmniaFX.getScaledWidth() - presentsTxt.getLayoutBounds().getWidth())/2);
+        double presentsX = ((Game.getScaledWidth() - presentsTxt.getLayoutBounds().getWidth())/2);
         gc.setFont(subTitleFont2);
         gc.fillText("wforbes presents:", presentsX, 60 * fxScale);
 
@@ -213,13 +213,13 @@ public class MainMenu extends Menu {
         Text titleTxt = new Text("Omnia");
         titleTxt.setFont(titleFont);
         gc.setFont(titleFont);
-        double centerX = ((OmniaFX.getScaledWidth() - titleTxt.getLayoutBounds().getWidth())/2);
+        double centerX = ((Game.getScaledWidth() - titleTxt.getLayoutBounds().getWidth())/2);
         //gc.fillText("Omnia", ((OmniaFX.getScaledWidth() - titleTxt.getLayoutBounds().getWidth())/2), 85 * fxScale);
         gc.fillText("Omnia", centerX, 85 * fxScale);
 
         Text versionTxt = new Text("prototype v0.0.2");
         versionTxt.setFont(subTitleFont);
-        double versionX = ((OmniaFX.getScaledWidth() - versionTxt.getLayoutBounds().getWidth())/2);
+        double versionX = ((Game.getScaledWidth() - versionTxt.getLayoutBounds().getWidth())/2);
         gc.setFont(subTitleFont);
         gc.fillText("prototype v0.0.2", versionX, 100 * fxScale);
         //gc.fillText("prototype v0.0.2", 225 * fxScale, 100 * fxScale);

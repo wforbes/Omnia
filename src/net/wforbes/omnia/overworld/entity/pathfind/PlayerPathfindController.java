@@ -9,7 +9,7 @@ import java.awt.geom.Line2D;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
+import static net.wforbes.omnia.game.Game.getScale;
 
 public class PlayerPathfindController extends PathfindController {
 

@@ -1,19 +1,14 @@
 package net.wforbes.omnia.overworld.gui.inventory;
 
-import javafx.event.EventType;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.overworld.gui.DragResizer;
 import net.wforbes.omnia.overworld.gui.GUIController;
 import net.wforbes.omnia.overworld.gui.TitledWindowController;
@@ -36,7 +31,7 @@ public class InventoryWindowController extends TitledWindowController {
     public InventoryWindowController(GUIController gui) {
         super(gui, "inventory", "Inventory");
         this.tooltipFont = new Font("Century Gothic", 18);
-        this.windowPanel.relocate(OmniaFX.getScaledWidth()
+        this.windowPanel.relocate(Game.getScaledWidth()
                 - this.getWindowWidth() - 50, 0
         );
     }

@@ -2,7 +2,7 @@ package net.wforbes.omnia.overworld.entity;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.text.Text;
-import net.wforbes.omnia.gameFX.rendering.Renderable;
+import net.wforbes.omnia.game.rendering.Renderable;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.combat.CombatController;
 import net.wforbes.omnia.overworld.entity.combat.stat.StatController;

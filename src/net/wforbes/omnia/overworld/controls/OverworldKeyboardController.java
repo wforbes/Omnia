@@ -2,7 +2,7 @@ package net.wforbes.omnia.overworld.controls;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import net.wforbes.omnia.gameFX.controls.keyboard.KeyboardController;
+import net.wforbes.omnia.game.controls.keyboard.KeyboardController;
 import net.wforbes.omnia.gameState.OverworldState;
 
 public class OverworldKeyboardController extends KeyboardController {

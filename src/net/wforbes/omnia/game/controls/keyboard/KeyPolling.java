@@ -1,4 +1,4 @@
-package net.wforbes.omnia.gameFX.controls.keyboard;
+package net.wforbes.omnia.game.controls.keyboard;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;

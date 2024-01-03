@@ -4,9 +4,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.db.Database;
-import net.wforbes.omnia.gameFX.controls.keyboard.KeyboardController;
+import net.wforbes.omnia.game.controls.keyboard.KeyboardController;
 import net.wforbes.omnia.overworld.controls.OverworldKeyboardController;
-import net.wforbes.omnia.gameFX.controls.mouse.MouseController;
+import net.wforbes.omnia.game.controls.mouse.MouseController;
 import net.wforbes.omnia.overworld.controls.OverworldMouseController;
 import net.wforbes.omnia.overworld.entity.mob.player.Player;
 import net.wforbes.omnia.overworld.gui.GUIController;
@@ -24,10 +24,8 @@ public class OverworldState extends GameState {
     public Player player;
     public GUIController gui;
     public static final String SPRITE_DIR = "/overworld/sprites/";
-
     private boolean showCollisionGeometry = false;
     private boolean showMobNames = true;
-
     private boolean isPaused = false;
     private boolean isExiting = false;
     private boolean previouslyExited;
@@ -40,7 +38,7 @@ public class OverworldState extends GameState {
 
     private void setup(GameStateManager gsm) {
         if (gsm != null) this.gsm = gsm;
-        System.out.println("Building Overworld game state");
+        //System.out.println("Building Overworld game state");
         this.mouseController = new OverworldMouseController(this);
         this.keyboardController = new OverworldKeyboardController(this);
         this.world = new World(this);
@@ -137,9 +135,6 @@ public class OverworldState extends GameState {
         //TODO: update NPCS
         tickCount++;
     }
-
-    @Override
-    public void render(Graphics2D g) { }
 
     @Override
     public void render(GraphicsContext gc) {

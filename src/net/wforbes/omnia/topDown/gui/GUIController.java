@@ -8,8 +8,8 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import net.wforbes.omnia.gameFX.OmniaFX;
-import net.wforbes.omnia.gameFX.controllers.GameController;
+import net.wforbes.omnia.game.Game;
+import net.wforbes.omnia.game.controllers.GameController;
 import net.wforbes.omnia.gameState.TopDownState;
 import net.wforbes.omnia.topDown.level.Level;
 import net.wforbes.omnia.topDown.entity.Player;
@@ -42,7 +42,7 @@ public class GUIController {
 
         this.chatWindowController = new ChatWindowController(this);
         this.chatPanel = this.chatWindowController.getWindowPanel();
-        chatPanel.relocate(0, OmniaFX.getScaledHeight() - (chatWindowController.CHAT_VBOX_HEIGHT + 42));
+        chatPanel.relocate(0, Game.getScaledHeight() - (chatWindowController.CHAT_VBOX_HEIGHT + 42));
 
         final Pane panelsPane = new Pane();
         panelsPane.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");

@@ -14,7 +14,7 @@ import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
@@ -36,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
+import static net.wforbes.omnia.game.Game.getScale;
 
 public abstract class Mob extends Entity {
     //protected AttentionController attentionController;
@@ -631,9 +631,9 @@ public abstract class Mob extends Entity {
 
     protected boolean offScreen() {
         return x + xmap + width < 0 ||
-                x + xmap - width/2.5 > OmniaFX.getWidth() ||
+                x + xmap - width/2.5 > Game.getWidth() ||
                 y + ymap + height < 0 ||
-                y + ymap - height/2.5 > OmniaFX.getHeight();
+                y + ymap - height/2.5 > Game.getHeight();
     }
     public boolean isOnScreen() {
         return !this.offScreen();

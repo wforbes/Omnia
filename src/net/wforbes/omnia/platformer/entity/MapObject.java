@@ -1,7 +1,6 @@
 package net.wforbes.omnia.platformer.entity;
 
 import net.wforbes.omnia.game.Game;
-import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.platformer.tileMap.Tile;
 import net.wforbes.omnia.platformer.tileMap.TileMap;
 import org.jfree.fx.FXGraphics2D;
@@ -203,24 +202,24 @@ public abstract class MapObject {
 	public boolean notOnScreen(){
 
 		return x + xmap + width < 0 ||
-				x + xmap - width > OmniaFX.getScaledWidth() ||
+				x + xmap - width > Game.getScaledWidth() ||
 				y + ymap + height < 0 ||
-				y + ymap - height > OmniaFX.getScaledHeight();
+				y + ymap - height > Game.getScaledHeight();
 	}
 
 	public boolean onScreen(){
 		return x + xmap + width > 0 ||
-				x + xmap - width < OmniaFX.getWidth() ||
+				x + xmap - width < Game.getWidth() ||
 				y + ymap + height > 0 ||
-				y + ymap - height < OmniaFX.getHeight();
+				y + ymap - height < Game.getHeight();
 	}
 
 	public void draw(FXGraphics2D fxg){
 		if(!notOnScreen()){
 			if(facingRight){
-				fxg.drawImage(animation.getImage(), (int)(x + xmap - width / 2)*OmniaFX.getScale(), (int)(y + ymap - height / 2)*OmniaFX.getScale(), width*OmniaFX.getScale(), height*OmniaFX.getScale(), null );
+				fxg.drawImage(animation.getImage(), (int)(x + xmap - width / 2)* Game.getScale(), (int)(y + ymap - height / 2)* Game.getScale(), width* Game.getScale(), height* Game.getScale(), null );
 			}else{
-				fxg.drawImage(animation.getImage(), (int)(x + xmap - width / 2 + width)*OmniaFX.getScale(), (int)(y + ymap - height / 2)*OmniaFX.getScale(), -width*OmniaFX.getScale(), height*OmniaFX.getScale(), null );
+				fxg.drawImage(animation.getImage(), (int)(x + xmap - width / 2 + width)* Game.getScale(), (int)(y + ymap - height / 2)* Game.getScale(), -width* Game.getScale(), height* Game.getScale(), null );
 			}
 		}
 	}

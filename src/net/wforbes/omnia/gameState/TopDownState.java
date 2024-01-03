@@ -5,8 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.game.Game;
-import net.wforbes.omnia.gameFX.OmniaFX;
-import net.wforbes.omnia.gameFX.controls.keyboard.KeyboardController;
+import net.wforbes.omnia.game.controls.keyboard.KeyboardController;
 import net.wforbes.omnia.menu.PauseMenu;
 import net.wforbes.omnia.topDown.controls.TopDownKeyboardController;
 import net.wforbes.omnia.topDown.entity.*;
@@ -77,7 +76,7 @@ public class TopDownState extends GameState{
         this.level.renderEntities(screen);
         this.renderVersionText();
         this.setPixelColorsFromScreen();
-        fxGraphics2D.drawImage(this.image, 0, 0, OmniaFX.getScaledWidth(), OmniaFX.getScaledHeight(), null);
+        fxGraphics2D.drawImage(this.image, 0, 0, Game.getScaledWidth(), Game.getScaledHeight(), null);
         if (pauseMenu.isVisible()){
             pauseMenu.render(gc);
         }
@@ -133,16 +132,10 @@ public class TopDownState extends GameState{
     @Override
     public void init()
     {
-        if(gsm.usingFx){
-            this.image = new BufferedImage(OmniaFX.getWidth(), OmniaFX.getHeight(), BufferedImage.TYPE_INT_RGB);
-            this.screen = new Screen(OmniaFX.getWidth(), OmniaFX.getHeight(), new SpriteSheet("/sprite_sheet.png"));
-            //this.pauseMenu = new PauseMenu(this, "fx");
-            this.pauseMenu = new PauseMenu(gsm);
-        } else {
-            this.image = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_RGB);
-            this.screen = new Screen(Game.WIDTH, Game.HEIGHT, new SpriteSheet("/sprite_sheet.png"));
-            //this.pauseMenu = new PauseMenu(this);
-        }
+        this.image = new BufferedImage(Game.getWidth(), Game.getHeight(), BufferedImage.TYPE_INT_RGB);
+        this.screen = new Screen(Game.getWidth(), Game.getHeight(), new SpriteSheet("/sprite_sheet.png"));
+        //this.pauseMenu = new PauseMenu(this, "fx");
+        this.pauseMenu = new PauseMenu(gsm);
 
         this.debugging = false;
 
@@ -197,18 +190,6 @@ public class TopDownState extends GameState{
         }
         level.tick();
         tickCount++;
-    }
-
-    @Override
-    public void render(Graphics2D graphics2D) {
-        this.renderTiles();
-        this.level.renderEntities(screen);
-        this.renderVersionText();
-        this.setPixelColorsFromScreen();
-        graphics2D.drawImage(this.image, 0, 0, Game.WIDTH, Game.HEIGHT, null);
-        /*if (pauseMenu.isVisible()) {
-            //pauseMenu.render(graphics2D);
-        }*/
     }
 
     public void pause() {

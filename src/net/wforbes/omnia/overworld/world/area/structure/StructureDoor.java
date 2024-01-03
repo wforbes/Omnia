@@ -8,7 +8,7 @@ import javafx.scene.shape.Line;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
+import static net.wforbes.omnia.game.Game.getScale;
 
 public class StructureDoor {
     private final Structure structure;

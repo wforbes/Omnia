@@ -12,7 +12,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
-import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.game.Game;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -133,7 +133,7 @@ public class ChatWindowController {
         this.titledPane = new TitledPane();
         this.titledPane.setText("Chat Window");
         this.titledPane.setCollapsible(false);
-        this.titledPane.setPrefWidth(OmniaFX.getScaledWidth());
+        this.titledPane.setPrefWidth(Game.getScaledWidth());
         this.titledPane.setOpacity(0.75);
     }
 

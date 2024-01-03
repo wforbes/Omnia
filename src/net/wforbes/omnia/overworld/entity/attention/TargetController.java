@@ -5,9 +5,7 @@ import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.mob.Mob;
 import net.wforbes.omnia.overworld.world.area.effect.EffectController;
 
-import java.util.List;
-
-import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
+import static net.wforbes.omnia.game.Game.getScale;
 
 public class TargetController {
 

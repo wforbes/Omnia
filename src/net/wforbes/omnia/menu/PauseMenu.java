@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameState.GameStateManager;
 
 import java.util.ArrayList;
@@ -33,8 +33,8 @@ public class PauseMenu extends Menu {
         System.out.println(gsm);
         this.gsm = gsm;
         this.visible = false;
-        this.headingFont = new Font("Century Gothic", 20 * OmniaFX.getScale());
-        this.optionsFont = new Font("Century Gothic",14 * OmniaFX.getScale());
+        this.headingFont = new Font("Century Gothic", 20 * Game.getScale());
+        this.optionsFont = new Font("Century Gothic",14 * Game.getScale());
         this.setButtons();
     }
 
@@ -54,8 +54,8 @@ public class PauseMenu extends Menu {
 
     private void setButtons() {
         vbox.setPadding(new Insets(
-                OmniaFX.getScaledHeight()/2, 0,0,
-                (OmniaFX.getScaledWidth()/2 - 55 * OmniaFX.getScale())));
+                Game.getScaledHeight()/2, 0,0,
+                (Game.getScaledWidth()/2 - 55 * Game.getScale())));
         for(int i = 0; i < options.length; i++) {
             Button btn = new Button(options[i]);
             btn.getStyleClass().add("pause-button");
@@ -91,8 +91,8 @@ public class PauseMenu extends Menu {
             gc.setFont(headingFont);
             gc.setFill(Color.WHITE);
             gc.fillText(this.heading,
-                    (double)OmniaFX.getScaledWidth()/2 - this.calcStrWidth(headingFont, heading)/2,
-                    (double)OmniaFX.getScaledHeight()/2 - 10 * OmniaFX.getScale());
+                    (double) Game.getScaledWidth()/2 - this.calcStrWidth(headingFont, heading)/2,
+                    (double) Game.getScaledHeight()/2 - 10 * Game.getScale());
             gc.setFont(optionsFont);
         }
     }

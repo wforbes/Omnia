@@ -3,7 +3,7 @@ package net.wforbes.omnia.overworld.entity.mob.player;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
@@ -97,7 +97,7 @@ public class Player extends Mob {
         movementAnimation.update();
         checkActions();
         gameState.gui.getDevWindow().setPlayerMapPos(this.x, this.y);
-        gameState.gui.getDevWindow().setPlayerScreenPos(Math.floor(this.x+xmap) * OmniaFX.getScale(), Math.floor(this.y+ymap) * OmniaFX.getScale());
+        gameState.gui.getDevWindow().setPlayerScreenPos(Math.floor(this.x+xmap) * Game.getScale(), Math.floor(this.y+ymap) * Game.getScale());
         this.projectileController.update();
         this.harvestController.update();
     }

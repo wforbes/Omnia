@@ -15,12 +15,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import net.wforbes.omnia.u.W;
-import netscape.javascript.JSObject;
 import javafx.util.Duration;
-import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.overworld.entity.dialog.DialogController;
 
 import java.text.DateFormat;
@@ -48,18 +44,18 @@ public class ChatWindowController {
     private Node chatPanel;
 
 
-    public final int CHATAREA_SCROLL_WIDTH = OmniaFX.getScaledWidth() - 50;
+    public final int CHATAREA_SCROLL_WIDTH = Game.getScaledWidth() - 50;
     public final int CHATAREA_SCROLL_HEIGHT = 200;
-    public final int CHATAREA_FLOW_WIDTH = OmniaFX.getScaledWidth();
+    public final int CHATAREA_FLOW_WIDTH = Game.getScaledWidth();
     public final int CHATAREA_FLOW_HEIGHT = 170;
-    public final int CHATFIELD_WIDTH = (int)(OmniaFX.getScaledWidth()*0.0875);
+    public final int CHATFIELD_WIDTH = (int)(Game.getScaledWidth()*0.0875);
     public final int CHATFIELD_HEIGHT = 42;
     public final int CHATBUTTON_WIDTH = 113;
     public final int CHATBUTTON_HEIGHT = 42;
     public final int CHAT_VBOX_HEIGHT = 240;
-    public final int CHAT_LOWER_WIDTH = OmniaFX.getScaledWidth();
+    public final int CHAT_LOWER_WIDTH = Game.getScaledWidth();
     public final int CHAT_LOWER_HEIGHT = 34;
-    public Dimension2D windowSize = new Dimension2D(OmniaFX.getScaledWidth(),
+    public Dimension2D windowSize = new Dimension2D(Game.getScaledWidth(),
             (double)CHATAREA_SCROLL_HEIGHT+(double)CHATFIELD_HEIGHT+75);
 
     private int lastInputCommandTick = 0;

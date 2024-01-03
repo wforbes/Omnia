@@ -6,15 +6,15 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
-import net.wforbes.omnia.gameFX.OmniaFX;
-import net.wforbes.omnia.gameFX.rendering.Renderable;
+import net.wforbes.omnia.game.Game;
+import net.wforbes.omnia.game.rendering.Renderable;
 import net.wforbes.omnia.gameState.OverworldState;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
+import static net.wforbes.omnia.game.Game.getScale;
 
 public class Structure implements Renderable {
 
@@ -366,9 +366,9 @@ public class Structure implements Renderable {
 
     protected boolean offScreen() {
         return x + xmap + width < 0 ||
-                x + xmap - width/2.5 > OmniaFX.getWidth() ||
+                x + xmap - width/2.5 > Game.getWidth() ||
                 y + ymap + height < 0 ||
-                y + ymap - height/2.5 > OmniaFX.getHeight();
+                y + ymap - height/2.5 > Game.getHeight();
     }
 
     public void renderSprite(GraphicsContext gc) {

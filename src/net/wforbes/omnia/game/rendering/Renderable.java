@@ -1,4 +1,4 @@
-package net.wforbes.omnia.gameFX.rendering;
+package net.wforbes.omnia.game.rendering;
 
 import javafx.scene.canvas.GraphicsContext;
 

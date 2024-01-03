@@ -1,7 +1,6 @@
 package net.wforbes.omnia.platformer.tileMap;
 
 import net.wforbes.omnia.game.Game;
-import net.wforbes.omnia.gameFX.OmniaFX;
 import org.jfree.fx.FXGraphics2D;
 
 import javax.imageio.ImageIO;
@@ -10,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 public class TileMap {
 
@@ -45,30 +45,18 @@ public class TileMap {
 	private int numRowsToDraw;
 	private int numColsToDraw;
 
-	private boolean usingFx = false;
-
 	public TileMap(int tileSize){
 		this.tileSize = tileSize;
 		//since the game is 240 height and tile is 30
-		numRowsToDraw = Game.HEIGHT / tileSize + 2;
-		numColsToDraw = Game.WIDTH / tileSize + 2;
-		tween = 0.07;
-	}
-
-	public TileMap(int tileSize, String type){
-		if(!type.equals("fx"))
-			return;
-		this.usingFx = true;
-		this.tileSize = tileSize;
-		numRowsToDraw = OmniaFX.getHeight() / tileSize + 2;
-		numColsToDraw = OmniaFX.getWidth() / tileSize + 2;
+		numRowsToDraw = Game.getHeight() / tileSize + 2;
+		numColsToDraw = Game.getWidth() / tileSize + 2;
 		tween = 0.07;
 	}
 
 	public void loadTiles(String path){
 		try {
 			//get the tileMap image
-			tileset = ImageIO.read( getClass().getResourceAsStream(path));
+			tileset = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(path)));
 			//get the number of tiles across - 20 tiles across
 			numTilesAcross = tileset.getWidth() / tileSize;
 			//this is a representation of the tileset
@@ -106,9 +94,9 @@ public class TileMap {
 			width = numCols * tileSize;
 			height = numRows * tileSize;
 			
-			xmin = (this.usingFx?OmniaFX.getWidth():Game.WIDTH) - width;
+			xmin = Game.getWidth() - width;
 			xmax = 0;
-			ymin = (this.usingFx?OmniaFX.getHeight():Game.HEIGHT) - height;
+			ymin = Game.getHeight() - height;
 			ymax = 0;
 
 			String delims = "\\s+"; //this represents white space, so.. the space
@@ -169,9 +157,9 @@ public class TileMap {
 	//TODO: Scaled - 1/3
 	public void draw(FXGraphics2D fxg) {
 		TileDraw td  = (int r, int c, int col, int row) -> {
-			fxg.drawImage(tiles[r][c].getImage(), (int)(x + col * tileSize) * OmniaFX.getScale(),
-					(int)(y + row * tileSize) * OmniaFX.getScale(),
-					tileSize * OmniaFX.getScale(), tileSize * OmniaFX.getScale(), null);
+			fxg.drawImage(tiles[r][c].getImage(), (int)(x + col * tileSize) * Game.getScale(),
+					(int)(y + row * tileSize) * Game.getScale(),
+					tileSize * Game.getScale(), tileSize * Game.getScale(), null);
 		};
 		this.draw(td);
 	}

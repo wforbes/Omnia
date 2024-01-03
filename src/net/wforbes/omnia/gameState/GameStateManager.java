@@ -2,16 +2,13 @@ package net.wforbes.omnia.gameState;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import net.wforbes.omnia.game.Game;
-import net.wforbes.omnia.gameFX.controllers.GameController;
-import net.wforbes.omnia.input.InputHandler;
+import net.wforbes.omnia.game.controllers.GameController;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class GameStateManager {
     public boolean usingFx;
-    public InputHandler inputHandler;
     public GameController gameController;
     private ArrayList<GameState> gameStates;
     private int currentState;
@@ -21,17 +18,6 @@ public class GameStateManager {
     public static final int PLATFORMERSTATE = 2;
     public static final int OVERWORLDSTATE = 3;
 
-    // Used with Game.java for non JavaFX runtime
-    public GameStateManager(Game game) {
-        this.inputHandler = new InputHandler(game);
-        gameStates = new ArrayList<>();
-        gameStates.add(new MenuState(this));
-        gameStates.add(new TopDownState(this));
-        gameStates.add(new PlatformerState(this));
-        this.setState(MENUSTATE);
-    }
-
-    // Used with GameController.java for OmniaFX/JavaFX run time
     public GameStateManager(GameController gameController) {
         this.usingFx = true;
         this.gameController = gameController;
@@ -51,7 +37,7 @@ public class GameStateManager {
         return this.gameController.keys.isDown(keyCode);
     }
     public void clearKeys() {
-        if(usingFx)this.gameController.keys.clearKeys();
+        this.gameController.keys.clearKeys();
     }
 
     public void setState(int state) {
@@ -80,12 +66,6 @@ public class GameStateManager {
         //System.out.println(gameController.getStageWidth());
         gameStates.get(currentState).update();
     }
-
-    //Used for Game.java renders
-    public void render(Graphics2D g2D){
-        gameStates.get(currentState).render(g2D);
-    }
-
 
     //Used for GameFX.java renders
     public void render(GraphicsContext gc) {

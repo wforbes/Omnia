@@ -4,7 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.gui.inventory.InventoryWindowController;
@@ -50,7 +50,7 @@ public class GUIController {
         chatWindowPanel = windowDragger.makeDraggableByTitleRegion(
                 chatWindowController.getWindowPanel()
         );
-        chatWindowPanel.relocate(0, OmniaFX.getScaledHeight() - chatWindowController.getWindowHeight());
+        chatWindowPanel.relocate(0, Game.getScaledHeight() - chatWindowController.getWindowHeight());
         chatWindowPanel.setId("chat");
         chatWindowVisible = false;
 
@@ -58,7 +58,7 @@ public class GUIController {
         devWindowPanel = windowDragger.makeDraggableByTitleRegion(
                 devWindowController.getWindowPanel()
         );
-        devWindowPanel.relocate(0, OmniaFX.getScaledHeight()
+        devWindowPanel.relocate(0, Game.getScaledHeight()
                 - devWindowController.getWindowHeight() - 50
                 - chatWindowController.getWindowHeight()
         );

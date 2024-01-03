@@ -3,13 +3,10 @@ package net.wforbes.omnia.overworld.world.area;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import net.wforbes.omnia.gameFX.OmniaFX;
-import net.wforbes.omnia.gameFX.rendering.Renderable;
+import net.wforbes.omnia.game.Game;
+import net.wforbes.omnia.game.rendering.Renderable;
 import net.wforbes.omnia.overworld.entity.EntityController;
-import net.wforbes.omnia.overworld.entity.mob.enemy.Procyon;
-import net.wforbes.omnia.overworld.entity.mob.npc.DocNPC;
 import net.wforbes.omnia.overworld.entity.Entity;
-import net.wforbes.omnia.overworld.entity.mob.npc.NPC;
 import net.wforbes.omnia.overworld.world.World;
 import net.wforbes.omnia.overworld.world.area.effect.EffectController;
 import net.wforbes.omnia.overworld.world.area.object.AreaObject;
@@ -134,8 +131,8 @@ public class Area {
             gc.fillRect(
                     0,
                     0,
-                    OmniaFX.getWidth() + OmniaFX.getWidth()/8.25,
-                    OmniaFX.getHeight() + OmniaFX.getHeight()/8.25
+                    Game.getWidth() + Game.getWidth()/8.25,
+                    Game.getHeight() + Game.getHeight()/8.25
             );
             gc.setGlobalAlpha(1);
         }

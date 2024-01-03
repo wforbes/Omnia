@@ -4,7 +4,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import net.wforbes.omnia.game.Game;
-import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.GameStateManager;
 import net.wforbes.omnia.gameState.TopDownState;
 import org.jfree.fx.FXGraphics2D;
@@ -43,10 +42,10 @@ public class PauseMenu {
         this.gameState = gameState;
         visible = false;
 
-        headingFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, (20 * OmniaFX.getScale()));
+        headingFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, (20 * Game.getScale()));
         heading = "Pause Menu";
 
-        optionsFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, (14 * OmniaFX.getScale()));
+        optionsFont = new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, (14 * Game.getScale()));
         options = new String[]{"Resume", "Return to Menu", "Quit Game"};
     }
 
@@ -77,53 +76,30 @@ public class PauseMenu {
     }
 
     private void checkKeyInput() {
-        if (gameState.gsm.usingFx) {
-            if(gameState.gsm.isKeyDown(KeyCode.ESCAPE) && keyInputReady()){
-                gameState.unPause();
-                lastPressTick = tickCount;
-            }
+        if(gameState.gsm.isKeyDown(KeyCode.ESCAPE) && keyInputReady()){
+            gameState.unPause();
+            lastPressTick = tickCount;
+        }
 
-            if(gameState.gsm.isKeyDown(KeyCode.ENTER) && keyInputReady()){
-                select();
-                lastPressTick = tickCount;
-            }
+        if(gameState.gsm.isKeyDown(KeyCode.ENTER) && keyInputReady()){
+            select();
+            lastPressTick = tickCount;
+        }
 
-            if(gameState.gsm.isKeyDown(KeyCode.UP) && keyInputReady()){
-                currentChoice--;
-                if(currentChoice == -1){
-                    currentChoice = options.length - 1;
-                }
-                lastPressTick = tickCount;
+        if(gameState.gsm.isKeyDown(KeyCode.UP) && keyInputReady()){
+            currentChoice--;
+            if(currentChoice == -1){
+                currentChoice = options.length - 1;
             }
+            lastPressTick = tickCount;
+        }
 
-            if(gameState.gsm.isKeyDown(KeyCode.DOWN) && keyInputReady()){
-                currentChoice++;
-                if(currentChoice == options.length){
-                    currentChoice = 0;
-                }
-                lastPressTick = tickCount;
+        if(gameState.gsm.isKeyDown(KeyCode.DOWN) && keyInputReady()){
+            currentChoice++;
+            if(currentChoice == options.length){
+                currentChoice = 0;
             }
-        } else {
-            if(gameState.gsm.inputHandler.enter.isPressed() && keyInputReady()){
-                select();
-                lastPressTick = tickCount;
-            }
-
-            if(gameState.gsm.inputHandler.up.isPressed() && keyInputReady()){
-                currentChoice--;
-                if(currentChoice == -1){
-                    currentChoice = options.length - 1;
-                }
-                lastPressTick = tickCount;
-            }
-
-            if(gameState.gsm.inputHandler.down.isPressed() && keyInputReady()){
-                currentChoice++;
-                if(currentChoice == options.length){
-                    currentChoice = 0;
-                }
-                lastPressTick = tickCount;
-            }
+            lastPressTick = tickCount;
         }
     }
 
@@ -150,14 +126,14 @@ public class PauseMenu {
         FontRenderContext context = g.getFontRenderContext();
 
         //g.setFont(headingFont);
-        g.setFont(new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 20 * OmniaFX.getScale()));
+        g.setFont(new java.awt.Font("Century Gothic", java.awt.Font.PLAIN, 20 * Game.getScale()));
         g.setColor(java.awt.Color.WHITE);
-        int headingXPos = OmniaFX.getScaledWidth() / 2 - (int)headingFont.getStringBounds(heading, context).getWidth() / 2;
-        int headingYPos = OmniaFX.getScaledHeight() / 2 - (int)headingFont.getStringBounds(heading, context).getHeight() / 2;
+        int headingXPos = Game.getScaledWidth() / 2 - (int)headingFont.getStringBounds(heading, context).getWidth() / 2;
+        int headingYPos = Game.getScaledHeight() / 2 - (int)headingFont.getStringBounds(heading, context).getHeight() / 2;
         g.drawString(heading, headingXPos, headingYPos);
 
         g.setFont(optionsFont);
-        int optionsXPos = OmniaFX.getScaledWidth() / 2 - (int)headingFont.getStringBounds(heading, context).getWidth() / 2;
+        int optionsXPos = Game.getScaledWidth() / 2 - (int)headingFont.getStringBounds(heading, context).getWidth() / 2;
         int optionsPadding = (int)optionsFont.getStringBounds(options[0], context).getHeight();
         int optionsYPosStart = headingYPos + (int)optionsFont.getStringBounds(options[0], context).getHeight();
         int padSum = 0;
@@ -183,30 +159,5 @@ public class PauseMenu {
         helper.setWrappingWidth((int)Math.ceil(w));
         double textWidth = Math.ceil(helper.getLayoutBounds().getWidth());
         return textWidth;
-    }
-
-    public void render(Graphics2D g) {
-        FontRenderContext context = g.getFontRenderContext();
-
-        g.setFont(headingFont);
-        g.setColor(java.awt.Color.WHITE);
-        int headingXPos = Game.WIDTH / 2 - (int)headingFont.getStringBounds(heading, context).getWidth() / 2;
-        int headingYPos = Game.HEIGHT / 2 - (int)headingFont.getStringBounds(heading, context).getHeight() / 2;
-        g.drawString(heading, headingXPos, headingYPos);
-
-        g.setFont(optionsFont);
-        int optionsXPos = Game.WIDTH / 2 - (int)headingFont.getStringBounds(heading, context).getWidth() / 2;
-        int optionsPadding = (int)optionsFont.getStringBounds(options[0], context).getHeight();
-        int optionsYPosStart = headingYPos + (int)optionsFont.getStringBounds(options[0], context).getHeight();
-        int padSum = 0;
-        for (int i = 0; i < options.length; i++) {
-            if(i == currentChoice){
-                g.setColor(java.awt.Color.YELLOW);
-            }else{
-                g.setColor(java.awt.Color.WHITE);
-            }
-            g.drawString(options[i], optionsXPos, optionsYPosStart + padSum);
-            padSum = optionsPadding + ( optionsPadding * i+1);
-        }
     }
 }

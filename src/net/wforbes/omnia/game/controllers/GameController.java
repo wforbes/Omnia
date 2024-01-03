@@ -1,9 +1,5 @@
-package net.wforbes.omnia.gameFX.controllers;
+package net.wforbes.omnia.game.controllers;
 
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.ReadOnlyStringProperty;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
@@ -17,10 +13,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
-import net.wforbes.omnia.gameFX.OmniaFX;
-import net.wforbes.omnia.gameFX.animation.GameLoopTimer;
-import net.wforbes.omnia.gameFX.controls.keyboard.KeyPolling;
-import net.wforbes.omnia.gameFX.rendering.Renderer;
+import net.wforbes.omnia.game.Game;
+import net.wforbes.omnia.game.animation.GameLoopTimer;
+import net.wforbes.omnia.game.controls.keyboard.KeyPolling;
+import net.wforbes.omnia.game.rendering.Renderer;
 import net.wforbes.omnia.gameState.GameStateManager;
 import net.wforbes.omnia.u.W;
 
@@ -45,7 +41,7 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //initializeCanvas();
-        stage = OmniaFX.getPrimaryStage();
+        stage = Game.getPrimaryStage();
         stage.setTitle("Omnia");
         this.gsm = new GameStateManager(this);
         this.renderer = new Renderer(this.gameCanvas);
@@ -105,9 +101,7 @@ public class GameController implements Initializable {
 
             @Override
             public void tick() {
-
                 gsm.update();
-
             }
 
             @Override

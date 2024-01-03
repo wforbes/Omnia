@@ -3,25 +3,17 @@ package net.wforbes.omnia.overworld.entity.mob.enemy;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.ArcType;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
-import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameState.OverworldState;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.EnemyTargetController;
 import net.wforbes.omnia.overworld.entity.combat.stat.MobStats;
 import net.wforbes.omnia.overworld.entity.mob.Mob;
-import net.wforbes.omnia.overworld.entity.mob.player.Player;
 import net.wforbes.omnia.overworld.entity.movement.MovementController;
 import net.wforbes.omnia.overworld.entity.pathfind.EnemyPathfindController;
 
-import java.awt.*;
-
-import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
+import static net.wforbes.omnia.game.Game.getScale;
 
 public class Enemy extends Mob {
 

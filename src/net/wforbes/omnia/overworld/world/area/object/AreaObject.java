@@ -7,13 +7,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 import net.wforbes.omnia.db.AreaObjectDBA;
-import net.wforbes.omnia.gameFX.OmniaFX;
-import net.wforbes.omnia.gameFX.rendering.Renderable;
+import net.wforbes.omnia.game.Game;
+import net.wforbes.omnia.game.rendering.Renderable;
 import net.wforbes.omnia.gameState.OverworldState;
 
 import java.util.Objects;
 
-import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
+import static net.wforbes.omnia.game.Game.getScale;
 
 public class AreaObject implements Renderable {
 
@@ -191,9 +191,9 @@ public class AreaObject implements Renderable {
 
     protected boolean offScreen() {
         return x + xmap + width < 0 ||
-                x + xmap - width/2.5 > OmniaFX.getWidth() ||
+                x + xmap - width/2.5 > Game.getWidth() ||
                 y + ymap + height < 0 ||
-                y + ymap - height/2.5 > OmniaFX.getHeight();
+                y + ymap - height/2.5 > Game.getHeight();
     }
 
     protected void renderSprite(GraphicsContext gc) {

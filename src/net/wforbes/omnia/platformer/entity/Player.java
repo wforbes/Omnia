@@ -2,7 +2,7 @@ package net.wforbes.omnia.platformer.entity;
 
 import javafx.scene.input.KeyCode;
 import net.wforbes.omnia.gameState.PlatformerState;
-import net.wforbes.omnia.input.InputHandler;
+//import net.wforbes.omnia.input.InputHandler;
 import net.wforbes.omnia.platformer.audio.AudioPlayer;
 import net.wforbes.omnia.platformer.tileMap.TileMap;
 import org.jfree.fx.FXGraphics2D;
@@ -17,7 +17,7 @@ public class Player extends MapObject{
 
 	private PlatformerState gs;
 	private int scale;
-	private InputHandler inputHandler;
+	//private InputHandler inputHandler;
 	private int tickCount = 0;
 	private int lastInputCommandTick = 0;
 
@@ -76,12 +76,9 @@ public class Player extends MapObject{
 	public Player(TileMap tm, PlatformerState gameState){
 		super(tm);//sets tileMap and tileSize
 		this.gs = gameState;
-		this.inputHandler = gameState.gsm.inputHandler;
-		if ( gs.gsm.usingFx ) {
-			this.scale = 1;//OmniaFX.getScale();
-		} else {
-			this.scale = 1;
-		}
+		//this.inputHandler = gameState.gsm.inputHandler;
+
+		this.scale = 1;
 
 		//find a way to save these variables elsewhere or find
 		//		math functions to determine them
@@ -366,39 +363,23 @@ public class Player extends MapObject{
 	}
 
 	private void checkKeyInput() {
-		if (this.gs.gsm.usingFx) {
-			if (gs.gsm.isKeyDown(KeyCode.ESCAPE) && pauseIsReady() && keyInputIsReady()){
-				this.lastInputCommandTick = this.tickCount;
-				gs.pause();
-			}
-			if (gs.gsm.isKeyDown(KeyCode.A)) this.setLeft(true);
-			if (gs.gsm.isKeyDown(KeyCode.D)) this.setRight(true);
-			if (gs.gsm.isKeyDown(KeyCode.SPACE)) this.setJumping(true);
-			if (gs.gsm.isKeyDown(KeyCode.W)) this.setGliding(true);
-			if (gs.gsm.isKeyDown(KeyCode.Q)) this.setScratching();
-			if (gs.gsm.isKeyDown(KeyCode.E)) this.setFiring();
-			if (gs.gsm.isKeyDown(KeyCode.SHIFT)) this.setPhasing(true);
-			if (gs.gsm.isKeyDown(KeyCode.M)) gs.spawnEnemy();
-			if (!gs.gsm.isKeyDown(KeyCode.A)) this.setLeft(false);
-			if (!gs.gsm.isKeyDown(KeyCode.D)) this.setRight(false);
-			if (!gs.gsm.isKeyDown(KeyCode.SPACE)) this.setJumping(false);
-			if (!gs.gsm.isKeyDown(KeyCode.W)) this.setGliding(false);
-			if (!gs.gsm.isKeyDown(KeyCode.SHIFT)) this.setPhasing(false);
-		} else {
-			if (inputHandler.a.isPressed()) this.setLeft(true);
-			if (inputHandler.d.isPressed()) this.setRight(true);
-			if (inputHandler.space.isPressed()) this.setJumping(true);
-			if (inputHandler.w.isPressed()) this.setGliding(true);
-			if (inputHandler.q.isPressed()) this.setScratching();
-			if (inputHandler.e.isPressed()) this.setFiring();
-			if (inputHandler.shift.isPressed()) this.setPhasing(true);
-			if (inputHandler.m.isPressed()) gs.spawnEnemy();
-			if (inputHandler.a.isReleased()) this.setLeft(false);
-			if (inputHandler.d.isReleased()) this.setRight(false);
-			if (inputHandler.space.isReleased()) this.setJumping(false);
-			if (inputHandler.w.isReleased()) this.setGliding(false);
-			if (inputHandler.shift.isReleased()) this.setPhasing(false);
+		if (gs.gsm.isKeyDown(KeyCode.ESCAPE) && pauseIsReady() && keyInputIsReady()){
+			this.lastInputCommandTick = this.tickCount;
+			gs.pause();
 		}
+		if (gs.gsm.isKeyDown(KeyCode.A)) this.setLeft(true);
+		if (gs.gsm.isKeyDown(KeyCode.D)) this.setRight(true);
+		if (gs.gsm.isKeyDown(KeyCode.SPACE)) this.setJumping(true);
+		if (gs.gsm.isKeyDown(KeyCode.W)) this.setGliding(true);
+		if (gs.gsm.isKeyDown(KeyCode.Q)) this.setScratching();
+		if (gs.gsm.isKeyDown(KeyCode.E)) this.setFiring();
+		if (gs.gsm.isKeyDown(KeyCode.SHIFT)) this.setPhasing(true);
+		if (gs.gsm.isKeyDown(KeyCode.M)) gs.spawnEnemy();
+		if (!gs.gsm.isKeyDown(KeyCode.A)) this.setLeft(false);
+		if (!gs.gsm.isKeyDown(KeyCode.D)) this.setRight(false);
+		if (!gs.gsm.isKeyDown(KeyCode.SPACE)) this.setJumping(false);
+		if (!gs.gsm.isKeyDown(KeyCode.W)) this.setGliding(false);
+		if (!gs.gsm.isKeyDown(KeyCode.SHIFT)) this.setPhasing(false);
 	}
 	private boolean pauseIsReady() {
 		return gs.tickCount - gs.lastUnpauseTick > 20;

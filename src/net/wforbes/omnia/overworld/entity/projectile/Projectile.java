@@ -2,12 +2,12 @@ package net.wforbes.omnia.overworld.entity.projectile;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import net.wforbes.omnia.gameFX.OmniaFX;
+import net.wforbes.omnia.game.Game;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.mob.Mob;
 import net.wforbes.omnia.overworld.world.area.tile.TileMap;
 
-import static net.wforbes.omnia.gameFX.OmniaFX.getScale;
+import static net.wforbes.omnia.game.Game.getScale;
 
 public class Projectile {
 
@@ -133,9 +133,9 @@ public class Projectile {
 
     private boolean offScreen() {
         return x + xmap + width < 0 ||
-                x + xmap - width/2.5 > OmniaFX.getWidth() ||
+                x + xmap - width/2.5 > Game.getWidth() ||
                 y + ymap + height < 0 ||
-                y + ymap - height/2.5 > OmniaFX.getHeight();
+                y + ymap - height/2.5 > Game.getHeight();
     }
 
     private void move(double xa, double ya) {
