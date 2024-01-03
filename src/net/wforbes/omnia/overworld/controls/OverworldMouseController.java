@@ -18,7 +18,7 @@ public class OverworldMouseController extends MouseController {
         if ((event.getButton() == MouseButton.PRIMARY)) {
             gameState.world.player.getTargetController().handleEntityTargeting(
                 event,
-                gameState.world.getCurrentArea().entities,
+                gameState.world.getCurrentArea().getEntities(),
                 gameState.world.getCurrentArea().effectController
             );
         }

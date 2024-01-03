@@ -57,7 +57,7 @@ public class StructureArea extends Area {
     @Override
     public ArrayList<Renderable> getSortedRenderableList() {
         ArrayList<Renderable> renderables = new ArrayList<>();
-        renderables.addAll(this.entities);
+        renderables.addAll(this.entityController.getEntities());
         renderables.addAll(this.areaObjectController.getAreaObjects());
         renderables.addAll(this.areaObjectController.getCorpses());
         renderables.sort(Comparator.comparingDouble(Renderable::getBaseY));

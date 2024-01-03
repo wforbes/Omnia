@@ -101,7 +101,7 @@ public class Projectile {
     }
 
     private boolean checkCollision(double xa, double ya) {
-        for(Entity e : owner.gameState.world.getCurrentArea().entities) {
+        for(Entity e : owner.gameState.world.getCurrentArea().getEntities()) {
             if(!e.getName().equals(this.owner.getName())) {
                 double xDist = (this.x+xa - (e.getX() - ((Mob)e).getWidth()/2.0));
                 double yDist = (this.y+ya - (e.getY() - ((Mob)e).getHeight()/2.0));

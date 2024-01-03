@@ -5,6 +5,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import net.wforbes.omnia.gameFX.OmniaFX;
 import net.wforbes.omnia.gameFX.rendering.Renderable;
+import net.wforbes.omnia.overworld.entity.EntityController;
 import net.wforbes.omnia.overworld.entity.mob.enemy.Procyon;
 import net.wforbes.omnia.overworld.entity.mob.npc.DocNPC;
 import net.wforbes.omnia.overworld.entity.Entity;
@@ -23,22 +24,16 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Area {
+    private World world;
+    protected EntityController entityController;
     protected AreaObjectController areaObjectController;
     protected StructureController structureController;
-    private World world;
-    private TileMap tileMap;
-    public List<Entity> entities;
-    public List<Entity> spirits;
-    public double TEST_NPC_XPOS = 200;
-    public double TEST_NPC_YPOS = 200;
-    public double TEST_ENEMY_XPOS = 140;
-    public double TEST_ENEMY_YPOS = 140;
     public EffectController effectController;
+    private TileMap tileMap;
 
     public Area(World world) {
         this.world = world;
-        this.entities = new ArrayList<>();
-        this.spirits = new ArrayList<>();
+        this.entityController = new EntityController(this);
         this.areaObjectController = new AreaObjectController(this);
         this.structureController = new StructureController(this);
         this.effectController = new EffectController(this);
@@ -55,13 +50,14 @@ public class Area {
         return this.tileMap.getHeight();
     }
     public void addEntity(Entity entity) {
-        this.entities.add(entity);
+        //this.entities.add(entity);
+        this.entityController.addEntity(entity);
     }
-    public List<Entity> getEntities() { return this.entities; }
+    public List<Entity> getEntities() { return this.entityController.getEntities(); }
     public List<AreaObject> getAreaObjects() { return this.areaObjectController.getAreaObjects(); }
     public List<Structure> getStructures() { return this.structureController.getStructures(); }
     public List<StructureDoor> getStructureDoors() { return this.structureController.getStructureDoors(); }
-    public List<Entity> getSpirits() { return this.spirits; }
+    public List<Entity> getSpirits() { return this.entityController.getSpirits(); }
     public void handleCanvasClick(MouseEvent event) {
         System.out.println("area.handleCanvasClick event: " + event);
     }
@@ -82,21 +78,14 @@ public class Area {
         this.tileMap.setTween(0.06);
     }
     private void initEntities() {
-        NPC testNPC = new DocNPC(world.gameState);
-        testNPC.init(TEST_NPC_XPOS, TEST_NPC_YPOS);
-        this.addEntity(testNPC);
-
-        Procyon testEnemy = new Procyon(world.gameState, "A Procyon");
-        testEnemy.init(TEST_ENEMY_XPOS, TEST_ENEMY_YPOS);
-        this.addEntity(testEnemy);
-
+        this.entityController.init();
         this.getWorld().getGameState().gui.initEntityGUI();
     }
 
     public boolean spawnSpaceIsBlocked(double x, double y, double collisionBaseX, double collisionBaseY, double collisionRadius) {
         //TODO: Mostly COPYPASTA FROM MOB... combine into a better system
         //TODO: simplify this to iterate through area Renderables
-        for(Entity e : entities) {
+        for(Entity e : this.entityController.getEntities()) {
             //System.out.println(e.getName());
             double xDist = (x - e.getX());
             double yDist = (y - e.getY());
@@ -128,7 +117,7 @@ public class Area {
 
     public void update() {
         this.tileMap.update(world.player);
-        for(Entity e: this.entities) {
+        for(Entity e: this.entityController.getEntities()) {
             e.update();
         }
         this.areaObjectController.update();
@@ -164,7 +153,7 @@ public class Area {
     }
     public ArrayList<Renderable> getSortedRenderableList() {
         ArrayList<Renderable> renderables = new ArrayList<>();
-        renderables.addAll(this.entities);
+        renderables.addAll(this.entityController.getEntities());
         renderables.addAll(this.areaObjectController.getAreaObjects());
         renderables.addAll(this.areaObjectController.getCorpses());
         renderables.addAll(this.structureController.getStructures());
@@ -173,10 +162,7 @@ public class Area {
     }
     public void teardown() {
         this.world = null;
-        for (Entity e : this.entities) {
-            e.teardown();
-        }
-        this.entities = null;
+        this.entityController.teardown();
         this.effectController = new EffectController(this);
     }
 }

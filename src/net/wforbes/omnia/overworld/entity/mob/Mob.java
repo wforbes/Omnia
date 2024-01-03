@@ -402,7 +402,7 @@ public abstract class Mob extends Entity {
 
     protected boolean isOccupied(double xa, double ya) {
         //TODO: simplify this to iterate through area Renderables
-        for(Entity e : gameState.world.getCurrentArea().entities) {
+        for(Entity e : gameState.world.getCurrentArea().getEntities()) {
             if(!e.getName().equals(this.name)) {
                 /* AABB Collision */
                 if (
