@@ -108,7 +108,7 @@ public class PauseMenu extends Menu {
     }
 
     @Override
-    void checkKeyInput() {
+    public void checkKeyInput() {
         if(gsm.getCurrentState().getKeyboard().isKeyDown(KeyCode.ESCAPE) && keyInputReady()){
             gsm.getCurrentState().getKeyboard().consumeKey(KeyCode.ESCAPE);
             gsm.getCurrentState().unPause();
@@ -116,7 +116,7 @@ public class PauseMenu extends Menu {
     }
 
     @Override
-    void select(String option) {
+    public void select(String option) {
         if (option.equals(options[0])) {
             gsm.getCurrentState().unPause();
         } else if (option.equals(options[1])) {

@@ -101,7 +101,7 @@ public class DeathMenu extends Menu{
     }
 
     @Override
-    void checkKeyInput() {
+    public void checkKeyInput() {
         if(gsm.isKeyDown(KeyCode.ESCAPE) && keyInputReady()){
             System.out.println("new menu got escape");
             gsm.getCurrentState().unPause();
@@ -110,7 +110,7 @@ public class DeathMenu extends Menu{
     }
 
     @Override
-    void select(String option) {
+    public void select(String option) {
         if (option == options[0]) {
             this.hide();
             gsm.resetState(GameStateManager.PLATFORMERSTATE);
@@ -123,7 +123,7 @@ public class DeathMenu extends Menu{
     }
 
     @Override
-    void update() {
+    public void update() {
         //todo: implement when overworld starts killing you
     }
 }

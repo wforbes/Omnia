@@ -4,42 +4,34 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import net.wforbes.omnia.game.controls.keyboard.KeyboardController;
-import net.wforbes.omnia.menu.MainMenu;
-import net.wforbes.omnia.platformer.tileMap.Background;
-
-import java.awt.*;
+import net.wforbes.omnia.menu.mainMenu.MainMenu;
 
 public class MenuState extends GameState {
-    private MainMenu menu;
-
-    private int waitTicks = 20;
+    private MainMenu mainMenu;
     private int tickCount;
-
-    private Background bg;
 
     public MenuState(GameStateManager gsm) {
         this.gsm = gsm;
-        this.menu = new MainMenu(this);
+        this.mainMenu = new MainMenu(this);
     }
 
     @Override
     public void init() {
-        this.menu.init();
+        this.mainMenu.init();
     }
 
     @Override
     public void update() {
-        this.menu.update();
+        this.mainMenu.update();
     }
 
     @Override
     public void render(GraphicsContext gc) {
-        this.menu.render(gc);
+        this.mainMenu.render(gc);
     }
 
     @Override
     public void tick() {
-        bg.update();
         tickCount++;
     }
 
