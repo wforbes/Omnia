@@ -40,7 +40,6 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //initializeCanvas();
         stage = Game.getPrimaryStage();
         stage.setTitle("Omnia");
         this.gsm = new GameStateManager(this);
@@ -82,7 +81,6 @@ public class GameController implements Initializable {
         });
 
         timer = new GameLoopTimer() {
-
             private int displayFPS = 0;
             private int displayTPS = 0;
             private int displayUpTime = 0;

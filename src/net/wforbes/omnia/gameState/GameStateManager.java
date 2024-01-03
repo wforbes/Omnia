@@ -8,7 +8,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class GameStateManager {
-    public boolean usingFx;
     public GameController gameController;
     private ArrayList<GameState> gameStates;
     private int currentState;
@@ -19,7 +18,6 @@ public class GameStateManager {
     public static final int OVERWORLDSTATE = 3;
 
     public GameStateManager(GameController gameController) {
-        this.usingFx = true;
         this.gameController = gameController;
         gameStates = new ArrayList<>();
         gameStates.add(new MenuState(this));
