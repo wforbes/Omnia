@@ -34,6 +34,7 @@ import net.wforbes.omnia.overworld.world.area.structure.StructureDoor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 import static net.wforbes.omnia.game.Game.getScale;
@@ -104,6 +105,27 @@ public abstract class Mob extends Entity {
         return this.dead;
     }
 
+    public Mob(OverworldState gameState, double speed, boolean player, MobStats stats) {
+        super(gameState);
+        this.gameState = gameState;
+        this.isPlayer = player;
+        //this.name = name;
+        this.speed = speed;
+        this.combatSpeed = 0.6; //TODO: Move to CombatController
+        this.movementController = new MovementController(this);
+        this.nameFont = Font.font("Century Gothic", FontWeight.BOLD, 22);
+        this.nameText = new Text(this.getName());
+        this.nameText.setFont(nameFont);
+        this.nameText.setFontSmoothingType(FontSmoothingType.LCD);
+        this.initNameAnimation();
+        this.entityEffectController = new EntityEffectController(this);
+        this.combatController = new CombatController(this);
+        this.statController = new StatController(
+            this, stats);
+        this.statController.setHealthbarController(new HealthbarController(this.gameState.gui, this));
+        this.dead = false;
+        //pathfindController is implemented in parent (player/enemy)
+    }
     public Mob(OverworldState gameState, String name, double speed, boolean player, MobStats stats) {
         super(gameState);
         this.gameState = gameState;
@@ -120,7 +142,7 @@ public abstract class Mob extends Entity {
         this.entityEffectController = new EntityEffectController(this);
         this.combatController = new CombatController(this);
         this.statController = new StatController(
-            this, stats);
+                this, stats);
         this.statController.setHealthbarController(new HealthbarController(this.gameState.gui, this));
         this.dead = false;
         //pathfindController is implemented in parent (player/enemy)

@@ -21,3 +21,24 @@
 .dev-button:focused {
     -fx-text-fill: yellow!important;
 }
+
+.page-title-txt {
+    -fx-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 4em;
+    -fx-font-family: Arial, "Century Gothic", sans-serif;
+}
+
+.menu-text-field {
+    -fx-accent: #007ACC;
+    -fx-background-color: rgba(255, 255, 255, 0.4);
+    -fx-border-color: white;
+    -fx-border-style: solid;
+    -fx-border-width: 0.15em;
+    -fx-border-radius: 0.25em;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-background-radius: 0;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: white;
+}

@@ -10,6 +10,8 @@ public class MenuState extends GameState {
     private MainMenu mainMenu;
     private int tickCount;
 
+    private String playerName;
+
     public MenuState(GameStateManager gsm) {
         this.gsm = gsm;
         this.mainMenu = new MainMenu(this);

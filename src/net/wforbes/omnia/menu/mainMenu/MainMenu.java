@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -44,6 +45,10 @@ public class MainMenu extends Menu {
 
         //font info for everything else
         font = new Font("Arial", 12 * scale);
+    }
+
+    public MenuState getState() {
+        return this.state;
     }
 
     public void init() {
@@ -134,6 +139,8 @@ public class MainMenu extends Menu {
 
     private void showNewGamePage() {
         this.clearGameBorder();
+        NewGamePage page = new NewGamePage();
+        state.gsm.gameController.gameBorder.setCenter(page.getDisplayUI(this));
     }
 
     private void showLoadGamePage() {
@@ -144,7 +151,7 @@ public class MainMenu extends Menu {
         this.clearGameBorder();
     }
 
-    private void clearGameBorder() {
+    public void clearGameBorder() {
         state.gsm.gameController.gameBorder.setTop(null);
         state.gsm.gameController.gameBorder.setLeft(null);
         state.gsm.gameController.gameBorder.setRight(null);

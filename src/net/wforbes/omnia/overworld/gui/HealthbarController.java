@@ -15,6 +15,7 @@ import net.wforbes.omnia.game.rendering.Renderable;
 import net.wforbes.omnia.overworld.entity.Entity;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 import static net.wforbes.omnia.game.Game.getScale;
 
@@ -122,6 +123,9 @@ public class HealthbarController {
     }
 
     public void update() {
+        if (!Objects.equals(this.nameLabel.getText(), this.owner.getName())) {
+            this.nameLabel.setText(this.owner.getName());
+        }
         if (
             ((!this.owner.isOnScreen() && this.isVisible)
             || (this.owner.isOnScreen() && !this.isVisible))

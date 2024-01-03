@@ -17,6 +17,8 @@ public class GameStateManager {
     public static final int PLATFORMERSTATE = 2;
     public static final int OVERWORLDSTATE = 3;
 
+    private String playerName;
+
     public GameStateManager(GameController gameController) {
         this.gameController = gameController;
         gameStates = new ArrayList<>();
@@ -37,12 +39,14 @@ public class GameStateManager {
     public void clearKeys() {
         this.gameController.keys.clearKeys();
     }
-
     public void setState(int state) {
         this.currentState = state;
         this.clearKeys();
         this.gameStates.get(currentState).init();
-
+    }
+    public void initializePlayerData(String name) {
+        this.playerName = name; //TODO: replace string with player data object
+        ((OverworldState) this.gameStates.get(OVERWORLDSTATE)).initializePlayer(name);
     }
     public void resetState(int state) {
         this.gameStates.get(state).reset();

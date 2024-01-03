@@ -32,6 +32,8 @@ public class OverworldState extends GameState {
 
     public Database db;
 
+    private boolean playerInitialized = false;
+
     public OverworldState(GameStateManager gsm) {
         this.setup(gsm);
     }
@@ -42,7 +44,7 @@ public class OverworldState extends GameState {
         this.mouseController = new OverworldMouseController(this);
         this.keyboardController = new OverworldKeyboardController(this);
         this.world = new World(this);
-        this.player = new Player(this, "Will");
+        this.player = new Player(this);
         this.world.setPlayer(player);
         this.gui = new GUIController(this);
         this.menuController = new MenuController(gsm);
@@ -65,6 +67,10 @@ public class OverworldState extends GameState {
         return world;
     }
     public Player getPlayer() { return player; }
+    public void initializePlayer(String name) {
+        this.player.setName(name);
+        this.player.init();
+    }
 
     public void toggleCollisionGeometry() {
         showCollisionGeometry = !showCollisionGeometry;
@@ -111,7 +117,7 @@ public class OverworldState extends GameState {
             this.resurrect(this.gsm);
         }
         this.world.init();
-        this.player.init();
+        //this.player.init();
         this.gui.init();
     }
 
@@ -128,7 +134,9 @@ public class OverworldState extends GameState {
             menuController.getPauseMenu().update();
             return;
         }
-        player.update();
+        if (playerInitialized) {
+            player.update();
+        }
         world.update();
         gui.update();
         //TODO: attack enemies
