@@ -29,7 +29,7 @@ public class Player extends Mob {
     private HarvestController harvestController;
 
     public Player(OverworldState gameState) {
-        super(gameState, 0.5, true, new MobStats(
+        super(gameState, 0.75, true, new MobStats(
                 1000, 0.01F, 50, 0.75F, 1.75F
         ));
         this.width = this.height = 16;

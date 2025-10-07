@@ -12,30 +12,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import net.wforbes.omnia.gameState.GameStateManager;
 import net.wforbes.omnia.menu.MenuPage;
+import org.jetbrains.annotations.NotNull;
 
 
 public class NewGamePage extends MenuPage {
     public Node getDisplayUI(MainMenu mainMenu) {
         VBox topVbox = new VBox(0);
         topVbox.setAlignment(Pos.CENTER);
-
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.BASELINE_LEFT);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 0, 0,20));
-        grid.setMinWidth(600);
-        grid.setMaxWidth(600);
-        grid.setMinHeight(600);
-        grid.setMaxHeight(600);
-        grid.setBorder(new Border(new BorderStroke(
-            Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT
-        )));
-        grid.setBackground(new Background(new BackgroundFill(
-                Color.rgb(0, 0, 0, 0.5),
-                new CornerRadii(10),
-                new Insets(0)
-        )));
+        GridPane grid = getGridPane();
 
         Button backBtn = new Button("< Back");
         grid.add(backBtn, 0, 0);
@@ -62,5 +46,27 @@ public class NewGamePage extends MenuPage {
 
         topVbox.getChildren().addAll(grid);
         return topVbox;
+    }
+
+    @NotNull
+    private static GridPane getGridPane() {
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.BASELINE_LEFT);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 0, 0,20));
+        grid.setMinWidth(600);
+        grid.setMaxWidth(600);
+        grid.setMinHeight(600);
+        grid.setMaxHeight(600);
+        grid.setBorder(new Border(new BorderStroke(
+            Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT
+        )));
+        grid.setBackground(new Background(new BackgroundFill(
+                Color.rgb(0, 0, 0, 0.5),
+                new CornerRadii(10),
+                new Insets(0)
+        )));
+        return grid;
     }
 }
