@@ -5,16 +5,13 @@ import javafx.geometry.Rectangle2D;
 import net.wforbes.omnia.overworld.entity.Entity;
 import net.wforbes.omnia.overworld.entity.mob.Mob;
 
+import java.util.Objects;
+
 public class MovementController {
     protected Mob mover;
     private int[] xya = new int[3];
     private Rectangle2D movementSpace;
-    private int movementType;
-
-    //TODO: convert movement types to enum
-    public static final int MOVEMENT_STAND = 0;
-    public static final int MOVEMENT_PACE_VERTICAL = 1;
-    public static final int MOVEMENT_FOLLOW_TARGET = 2;
+    private MovementBehavior movementBehavior = new StandBehavior();
     private long waitCount = 0;
     private boolean moveReady = false;
     private boolean waitingToPace = false;
@@ -25,8 +22,8 @@ public class MovementController {
         this.mover = mover;
     }
 
-    public void setMovementType(int moveType) {
-        this.movementType = moveType;
+    public void setMovementBehavior(MovementBehavior movementBehavior) {
+        this.movementBehavior = Objects.requireNonNull(movementBehavior);
     }
 
     public void setMovementSpace(Rectangle2D space) {
@@ -39,19 +36,7 @@ public class MovementController {
 
     public void update() {
         if (this.mover.isDead()) return;
-        switch(movementType) {
-            case 0:
-                this.standStill();
-                break;
-            case 1:
-                this.paceVertically(5, 10, (int)movementSpace.getMinY(), (int)movementSpace.getMaxY());
-                break;
-            case 2:
-                this.followTarget();
-                break;
-            default:
-                break;
-        }
+        this.movementBehavior.update(this);
     }
 
     protected void followTarget() {
@@ -103,7 +88,7 @@ public class MovementController {
     }
 
     private void resumePacing() {
-        this.setMovementType(1);
+        this.setMovementBehavior(new PaceVerticalBehavior());
         this.waitingToPace = false;
         this.mover.setMoving(true);
     }
@@ -134,9 +119,13 @@ public class MovementController {
     }
 
     private void stopMovement() {
-        this.setMovementType(0);
+        this.setMovementBehavior(new StandBehavior());
         this.mover.setMoving(false);
         this.mover.getMovementAnimation().setIsMoving(this.mover.getIsMoving());
+    }
+
+    void paceVertically() {
+        paceVertically(5, 10, (int)movementSpace.getMinY(), (int)movementSpace.getMaxY());
     }
 
     private void paceVertically(int waitMultiple, int waitReset, int minYBound, int maxYBound) {

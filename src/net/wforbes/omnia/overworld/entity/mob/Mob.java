@@ -7,8 +7,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.FontWeight;
@@ -29,9 +27,6 @@ import net.wforbes.omnia.overworld.gui.HealthbarController;
 import net.wforbes.omnia.overworld.world.area.object.AreaObject;
 import net.wforbes.omnia.overworld.world.area.object.corpse.MobCorpse;
 import net.wforbes.omnia.overworld.world.area.object.flora.Flora;
-import net.wforbes.omnia.overworld.world.area.structure.Structure;
-import net.wforbes.omnia.overworld.world.area.structure.StructureDoor;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -75,7 +70,6 @@ public abstract class Mob extends Entity {
     public boolean isPlayer; //TODO: remove - for testing
     protected double collisionRadius;
     public boolean isColliding;
-    private AreaObject collidingAreaObject;
     protected Color nameColor;
     protected Color nameFlashColor;
     protected Text nameText;
@@ -91,13 +85,10 @@ public abstract class Mob extends Entity {
     private ArrayList<StatChange> statChanges = new ArrayList<>();
     private Image corpseSprite;
     private MobCorpse mobCorpse;
-    private Structure collidingStructure;
-    private Rectangle collisionRectangle;
-    private StructureDoor collidingDoor;
+    private final MobCollisionController collisionController;
     public PathfindController getPathfindController() {
         return this.pathfindController;
     }
-    private Entity collidingEntity;
     protected int meleeReach;
     private boolean dead;
     protected String mobType; //TODO: string to coordinate loot, update this with new db struct
@@ -108,6 +99,7 @@ public abstract class Mob extends Entity {
     public Mob(OverworldState gameState, double speed, boolean player, MobStats stats) {
         super(gameState);
         this.gameState = gameState;
+        this.collisionController = new MobCollisionController(this);
         this.isPlayer = player;
         //this.name = name;
         this.speed = speed;
@@ -129,6 +121,7 @@ public abstract class Mob extends Entity {
     public Mob(OverworldState gameState, String name, double speed, boolean player, MobStats stats) {
         super(gameState);
         this.gameState = gameState;
+        this.collisionController = new MobCollisionController(this);
         this.isPlayer = player;
         this.name = name;
         this.speed = speed;
@@ -228,9 +221,11 @@ public abstract class Mob extends Entity {
     }
     public void setBaseY(double y) { this.baseY = y; }
     public AreaObject getCollidingAreaObject() {
-        return this.collidingAreaObject;
+        return this.collisionController.getCollidingAreaObject();
     }
-    public Entity getCollidingEntity() { return this.collidingEntity; }
+    public Entity getCollidingEntity() {
+        return this.collisionController.getCollidingEntity();
+    }
     public CombatController getCombatController() { return this.combatController; }
     public int getMeleeReach() {
         return this.meleeReach;
@@ -341,7 +336,7 @@ public abstract class Mob extends Entity {
         this.setCollisionYOffset(8);
         this.setCollisionBoxWidth(8);
         this.setCollisionBoxHeight(8);
-        this.collisionRectangle = new Rectangle(collisionBoxWidth, collisionBoxHeight);
+        this.collisionController.initCollisionShape();
 
         this.setHealthbarXOffset(1);
 
@@ -423,149 +418,7 @@ public abstract class Mob extends Entity {
     }
 
     protected boolean isOccupied(double xa, double ya) {
-        //TODO: simplify this to iterate through area Renderables
-        for(Entity e : gameState.world.getCurrentArea().getEntities()) {
-            if(!e.getName().equals(this.name)) {
-                /* AABB Collision */
-                if (
-                    (this.getX()) + xa + collisionXOffset < e.getX()+e.getCollisionBoxWidth()+e.getCollisionXOffset() &&
-                    this.getX() + xa + collisionBoxWidth + collisionXOffset > e.getX() + e.getCollisionXOffset() &&
-                    this.getY() + ya + collisionYOffset < e.getY()+e.getCollisionBoxHeight()+e.getCollisionYOffset() &&
-                    this.getY() + ya + collisionBoxHeight + collisionYOffset >  e.getY() + e.getCollisionYOffset()
-                ) {
-                    this.collidingEntity = e;
-                    return true;
-                }
-            }
-        }
-        this.collidingEntity = null;
-
-        //TODO: convert AO collision to similar to structure line-based collision
-        for (AreaObject ao : gameState.world.getCurrentArea().getAreaObjects()) {
-            if (!ao.isSpawned()) continue;
-            double xDist = (this.getX()+xa+collision_baseX - this.collisionRadius/2.0) - (ao.getX()+ao.getCollisionBaseX());
-            double yDist = (this.getY()+ya+collision_baseY - this.collisionRadius/3.0) - (ao.getY()+ao.getCollisionBaseY());
-            boolean collided = Math.sqrt((xDist*xDist) + (yDist*yDist)) < ((collisionRadius-2)/2.0+(ao.getCollisionRadius()-3)/2.0);
-            if(collided) {
-                this.collidingAreaObject = ao;
-                return true;
-            }
-        }
-        this.collidingAreaObject = null;
-
-        for (Structure s: gameState.world.getCurrentArea().getStructures()) {
-            boolean result = withinStructure(s, xa, ya);
-            if (result) {
-                this.collidingStructure = s;
-                return true;
-            }
-        }
-        this.collidingStructure = null;
-
-        if (this.isPlayer) {
-            boolean onAnyDoor = false;
-            for (StructureDoor sd : gameState.world.getCurrentArea().getStructureDoors()) {
-                boolean result = withinDoor(sd, xa, ya);
-                sd.setOpen(result);
-                if (result) {
-                    onAnyDoor = true;
-                    this.collidingDoor = sd;
-                    if (this.collidingWithAboveDoor(sd, xa, ya)) {
-                        //TODO: move to this structure's area
-                    }
-                }
-            }
-            if (!onAnyDoor) this.collidingDoor = null;
-        }
-
-        return false;
-    }
-
-    private boolean withinStructure(Structure s, double xa, double ya) {
-        Rectangle rect = this.collisionRectangle;
-        rect.setX(rect.getX() + xa); // predict next move
-        rect.setY(rect.getY() + ya);
-        ArrayList<Line> mobLines = getMobLines(rect);
-        for (Line sl : s.getShapeLines()) {
-            for (Line ml: mobLines) {
-                if (sl.getBoundsInParent().intersects(ml.getBoundsInParent())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean withinDoor(StructureDoor sd, double xa, double ya) {
-        Rectangle rect = this.collisionRectangle;
-        rect.setX(rect.getX() + xa); // predict next move
-        rect.setY(rect.getY() + ya);
-        ArrayList<Line> mobLines = getMobLines(rect);
-        if (sd.getDoorShapeLines() == null) {
-            //System.out.println("Door shape lines is NULL, u dun goofed");
-            return false;
-        }
-        for (Line sl : sd.getDoorShapeLines()) {
-            for (Line ml: mobLines) {
-                if (sl.getBoundsInParent().intersects(ml.getBoundsInParent())) {
-                    //System.out.println("colliding with door");
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean collidingWithAboveDoor(StructureDoor sd, double xa, double ya) {
-        Rectangle rect = this.collisionRectangle;
-        rect.setX(rect.getX() + xa); // predict next move
-        rect.setY(rect.getY() + ya);
-        ArrayList<Line> mobLines = getMobLines(rect);
-        if (sd.getAboveDoorLine() == null) {
-            //System.out.println("Above Door Live is NULL, u dun goofed");
-            return false;
-        }
-        for (Line ml: mobLines) {
-            if (sd.getAboveDoorLine().getBoundsInParent().intersects(ml.getBoundsInParent())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @NotNull
-    private static ArrayList<Line> getMobLines(Rectangle rect) {
-        ArrayList<Line> mobLines = new ArrayList<>();
-
-        Line line1 = new Line();
-        line1.setStartX(rect.getX());
-        line1.setEndX(rect.getX()+ rect.getWidth());
-        line1.setStartY(rect.getY());
-        line1.setEndY(rect.getY());
-        mobLines.add(line1);
-
-        Line line2 = new Line();
-        line2.setStartX(rect.getX()+ rect.getWidth());
-        line2.setEndX(rect.getX()+ rect.getWidth());
-        line2.setStartY(rect.getY());
-        line2.setEndY(rect.getY()+ rect.getHeight());
-        mobLines.add(line2);
-
-        Line line3 = new Line();
-        line3.setStartX(rect.getX()+ rect.getWidth());
-        line3.setEndX(rect.getX());
-        line3.setStartY(rect.getY());
-        line3.setEndY(rect.getY()+ rect.getHeight());
-        mobLines.add(line3);
-
-        Line line4 = new Line();
-        line4.setStartX(rect.getX());
-        line4.setEndX(rect.getX());
-        line4.setStartY(rect.getY()+ rect.getHeight());
-        line4.setEndY(rect.getY());
-        mobLines.add(line4);
-
-        return mobLines;
+        return this.collisionController.isOccupied(xa, ya);
     }
 
     public boolean isMovingDiagonally() {
@@ -725,8 +578,7 @@ public abstract class Mob extends Entity {
     }
 
     public void refreshCollisionRectanglePosition() {
-        this.collisionRectangle.setX(this.getX() + collisionXOffset);
-        this.collisionRectangle.setY(this.getY() + collisionYOffset);
+        this.collisionController.refreshCollisionRectanglePosition();
     }
 
     public void render(GraphicsContext gc) {
@@ -893,19 +745,7 @@ public abstract class Mob extends Entity {
         }
     }
     private void renderCollisionGeometry(GraphicsContext gc) {
-        gc.setStroke(Color.RED);
-        gc.strokeRect(
-            (collisionRectangle.getX()+xmap)*getScale(),
-            (collisionRectangle.getY()+ymap)*getScale(),
-            collisionRectangle.getWidth()*getScale(),
-            collisionRectangle.getHeight()*getScale()
-        );
-        gc.strokeRect(
-            (collisionRectangle.getX()+xmap)*getScale(),
-            (collisionRectangle.getY()+ymap)*getScale(),
-            2,
-            2
-        );
+        this.collisionController.renderCollisionGeometry(gc);
         //render new mini-map style collision
         /*
         if(!this.offScreen()) {

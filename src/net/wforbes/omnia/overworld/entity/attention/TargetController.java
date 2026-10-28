@@ -30,25 +30,18 @@ public class TargetController {
      *
      * @param   MouseEvent  the mouse event passed in from canvas UI
      * @param   Entity      the entity being checked for collision
+     * @param   EffectController provide the click circle
      * @return  the linear distance from the click event and the entity
      */
-    protected double getXYMapCollsionRadius(MouseEvent event, Entity e, EffectController effectController) {
-        // x and y distance between click event and the entity, considering tilemap offset and scaling
+    protected double getClickEntityDistance(MouseEvent event, Entity e, EffectController effectController) {
         double xDist = (event.getX()
                 - (e.getX()+ ((Mob) e).getXMap() + ((Mob)e).getCollisionBaseX()) * getScale());
         double yDist = (event.getY()
                 - (e.getY() + ((Mob) e).getYMap() + ((Mob)e).getCollisionBaseY()) * getScale());
-        // equation of circle around click point, plus ClickCircle radius size
         return (Math.sqrt((xDist * xDist) + (yDist * yDist))/2.0)
                 + effectController.getClickCircle().getCircleRadius();
     }
 
-    /**
-     * calculates the combined distance between the click point and cursors visual 'click circle'
-     * and the entity's centerpoint position and its collision radius
-     * @param   Entity  entity to check
-     * @return double
-     */
     protected double getCursorEntityCollisionDist(Entity e, EffectController effectController) {
         return (effectController.getClickCircle().getCircleRadius()*2.0)
                 + (e.getCollisionRadius()*2.0);

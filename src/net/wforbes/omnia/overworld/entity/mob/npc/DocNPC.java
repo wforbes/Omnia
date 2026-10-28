@@ -7,7 +7,7 @@ import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.combat.stat.MobStats;
 import net.wforbes.omnia.overworld.entity.dialog.NPCDialog.DocDialog;
 import net.wforbes.omnia.overworld.entity.mob.Mob;
-import net.wforbes.omnia.overworld.entity.movement.MovementController;
+import net.wforbes.omnia.overworld.entity.movement.PaceVerticalBehavior;
 
 import java.util.Arrays;
 
@@ -45,7 +45,7 @@ public class DocNPC extends NPC {
         super.init(xPos, yPos);
         this.setPosition(xPos, yPos);
         this.movementController.setMovementSpace(this.x-40, this.y-40, this.x+40, this.y+40);
-        this.movementController.setMovementType(MovementController.MOVEMENT_PACE_VERTICAL);
+        this.movementController.setMovementBehavior(new PaceVerticalBehavior());
     }
 
     public void update() {

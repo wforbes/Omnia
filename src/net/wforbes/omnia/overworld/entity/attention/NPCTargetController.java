@@ -15,11 +15,6 @@ public class NPCTargetController extends TargetController {
     }
 
     /**
-     * Sets the default attention span of its Entity owner, accepting an
-     * integer to represent the duration in seconds that the Entity
-     * will actively focus on it's target after a 'startFocusing' call
-     * before losing interest and continuing with what it was doing.
-     *
      * @param  int  the number of seconds to set as the default attention span
      */
     public void setAttentionSpan(int span) {
@@ -44,11 +39,6 @@ public class NPCTargetController extends TargetController {
     }
 
     /**
-     * Causes the Entity owner to begin focusing on the parameter target
-     * Entity. For the duration of the attention span (in seconds), the
-     * owner Entity will keep its target and provide a 'isFocusing' flag
-     * to check against for other actions.
-     *
      * @param  Entity  the target Entity for AttentionController owner to focus on
      */
     public void startFocusing(Entity target) {
@@ -68,11 +58,7 @@ public class NPCTargetController extends TargetController {
     public void setTarget(Entity target) {
         this.target = target;
     }
-
-    /**
-     * Causes the Entity owner to lose focus on its target and set its 'isFocusing'
-     * flag to false, opening its attention for other actions.
-     */
+    
     public void loseFocus() {
         if (!isFocusing) return;
         this.setIsFocusing(false);

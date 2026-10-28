@@ -77,9 +77,9 @@ public class TileMap {
 	}
 	public void loadMap(String s){
 		try{
-			// to read the image..
+			
 			InputStream in = getClass().getResourceAsStream(s);
-			// to read the text file..
+			
 			BufferedReader br = new BufferedReader( new InputStreamReader(in));
 
 			//The first two integers in the text file represent the number of columns
@@ -101,19 +101,17 @@ public class TileMap {
 
 			String delims = "\\s+"; //this represents white space, so.. the space
 			//		between the numbers in the file we are about to read through
-			// 	with our buffered reader (like regx.. whatever that is from (c++ ?))
-			for(int row = 0; row < numRows; row++){//for every row in the text file
-				String line = br.readLine(); // read the line
-				String[] tokens = line.split(delims); // split the line into tokens, using the
-				//		white space of our delimiter
-				for(int col = 0; col < numCols; col++){//for every column
-					map[row][col] = Integer.parseInt(tokens[col]); // go through
-					//		the token array and put it into the map array
-				}// end column loop
-			}//end row loop
+			// 	with our buffered reader
+			for(int row = 0; row < numRows; row++){
+				String line = br.readLine();
+				String[] tokens = line.split(delims);
+				for(int col = 0; col < numCols; col++){
+					map[row][col] = Integer.parseInt(tokens[col]);
+				}
+			}
 		}catch(Exception e){e.printStackTrace();}
-	}//end loadMap
-	//getset
+	}
+
 	public int getTileSize(){ return tileSize;}
 	public double getx(){ return x;}
 	public double gety(){return y;}
@@ -146,7 +144,6 @@ public class TileMap {
 		rowOffset = (int) -(this.y) / tileSize;
 	}
 	
-	//helper method, explain later
 	private void fixBounds(){
 		if(x < xmin) x = xmin;
 		if(y < ymin) y = ymin;
@@ -175,11 +172,11 @@ public class TileMap {
 	private void draw(TileDraw td) {
 		for(int row = rowOffset; row < (rowOffset + numRowsToDraw); row++) {
 
-			if (row >= numRows) break; //nothing else to draw, so break it
+			if (row >= numRows) break;
 
 			for (int col = colOffset; col < (colOffset + numColsToDraw); col++) {
 
-				if (col >= numCols) break; //nothing else to draw break!
+				if (col >= numCols) break;
 				if (map[row][col] == 0) continue; //index tile is left blank. Just because swag.
 
 				int rc = map[row][col];//find which tile to draw
@@ -195,4 +192,3 @@ public class TileMap {
 		void drawTile(int r, int c, int col, int row);
 	}
 }
-

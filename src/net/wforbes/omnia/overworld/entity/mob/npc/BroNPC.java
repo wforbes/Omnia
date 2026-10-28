@@ -6,7 +6,7 @@ import net.wforbes.omnia.overworld.entity.animation.MovementAnimation;
 import net.wforbes.omnia.overworld.entity.attention.NPCTargetController;
 import net.wforbes.omnia.overworld.entity.combat.stat.MobStats;
 import net.wforbes.omnia.overworld.entity.mob.Mob;
-import net.wforbes.omnia.overworld.entity.movement.MovementController;
+import net.wforbes.omnia.overworld.entity.movement.PaceVerticalBehavior;
 
 import java.util.Arrays;
 
@@ -35,7 +35,7 @@ public class BroNPC extends NPC {
     public void init() {
         this.setPosition(100, 200);
         this.movementController.setMovementSpace(this.x-20, this.y-20, this.x+20, this.y+20);
-        this.movementController.setMovementType(MovementController.MOVEMENT_PACE_VERTICAL);
+        this.movementController.setMovementBehavior(new PaceVerticalBehavior());
     }
 
     public void init(int xPos, int yPos) {}
